@@ -8,6 +8,7 @@ import StartnTest from "./hh/[hh]/startnTest";
 import { useEffect, useState } from "react";
 import { setState, getState } from "@/app/db/localstorage";
 import { testsall } from "@/app/data";
+import Flow from "./flow/flow";
 
 export default function Test({ params }) {
   const [loading, setLoading] = useState(true);
@@ -75,11 +76,12 @@ export default function Test({ params }) {
     <Box
       sx={{
         width: "100%",
-        height: "auto",
+        height: window.innerHeight,
       }}
     >
       {!nav.testsStarted && !loading && (
         <Chapters setTestsStarted={setTestsStarted} />
+        // <Flow />
       )}
       {nav.testsStarted && !loading && (
         <StartnTest
