@@ -1,0 +1,10 @@
+id	chapterid	task	defaultinput	defaultcode	realdefcode	rightcode	maxlines	musthave	in1	out1	in2	out2
+1	1	На входе программы 3 пары чисел, сложи их попарно. Результат напечатай с помощью команды print. В программе используй функцию разделения строк и функцию суммирования.	1 2,2 4,3 4	for i in range(3):\n    print(sum(map(int,input().split()))) #Печать	 	for i in range(3):\n    print(sum(map(int,input().split()))) #Печать	3	split;sum	1 2,2 4,3 4	3,6,7	1 3,2 4,3 4	4,6,7
+2	1	Раздели число в переменной a на 3 нацело. Используй оператор целочисленного деления.	8	a=input()\nprint(int(a)//3)	 	a=input()\nprint(int(a)//3)	2	//	19	6	20	6
+3	1	Используя цикл выведи числа 1,2,3. Каждое число на отдельной строке		for i in range(1,4):\n    print(i)	 	for i in range(1,4):\n    print(i)	2	for		1,2,3		1,2,3
+4	1	На входе программы 3 числа, возведи каждое в квадрат	1,2,3	for i in range(1,4):\n    print(int(input())**2)	 	for i in range(1,4):\n    print(int(input())**2)	3	for	1,2,3	1,4,9	2,2,2	4,4,4
+5	2	На входе программы 8 чисел, вычти из каждого следующего - предыдущее. Из первого числа ничего вычитать не нужно. Результат сложи	1 2 3 4 5 6 7 8	a=input()\nb=a.split()\nsumm=0\nfor i in range(len(b)-1):\n    summ+=int(b[i+1])-int(b[i])\nprint(summ)		a=input()\nb=a.split()\nsumm=0\nfor i in range(len(b)-1):\n    summ+=int(b[i+1])-int(b[i])\nprint(summ)	7	for;split;int	1 2 3 4 5 6 7 8	7	1 2 3 4 5 6 7	6
+6	2	Выведи: Я знаю команду print		print('Я знаю команду print')	 	print('Я знаю команду print')	1	print		Я знаю команду print		Я знаю команду print
+7	2	Выведи: 1 2 3		print('1 2 3')		print('1 2 3')	1	print		1 2 3		1 2 3
+8	2	Выведи: 1 2 3. В программе должны обязательно присутствовать запятые		print(1, 2, 3)		print('1, 2, 3')	1	print;,		1 2 3		1 2 3
+9	2	Выведи две строчки:\n1 2 3\nОдин, В программе должны обязательно присутствовать запятые		print(1, 2, 3)\nprint('Один','Два','Три')	 	print('1, 2, 3')	1	print;,		1 2 3		1 2 3

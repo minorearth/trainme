@@ -1,95 +1,94 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
 
-export default function Home() {
+import { stn } from "@/constants";
+import { chapters } from "@/app/data";
+import Box from "@mui/material/Box";
+import Chapters from "./chapters/chapters";
+import StartnTest from "./hh/[hh]/startnTest";
+import { useEffect, useState } from "react";
+import { setState, getState } from "@/app/db/localstorage";
+import { testsall } from "@/app/data";
+
+export default function Test({ params }) {
+  const [loading, setLoading] = useState(true);
+  const [tests, setTests] = useState([]);
+
+  const [nav, setNav] = useState({
+    testsStarted: false,
+    inProgress: false,
+    chapter: -1,
+    taskId: 0,
+  });
+
+  const getTests = (chapter) => {
+    const filteredTasks = testsall.filter((test) => test.chapterid == chapter);
+    return filteredTasks;
+  };
+
+  useEffect(() => {
+    let statePers = JSON.parse(getState());
+    if (!statePers) {
+      setState(
+        JSON.stringify({
+          testsStarted: false,
+          inProgress: false,
+          chapter: -1,
+          taskId: 0,
+        })
+      );
+      statePers = JSON.parse(getState());
+    }
+
+    setNav({
+      testsStarted: statePers.testsStarted,
+      chapter: statePers.chapter,
+      inProgress: statePers.inProgress,
+      taskId: statePers.taskId,
+    });
+
+    if (statePers.chapter != -1) {
+      setTests(getTests(statePers.chapter));
+    }
+    setLoading(false);
+  }, []);
+
+  const setTestsStarted = (chapter) => {
+    setNav((state) => ({ ...state, chapter, testsStarted: true }));
+    const state = JSON.parse(getState());
+    setState(JSON.stringify({ ...state, chapter, testsStarted: true }));
+    setTests(getTests(chapter));
+  };
+
+  const setTestsInProgress = () => {
+    setNav((state) => ({ ...state, inProgress: true }));
+    const state = JSON.parse(getState());
+    setState(JSON.stringify({ ...state, inProgress: true }));
+  };
+
+  const setTaskInProgress = (task) => {
+    setNav((state) => ({ ...state, taskId: task }));
+    const state = JSON.parse(getState());
+    setState(JSON.stringify({ ...state, taskId: task }));
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <Box
+      sx={{
+        width: "100%",
+        height: "auto",
+      }}
+    >
+      {!nav.testsStarted && !loading && (
+        <Chapters setTestsStarted={setTestsStarted} />
+      )}
+      {nav.testsStarted && !loading && (
+        <StartnTest
+          nav={nav}
+          setTestsInProgress={setTestsInProgress}
+          tests={tests}
+          setTaskInProgress={setTaskInProgress}
         />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.js</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      )}
+    </Box>
   );
 }
