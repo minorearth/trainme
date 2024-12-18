@@ -16,7 +16,7 @@ const TurboNode = memo(({ data }) => {
             sx={{
               width: "20px",
               height: "20px",
-              padding: "1px",
+              padding: "2px",
               // "&:hover": { color: "green" },
               backgroundColor: "white",
             }}
