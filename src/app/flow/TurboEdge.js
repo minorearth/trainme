@@ -1,3 +1,4 @@
+// https://stackoverflow.com/questions/67413946/how-can-i-create-the-following-design-in-react-native-using-svg
 import React from "react";
 import { getBezierPath } from "@xyflow/react";
 

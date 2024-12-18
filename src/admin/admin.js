@@ -4,7 +4,7 @@ const etl = (line) => {
   return !!line ? line.toString() : "";
 };
 
-readXlsxFile("./tests.xlsx").then((rows) => {
+readXlsxFile("./src/admin/tests.xlsx").then((rows) => {
   // `rows[i]` is an array of rows[i]
   // each row being an array of cells.
 
@@ -54,6 +54,4 @@ readXlsxFile("./tests.xlsx").then((rows) => {
       console.log("The file was saved!");
     }
   );
-
-  console.log(results);
 });

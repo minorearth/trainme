@@ -9,93 +9,17 @@ import {
   addEdge,
 } from "@xyflow/react";
 import { FiFile } from "react-icons/fi";
+import { initialEdges, initialNodes } from "./data";
 
 import "@xyflow/react/dist/base.css";
 import "./styles.css";
 
 import TurboNode from "./TurboNode.js";
 import TurboEdge from "./TurboEdge.js";
-import FunctionIcon from "./FunctionIcon.js";
 
-const initialNodes = [
-  {
-    id: "1",
-    position: { x: 0, y: 0 },
-    data: {
-      icon: <FunctionIcon />,
-      title: "Вывод данных",
-      subline: "Учимся печать данные",
-      action: () => console.log("hello"),
-    },
-    type: "turbo",
-  },
-  {
-    id: "2",
-    position: { x: 250, y: 0 },
-    data: {
-      icon: <FunctionIcon />,
-      title: "Ввод данных",
-      subline: "Учимся получать \nданные извне",
-    },
-    type: "turbo",
-  },
-  {
-    id: "3",
-    position: { x: 0, y: 250 },
-    data: {
-      icon: <FunctionIcon />,
-      title: "Работа со строками \nна базовом уровне",
-      subline: "sdk.ts",
-    },
-    type: "turbo",
-  },
-  {
-    id: "4",
-    position: { x: 250, y: 250 },
-    data: { icon: <FunctionIcon />, title: "bundle", subline: "sdkContents" },
-    type: "turbo",
-  },
-  {
-    id: "5",
-    position: { x: 500, y: 125 },
-    data: { icon: <FunctionIcon />, title: "concat", subline: "api, sdk" },
-    type: "turbo",
-  },
-  {
-    id: "6",
-    position: { x: 750, y: 125 },
-    data: { icon: <FiFile />, title: "fullBundle" },
-    type: "turbo",
-  },
-];
-
-const initialEdges = [
-  {
-    id: "e1-2",
-    source: "1",
-    target: "2",
-  },
-  {
-    id: "e3-4",
-    source: "3",
-    target: "4",
-  },
-  {
-    id: "e2-5",
-    source: "2",
-    target: "5",
-  },
-  {
-    id: "e4-5",
-    source: "4",
-    target: "5",
-  },
-  {
-    id: "e5-6",
-    source: "5",
-    target: "6",
-  },
-];
+const nodeAction = (id) => {
+  console.log(id);
+};
 
 const nodeTypes = {
   turbo: TurboNode,
@@ -111,7 +35,9 @@ const defaultEdgeOptions = {
 };
 
 const Flow = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState(
+    initialNodes((id) => console.log(id))
+  );
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   const onConnect = useCallback(

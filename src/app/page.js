@@ -80,8 +80,8 @@ export default function Test({ params }) {
       }}
     >
       {!nav.testsStarted && !loading && (
-        <Chapters setTestsStarted={setTestsStarted} />
-        // <Flow />
+        // <Chapters setTestsStarted={setTestsStarted} />
+        <Flow />
       )}
       {nav.testsStarted && !loading && (
         <StartnTest
