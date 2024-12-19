@@ -76,7 +76,7 @@ export default function Test({ params }) {
     <Box
       sx={{
         width: "100%",
-        height: window.innerHeight,
+        height: "100vh",
       }}
     >
       {!nav.testsStarted && !loading && (
