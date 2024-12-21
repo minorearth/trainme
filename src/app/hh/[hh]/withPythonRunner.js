@@ -41,8 +41,6 @@ export default function usePythonRunner() {
       let output = [];
       const stdout = (msg) => {
         output.push(msg);
-        console.log("adsdsd", consoleOutput2);
-
         setConsoleOutput2(output.join("\n"));
       };
 

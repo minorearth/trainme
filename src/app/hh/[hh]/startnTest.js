@@ -12,6 +12,7 @@ export default function StartnTest({
   setTestsInProgress,
   tests,
   setTaskInProgress,
+  interruptTest,
 }) {
   return (
     <Box
@@ -24,7 +25,12 @@ export default function StartnTest({
       {!nav.inProgress && <Start setTestsStarted={setTestsInProgress} />}
 
       {nav.inProgress && (
-        <Test nav={nav} tests={tests} setTaskInProgress={setTaskInProgress} />
+        <Test
+          nav={nav}
+          tests={tests}
+          setTaskInProgress={setTaskInProgress}
+          interruptTest={interruptTest}
+        />
       )}
     </Box>
   );

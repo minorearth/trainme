@@ -1,6 +1,6 @@
 // https://codesandbox.io/p/sandbox/github/gkoum/flowSvgImages/tree/main/?file=%2Fpackage.json
 // https://reactflow.dev/examples/styling/turbo-flow
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   ReactFlow,
   Controls,
@@ -17,9 +17,7 @@ import "./styles.css";
 import TurboNode from "./TurboNode.js";
 import TurboEdge from "./TurboEdge.js";
 
-const nodeAction = (id) => {
-  console.log(id);
-};
+import { getProgress } from "@/app/db/domain";
 
 const nodeTypes = {
   turbo: TurboNode,
@@ -34,10 +32,25 @@ const defaultEdgeOptions = {
   markerEnd: "edge-circle",
 };
 
-const Flow = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(
-    initialNodes((id) => console.log(id))
-  );
+const Flow = ({ setTestsStarted, userid }) => {
+  const fullFillProgess = (unlocked) => {
+    const full = initialNodes((id) => setTestsStarted(id)).map((node) => ({
+      ...node,
+      data: { ...node.data, unlocked: unlocked.includes(node.id) },
+    }));
+    return full;
+  };
+
+  useEffect(() => {
+    const getUserProgress = async () => {
+      const progress = await getProgress(userid);
+      setNodes(fullFillProgess(progress));
+    };
+    getUserProgress();
+  }, []);
+
+  const [nodes, setNodes, onNodesChange] = useNodesState();
+  // initialNodes((id) => setTestsStarted(id))
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   const onConnect = useCallback(
@@ -47,6 +60,7 @@ const Flow = () => {
 
   return (
     <ReactFlow
+      nodesDraggable={false}
       nodes={nodes}
       edges={edges}
       onNodesChange={onNodesChange}

@@ -13,7 +13,7 @@ export const EditorOptions = {
   formatOnType: true,
   lineHeight: 1.5,
   minimap: {
-    enabled: true,
+    enabled: false,
   },
   padding: {
     top: 8,

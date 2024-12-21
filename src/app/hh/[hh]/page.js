@@ -7,20 +7,32 @@ import Start from "./start";
 import Test from "./test";
 import Box from "@mui/material/Box";
 import StartnTest from "./startnTest";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 
 export default function TestRunner({ params }) {
   const [tests, setTests] = useState([]);
   const [testsStarted, setTestsStarted] = useState(false);
-
+  const darkTheme = createTheme({
+    // palette: {
+    //   mode: "dark",
+    // },
+    colorSchemes: {
+      dark: true,
+    },
+  });
   return (
-    <Box
-      sx={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-      }}
-    >
-      <StartnTest chapter={params.chapter} />
-    </Box>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <Box
+        sx={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+        }}
+      >
+        <StartnTest chapter={params.chapter} />
+      </Box>
+    </ThemeProvider>
   );
 }

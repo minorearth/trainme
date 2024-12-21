@@ -41,14 +41,13 @@ readXlsxFile("./src/admin/chapters.xlsx").then((rows) => {
     JSON.stringify(results)
       .replace(/"([^"]+)":/g, "$1:")
       .replace(/\\\\/g, "\\")
-      .replace('"action"', "action") +
+      .replaceAll('"action"', "action") +
     "}\n";
   ob2 =
     "export const initialEdges = " +
     JSON.stringify(edges)
       .replace(/"([^"]+)":/g, "$1:")
-      .replace(/\\\\/g, "\\")
-      .replace('"action"', "action");
+      .replace(/\\\\/g, "\\");
 
   fs.writeFile("./src/admin/test.js", ob1 + ob2, function (err) {
     if (err) {

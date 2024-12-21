@@ -2,6 +2,8 @@
 //github.com/alankrantas/monaco-python-live-editor?tab=readme-ov-file
 // https://alankrantas.github.io/monaco-python-live-editor/
 
+import { useTheme } from "@mui/material/styles";
+
 import Editor from "@monaco-editor/react";
 import { useState, useEffect, useRef } from "react";
 import { EditorOptions } from "@/app/hh/[hh]/monaconfig/MonacoEditorOptions";
@@ -12,18 +14,55 @@ import { stn } from "@/constants";
 import { testsall } from "@/app/data";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import { styled } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
+import { saveProgress } from "@/app/db/domain";
+
+// const TextField = styled(TextFieldUnstyled)({
+//   "& label": {
+//     color: "white",
+//   },
+//   "& label.Mui-focused": {
+//     color: "white",
+//     borderColor: "white",
+//   },
+//   "& .MuiInput-underline:after": {
+//     color: "white",
+//     borderBottomColor: "white",
+//   },
+//   "& .MuiOutlinedInput-root": {
+//     color: "white",
+
+//     "& fieldset": {
+//       borderColor: "white",
+//       color: "white",
+//     },
+//     color: "white",
+
+//     "&:hover fieldset": {
+//       borderColor: "white",
+//       color: "white",
+//     },
+//     "&.Mui-focused fieldset": {
+//       borderColor: "white",
+//       color: "white",
+//     },
+//   },
+// });
+//..
 
 const eq = (a, b) => {
   return a.every((val, idx) => val === b[idx]);
 };
 
-export default function Test({ tests, setTaskInProgress, nav }) {
+export default function Test({ tests, setTaskInProgress, nav, interruptTest }) {
   const [code, setCode] = useState("");
   const [taskText, setTaskText] = useState("");
   const [done, setDone] = useState("");
   const [restrictErrors, setRestrictErrors] = useState("");
   const [executing, setExecuting] = useState(false);
   const [editorDarkMode, setEditorDarkMode] = useState("darkMode");
+  const theme = useTheme();
   const { pyodide2, runPythonCode, consoleOutput2, setStdIn, stdIn } =
     usePythonRunner();
 
@@ -96,10 +135,15 @@ export default function Test({ tests, setTaskInProgress, nav }) {
     if (codeChecked && linesChecked && mustHaveChecked) {
       // clean up undo stack
       editorRef.current.getModel().setValue("");
-      setTaskInProgress(nav.taskId + 1);
+      if (nav.taskId != tests.length - 1) {
+        setTaskInProgress(nav.taskId + 1);
+      } else {
+        saveProgress({ chapter: nav.chapter, errors: 0 });
+        interruptTest();
+      }
     }
 
-    return codeChecked && linesChecked && mustHaveChecked;
+    // return codeChecked && linesChecked && mustHaveChecked;
   };
 
   return (
@@ -108,15 +152,34 @@ export default function Test({ tests, setTaskInProgress, nav }) {
         width: "100%",
         height: "100%",
         display: "flex",
-        flexDirection: "row",
+        flexDirection: "column",
+        backgroundColor: theme.palette.background.default,
+        margin: "2px",
+        padding: "5px",
       }}
     >
-      <Box sx={{ width: "100%", height: "100%" }}>
-        <Typography variant="body1" gutterBottom>
-          {taskText}
-        </Typography>
+      <Box>
+        {/* <Box sx={{ color: "white" }}> */}
+        <Paper elevation={0} sx={{ padding: "3px" }}>
+          <Typography variant="body1" gutterBottom>
+            {taskText}
+          </Typography>
+        </Paper>
         <TextField
-          sx={{ width: "100%" }}
+          sx={{
+            width: "100%",
+            // "&.MuiOutlinedInput-root": {
+            //   borderColor: "white",
+            // },
+          }}
+          // slotProps={{
+          //   htmlInput: {
+          //     style: {
+          //       color: "white",
+          //       // fontSize: 20,
+          //     },
+          //   },
+          // }}
           id="outlined-multiline-static"
           label="Входные данные"
           multiline
@@ -126,45 +189,61 @@ export default function Test({ tests, setTaskInProgress, nav }) {
             setStdIn(event.target.value);
           }}
         />
-        <Box
-          sx={{
-            width: "100%",
-            margin: "10px",
-            padding: "5px",
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-around",
-          }}
-        >
-          <Button
-            onClick={async (e) => {
-              if (!pyodide2 || executing) return;
-              setExecuting(true);
-              runPythonCode(code, stdIn);
-              setExecuting(false);
-            }}
-            variant="outlined"
-            disabled={!pyodide2 || executing}
-          >
-            {!pyodide2
-              ? "Загружается..."
-              : executing
-              ? "Выполняется..."
-              : "Выполнить"}
-          </Button>
+      </Box>
 
-          <Button
-            onClick={async (e) => {
-              setDone((await checkTask(nav.taskId)) ? "ok" : "wrong");
-            }}
-            variant="outlined"
-          >
-            Проверить!
-          </Button>
-          <Button onClick={() => {}} variant="outlined">
-            Выйти
-          </Button>
-        </Box>
+      <Box
+        sx={{
+          width: "100%",
+
+          padding: "5px",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-around",
+        }}
+      >
+        <Button
+          // sx={{ color: "white" }}
+          onClick={async (e) => {
+            if (!pyodide2 || executing) return;
+            setExecuting(true);
+            runPythonCode(code, stdIn);
+            setExecuting(false);
+          }}
+          variant="outlined"
+          disabled={!pyodide2 || executing}
+        >
+          {!pyodide2
+            ? "Загружается..."
+            : executing
+            ? "Выполняется..."
+            : "Выполнить"}
+        </Button>
+
+        <Button
+          onClick={async (e) => {
+            // setDone((await checkTask(nav.taskId)) ? "ok" : "wrong");
+            await checkTask(nav.taskId);
+          }}
+          variant="outlined"
+        >
+          Проверить!
+        </Button>
+        <Button
+          onClick={() => {
+            interruptTest();
+          }}
+          variant="outlined"
+        >
+          Выйти
+        </Button>
+      </Box>
+      <Box
+        sx={{
+          border: "1px solid #525252",
+          borderRadius: "2px",
+          marginBottom: "5px",
+        }}
+      >
         <Editor
           height="50vh"
           width="100%"
@@ -175,18 +254,33 @@ export default function Test({ tests, setTaskInProgress, nav }) {
           onChange={(value, e) => setCode(value ?? "")}
           onMount={handleEditorDidMount}
         />
-        <Typography variant="body1" gutterBottom>
-          {done}
-        </Typography>
+      </Box>
+      <Paper elevation={0}>
+        {/* <Typography variant="body1" gutterBottom>
+            {done}
+          </Typography> */}
         <Typography variant="body1" gutterBottom>
           {restrictErrors}
         </Typography>
         <pre>
-          <Typography variant="body1" gutterBottom>
-            {consoleOutput2}
-          </Typography>
+          <TextField
+            sx={{
+              width: "100%",
+            }}
+            id="outlined-multiline-static"
+            label="Выходные данные"
+            multiline
+            rows={4}
+            value={consoleOutput2}
+          />
+          {/* <Box component="fieldset">
+              <legend>Jean-François H</legend>
+              <Typography variant="body1" gutterBottom>
+                {consoleOutput2}
+              </Typography>
+            </Box> */}
         </pre>
-      </Box>
+      </Paper>
     </Box>
   );
 }

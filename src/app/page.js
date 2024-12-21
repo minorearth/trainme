@@ -9,10 +9,22 @@ import { useEffect, useState } from "react";
 import { setState, getState } from "@/app/db/localstorage";
 import { testsall } from "@/app/data";
 import Flow from "./flow/flow";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
 
 export default function Test({ params }) {
+  const userid = "1";
   const [loading, setLoading] = useState(true);
   const [tests, setTests] = useState([]);
+  const darkTheme = createTheme({
+    palette: {
+      mode: "dark",
+      background: { default: "#1E1E1E", paper: "#1E1E1E" },
+    },
+    colorSchemes: {
+      dark: true,
+    },
+  });
 
   const [nav, setNav] = useState({
     testsStarted: false,
@@ -57,7 +69,25 @@ export default function Test({ params }) {
     setNav((state) => ({ ...state, chapter, testsStarted: true }));
     const state = JSON.parse(getState());
     setState(JSON.stringify({ ...state, chapter, testsStarted: true }));
+    console.log(getTests(chapter));
     setTests(getTests(chapter));
+  };
+
+  const interruptTest = () => {
+    setNav((state) => ({
+      chapter: -1,
+      testsStarted: false,
+      inProgress: false,
+      taskId: 0,
+    }));
+    setState(
+      JSON.stringify({
+        testsStarted: false,
+        inProgress: false,
+        chapter: -1,
+        taskId: 0,
+      })
+    );
   };
 
   const setTestsInProgress = () => {
@@ -73,24 +103,28 @@ export default function Test({ params }) {
   };
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        height: "100vh",
-      }}
-    >
-      {!nav.testsStarted && !loading && (
-        // <Chapters setTestsStarted={setTestsStarted} />
-        <Flow />
-      )}
-      {nav.testsStarted && !loading && (
-        <StartnTest
-          nav={nav}
-          setTestsInProgress={setTestsInProgress}
-          tests={tests}
-          setTaskInProgress={setTaskInProgress}
-        />
-      )}
-    </Box>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <Box
+        sx={{
+          width: "100%",
+          height: "100vh",
+        }}
+      >
+        {!nav.testsStarted && !loading && (
+          // <Chapters setTestsStarted={setTestsStarted} />
+          <Flow setTestsStarted={setTestsStarted} userid={userid} />
+        )}
+        {nav.testsStarted && !loading && (
+          <StartnTest
+            nav={nav}
+            setTestsInProgress={setTestsInProgress}
+            tests={tests}
+            setTaskInProgress={setTaskInProgress}
+            interruptTest={interruptTest}
+          />
+        )}
+      </Box>
+    </ThemeProvider>
   );
 }

@@ -19,7 +19,7 @@ export const initialNodes = (action) => {
         id: "2",
         title: "Ввод данных",
         subline: "Учимся получать \nданные извне",
-        action: "action",
+        action: action,
       },
     },
     {
@@ -30,20 +30,20 @@ export const initialNodes = (action) => {
         id: "3",
         title: "Работа со строками \nна базовом уровне",
         subline: "Учимся получать \nданные извне",
-        action: "action",
+        action: action,
       },
     },
     {
       id: "4",
       position: { x: 0, y: 750 },
       type: "turbo",
-      data: { id: "4", title: "Тест1", subline: "Тест1", action: "action" },
+      data: { id: "4", title: "Тест1", subline: "Тест1", action: action },
     },
     {
       id: "5",
       position: { x: 400, y: 250 },
       type: "turbo",
-      data: { id: "5", title: "Тест2", subline: "Тест2", action: "action" },
+      data: { id: "5", title: "Тест2", subline: "Тест2", action: action },
     },
   ];
 };
