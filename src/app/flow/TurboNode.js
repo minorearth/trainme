@@ -9,7 +9,6 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 
 const TurboNode = memo(({ data }) => {
-  console.log(data);
   return (
     <>
       <div className="cloud gradient">

@@ -8,7 +8,7 @@ import Test from "./test";
 import Box from "@mui/material/Box";
 
 export default function StartnTest({
-  nav,
+  navState,
   setTestsInProgress,
   tests,
   setTaskInProgress,
@@ -22,11 +22,11 @@ export default function StartnTest({
         display: "flex",
       }}
     >
-      {!nav.inProgress && <Start setTestsStarted={setTestsInProgress} />}
+      {!navState.inProgress && <Start setTestsStarted={setTestsInProgress} />}
 
-      {nav.inProgress && (
+      {navState.inProgress && (
         <Test
-          nav={nav}
+          nav={navState}
           tests={tests}
           setTaskInProgress={setTaskInProgress}
           interruptTest={interruptTest}

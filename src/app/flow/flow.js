@@ -1,13 +1,18 @@
 // https://codesandbox.io/p/sandbox/github/gkoum/flowSvgImages/tree/main/?file=%2Fpackage.json
 // https://reactflow.dev/examples/styling/turbo-flow
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import {
   ReactFlow,
   Controls,
   useNodesState,
   useEdgesState,
   addEdge,
+  useReactFlow,
+  ReactFlowProvider,
+  Panel,
+  useOnViewportChange,
 } from "@xyflow/react";
+
 import { FiFile } from "react-icons/fi";
 import { initialEdges, initialNodes } from "./data";
 
@@ -40,16 +45,36 @@ const Flow = ({ setTestsStarted, userid }) => {
     }));
     return full;
   };
+  const { fitView } = useReactFlow();
+  const [nodes, setNodes, onNodesChange] = useNodesState();
 
+  const progress = useRef({});
   useEffect(() => {
     const getUserProgress = async () => {
-      const progress = await getProgress(userid);
-      setNodes(fullFillProgess(progress));
+      progress.current = await getProgress(userid);
+      setNodes(fullFillProgess(progress.current.unlocked));
     };
     getUserProgress();
   }, []);
 
-  const [nodes, setNodes, onNodesChange] = useNodesState();
+  useEffect(() => {
+    fitView({
+      nodes: [{ id: progress.current.currentchapter }],
+      duration: 500,
+    });
+  }, [nodes]);
+
+  useOnViewportChange({
+    onEnd: (viewport) => {
+      setTimeout(() => {
+        fitView({
+          nodes: [{ id: progress.current.currentchapter }],
+          duration: 500,
+        });
+      }, 2000);
+    },
+  });
+
   // initialNodes((id) => setTestsStarted(id))
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
@@ -66,12 +91,25 @@ const Flow = ({ setTestsStarted, userid }) => {
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
-      fitView
+      // fitView
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
       defaultEdgeOptions={defaultEdgeOptions}
+      maxZoom={2}
+      minZoom={1}
     >
       <Controls showInteractive={false} />
+      <Panel position="top-left">
+        <button
+          onClick={() => {
+            fitView({ nodes: [{ id: "1" }], duration: 500 });
+
+            // setFocusId(nodes[Math.floor(Math.random() * nodes.length)].id);
+          }}
+        >
+          Focus node
+        </button>
+      </Panel>
       <svg>
         <defs>
           <linearGradient id="edge-gradient">

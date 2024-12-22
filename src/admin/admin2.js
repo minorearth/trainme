@@ -55,6 +55,4 @@ readXlsxFile("./src/admin/chapters.xlsx").then((rows) => {
     }
     console.log("The file was saved!");
   });
-
-  console.log(edges);
 });

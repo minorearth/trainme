@@ -6,11 +6,12 @@ import Box from "@mui/material/Box";
 import Chapters from "./chapters/chapters";
 import StartnTest from "./hh/[hh]/startnTest";
 import { useEffect, useState } from "react";
-import { setState, getState } from "@/app/db/localstorage";
+import { saveState, loadStatePersisted } from "@/app/db/localstorage";
 import { testsall } from "@/app/data";
 import Flow from "./flow/flow";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import { ReactFlowProvider } from "@xyflow/react";
 
 export default function Test({ params }) {
   const userid = "1";
@@ -26,7 +27,7 @@ export default function Test({ params }) {
     },
   });
 
-  const [nav, setNav] = useState({
+  const [navState, setNavState] = useState({
     testsStarted: false,
     inProgress: false,
     chapter: -1,
@@ -39,9 +40,9 @@ export default function Test({ params }) {
   };
 
   useEffect(() => {
-    let statePers = JSON.parse(getState());
+    let statePers = JSON.parse(loadStatePersisted());
     if (!statePers) {
-      setState(
+      saveState(
         JSON.stringify({
           testsStarted: false,
           inProgress: false,
@@ -49,10 +50,10 @@ export default function Test({ params }) {
           taskId: 0,
         })
       );
-      statePers = JSON.parse(getState());
+      statePers = JSON.parse(loadStatePersisted());
     }
 
-    setNav({
+    setNavState({
       testsStarted: statePers.testsStarted,
       chapter: statePers.chapter,
       inProgress: statePers.inProgress,
@@ -66,21 +67,20 @@ export default function Test({ params }) {
   }, []);
 
   const setTestsStarted = (chapter) => {
-    setNav((state) => ({ ...state, chapter, testsStarted: true }));
-    const state = JSON.parse(getState());
-    setState(JSON.stringify({ ...state, chapter, testsStarted: true }));
-    console.log(getTests(chapter));
+    setNavState((state) => ({ ...state, chapter, testsStarted: true }));
+    const state = JSON.parse(loadStatePersisted());
+    saveState(JSON.stringify({ ...state, chapter, testsStarted: true }));
     setTests(getTests(chapter));
   };
 
   const interruptTest = () => {
-    setNav((state) => ({
+    setNavState((state) => ({
       chapter: -1,
       testsStarted: false,
       inProgress: false,
       taskId: 0,
     }));
-    setState(
+    saveState(
       JSON.stringify({
         testsStarted: false,
         inProgress: false,
@@ -91,15 +91,15 @@ export default function Test({ params }) {
   };
 
   const setTestsInProgress = () => {
-    setNav((state) => ({ ...state, inProgress: true }));
-    const state = JSON.parse(getState());
-    setState(JSON.stringify({ ...state, inProgress: true }));
+    setNavState((state) => ({ ...state, inProgress: true }));
+    const state = JSON.parse(loadStatePersisted());
+    saveState(JSON.stringify({ ...state, inProgress: true }));
   };
 
   const setTaskInProgress = (task) => {
-    setNav((state) => ({ ...state, taskId: task }));
-    const state = JSON.parse(getState());
-    setState(JSON.stringify({ ...state, taskId: task }));
+    setNavState((state) => ({ ...state, taskId: task }));
+    const state = JSON.parse(loadStatePersisted());
+    saveState(JSON.stringify({ ...state, taskId: task }));
   };
 
   return (
@@ -111,13 +111,15 @@ export default function Test({ params }) {
           height: "100vh",
         }}
       >
-        {!nav.testsStarted && !loading && (
+        {!navState.testsStarted && !loading && (
           // <Chapters setTestsStarted={setTestsStarted} />
-          <Flow setTestsStarted={setTestsStarted} userid={userid} />
+          <ReactFlowProvider>
+            <Flow setTestsStarted={setTestsStarted} userid={userid} />
+          </ReactFlowProvider>
         )}
-        {nav.testsStarted && !loading && (
+        {navState.testsStarted && !loading && (
           <StartnTest
-            nav={nav}
+            navState={navState}
             setTestsInProgress={setTestsInProgress}
             tests={tests}
             setTaskInProgress={setTaskInProgress}

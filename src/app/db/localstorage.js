@@ -2,11 +2,11 @@ export const getUserId = () => {
   return localStorage.getItem("userid");
 };
 
-export const setState = (state) => {
+export const saveState = (state) => {
   return localStorage.setItem("state", state);
 };
 
-export const getState = (state) => {
+export const loadStatePersisted = (state) => {
   return localStorage.getItem("state");
 };
 
