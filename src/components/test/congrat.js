@@ -1,7 +1,7 @@
 "use client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-// import CongratAnimation from "@/components/congratulation/congratAnimation";
+import CongratAnimation from "@/components/congratulation/congratAnimation";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { useTheme } from "@mui/material/styles";
 
@@ -19,7 +19,7 @@ const Congrat = ({ action }) => {
         backgroundColor: theme.palette.background.default,
       }}
     >
-      {/* <CongratAnimation /> */}
+      <CongratAnimation />
 
       <Button
         sx={{ mt: 3, mb: 3 }}

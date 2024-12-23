@@ -2,8 +2,8 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { useEffect } from "react";
-import Animation from "./animation.json";
-import Lottie from "lottie-react";
+// import Animation from "./animation.json";
+// import Lottie from "lottie-react";
 
 const CongratAnimation = () => {
   return (
@@ -16,11 +16,11 @@ const CongratAnimation = () => {
         width: "100%",
       }}
     >
-      <Lottie
+      {/* <Lottie
         style={{ height: "700px", width: "700px" }}
         animationData={Animation}
         loop={true}
-      ></Lottie>
+      ></Lottie> */}
     </Box>
   );
 };
