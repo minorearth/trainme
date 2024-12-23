@@ -17,7 +17,7 @@ import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import { saveProgress } from "@/app/db/domain";
-import LinearProgressWithLabel from "@/components/LinearProgress";
+// import LinearProgressWithLabel from "@/components/LinearProgress";
 
 // const TextField = styled(TextFieldUnstyled)({
 //   "& label": {
@@ -165,7 +165,7 @@ export default function Test({
         padding: "5px",
       }}
     >
-      <LinearProgressWithLabel value={(nav.taskId / tests.length) * 100} />
+      {/* <LinearProgressWithLabel value={(nav.taskId / tests.length) * 100} /> */}
       <Box>
         {/* <Box sx={{ color: "white" }}> */}
         <Paper elevation={0} sx={{ padding: "3px" }}>
