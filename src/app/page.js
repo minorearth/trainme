@@ -139,7 +139,7 @@ export default function Test({ params }) {
             setCongrat={setCongrat}
           />
         )}
-        {navState.congrat && !loading && <Congrat action={interruptTest} />}
+        {/* {navState.congrat && !loading && <Congrat action={interruptTest} />} */}
       </Box>
     </ThemeProvider>
   );
