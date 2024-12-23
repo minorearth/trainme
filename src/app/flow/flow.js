@@ -1,5 +1,6 @@
 // https://codesandbox.io/p/sandbox/github/gkoum/flowSvgImages/tree/main/?file=%2Fpackage.json
 // https://reactflow.dev/examples/styling/turbo-flow
+"use client";
 import React, { useCallback, useEffect, useRef } from "react";
 import {
   ReactFlow,
