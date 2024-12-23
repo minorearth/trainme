@@ -12,7 +12,6 @@ import Flow from "./flow/flow";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ReactFlowProvider } from "@xyflow/react";
-import Congrat from "../components/test/congrat";
 
 export default function Test({ params }) {
   const userid = "1";
