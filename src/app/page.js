@@ -12,6 +12,7 @@ import Flow from "./flow/flow";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ReactFlowProvider } from "@xyflow/react";
+import Congrat from "@/components/test/congrat";
 
 export default function Test({ params }) {
   const userid = "1";
@@ -138,7 +139,7 @@ export default function Test({ params }) {
             setCongrat={setCongrat}
           />
         )}
-        {/* {navState.congrat && !loading && <Congrat action={interruptTest} />} */}
+        {navState.congrat && !loading && <Congrat action={interruptTest} />}
       </Box>
     </ThemeProvider>
   );

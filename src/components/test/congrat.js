@@ -19,7 +19,7 @@ const Congrat = ({ action }) => {
         backgroundColor: theme.palette.background.default,
       }}
     >
-      <CongratAnimation />
+      {/* <CongratAnimation /> */}
 
       <Button
         sx={{ mt: 3, mb: 3 }}
