@@ -13,6 +13,7 @@ export default function StartnTest({
   tests,
   setTaskInProgress,
   interruptTest,
+  setCongrat,
 }) {
   return (
     <Box
@@ -30,6 +31,7 @@ export default function StartnTest({
           tests={tests}
           setTaskInProgress={setTaskInProgress}
           interruptTest={interruptTest}
+          setCongrat={setCongrat}
         />
       )}
     </Box>

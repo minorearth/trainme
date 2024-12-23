@@ -17,6 +17,7 @@ import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import { saveProgress } from "@/app/db/domain";
+import LinearProgressWithLabel from "@/components/LinearProgress";
 
 // const TextField = styled(TextFieldUnstyled)({
 //   "& label": {
@@ -55,7 +56,13 @@ const eq = (a, b) => {
   return a.every((val, idx) => val === b[idx]);
 };
 
-export default function Test({ tests, setTaskInProgress, nav, interruptTest }) {
+export default function Test({
+  tests,
+  setTaskInProgress,
+  nav,
+  interruptTest,
+  setCongrat,
+}) {
   const [code, setCode] = useState("");
   const [taskText, setTaskText] = useState("");
   const [done, setDone] = useState("");
@@ -139,7 +146,7 @@ export default function Test({ tests, setTaskInProgress, nav, interruptTest }) {
         setTaskInProgress(nav.taskId + 1);
       } else {
         saveProgress({ chapter: nav.chapter, errors: 0 });
-        interruptTest();
+        setCongrat();
       }
     }
 
@@ -158,6 +165,7 @@ export default function Test({ tests, setTaskInProgress, nav, interruptTest }) {
         padding: "5px",
       }}
     >
+      <LinearProgressWithLabel value={(nav.taskId / tests.length) * 100} />
       <Box>
         {/* <Box sx={{ color: "white" }}> */}
         <Paper elevation={0} sx={{ padding: "3px" }}>

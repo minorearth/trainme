@@ -12,6 +12,7 @@ import Flow from "./flow/flow";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ReactFlowProvider } from "@xyflow/react";
+import Congrat from "./hh/[hh]/congrat";
 
 export default function Test({ params }) {
   const userid = "1";
@@ -30,6 +31,7 @@ export default function Test({ params }) {
   const [navState, setNavState] = useState({
     testsStarted: false,
     inProgress: false,
+    congrat: false,
     chapter: -1,
     taskId: 0,
   });
@@ -46,6 +48,7 @@ export default function Test({ params }) {
         JSON.stringify({
           testsStarted: false,
           inProgress: false,
+          congrat: false,
           chapter: -1,
           taskId: 0,
         })
@@ -58,6 +61,7 @@ export default function Test({ params }) {
       chapter: statePers.chapter,
       inProgress: statePers.inProgress,
       taskId: statePers.taskId,
+      congrat: statePers.congrat,
     });
 
     if (statePers.chapter != -1) {
@@ -73,17 +77,25 @@ export default function Test({ params }) {
     setTests(getTests(chapter));
   };
 
+  const setCongrat = (chapter) => {
+    setNavState((state) => ({ ...state, testsStarted: false, congrat: true }));
+    const state = JSON.parse(loadStatePersisted());
+    saveState(JSON.stringify({ ...state, testsStarted: false, congrat: true }));
+  };
+
   const interruptTest = () => {
     setNavState((state) => ({
-      chapter: -1,
       testsStarted: false,
       inProgress: false,
+      congrat: false,
+      chapter: -1,
       taskId: 0,
     }));
     saveState(
       JSON.stringify({
         testsStarted: false,
         inProgress: false,
+        congrat: false,
         chapter: -1,
         taskId: 0,
       })
@@ -111,7 +123,7 @@ export default function Test({ params }) {
           height: "100vh",
         }}
       >
-        {!navState.testsStarted && !loading && (
+        {!navState.testsStarted && !navState.congrat && !loading && (
           // <Chapters setTestsStarted={setTestsStarted} />
           <ReactFlowProvider>
             <Flow setTestsStarted={setTestsStarted} userid={userid} />
@@ -124,8 +136,10 @@ export default function Test({ params }) {
             tests={tests}
             setTaskInProgress={setTaskInProgress}
             interruptTest={interruptTest}
+            setCongrat={setCongrat}
           />
         )}
+        {navState.congrat && !loading && <Congrat action={interruptTest} />}
       </Box>
     </ThemeProvider>
   );

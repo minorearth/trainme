@@ -21,6 +21,7 @@ readXlsxFile("./src/admin/tests.xlsx").then((rows) => {
       id: rows[i][nm["id"]],
       task: rows[i][nm["task"]],
       defaultinput: etl(rows[i][nm["defaultinput"]]).split(";") || "",
+      defaultoutput: etl(rows[i][nm["defaultoutput"]]).split(";") || "",
       defaultcode: etl(rows[i][nm["defaultcode"]]),
       inout: [
         {

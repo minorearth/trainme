@@ -58,7 +58,9 @@ body {
   border-radius: 100%;
 }
 
-.react-flow__node-turbo.selected .wrapper.gradient:before {
+/* .react-flow__node-turbo.selected .wrapper.gradient:before { */
+
+.react-flow__node-turbo .wrapper.gradient:before {
   content: "";
   background: conic-gradient(
     from -160deg at 50% 50%,
