@@ -6,7 +6,7 @@ import { useTheme } from "@mui/material/styles";
 
 import Editor from "@monaco-editor/react";
 import { useState, useEffect, useRef } from "react";
-import { EditorOptions } from "@/app/hh/[hh]/monaconfig/MonacoEditorOptions";
+import { EditorOptions } from "@/components/test/monaconfig/MonacoEditorOptions";
 import Typography from "@mui/material/Typography";
 import usePythonRunner from "./withPythonRunner";
 import TextField from "@mui/material/TextField";

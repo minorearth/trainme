@@ -4,7 +4,7 @@ import { stn } from "@/constants";
 import { chapters } from "@/app/data";
 import Box from "@mui/material/Box";
 import Chapters from "./chapters/chapters";
-import StartnTest from "./hh/[hh]/startnTest";
+import StartnTest from "../components/test/startnTest";
 import { useEffect, useState } from "react";
 import { saveState, loadStatePersisted } from "@/app/db/localstorage";
 import { testsall } from "@/app/data";
@@ -12,7 +12,7 @@ import Flow from "./flow/flow";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ReactFlowProvider } from "@xyflow/react";
-import Congrat from "./hh/[hh]/congrat";
+import Congrat from "../components/test/congrat";
 
 export default function Test({ params }) {
   const userid = "1";
