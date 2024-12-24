@@ -5,7 +5,9 @@ export const saveProgress = async ({ chapter, userid, errors }) => {
   const chaptersUnlocked = getTargetsBySource(chapter);
   const profile = getValueObj("profile");
   setValueObj("profile", {
-    unlocked: [...profile.unlocked, ...chaptersUnlocked],
+    unlocked: [...chaptersUnlocked],
+
+    completed: [...profile.completed, chapter],
     stats: [...profile.stats, { chapter, errors }],
     currentchapter: chapter,
     userid,
@@ -18,6 +20,7 @@ export const getProgress = async (userid) => {
   if (!profile) {
     const newProfile = {
       unlocked: [initialChapter],
+      completed: [],
       stats: [],
       currentchapter: initialChapter,
       userid,

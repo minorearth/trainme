@@ -39,10 +39,14 @@ const defaultEdgeOptions = {
 };
 
 const Flow = ({ setTestsStarted, userid }) => {
-  const fullFillProgess = (unlocked) => {
+  const fullFillProgess = (unlocked, completed) => {
     const full = initialNodes((id) => setTestsStarted(id)).map((node) => ({
       ...node,
-      data: { ...node.data, unlocked: unlocked.includes(node.id) },
+      data: {
+        ...node.data,
+        unlocked: unlocked.includes(node.id),
+        completed: completed.includes(node.id),
+      },
     }));
     return full;
   };
@@ -53,7 +57,9 @@ const Flow = ({ setTestsStarted, userid }) => {
   useEffect(() => {
     const getUserProgress = async () => {
       progress.current = await getProgress(userid);
-      setNodes(fullFillProgess(progress.current.unlocked));
+      setNodes(
+        fullFillProgess(progress.current.unlocked, progress.current.completed)
+      );
     };
     getUserProgress();
   }, []);
@@ -66,14 +72,14 @@ const Flow = ({ setTestsStarted, userid }) => {
   }, [nodes]);
 
   useOnViewportChange({
-    onEnd: (viewport) => {
-      setTimeout(() => {
-        fitView({
-          nodes: [{ id: progress.current.currentchapter }],
-          duration: 500,
-        });
-      }, 2000);
-    },
+    // onEnd: (viewport) => {
+    //   setTimeout(() => {
+    //     fitView({
+    //       nodes: [{ id: progress.current.currentchapter }],
+    //       duration: 500,
+    //     });
+    //   }, 2000);
+    // },
   });
 
   // initialNodes((id) => setTestsStarted(id))
@@ -104,8 +110,6 @@ const Flow = ({ setTestsStarted, userid }) => {
         <button
           onClick={() => {
             fitView({ nodes: [{ id: "1" }], duration: 500 });
-
-            // setFocusId(nodes[Math.floor(Math.random() * nodes.length)].id);
           }}
         >
           Focus node

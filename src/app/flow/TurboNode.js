@@ -7,6 +7,8 @@ import FunctionIcon from "./FunctionIcon.js";
 import IconButton from "@mui/material/IconButton";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
+import LockIcon from "@mui/icons-material/Lock";
+import CheckIcon from "@mui/icons-material/Check";
 
 const TurboNode = memo(({ data }) => {
   return (
@@ -24,7 +26,13 @@ const TurboNode = memo(({ data }) => {
             aria-label="delete"
             color="primary"
           > */}
-          {data.unlocked ? <PlayArrowIcon /> : <LockOpenIcon />}
+          {data.unlocked ? (
+            <LockOpenIcon />
+          ) : data.completed ? (
+            <CheckIcon />
+          ) : (
+            <LockIcon />
+          )}
           {/* </IconButton> */}
         </div>
       </div>

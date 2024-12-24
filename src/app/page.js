@@ -1,10 +1,7 @@
 "use client";
 
 import { stn } from "@/constants";
-import { chapters } from "@/app/data";
 import Box from "@mui/material/Box";
-import Chapters from "./chapters/chapters";
-import StartnTest from "../components/test/startnTest";
 import { useEffect, useState } from "react";
 import { saveState, loadStatePersisted } from "@/app/db/localstorage";
 import { testsall } from "@/app/data";
@@ -13,8 +10,10 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ReactFlowProvider } from "@xyflow/react";
 import Congrat from "@/components/test/congrat";
+import Start from "@/components/test/start";
+import Test from "@/components/test/test";
 
-export default function Test({ params }) {
+export default function Page({ params }) {
   const userid = "1";
   const [loading, setLoading] = useState(true);
   const [tests, setTests] = useState([]);
@@ -29,9 +28,7 @@ export default function Test({ params }) {
   });
 
   const [navState, setNavState] = useState({
-    testsStarted: false,
-    inProgress: false,
-    congrat: false,
+    page: "flow",
     chapter: -1,
     taskId: 0,
   });
@@ -46,9 +43,7 @@ export default function Test({ params }) {
     if (!statePers) {
       saveState(
         JSON.stringify({
-          testsStarted: false,
-          inProgress: false,
-          congrat: false,
+          page: "flow",
           chapter: -1,
           taskId: 0,
         })
@@ -56,13 +51,7 @@ export default function Test({ params }) {
       statePers = JSON.parse(loadStatePersisted());
     }
 
-    setNavState({
-      testsStarted: statePers.testsStarted,
-      chapter: statePers.chapter,
-      inProgress: statePers.inProgress,
-      taskId: statePers.taskId,
-      congrat: statePers.congrat,
-    });
+    setNavState(statePers);
 
     if (statePers.chapter != -1) {
       setTests(getTests(statePers.chapter));
@@ -71,41 +60,42 @@ export default function Test({ params }) {
   }, []);
 
   const setTestsStarted = (chapter) => {
-    setNavState((state) => ({ ...state, chapter, testsStarted: true }));
-    const state = JSON.parse(loadStatePersisted());
-    saveState(JSON.stringify({ ...state, chapter, testsStarted: true }));
+    const appState = {
+      page: "testsStarted",
+      chapter,
+      taskId: 0,
+    };
+    setNavState(appState);
+    // const state = JSON.parse(loadStatePersisted());
+    saveState(JSON.stringify(appState));
     setTests(getTests(chapter));
   };
 
   const setCongrat = (chapter) => {
-    setNavState((state) => ({ ...state, testsStarted: false, congrat: true }));
+    const appState = {
+      page: "congrat",
+      chapter: -1,
+      taskId: 0,
+    };
+    setNavState(appState);
     const state = JSON.parse(loadStatePersisted());
-    saveState(JSON.stringify({ ...state, testsStarted: false, congrat: true }));
+    saveState(JSON.stringify(appState));
   };
 
   const interruptTest = () => {
-    setNavState((state) => ({
-      testsStarted: false,
-      inProgress: false,
-      congrat: false,
+    const appState = {
+      page: "flow",
       chapter: -1,
       taskId: 0,
-    }));
-    saveState(
-      JSON.stringify({
-        testsStarted: false,
-        inProgress: false,
-        congrat: false,
-        chapter: -1,
-        taskId: 0,
-      })
-    );
+    };
+    setNavState((state) => appState);
+    saveState(JSON.stringify(appState));
   };
 
   const setTestsInProgress = () => {
-    setNavState((state) => ({ ...state, inProgress: true }));
+    setNavState((state) => ({ ...state, page: "testinprogress" }));
     const state = JSON.parse(loadStatePersisted());
-    saveState(JSON.stringify({ ...state, inProgress: true }));
+    saveState(JSON.stringify({ ...state, page: "testinprogress" }));
   };
 
   const setTaskInProgress = (task) => {
@@ -123,23 +113,28 @@ export default function Test({ params }) {
           height: "100vh",
         }}
       >
-        {!navState.testsStarted && !navState.congrat && !loading && (
+        {navState.page == "flow" && !loading && (
           // <Chapters setTestsStarted={setTestsStarted} />
           <ReactFlowProvider>
             <Flow setTestsStarted={setTestsStarted} userid={userid} />
           </ReactFlowProvider>
         )}
-        {navState.testsStarted && !loading && (
-          <StartnTest
-            navState={navState}
-            setTestsInProgress={setTestsInProgress}
+
+        {navState.page == "testsStarted" && (
+          <Start setTestsStarted={setTestsInProgress} />
+        )}
+
+        {navState.page == "testinprogress" && (
+          <Test
+            nav={navState}
             tests={tests}
             setTaskInProgress={setTaskInProgress}
             interruptTest={interruptTest}
             setCongrat={setCongrat}
           />
         )}
-        {navState.congrat && !loading && <Congrat action={interruptTest} />}
+
+        {navState.page == "congrat" && <Congrat action={interruptTest} />}
       </Box>
     </ThemeProvider>
   );
