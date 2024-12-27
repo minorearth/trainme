@@ -5,7 +5,7 @@ import CongratAnimation from "@/components/congratulation/congratAnimation";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { useTheme } from "@mui/material/styles";
 
-const Congrat = ({ action }) => {
+const Congrat = ({ accomplishTest }) => {
   const theme = useTheme();
   return (
     <Box
@@ -25,7 +25,7 @@ const Congrat = ({ action }) => {
         sx={{ mt: 3, mb: 3 }}
         variant="outlined"
         aria-label="repeat"
-        onClick={() => action(false)}
+        onClick={() => accomplishTest(false)}
         endIcon={<ReplayIcon />}
       >
         {"Вернуться к курсу"}

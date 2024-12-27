@@ -4,7 +4,7 @@ import { stn } from "@/constants";
 import { chapters } from "@/app/data";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { saveState, loadStatePersisted } from "@/app/db/localstorage";
+import { persistState, loadStatePersisted } from "@/app/db/localstorage";
 
 export default function Chapters({ setTestsStarted }) {
   const setChapterAndTestsStarted = (chapter) => {

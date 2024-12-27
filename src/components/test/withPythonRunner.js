@@ -17,10 +17,8 @@ class StdinHandler {
   }
 }
 
-export default function usePythonRunner() {
+export default function usePythonRunner({ setConsoleOutput }) {
   const [pyodide2, setPyodide] = useState(null);
-  const [input, setInput] = useState("");
-  const [consoleOutput2, setConsoleOutput2] = useState("");
 
   const pyodideScriptStatus = useScript(
     `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/pyodide.js`
@@ -41,20 +39,20 @@ export default function usePythonRunner() {
       let output = [];
       const stdout = (msg) => {
         output.push(msg);
-        setConsoleOutput2(output.join("\n"));
+        setConsoleOutput(output.join("\n"));
       };
 
       const stdError = (msg) => {
         const error = msg.message.split("\n").slice(-2)[0];
         output.push(stn.errors.error5 + error);
-        setConsoleOutput2(stn.errors.error5 + error);
+        setConsoleOutput(stn.errors.error5 + error);
       };
       try {
         const stdInSplitted = stdIn.split("\n");
 
         pyodide2.setStdin(new StdinHandler(stdInSplitted));
         pyodide2.setStdout({ batched: stdout });
-        setConsoleOutput2([]);
+        setConsoleOutput([]);
         if (pyodide2) {
           await pyodide2.runPython(code);
           return output;
@@ -71,9 +69,5 @@ export default function usePythonRunner() {
   return {
     pyodide2,
     runPythonCode,
-    consoleOutput2,
-    setConsoleOutput2,
-    setStdIn: setInput,
-    stdIn: input,
   };
 }

@@ -6,12 +6,12 @@ export const saveProgress = async ({ chapter, userid, errors }) => {
   const profile = getValueObj("profile");
   setValueObj("profile", {
     unlocked: [...chaptersUnlocked],
-
     completed: [...profile.completed, chapter],
     stats: [...profile.stats, { chapter, errors }],
     currentchapter: chapter,
     userid,
   });
+  return chaptersUnlocked;
 };
 
 export const getProgress = async (userid) => {

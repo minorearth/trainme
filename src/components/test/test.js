@@ -63,15 +63,20 @@ export default function Test({
   interruptTest,
   setCongrat,
 }) {
-  const [code, setCode] = useState("");
-  const [taskText, setTaskText] = useState("");
-  const [done, setDone] = useState("");
+  const [currTask, setCurrTask] = useState({});
   const [restrictErrors, setRestrictErrors] = useState("");
   const [executing, setExecuting] = useState(false);
   const [editorDarkMode, setEditorDarkMode] = useState("darkMode");
   const theme = useTheme();
-  const { pyodide2, runPythonCode, consoleOutput2, setStdIn, stdIn } =
-    usePythonRunner();
+
+  const setConsoleOutput = (consoleOutput) => {
+    setCurrTask((state) => ({
+      ...state,
+      consoleOutput,
+    }));
+  };
+
+  const { pyodide2, runPythonCode } = usePythonRunner({ setConsoleOutput });
 
   const editorRef = useRef(null);
 
@@ -83,11 +88,22 @@ export default function Test({
     setTask(nav.taskId);
   }, [nav]);
 
+  const setCode = (code) => {
+    setCurrTask((state) => ({
+      ...state,
+      code,
+    }));
+  };
+
   const setTask = (id) => {
     const test = tests[id];
-    setTaskText(test.task);
-    setStdIn(test.defaultinput.join("\n"));
-    setCode(test.defaultcode);
+    setCurrTask({
+      task: test.task,
+      input: test.defaultinput.join("\n"),
+      code: test.defaultcode,
+      expectedOutput: test.defaultoutput.join("\n"),
+      consoleOutput: "",
+    });
   };
 
   const cleanUpCode = (code) => {
@@ -119,7 +135,7 @@ export default function Test({
     return results.every(Boolean);
   };
 
-  const checkTask = async (id) => {
+  const checkTask = async (code, id) => {
     const test = tests[id];
     const codeChecked = await checkCode(code, test);
     const linesChecked = checkLines(code, test.restrictions.maxlines);
@@ -145,12 +161,13 @@ export default function Test({
       if (nav.taskId != tests.length - 1) {
         setTaskInProgress(nav.taskId + 1);
       } else {
-        saveProgress({ chapter: nav.chapter, errors: 0 });
-        setCongrat();
+        const unlocked = await saveProgress({
+          chapter: nav.chapter,
+          errors: 0,
+        });
+        setCongrat({ unlockedtoshow: unlocked, lastcompleted: nav.chapter });
       }
     }
-
-    // return codeChecked && linesChecked && mustHaveChecked;
   };
 
   return (
@@ -167,34 +184,27 @@ export default function Test({
     >
       <LinearProgressWithLabel value={(nav.taskId / tests.length) * 100} />
       <Box>
-        {/* <Box sx={{ color: "white" }}> */}
         <Paper elevation={0} sx={{ padding: "3px" }}>
           <Typography variant="body1" gutterBottom>
-            {taskText}
+            {currTask.task}
           </Typography>
         </Paper>
         <TextField
           sx={{
             width: "100%",
-            // "&.MuiOutlinedInput-root": {
-            //   borderColor: "white",
-            // },
           }}
-          // slotProps={{
-          //   htmlInput: {
-          //     style: {
-          //       color: "white",
-          //       // fontSize: 20,
-          //     },
-          //   },
-          // }}
+          slotProps={{
+            inputLabel: {
+              shrink: true,
+            },
+          }}
           id="outlined-multiline-static"
           label="Входные данные"
           multiline
           rows={4}
-          value={stdIn}
+          value={currTask.input}
           onChange={(event) => {
-            setStdIn(event.target.value);
+            // setInput(event.target.value);
           }}
         />
       </Box>
@@ -202,7 +212,6 @@ export default function Test({
       <Box
         sx={{
           width: "100%",
-
           padding: "5px",
           display: "flex",
           flexDirection: "row",
@@ -210,11 +219,10 @@ export default function Test({
         }}
       >
         <Button
-          // sx={{ color: "white" }}
           onClick={async (e) => {
             if (!pyodide2 || executing) return;
             setExecuting(true);
-            runPythonCode(code, stdIn);
+            runPythonCode(currTask.code, currTask.input);
             setExecuting(false);
           }}
           variant="outlined"
@@ -230,7 +238,7 @@ export default function Test({
         <Button
           onClick={async (e) => {
             // setDone((await checkTask(nav.taskId)) ? "ok" : "wrong");
-            await checkTask(nav.taskId);
+            await checkTask(currTask.code, nav.taskId);
           }}
           variant="outlined"
         >
@@ -258,36 +266,58 @@ export default function Test({
           theme={editorDarkMode ? "vs-dark" : "vs"}
           options={EditorOptions}
           language="python"
-          value={code}
+          value={currTask.code}
           onChange={(value, e) => setCode(value ?? "")}
           onMount={handleEditorDidMount}
         />
       </Box>
       <Paper elevation={0}>
-        {/* <Typography variant="body1" gutterBottom>
-            {done}
-          </Typography> */}
         <Typography variant="body1" gutterBottom>
           {restrictErrors}
         </Typography>
-        <pre>
+        <Box
+          sx={{
+            width: "100%",
+            // padding: "5px",
+            display: "flex",
+            flexDirection: "row",
+
+            justifyContent: "space-around",
+          }}
+        >
           <TextField
             sx={{
               width: "100%",
+              flex: 1,
             }}
-            id="outlined-multiline-static"
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+            }}
+            id="output"
             label="Выходные данные"
             multiline
             rows={4}
-            value={consoleOutput2}
+            value={currTask.consoleOutput}
           />
-          {/* <Box component="fieldset">
-              <legend>Jean-François H</legend>
-              <Typography variant="body1" gutterBottom>
-                {consoleOutput2}
-              </Typography>
-            </Box> */}
-        </pre>
+          <TextField
+            sx={{
+              width: "100%",
+              flex: 1,
+            }}
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+            }}
+            id="expected"
+            label="Ожидаемый результат"
+            multiline
+            rows={4}
+            value={currTask.expectedOutput}
+          />
+        </Box>
       </Paper>
     </Box>
   );

@@ -2,7 +2,7 @@ export const getUserId = () => {
   return localStorage.getItem("userid");
 };
 
-export const saveState = (state) => {
+export const persistState = (state) => {
   return localStorage.setItem("state", state);
 };
 

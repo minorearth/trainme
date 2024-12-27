@@ -38,7 +38,7 @@ const defaultEdgeOptions = {
   markerEnd: "edge-circle",
 };
 
-const Flow = ({ setTestsStarted, userid }) => {
+const Flow = ({ setTestsStarted, userid, getUnlockedToShow }) => {
   const fullFillProgess = (unlocked, completed) => {
     const full = initialNodes((id) => setTestsStarted(id)).map((node) => ({
       ...node,
@@ -65,10 +65,18 @@ const Flow = ({ setTestsStarted, userid }) => {
   }, []);
 
   useEffect(() => {
-    fitView({
-      nodes: [{ id: progress.current.currentchapter }],
-      duration: 500,
-    });
+    const nodesToShow = getUnlockedToShow();
+
+    if (nodesToShow.length > 0) {
+      for (let i = 0; i < nodesToShow.length; i++) {
+        setTimeout(() => {
+          fitView({
+            nodes: [{ id: nodesToShow[i] }],
+            duration: 500,
+          });
+        }, i * 2000);
+      }
+    }
   }, [nodes]);
 
   useOnViewportChange({
