@@ -6,13 +6,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useTheme } from "@mui/material/styles";
 
-export default function Start({
-  nav,
-  setTests,
-  tests,
-  setTestsStarted,
-  getTests,
-}) {
+export default function Start({ setRunTestsPage }) {
   const theme = useTheme();
 
   return (
@@ -29,7 +23,7 @@ export default function Start({
     >
       <Button
         onClick={() => {
-          setTestsStarted();
+          setRunTestsPage();
         }}
         variant="outlined"
       >

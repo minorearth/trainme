@@ -17,7 +17,7 @@ class StdinHandler {
   }
 }
 
-export default function usePythonRunner({ setConsoleOutput }) {
+export default function usePythonRunner({ setOutput }) {
   const [pyodide2, setPyodide] = useState(null);
 
   const pyodideScriptStatus = useScript(
@@ -39,20 +39,20 @@ export default function usePythonRunner({ setConsoleOutput }) {
       let output = [];
       const stdout = (msg) => {
         output.push(msg);
-        setConsoleOutput(output.join("\n"));
+        setOutput(output.join("\n"));
       };
 
       const stdError = (msg) => {
         const error = msg.message.split("\n").slice(-2)[0];
         output.push(stn.errors.error5 + error);
-        setConsoleOutput(stn.errors.error5 + error);
+        setOutput(stn.errors.error5 + error);
       };
       try {
         const stdInSplitted = stdIn.split("\n");
 
         pyodide2.setStdin(new StdinHandler(stdInSplitted));
         pyodide2.setStdout({ batched: stdout });
-        setConsoleOutput([]);
+        setOutput([]);
         if (pyodide2) {
           await pyodide2.runPython(code);
           return output;

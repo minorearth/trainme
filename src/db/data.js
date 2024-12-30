@@ -7,6 +7,8 @@ export const testsall = [
     defaultoutput: ["3", "6", "7"],
     defaultcode:
       "for i in range(3):\n    print(sum(map(int,input().split()))) #Печать",
+    rightcode:
+      "for i in range(3):\n    print(sum(map(int,input().split()))) #Печать",
     inout: [
       { inv: ["1 2", "2 4", "3 4"], outv: ["3", "6", "7"] },
       { inv: ["1 3", "2 4", "3 4"], outv: ["4", "6", "7"] },
@@ -19,7 +21,8 @@ export const testsall = [
     task: "Раздели число в переменной a на 3 нацело. Используй оператор целочисленного деления.",
     defaultinput: ["8"],
     defaultoutput: ["6"],
-    defaultcode: "a=input()\nprint(int(a)//3)",
+    defaultcode: "a=input()\nprint(int(a/3))",
+    rightcode: "a=input()\nprint(int(a)//3)",
     inout: [
       { inv: ["19"], outv: ["6"] },
       { inv: ["20"], outv: ["6"] },
@@ -33,6 +36,7 @@ export const testsall = [
     defaultinput: [""],
     defaultoutput: ["1", "2", "3"],
     defaultcode: "for i in range(1,4):\n    print(i)",
+    rightcode: "for i in range(1,4):\n    print(i)",
     inout: [
       { inv: [""], outv: ["1", "2", "3"] },
       { inv: [""], outv: ["1", "2", "3"] },
@@ -46,6 +50,7 @@ export const testsall = [
     defaultinput: ["1", "2", "3"],
     defaultoutput: ["1", "4", "9"],
     defaultcode: "for i in range(1,4):\n    print(int(input())**2)",
+    rightcode: "for i in range(1,4):\n    print(int(input())**2)",
     inout: [
       { inv: ["1", "2", "3"], outv: ["1", "4", "9"] },
       { inv: ["2", "2", "2"], outv: ["4", "4", "4"] },
@@ -60,6 +65,8 @@ export const testsall = [
     defaultoutput: ["7"],
     defaultcode:
       "a=input()\nb=a.split()\nsumm=0\nfor i in range(len(b)-1):\n    summ+=int(b[i+1])-int(b[i])\nprint(summ)",
+    rightcode:
+      "a=input()\nb=a.split()\nsumm=0\nfor i in range(len(b)-1):\n    summ+=int(b[i+1])-int(b[i])\nprint(summ)",
     inout: [
       { inv: ["1 2 3 4 5 6 7 8"], outv: ["7"] },
       { inv: ["1 2 3 4 5 6 7"], outv: ["6"] },
@@ -73,6 +80,7 @@ export const testsall = [
     defaultinput: [""],
     defaultoutput: ["Я знаю команду print"],
     defaultcode: "print('Я знаю команду print')",
+    rightcode: "print('Я знаю команду print')",
     inout: [
       { inv: [""], outv: ["Я знаю команду print"] },
       { inv: [""], outv: ["Я знаю команду print"] },
@@ -86,6 +94,7 @@ export const testsall = [
     defaultinput: [""],
     defaultoutput: ["1 2 3"],
     defaultcode: "print('1 2 3')",
+    rightcode: "print('1 2 3')",
     inout: [
       { inv: [""], outv: ["1 2 3"] },
       { inv: [""], outv: ["1 2 3"] },
@@ -99,6 +108,7 @@ export const testsall = [
     defaultinput: [""],
     defaultoutput: ["1 2 3"],
     defaultcode: "print(1, 2, 3)",
+    rightcode: "print('1, 2, 3')",
     inout: [
       { inv: [""], outv: ["1 2 3"] },
       { inv: [""], outv: ["1 2 3"] },
@@ -112,6 +122,7 @@ export const testsall = [
     defaultinput: [""],
     defaultoutput: ["1 2 3", "Один Два Три"],
     defaultcode: "print(1, 2, 3)\nprint('Один','Два','Три')",
+    rightcode: "print('1, 2, 3')",
     inout: [
       { inv: [""], outv: ["1 2 3", "Один Два Три"] },
       { inv: [""], outv: ["1 2 3", "Один Два Три"] },

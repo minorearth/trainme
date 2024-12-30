@@ -23,6 +23,7 @@ readXlsxFile("./src/admin/tests.xlsx").then((rows) => {
       defaultinput: etl(rows[i][nm["defaultinput"]]).split(";") || "",
       defaultoutput: etl(rows[i][nm["defaultoutput"]]).split(";") || "",
       defaultcode: etl(rows[i][nm["defaultcode"]]),
+      rightcode: etl(rows[i][nm["rightcode"]]),
       inout: [
         {
           inv: etl(rows[i][nm["in1"]]).split(";"),

@@ -1,11 +1,11 @@
 "use client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import CongratAnimation from "@/components/congratulation/congratAnimation";
+import CongratAnimation from "@/components/test/congrat/congratulation/congratAnimation";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { useTheme } from "@mui/material/styles";
 
-const Congrat = ({ accomplishTest }) => {
+const Congrat = ({ setTestAccomplished }) => {
   const theme = useTheme();
   return (
     <Box
@@ -25,7 +25,7 @@ const Congrat = ({ accomplishTest }) => {
         sx={{ mt: 3, mb: 3 }}
         variant="outlined"
         aria-label="repeat"
-        onClick={() => accomplishTest(false)}
+        onClick={() => setTestAccomplished(false)}
         endIcon={<ReplayIcon />}
       >
         {"Вернуться к курсу"}

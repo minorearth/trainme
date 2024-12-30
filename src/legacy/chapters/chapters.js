@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { stn } from "@/constants";
-import { chapters } from "@/app/data";
+import { chapters } from "@/db/data";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { persistState, loadStatePersisted } from "@/app/db/localstorage";
+import { persistState, loadStatePersisted } from "@/db/localstorage";
 
 export default function Chapters({ setTestsStarted }) {
   const setChapterAndTestsStarted = (chapter) => {

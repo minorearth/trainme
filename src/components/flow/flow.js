@@ -23,7 +23,7 @@ import "./styles.css";
 import TurboNode from "./TurboNode.js";
 import TurboEdge from "./TurboEdge.js";
 
-import { getProgress } from "@/app/db/domain";
+import { getProgress } from "@/db/domain";
 
 const nodeTypes = {
   turbo: TurboNode,
@@ -38,9 +38,9 @@ const defaultEdgeOptions = {
   markerEnd: "edge-circle",
 };
 
-const Flow = ({ setTestsStarted, userid, getUnlockedToShow }) => {
+const Flow = ({ setTestsStartedPage, userid, navState }) => {
   const fullFillProgess = (unlocked, completed) => {
-    const full = initialNodes((id) => setTestsStarted(id)).map((node) => ({
+    const full = initialNodes((id) => setTestsStartedPage(id)).map((node) => ({
       ...node,
       data: {
         ...node.data,
@@ -65,13 +65,12 @@ const Flow = ({ setTestsStarted, userid, getUnlockedToShow }) => {
   }, []);
 
   useEffect(() => {
-    const nodesToShow = getUnlockedToShow();
-
-    if (nodesToShow.length > 0) {
-      for (let i = 0; i < nodesToShow.length; i++) {
+    const unlockedNodesToShow = navState.unlockedtoshow;
+    if (unlockedNodesToShow.length > 0) {
+      for (let i = 0; i < unlockedNodesToShow.length; i++) {
         setTimeout(() => {
           fitView({
-            nodes: [{ id: nodesToShow[i] }],
+            nodes: [{ id: unlockedNodesToShow[i] }],
             duration: 500,
           });
         }, i * 2000);
@@ -90,7 +89,6 @@ const Flow = ({ setTestsStarted, userid, getUnlockedToShow }) => {
     // },
   });
 
-  // initialNodes((id) => setTestsStarted(id))
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   const onConnect = useCallback(

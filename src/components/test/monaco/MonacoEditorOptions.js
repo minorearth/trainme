@@ -1,9 +1,9 @@
 export const EditorOptions = {
   automaticLayout: true,
   contextmenu: true,
-  dragAndDrop: true,
+  dragAndDrop: false,
   dropIntoEditor: {
-    enabled: true,
+    enabled: false,
   },
   detectIndentation: false,
   fixedOverflowWidgets: false,
