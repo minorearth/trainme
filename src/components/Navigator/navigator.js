@@ -13,8 +13,17 @@ import AlertDialog from "@/components/common/dialog";
 import { observer } from "mobx-react-lite";
 import Countdown from "../common/countdown/countdown";
 import countdown from "@/store/cowntdown";
+import { useEffect } from "react";
+import { getLinks } from "@/db/firebase";
 
 const Navigator = observer(() => {
+  useEffect(() => {
+    const zu = async () => {
+      const res = await getLinks();
+      console.log(res);
+    };
+    zu();
+  }, []);
   const { actions, navState, loading, tests, userid } = useNavigator();
 
   const darkTheme = createTheme({

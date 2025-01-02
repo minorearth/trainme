@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { saveChapterCompleted } from "@/db/domain";
+import dialog from "@/store/dialog";
 
 const useTest = ({
-  editorRef,
   nav,
   tests,
   setTaskInProgress,
@@ -12,6 +12,45 @@ const useTest = ({
   addRecapTask,
 }) => {
   const [currTask, setCurrTask] = useState({});
+  const editorRef = useRef(null);
+  const editorDisabled = useRef({ disabled: false });
+
+  const setEditorDisabled = (disabled) => {
+    editorDisabled.current = { disabled };
+  };
+
+  function handleEditorDidMount(editor, monaco) {
+    editorRef.current = editor;
+    editor.onKeyDown((event) => {
+      if (editorDisabled.current.disabled) {
+        event.preventDefault();
+      }
+    });
+  }
+
+  const runRecap = () => {
+    dialog.showDialog(
+      "Повторение",
+      "Попробуй еще раз решить ошибочные задачи",
+      () => setRunTestsPageRecap(nav.recapTasks)
+    );
+  };
+
+  const runAccomplish = async () => {
+    const unlocked = await saveChapterCompleted({
+      chapter: nav.chapter,
+      errors: 0,
+    });
+    setCongratPage({
+      unlockedtoshow: unlocked,
+      lastcompleted: nav.chapter,
+    });
+  };
+
+  useEffect(() => {
+    nav.taskId == tests.length - 1 && !nav.recap && runRecap();
+    nav.taskId == tests.length - 1 && nav.recap && runAccomplish();
+  }, []);
 
   const setOutput = (output) => {
     setCurrTask((state) => ({
@@ -20,12 +59,12 @@ const useTest = ({
     }));
   };
 
-  const setRestrictErrors = (restrictErrors) => {
-    setCurrTask((state) => ({
-      ...state,
-      restrictErrors,
-    }));
-  };
+  // const setRestrictErrors = (restrictErrors) => {
+  //   setCurrTask((state) => ({
+  //     ...state,
+  //     restrictErrors,
+  //   }));
+  // };
 
   const NextTaskOrCompleteTest = async () => {
     editorRef.current.getModel().setValue("");
@@ -35,17 +74,10 @@ const useTest = ({
         setTaskInProgress(nav.taskId + 1);
         return;
       case nav.recapTasks.length > 0 && !nav.recap:
-        setRunTestsPageRecap(nav.recapTasks);
+        runRecap();
         return;
       case nav.taskId == tests.length - 1:
-        const unlocked = await saveChapterCompleted({
-          chapter: nav.chapter,
-          errors: 0,
-        });
-        setCongratPage({
-          unlockedtoshow: unlocked,
-          lastcompleted: nav.chapter,
-        });
+        runAccomplish();
         return;
       default:
         return "";
@@ -53,15 +85,10 @@ const useTest = ({
   };
 
   const NextTaskAndAddRecapNoEffect = async () => {
-    addRecapTask(nav.taskId);
+    nav.recap != true && addRecapTask(nav.taskId);
     if (nav.taskId != tests.length - 1) {
-      setTaskInProgressNoEffect(nav.taskId + 1);
+      setTaskInProgressNoEffect({ taskid: nav.taskId + 1 });
     } else {
-      // const unlocked = await saveChapterCompleted({
-      //   chapter: nav.chapter,
-      //   errors: 0,
-      // });
-      // setCongrat({ unlockedtoshow: unlocked, lastcompleted: nav.chapter });
     }
   };
 
@@ -94,7 +121,8 @@ const useTest = ({
     currTask,
     setCode,
     setOutput,
-    setRestrictErrors,
+    setEditorDisabled,
+    handleEditorDidMount,
   };
 };
 

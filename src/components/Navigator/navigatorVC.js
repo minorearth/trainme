@@ -99,6 +99,7 @@ const useNavigator = () => {
         ...state,
         unlockedtoshow,
         lastcompleted,
+        recap: false,
         page: "congrat",
       };
       persistState(JSON.stringify(newState));
@@ -141,9 +142,9 @@ const useNavigator = () => {
     // const state = JSON.parse(loadStatePersisted());
   };
 
-  const setTaskInProgressNoEffect = (taskId) => {
+  const setTaskInProgressNoEffect = (data) => {
     const state = JSON.parse(loadStatePersisted());
-    persistState(JSON.stringify({ ...state, taskId }));
+    persistState(JSON.stringify({ ...state, ...data }));
   };
 
   return {

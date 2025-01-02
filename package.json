@@ -16,6 +16,8 @@
     "@mui/material": "^6.2.0",
     "@uidotdev/usehooks": "^2.4.1",
     "@xyflow/react": "^12.3.6",
+    "firebase": "^11.1.0",
+    "firebase-admin": "^13.0.2",
     "lottie-react": "^2.4.0",
     "mobx": "^6.13.5",
     "mobx-react-lite": "^4.1.0",

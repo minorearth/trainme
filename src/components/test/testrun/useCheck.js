@@ -5,11 +5,11 @@ import alertdialog from "@/store/dialog";
 import cowntdownbutton from "@/store/cowntdownbutton";
 
 const useCheck = ({
-  setRestrictErrors,
   NextTaskOrCompleteTest,
   NextTaskOrCompleteTestNoEffect,
   runPythonCode,
   setCode,
+  setEditorDisabled,
 }) => {
   const checkTask = async (code, test) => {
     const { codeChecked, linesChecked, mustHaveChecked } = await runCheckers(
@@ -17,10 +17,6 @@ const useCheck = ({
       test,
       runPythonCode
     );
-
-    // setRestrictErrors(
-    //   getErrorMessage(codeChecked, linesChecked, mustHaveChecked)
-    // );
 
     const error = getErrorMessage(codeChecked, linesChecked, mustHaveChecked);
     if (error != "") {
@@ -30,9 +26,9 @@ const useCheck = ({
         `${error}. Смотри верный код в окне редактора`,
         () => {
           setCode(test.rightcode);
+          setEditorDisabled(true);
           NextTaskOrCompleteTestNoEffect();
           cowntdownbutton.showDialog();
-          // cowntdown.showDialog(NextTaskOrCompleteTest);
         }
       );
     } else {

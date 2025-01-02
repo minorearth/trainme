@@ -67,7 +67,7 @@ body {
     #e92a67 0deg,
     #a853ba 120deg,
     #2a8af6 240deg,
-    rgba(42, 138, 246, 0) 360deg
+    #2a8af600 360deg
   );
   animation: spinner 4s linear infinite;
   transform: translate(-50%, -50%) rotate(0deg);

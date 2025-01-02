@@ -26,7 +26,6 @@ const Test = observer(({ tests, actions, nav }) => {
   const [executing, setExecuting] = useState(false);
   const [editorDarkMode, setEditorDarkMode] = useState("darkMode");
   const theme = useTheme();
-  const editorRef = useRef(null);
 
   const {
     NextTaskOrCompleteTest,
@@ -34,9 +33,9 @@ const Test = observer(({ tests, actions, nav }) => {
     currTask,
     setCode,
     setOutput,
-    setRestrictErrors,
+    setEditorDisabled,
+    handleEditorDidMount,
   } = useTest({
-    editorRef,
     nav,
     tests,
     ...actions,
@@ -44,16 +43,12 @@ const Test = observer(({ tests, actions, nav }) => {
 
   const { pyodide2, runPythonCode } = usePythonRunner({ setOutput });
   const { checkTask } = useCheck({
-    setRestrictErrors,
     NextTaskOrCompleteTest,
     NextTaskOrCompleteTestNoEffect,
     runPythonCode,
     setCode,
+    setEditorDisabled,
   });
-
-  function handleEditorDidMount(editor, monaco) {
-    editorRef.current = editor;
-  }
 
   return !pyodide2 ? (
     <Progress open={true} />
@@ -65,14 +60,13 @@ const Test = observer(({ tests, actions, nav }) => {
         display: "flex",
         flexDirection: "column",
         backgroundColor: theme.palette.background.default,
-        margin: "2px",
         padding: "5px",
       }}
     >
       {/* <LinearProgressWithLabel value={(nav.taskId / tests.length) * 100} / */}
       <LinearProgressWithLabel
-        value={(nav.taskId / tests.length) * 100}
-        label={`${nav.taskId}\\${tests.length}`}
+        value={((nav.taskId + 1) / tests.length) * 100}
+        label={`${nav.taskId + 1}\\${tests.length}`}
       />
 
       <Box>
@@ -144,6 +138,7 @@ const Test = observer(({ tests, actions, nav }) => {
           <CountdownButton
             onClick={() => {
               NextTaskOrCompleteTest();
+              setEditorDisabled(false);
               cowntdownbutton.closeDialog();
             }}
             variant="outlined"
