@@ -14,13 +14,18 @@ import { observer } from "mobx-react-lite";
 import Countdown from "../common/countdown/countdown";
 import countdown from "@/store/cowntdown";
 import { useEffect } from "react";
-import { getLinks } from "@/db/firebase";
+import { getLinks } from "@/db/SA/firebaseSA";
+import { getDocDataFromCollectionByIdClient } from "@/db/domain/domain";
 
 const Navigator = observer(() => {
   useEffect(() => {
     const zu = async () => {
       const res = await getLinks();
-      console.log(res);
+      const res2 = await getDocDataFromCollectionByIdClient(
+        "test",
+        "dxZyO6QfYHjAUXRXUGdY"
+      );
+      console.log(res, res2);
     };
     zu();
   }, []);
