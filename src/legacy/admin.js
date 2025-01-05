@@ -5,10 +5,6 @@ const etl = (line) => {
 };
 
 readXlsxFile("./src/admin/tests.xlsx").then((rows) => {
-  // `rows[i]` is an array of rows[i]
-  // each row being an array of cells.
-
-  // f=[el.strip() for el in f]
   let results = [];
   const nm = rows[0].reduce(
     (acc, header, id) => ({ ...acc, [header]: id }),

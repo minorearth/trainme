@@ -4,7 +4,8 @@ import {
   persistState as persistState,
   loadStatePersisted,
 } from "@/db/localstorage";
-import { testsall } from "@/db/data";
+import { testsall } from "@/app/admin/adminUtils/tasksData";
+import { getDocDataFromCollectionByIdClient } from "@/db/domain/domain";
 
 const useNavigator = () => {
   const userid = "1";
@@ -13,20 +14,18 @@ const useNavigator = () => {
 
   const [navState, setNavState] = useState();
 
-  //   const [navState, setNavState] = useState({
-  //     page: "flow",
-  //     chapter: -1,
-  //     taskId: 0,
-  //     unlockedtoshow: [],
-  //   });
-
-  const getTests = (chapter) => {
-    const filteredTasks = testsall.filter((test) => test.chapterid == chapter);
-    return filteredTasks;
+  const getTests = async (chapter) => {
+    //local, do not remove
+    // const filteredTasks = testsall.filter((test) => test.chapterid == chapter);
+    const filteredTasks = await getDocDataFromCollectionByIdClient(
+      "tasks",
+      chapter
+    );
+    return filteredTasks.data.tasks;
   };
 
-  const getTestsRecap = (chapter, recapTasks) => {
-    const filteredTasks = testsall
+  const getTestsRecap = (chapter, recapTasks, tasks) => {
+    const filteredTasks = tasks
       .filter((test) => test.chapterid == chapter)
       .filter((test, id) => recapTasks.includes(id));
     return filteredTasks;
@@ -36,29 +35,41 @@ const useNavigator = () => {
     page: "flow",
     chapter: -1,
     taskId: 0,
-    unlockedtoshow: ["1"],
+    nextchapters: [],
+    unlockedtoshow: ["34cb6e1f-52b5-4d97-a2e6-68222e8766c1"],
     recapTasks: [],
-    recap: false,
+    taskstage: "",
   };
 
   useLayoutEffect(() => {
-    let statePers = JSON.parse(loadStatePersisted());
-    if (!statePers) {
-      persistState(JSON.stringify(initialState));
-      statePers = JSON.parse(loadStatePersisted());
-    }
+    const doLoad = async () => {
+      let statePers = JSON.parse(loadStatePersisted());
+      if (!statePers) {
+        persistState(JSON.stringify(initialState));
+        statePers = JSON.parse(loadStatePersisted());
+      }
 
-    setNavState(statePers);
+      setNavState(statePers);
 
-    if (statePers.chapter != -1) {
-      statePers.recap
-        ? setTests(getTestsRecap(statePers.chapter, statePers.recapTasks))
-        : setTests(getTests(statePers.chapter));
-    }
-    setLoading(false);
+      if (statePers.chapter != -1) {
+        const tasks = await getTests(statePers.chapter);
+        if (
+          statePers.taskstage == "recap" ||
+          statePers.taskstage == "accomplished"
+        ) {
+          setTests(
+            getTestsRecap(statePers.chapter, statePers.recapTasks, tasks)
+          );
+        } else {
+          setTests(tasks);
+        }
+      }
+      setLoading(false);
+    };
+    doLoad();
   }, []);
 
-  const setTestsStartedPage = (chapter) => {
+  const setTestsStartedPage = async (chapter, nextchapters) => {
     setNavState((state) => {
       const newState = {
         ...state,
@@ -66,11 +77,13 @@ const useNavigator = () => {
         page: "testsStarted",
         taskId: 0,
         recapTasks: [],
+        nextchapters,
       };
       persistState(JSON.stringify(newState));
       return newState;
     });
-    setTests(getTests(chapter));
+    const tasks = await getTests(chapter);
+    setTests(tasks);
   };
 
   const setRunTestsPage = () => {
@@ -84,22 +97,23 @@ const useNavigator = () => {
 
   const setRunTestsPageRecap = (recapTasks) => {
     setNavState((state) => {
-      const newState = { ...state, recap: true, taskId: 0 };
+      const newState = { ...state, taskstage: "recap", taskId: 0 };
       persistState(JSON.stringify(newState));
       return newState;
     });
-    setTests(getTestsRecap(navState.chapter, recapTasks));
+    setTests(getTestsRecap(navState.chapter, recapTasks, tests));
 
     // const state = JSON.parse(loadStatePersisted());
   };
 
   const setCongratPage = ({ unlockedtoshow, lastcompleted }) => {
+    setTests([]);
     setNavState((state) => {
       const newState = {
         ...state,
         unlockedtoshow,
         lastcompleted,
-        recap: false,
+        taskstage: "",
         page: "congrat",
       };
       persistState(JSON.stringify(newState));
@@ -108,6 +122,7 @@ const useNavigator = () => {
   };
 
   const setTestInterrupted = () => {
+    setTests([]);
     setNavState((state) => {
       const newState = { ...state, page: "flow" };
       persistState(JSON.stringify(newState));
@@ -124,40 +139,56 @@ const useNavigator = () => {
     // const state = JSON.parse(loadStatePersisted());
   };
 
-  const setTaskInProgress = (taskId) => {
+  const changeState = ({ data }) => {
     setNavState((state) => {
-      const newState = { ...state, taskId };
+      const newState = { ...state, ...data };
       persistState(JSON.stringify(newState));
       return newState;
     });
     // const state = JSON.parse(loadStatePersisted());
   };
 
-  const addRecapTask = (taskId) => {
-    setNavState((state) => {
-      const newState = { ...state, recapTasks: [...state.recapTasks, taskId] };
-      persistState(JSON.stringify(newState));
-      return newState;
-    });
+  const addRecapTask = ({ taskId, nextTaskId }) => {
+    // setNavState((state) => {
+
+    const state = JSON.parse(loadStatePersisted());
+    navState.recapTasks = [...state.recapTasks, taskId];
+    navState.taskId = taskId;
+
+    const newState = {
+      ...state,
+      taskId: nextTaskId,
+      recapTasks: [...state.recapTasks, taskId],
+    };
+    persistState(JSON.stringify(newState));
+    // return newState;
+    // });
     // const state = JSON.parse(loadStatePersisted());
   };
 
-  const setTaskInProgressNoEffect = (data) => {
+  const changeStateNoEffect = (data) => {
     const state = JSON.parse(loadStatePersisted());
     persistState(JSON.stringify({ ...state, ...data }));
   };
 
+  // const setNextChaptersNoEffect = (data) => {
+  //   const state = JSON.parse(loadStatePersisted());
+  //   console.log("zu", { ...state, ...data });
+  //   persistState("sdad");
+  // };
+
   return {
     actions: {
       setRunTestsPage,
-      setTaskInProgress,
-      setTaskInProgressNoEffect,
+      changeState,
+      changeStateNoEffect,
       setRunTestsPageRecap,
       setTestAccomplished,
       setTestInterrupted,
       setTestsStartedPage,
       setCongratPage,
       addRecapTask,
+      // setNextChaptersNoEffect,
     },
     navState,
     loading,

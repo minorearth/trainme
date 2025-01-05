@@ -25,7 +25,6 @@ const Navigator = observer(() => {
         "test",
         "dxZyO6QfYHjAUXRXUGdY"
       );
-      console.log(res, res2);
     };
     zu();
   }, []);
@@ -59,17 +58,18 @@ const Navigator = observer(() => {
           <ReactFlowProvider>
             <Flow
               setTestsStartedPage={actions.setTestsStartedPage}
+              setNextChaptersNoEffect={actions.setNextChaptersNoEffect}
               navState={navState}
               userid={userid}
             />
           </ReactFlowProvider>
         )}
 
-        {navState.page == "testsStarted" && (
+        {navState.page == "testsStarted" && !loading && (
           <Start setRunTestsPage={actions.setRunTestsPage} />
         )}
 
-        {navState.page == "testrun" && (
+        {navState.page == "testrun" && tests?.length != 0 && (
           <Test nav={navState} tests={tests} actions={actions} />
         )}
 

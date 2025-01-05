@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { stn } from "@/constants";
-import { chapters } from "@/db/data";
+import { chapters } from "@/app/admin/adminUtils/tasksData";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { persistState, loadStatePersisted } from "@/db/localstorage";

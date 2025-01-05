@@ -1,6 +1,6 @@
 export const testsall = [
   {
-    chapterid: 1,
+    chapterid: "34cb6e1f-52b5-4d97-a2e6-68222e8766c1",
     id: 1,
     task: "На входе программы 3 пары чисел, сложи их попарно. Результат напечатай с помощью команды print. В программе используй функцию разделения строк и функцию суммирования.",
     defaultinput: ["1 2", "2 4", "3 4"],
@@ -16,7 +16,7 @@ export const testsall = [
     restrictions: { maxlines: 3, musthave: ["split", "sum"] },
   },
   {
-    chapterid: 1,
+    chapterid: "34cb6e1f-52b5-4d97-a2e6-68222e8766c1",
     id: 2,
     task: "Раздели число в переменной a на 3 нацело. Используй оператор целочисленного деления.",
     defaultinput: ["8"],
@@ -30,7 +30,7 @@ export const testsall = [
     restrictions: { maxlines: 2, musthave: ["//"] },
   },
   {
-    chapterid: 1,
+    chapterid: "34cb6e1f-52b5-4d97-a2e6-68222e8766c1",
     id: 3,
     task: "Используя цикл выведи числа 1,2,3. Каждое число на отдельной строке",
     defaultinput: [""],
@@ -44,7 +44,7 @@ export const testsall = [
     restrictions: { maxlines: 2, musthave: ["for"] },
   },
   {
-    chapterid: 1,
+    chapterid: "34cb6e1f-52b5-4d97-a2e6-68222e8766c1",
     id: 4,
     task: "На входе программы 3 числа, возведи каждое в квадрат",
     defaultinput: ["1", "2", "3"],
@@ -58,7 +58,7 @@ export const testsall = [
     restrictions: { maxlines: 3, musthave: ["for"] },
   },
   {
-    chapterid: 2,
+    chapterid: "b2cae810-c819-401f-9956-4a96a3726f1a",
     id: 5,
     task: "На входе программы 8 чисел, вычти из каждого следующего - предыдущее. Из первого числа ничего вычитать не нужно. Результат сложи",
     defaultinput: ["1 2 3 4 5 6 7 8"],
@@ -74,7 +74,7 @@ export const testsall = [
     restrictions: { maxlines: 7, musthave: ["for", "split", "int"] },
   },
   {
-    chapterid: 2,
+    chapterid: "b2cae810-c819-401f-9956-4a96a3726f1a",
     id: 6,
     task: "Выведи: Я знаю команду print",
     defaultinput: [""],
@@ -88,7 +88,7 @@ export const testsall = [
     restrictions: { maxlines: 1, musthave: ["print"] },
   },
   {
-    chapterid: 2,
+    chapterid: "b2cae810-c819-401f-9956-4a96a3726f1a",
     id: 7,
     task: "Выведи: 1 2 3",
     defaultinput: [""],
@@ -102,7 +102,7 @@ export const testsall = [
     restrictions: { maxlines: 1, musthave: ["print"] },
   },
   {
-    chapterid: 2,
+    chapterid: "b2cae810-c819-401f-9956-4a96a3726f1a",
     id: 8,
     task: "Выведи: 1 2 3. В программе должны обязательно присутствовать запятые",
     defaultinput: [""],
@@ -116,7 +116,7 @@ export const testsall = [
     restrictions: { maxlines: 1, musthave: ["print", ","] },
   },
   {
-    chapterid: 2,
+    chapterid: "b2cae810-c819-401f-9956-4a96a3726f1a",
     id: 9,
     task: "Выведи две строчки:\n1 2 3\nОдин, В программе должны обязательно присутствовать запятые",
     defaultinput: [""],
@@ -129,22 +129,88 @@ export const testsall = [
     ],
     restrictions: { maxlines: 2, musthave: ["print", ","] },
   },
-];
-
-export const chapters = [
   {
-    id: 1,
-    name: "Вывод данных",
-    description: "Научимся выводить данные на экран",
+    chapterid: "8e14ae36-6f5d-495d-968c-fb5fdb5db9c3",
+    id: 10,
+    task: null,
+    defaultinput: [""],
+    defaultoutput: [""],
+    defaultcode: "",
+    rightcode: "",
+    inout: [
+      { inv: [""], outv: [""] },
+      { inv: [""], outv: [""] },
+    ],
+    restrictions: { maxlines: null, musthave: [""] },
   },
   {
-    id: 2,
-    name: "Ввод данных",
-    description: "Научимся получать данные извне",
+    chapterid: "8e14ae36-6f5d-495d-968c-fb5fdb5db9c3",
+    id: 11,
+    task: null,
+    defaultinput: [""],
+    defaultoutput: [""],
+    defaultcode: "",
+    rightcode: "",
+    inout: [
+      { inv: [""], outv: [""] },
+      { inv: [""], outv: [""] },
+    ],
+    restrictions: { maxlines: null, musthave: [""] },
   },
   {
-    id: 3,
-    name: "Работа со строками",
-    description: "Научимся работать со строками",
+    chapterid: "8e14ae36-6f5d-495d-968c-fb5fdb5db9c3",
+    id: 12,
+    task: null,
+    defaultinput: [""],
+    defaultoutput: [""],
+    defaultcode: "",
+    rightcode: "",
+    inout: [
+      { inv: [""], outv: [""] },
+      { inv: [""], outv: [""] },
+    ],
+    restrictions: { maxlines: null, musthave: [""] },
+  },
+  {
+    chapterid: "8e14ae36-6f5d-495d-968c-fb5fdb5db9c3",
+    id: 13,
+    task: null,
+    defaultinput: [""],
+    defaultoutput: [""],
+    defaultcode: "",
+    rightcode: "",
+    inout: [
+      { inv: [""], outv: [""] },
+      { inv: [""], outv: [""] },
+    ],
+    restrictions: { maxlines: null, musthave: [""] },
+  },
+  {
+    chapterid: "8e14ae36-6f5d-495d-968c-fb5fdb5db9c3",
+    id: 14,
+    task: null,
+    defaultinput: [""],
+    defaultoutput: [""],
+    defaultcode: "",
+    rightcode: "",
+    inout: [
+      { inv: [""], outv: [""] },
+      { inv: [""], outv: [""] },
+    ],
+    restrictions: { maxlines: null, musthave: [""] },
+  },
+  {
+    chapterid: "8e14ae36-6f5d-495d-968c-fb5fdb5db9c3",
+    id: 15,
+    task: null,
+    defaultinput: [""],
+    defaultoutput: [""],
+    defaultcode: "",
+    rightcode: "",
+    inout: [
+      { inv: [""], outv: [""] },
+      { inv: [""], outv: [""] },
+    ],
+    restrictions: { maxlines: null, musthave: [""] },
   },
 ];

@@ -6,7 +6,7 @@ import cowntdownbutton from "@/store/cowntdownbutton";
 
 const useCheck = ({
   NextTaskOrCompleteTest,
-  NextTaskOrCompleteTestNoEffect,
+  NextTaskAndAddRecapNoEffect,
   runPythonCode,
   setCode,
   setEditorDisabled,
@@ -17,23 +17,9 @@ const useCheck = ({
       test,
       runPythonCode
     );
-
     const error = getErrorMessage(codeChecked, linesChecked, mustHaveChecked);
-    if (error != "") {
-      setCode("");
-      alertdialog.showDialog(
-        local.ru.msg.alert.PSW_TEST_ERROR,
-        `${error}. Смотри верный код в окне редактора`,
-        () => {
-          setCode(test.rightcode);
-          setEditorDisabled(true);
-          NextTaskOrCompleteTestNoEffect();
-          cowntdownbutton.showDialog();
-        }
-      );
-    } else {
-      NextTaskOrCompleteTest();
-    }
+    NextTaskOrCompleteTest({ error: error != "" });
+    setCode("");
   };
 
   return { checkTask };

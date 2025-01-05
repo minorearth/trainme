@@ -14,8 +14,14 @@ import {
   useOnViewportChange,
 } from "@xyflow/react";
 
-import { FiFile } from "react-icons/fi";
-import { initialEdges, initialNodes } from "./data";
+import { getTargetsBySource } from "./utils";
+
+import {
+  chapterFlowEdges,
+  chapterFlowNodes,
+} from "../../app/admin/adminUtils/chaptersFlowData";
+
+import { getDocDataFromCollectionByIdClient } from "@/db/domain/domain";
 
 import "@xyflow/react/dist/base.css";
 import "./styles.css";
@@ -38,14 +44,23 @@ const defaultEdgeOptions = {
   markerEnd: "edge-circle",
 };
 
-const Flow = ({ setTestsStartedPage, userid, navState }) => {
-  const fullFillProgess = (unlocked, completed) => {
-    const full = initialNodes((id) => setTestsStartedPage(id)).map((node) => ({
+const Flow = ({
+  setTestsStartedPage,
+  userid,
+  navState,
+  setNextChaptersNoEffect,
+}) => {
+  const fullFillProgess = (unlocked, completed, chapterFlowNodes, edges) => {
+    const full = chapterFlowNodes.map((node) => ({
       ...node,
       data: {
         ...node.data,
         unlocked: unlocked.includes(node.id),
         completed: completed.includes(node.id),
+        action: (id) => {
+          const nextchapters = getTargetsBySource(id, edges);
+          setTestsStartedPage(id, nextchapters);
+        },
       },
     }));
     return full;
@@ -57,9 +72,23 @@ const Flow = ({ setTestsStartedPage, userid, navState }) => {
   useEffect(() => {
     const getUserProgress = async () => {
       progress.current = await getProgress(userid);
-      setNodes(
-        fullFillProgess(progress.current.unlocked, progress.current.completed)
-      );
+      getDocDataFromCollectionByIdClient(
+        "chapters",
+        "lpN57HSZBLZCnP2j9l9L"
+      ).then((data) => {
+        // console.log("data", data.data);
+        const edges = data.data.chapterFlowEdges;
+        setEdges(edges);
+        setNodes(
+          fullFillProgess(
+            progress.current.unlocked,
+            progress.current.completed,
+            data.data.chapterFlowNodes,
+            edges
+            // chapterFlowNodes
+          )
+        );
+      });
     };
     getUserProgress();
   }, []);
@@ -89,7 +118,7 @@ const Flow = ({ setTestsStartedPage, userid, navState }) => {
     // },
   });
 
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [edges, setEdges, onEdgesChange] = useEdgesState();
 
   const onConnect = useCallback(
     (params) => setEdges((els) => addEdge(params, els)),

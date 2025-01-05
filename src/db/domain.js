@@ -1,17 +1,21 @@
 import { setValueObj, getValueObj } from "./localstorage";
 import { getTargetsBySource } from "@/components/flow/utils";
 
-export const saveChapterCompleted = async ({ chapter, userid, errors }) => {
-  const chaptersUnlocked = getTargetsBySource(chapter);
+export const saveChapterCompleted = async ({
+  chapter,
+  userid,
+  errors,
+  nextchapters,
+}) => {
   const profile = getValueObj("profile");
   setValueObj("profile", {
-    unlocked: [...chaptersUnlocked],
+    unlocked: [...nextchapters],
     completed: [...profile.completed, chapter],
     stats: [...profile.stats, { chapter, errors }],
     currentchapter: chapter,
     userid,
   });
-  return chaptersUnlocked;
+  return nextchapters;
 };
 
 export const getProgress = async (userid) => {

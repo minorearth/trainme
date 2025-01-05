@@ -1,13 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import { saveChapterCompleted } from "@/db/domain";
 import dialog from "@/store/dialog";
+import { CollectionsOutlined } from "@mui/icons-material";
+import alertdialog from "@/store/dialog";
+import local from "@/globals/local";
+import cowntdownbutton from "@/store/cowntdownbutton";
 
 const useTest = ({
   nav,
   tests,
-  setTaskInProgress,
+  changeState,
   setCongratPage,
-  setTaskInProgressNoEffect,
+  changeStateNoEffect,
   setRunTestsPageRecap,
   addRecapTask,
 }) => {
@@ -40,6 +44,7 @@ const useTest = ({
     const unlocked = await saveChapterCompleted({
       chapter: nav.chapter,
       errors: 0,
+      nextchapters: nav.nextchapters,
     });
     setCongratPage({
       unlockedtoshow: unlocked,
@@ -48,8 +53,9 @@ const useTest = ({
   };
 
   useEffect(() => {
-    nav.taskId == tests.length - 1 && !nav.recap && runRecap();
-    nav.taskId == tests.length - 1 && nav.recap && runAccomplish();
+    reRunTaskOrCompleteTest();
+    // nav.taskId == tests.length - 1 && !nav.recap && runRecap();
+    // nav.taskId == tests.length - 1 && nav.recap && runAccomplish();
   }, []);
 
   const setOutput = (output) => {
@@ -66,34 +72,101 @@ const useTest = ({
   //   }));
   // };
 
-  const NextTaskOrCompleteTest = async () => {
-    editorRef.current.getModel().setValue("");
-
+  const reRunTaskOrCompleteTest = async () => {
     switch (true) {
-      case nav.taskId != tests.length - 1:
-        setTaskInProgress(nav.taskId + 1);
-        return;
-      case nav.recapTasks.length > 0 && !nav.recap:
-        runRecap();
-        return;
-      case nav.taskId == tests.length - 1:
+      case nav.taskId == tests.length - 1 && nav.taskstage == "accomplished":
         runAccomplish();
         return;
+      case nav.taskId == tests.length - 1 && nav.taskstage == "completed":
+        changeState({ data: { taskstage: "recap" } });
+        dialog.showDialog(
+          "Повторение",
+          "Попробуй еще раз решить ошибочные задачи",
+          () => setRunTestsPageRecap(nav.recapTasks)
+        );
+        return;
+
       default:
         return "";
     }
   };
 
-  const NextTaskAndAddRecapNoEffect = async () => {
-    nav.recap != true && addRecapTask(nav.taskId);
-    if (nav.taskId != tests.length - 1) {
-      setTaskInProgressNoEffect({ taskid: nav.taskId + 1 });
-    } else {
+  const NextTaskOrCompleteTest = async ({ error }) => {
+    editorRef.current.getModel().setValue("");
+    switch (true) {
+      case nav.taskId != tests.length - 1 && !error:
+        changeState({ data: { taskId: nav.taskId + 1 } });
+        return;
+      case nav.taskId == tests.length - 1 && !error:
+        if (
+          nav.taskstage == "recap" ||
+          nav.taskstage == "accomplished" ||
+          nav.recapTasks.length == 0
+        ) {
+          runAccomplish();
+        }
+        if (
+          nav.recapTasks.length > 0 &&
+          (nav.taskstage == "" || nav.taskstage == "completed")
+        ) {
+          changeState({ data: { taskstage: "recap" } });
+          dialog.showDialog(
+            "Повторение",
+            "Попробуй еще раз решить ошибочные задачи",
+            () => setRunTestsPageRecap(nav.recapTasks)
+          );
+        }
+
+        return;
+      case error:
+        alertdialog.showDialog(
+          local.ru.msg.alert.PSW_TEST_ERROR,
+          `${error}. Смотри верный код в окне редактора`,
+          () => {
+            console.log(tests, nav.taskId, nav);
+            setCode(tests[nav.taskId].rightcode);
+            setEditorDisabled(true);
+            cowntdownbutton.showDialog();
+          }
+        );
+        if (nav.taskstage != "recap" && nav.taskId != tests.length - 1) {
+          const recapTasks = [...nav.recapTasks, nav.taskId];
+          nav.recapTasks = recapTasks;
+          changeStateNoEffect({
+            recapTasks: recapTasks,
+            taskId: nav.taskId + 1,
+          });
+        }
+
+        if (nav.taskstage == "recap" && nav.taskId != tests.length - 1) {
+          changeStateNoEffect({
+            taskId: nav.taskId + 1,
+          });
+        }
+        if (nav.taskstage != "recap" && nav.taskId == tests.length - 1) {
+          nav.taskstage = "completed";
+          const recapTasks = [...nav.recapTasks, nav.taskId];
+          nav.recapTasks = recapTasks;
+          changeStateNoEffect({
+            taskstage: "completed",
+            recapTasks,
+          });
+        }
+        if (nav.taskstage == "recap" && nav.taskId == tests.length - 1) {
+          nav.taskstage = "accomplished";
+          changeStateNoEffect({
+            taskstage: "accomplished",
+          });
+        }
+        return;
+
+      default:
+        return "";
     }
   };
 
   useEffect(() => {
-    setNextTask(nav.taskId);
+    nav.taskId != tests.length && setNextTask(nav.taskId);
   }, [nav]);
 
   const setCode = (code) => {
@@ -117,7 +190,6 @@ const useTest = ({
 
   return {
     NextTaskOrCompleteTest,
-    NextTaskOrCompleteTestNoEffect: NextTaskAndAddRecapNoEffect,
     currTask,
     setCode,
     setOutput,

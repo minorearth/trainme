@@ -1,7 +1,4 @@
-import { initialEdges } from "./data";
 
-export const getTargetsBySource = (src) => {
-  return initialEdges
-    .filter((edge) => edge.source == src)
-    .map((edge) => edge.target);
+export const getTargetsBySource = (src,edges) => {
+  return edges.filter((edge) => edge.source == src).map((edge) => edge.target);
 };

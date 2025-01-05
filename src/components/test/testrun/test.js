@@ -26,10 +26,9 @@ const Test = observer(({ tests, actions, nav }) => {
   const [executing, setExecuting] = useState(false);
   const [editorDarkMode, setEditorDarkMode] = useState("darkMode");
   const theme = useTheme();
-
   const {
     NextTaskOrCompleteTest,
-    NextTaskOrCompleteTestNoEffect,
+    NextTaskAndAddRecapNoEffect,
     currTask,
     setCode,
     setOutput,
@@ -44,7 +43,7 @@ const Test = observer(({ tests, actions, nav }) => {
   const { pyodide2, runPythonCode } = usePythonRunner({ setOutput });
   const { checkTask } = useCheck({
     NextTaskOrCompleteTest,
-    NextTaskOrCompleteTestNoEffect,
+    NextTaskAndAddRecapNoEffect,
     runPythonCode,
     setCode,
     setEditorDisabled,
@@ -137,7 +136,7 @@ const Test = observer(({ tests, actions, nav }) => {
         {cowntdownbutton.dialogState.visible && (
           <CountdownButton
             onClick={() => {
-              NextTaskOrCompleteTest();
+              NextTaskOrCompleteTest({ error: false });
               setEditorDisabled(false);
               cowntdownbutton.closeDialog();
             }}
