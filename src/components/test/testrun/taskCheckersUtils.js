@@ -98,7 +98,10 @@ export const getErrorMessage = (
   !mustHaveChecked && errorList.push(stn.errors.error1);
   !linesChecked && errorList.push(stn.errors.error2);
   !forbiddenChecked && errorList.push(stn.errors.error6);
-  const errorMsg = intro + errorList.join(", ");
+  let errorMsg = "";
+  if (errorList.length != 0) {
+    errorMsg = intro + errorList.join(", ");
+  }
 
   switch (true) {
     case errorMsg != "":
