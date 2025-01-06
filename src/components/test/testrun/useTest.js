@@ -13,7 +13,6 @@ const useTest = ({
   setCongratPage,
   changeStateNoEffect,
   setRunTestsPageRecap,
-  addRecapTask,
 }) => {
   const [currTask, setCurrTask] = useState({});
   const editorRef = useRef(null);
@@ -32,14 +31,6 @@ const useTest = ({
     });
   }
 
-  const runRecap = () => {
-    dialog.showDialog(
-      "Повторение",
-      "Попробуй еще раз решить ошибочные задачи",
-      () => setRunTestsPageRecap(nav.recapTasks)
-    );
-  };
-
   const runAccomplish = async () => {
     const unlocked = await saveChapterCompleted({
       chapter: nav.chapter,
@@ -54,8 +45,6 @@ const useTest = ({
 
   useEffect(() => {
     reRunTaskOrCompleteTest();
-    // nav.taskId == tests.length - 1 && !nav.recap && runRecap();
-    // nav.taskId == tests.length - 1 && nav.recap && runAccomplish();
   }, []);
 
   const setOutput = (output) => {
@@ -65,19 +54,13 @@ const useTest = ({
     }));
   };
 
-  // const setRestrictErrors = (restrictErrors) => {
-  //   setCurrTask((state) => ({
-  //     ...state,
-  //     restrictErrors,
-  //   }));
-  // };
-
   const reRunTaskOrCompleteTest = async () => {
     switch (true) {
-      case nav.taskId == tests.length - 1 && nav.taskstage == "accomplished":
+      case nav.taskId == tests.length - 1 &&
+        nav.taskstage == "accomplished_suspended":
         runAccomplish();
         return;
-      case nav.taskId == tests.length - 1 && nav.taskstage == "completed":
+      case nav.taskId == tests.length - 1 && nav.taskstage == "recap_suspended":
         changeState({ data: { taskstage: "recap" } });
         dialog.showDialog(
           "Повторение",
@@ -100,14 +83,14 @@ const useTest = ({
       case nav.taskId == tests.length - 1 && !error:
         if (
           nav.taskstage == "recap" ||
-          nav.taskstage == "accomplished" ||
+          nav.taskstage == "accomplished_suspended" ||
           nav.recapTasks.length == 0
         ) {
           runAccomplish();
         }
         if (
           nav.recapTasks.length > 0 &&
-          (nav.taskstage == "" || nav.taskstage == "completed")
+          (nav.taskstage == "WIP" || nav.taskstage == "recap_suspended")
         ) {
           changeState({ data: { taskstage: "recap" } });
           dialog.showDialog(
@@ -144,18 +127,18 @@ const useTest = ({
           });
         }
         if (nav.taskstage != "recap" && nav.taskId == tests.length - 1) {
-          nav.taskstage = "completed";
+          nav.taskstage = "recap_suspended";
           const recapTasks = [...nav.recapTasks, nav.taskId];
           nav.recapTasks = recapTasks;
           changeStateNoEffect({
-            taskstage: "completed",
+            taskstage: "recap_suspended",
             recapTasks,
           });
         }
         if (nav.taskstage == "recap" && nav.taskId == tests.length - 1) {
-          nav.taskstage = "accomplished";
+          nav.taskstage = "accomplished_suspended";
           changeStateNoEffect({
-            taskstage: "accomplished",
+            taskstage: "accomplished_suspended",
           });
         }
         return;

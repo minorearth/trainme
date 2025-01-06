@@ -9,4 +9,5 @@ export const stn = {
     error4: "Ты написал неправильный код",
     error5: "Возникла ошибка!\n",
   },
+  INITIAL_UNLOCKED: ["34cb6e1f-52b5-4d97-a2e6-68222e8766c1"],
 };
