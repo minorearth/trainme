@@ -74,7 +74,7 @@ const useTest = ({
     }
   };
 
-  const NextTaskOrCompleteTest = async ({ error }) => {
+  const NextTaskOrCompleteTest = async ({ error, errorMsg }) => {
     editorRef.current.getModel().setValue("");
     switch (true) {
       case nav.taskId != tests.length - 1 && !error:
@@ -104,7 +104,7 @@ const useTest = ({
       case error:
         alertdialog.showDialog(
           local.ru.msg.alert.PSW_TEST_ERROR,
-          `${error}. Смотри верный код в окне редактора`,
+          `${errorMsg}. Смотри верный код в окне редактора`,
           () => {
             console.log(tests, nav.taskId, nav);
             setCode(tests[nav.taskId].rightcode);

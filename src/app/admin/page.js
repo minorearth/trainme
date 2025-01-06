@@ -22,11 +22,11 @@ export default function Admin() {
       <Button
         sx={{ fontSize: 20 }}
         onClick={() => {
-          // setDocInCollectionClient(
-          //   "chapters",
-          //   { chapterFlowNodes, chapterFlowEdges },
-          //   "lpN57HSZBLZCnP2j9l9L"
-          // );
+          setDocInCollectionClient(
+            "chapters",
+            { chapterFlowNodes, chapterFlowEdges },
+            "lpN57HSZBLZCnP2j9l9L"
+          );
 
           const chapters = chapterFlowNodes.map((chapter) => chapter.id);
           chapters.forEach((chapterid) => {

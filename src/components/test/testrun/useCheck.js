@@ -12,13 +12,15 @@ const useCheck = ({
   setEditorDisabled,
 }) => {
   const checkTask = async (code, test) => {
-    const { codeChecked, linesChecked, mustHaveChecked } = await runCheckers(
-      code,
-      test,
-      runPythonCode
+    const { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked } =
+      await runCheckers(code, test, runPythonCode);
+    const error = getErrorMessage(
+      codeChecked,
+      linesChecked,
+      mustHaveChecked,
+      forbiddenChecked
     );
-    const error = getErrorMessage(codeChecked, linesChecked, mustHaveChecked);
-    NextTaskOrCompleteTest({ error: error != "" });
+    NextTaskOrCompleteTest({ error: error != "", errorMsg: error });
     setCode("");
   };
 

@@ -8,7 +8,7 @@ const uuids = Array(1000)
 console.log("initialState", uuids[1]);
 
 const etl = (line) => {
-  return !!line ? line.toString() : "";
+  return !!line ? line.toString().split(";") : [];
 };
 
 readXlsxFile("./src/app/admin/adminUtils/chapters.xlsx").then((rows) => {
@@ -82,23 +82,26 @@ readXlsxFile("./src/app/admin/adminUtils/tests.xlsx").then((rows) => {
       chapterid: uuids[Number(rows[i][nm["chapterid"]])],
       id: rows[i][nm["id"]],
       task: rows[i][nm["task"]],
-      defaultinput: etl(rows[i][nm["defaultinput"]]).split(";") || "",
-      defaultoutput: etl(rows[i][nm["defaultoutput"]]).split(";") || "",
-      defaultcode: etl(rows[i][nm["defaultcode"]]),
-      rightcode: etl(rows[i][nm["rightcode"]]),
+      defaultinput: etl(rows[i][nm["defaultinput"]]) || "",
+      defaultoutput: etl(rows[i][nm["defaultoutput"]]) || "",
+      defaultcode: rows[i][nm["defaultcode"]],
+      rightcode: rows[i][nm["rightcode"]],
       inout: [
         {
-          inv: etl(rows[i][nm["in1"]]).split(";"),
-          outv: etl(rows[i][nm["out1"]]).split(";"),
+          inv: etl(rows[i][nm["in1"]]),
+          outv: etl(rows[i][nm["out1"]]),
         },
         {
-          inv: etl(rows[i][nm["in2"]]).split(";"),
-          outv: etl(rows[i][nm["out2"]]).split(";"),
+          inv: etl(rows[i][nm["in2"]]),
+          outv: etl(rows[i][nm["out2"]]),
         },
       ],
       restrictions: {
         maxlines: rows[i][nm["maxlines"]],
-        musthave: etl(rows[i][nm["musthave"]]).split(";"),
+        musthave: etl(rows[i][nm["musthave"]]),
+        musthaveRe: etl(rows[i][nm["musthavere"]]),
+        forbidden: etl(rows[i][nm["forbidden"]]),
+        forbiddenRe: etl(rows[i][nm["forbiddenre"]]),
       },
     };
     results.push(res);
