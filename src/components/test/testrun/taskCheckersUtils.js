@@ -82,6 +82,7 @@ export const runCheckers = async (code, test, runPythonCode) => {
     test.restrictions.forbidden,
     test.restrictions.forbiddenRe
   );
+  console.log(codeChecked, linesChecked, mustHaveChecked, forbiddenChecked);
   return { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked };
 };
 

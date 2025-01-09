@@ -1,2 +1,74 @@
-export const chapterFlowNodes = [{id:"9015cd79-7e2e-4b07-a663-231d6dcc6dd6",position:{x:0,y:0},type:"turbo",data:{id:"9015cd79-7e2e-4b07-a663-231d6dcc6dd6",title:"Вывод данных",subline:"Учимся печать данные"}},{id:"c6eda8dc-cf82-4e44-8035-90139fcaa483",position:{x:0,y:250},type:"turbo",data:{id:"c6eda8dc-cf82-4e44-8035-90139fcaa483",title:"Ввод данных",subline:"Учимся получать \nданные извне"}},{id:"44d40a6b-55bb-41e6-89e3-a474ec7c9140",position:{x:0,y:500},type:"turbo",data:{id:"44d40a6b-55bb-41e6-89e3-a474ec7c9140",title:"Работа со строками \nна базовом уровне",subline:"Учимся получать \nданные извне"}},{id:"90761249-fe20-4a93-b6ea-0f6b119f811a",position:{x:0,y:750},type:"turbo",data:{id:"90761249-fe20-4a93-b6ea-0f6b119f811a",title:"Тест1",subline:"Тест1"}},{id:"c9c5d06b-ecb0-4547-9233-c2015fc27e4e",position:{x:400,y:250},type:"turbo",data:{id:"c9c5d06b-ecb0-4547-9233-c2015fc27e4e",title:"Тест2",subline:"Тест2"}}]
-export const chapterFlowEdges = [{id:"e9015cd79-7e2e-4b07-a663-231d6dcc6dd6-c6eda8dc-cf82-4e44-8035-90139fcaa483",source:"9015cd79-7e2e-4b07-a663-231d6dcc6dd6",target:"c6eda8dc-cf82-4e44-8035-90139fcaa483"},{id:"ec6eda8dc-cf82-4e44-8035-90139fcaa483-44d40a6b-55bb-41e6-89e3-a474ec7c9140",source:"c6eda8dc-cf82-4e44-8035-90139fcaa483",target:"44d40a6b-55bb-41e6-89e3-a474ec7c9140"},{id:"ec6eda8dc-cf82-4e44-8035-90139fcaa483-c9c5d06b-ecb0-4547-9233-c2015fc27e4e",source:"c6eda8dc-cf82-4e44-8035-90139fcaa483",target:"c9c5d06b-ecb0-4547-9233-c2015fc27e4e"},{id:"e44d40a6b-55bb-41e6-89e3-a474ec7c9140-90761249-fe20-4a93-b6ea-0f6b119f811a",source:"44d40a6b-55bb-41e6-89e3-a474ec7c9140",target:"90761249-fe20-4a93-b6ea-0f6b119f811a"}]
+export const chapterFlowNodes = [
+  {
+    id: "4680f00b-b586-413c-890a-9669b4b7b1c3",
+    position: { x: 0, y: 0 },
+    type: "turbo",
+    data: {
+      id: "4680f00b-b586-413c-890a-9669b4b7b1c3",
+      title: "Вывод данных",
+      subline: "Учимся печать данные",
+    },
+  },
+  {
+    id: "53945ea5-7a89-44eb-b43f-03de6bef8390",
+    position: { x: 0, y: 250 },
+    type: "turbo",
+    data: {
+      id: "53945ea5-7a89-44eb-b43f-03de6bef8390",
+      title: "Ввод данных",
+      subline: "Учимся получать \nданные извне",
+    },
+  },
+  {
+    id: "31ecf55a-c0e2-4246-b2b2-f0e919057467",
+    position: { x: 0, y: 500 },
+    type: "turbo",
+    data: {
+      id: "31ecf55a-c0e2-4246-b2b2-f0e919057467",
+      title: "Работа со строками \nна базовом уровне",
+      subline: "Учимся получать \nданные извне",
+    },
+  },
+  {
+    id: "f5fa5312-f89e-44c7-b6d7-5601bd0a5638",
+    position: { x: 0, y: 750 },
+    type: "turbo",
+    data: {
+      id: "f5fa5312-f89e-44c7-b6d7-5601bd0a5638",
+      title: "Тест1",
+      subline: "Тест1",
+    },
+  },
+  {
+    id: "1fe8a12f-9a77-488a-af6d-444a6c3fb83a",
+    position: { x: 400, y: 250 },
+    type: "turbo",
+    data: {
+      id: "1fe8a12f-9a77-488a-af6d-444a6c3fb83a",
+      title: "Тест2",
+      subline: "Тест2",
+    },
+  },
+];
+export const chapterFlowEdges = [
+  {
+    id: "e4680f00b-b586-413c-890a-9669b4b7b1c3-53945ea5-7a89-44eb-b43f-03de6bef8390",
+    source: "4680f00b-b586-413c-890a-9669b4b7b1c3",
+    target: "53945ea5-7a89-44eb-b43f-03de6bef8390",
+  },
+  {
+    id: "e53945ea5-7a89-44eb-b43f-03de6bef8390-31ecf55a-c0e2-4246-b2b2-f0e919057467",
+    source: "53945ea5-7a89-44eb-b43f-03de6bef8390",
+    target: "31ecf55a-c0e2-4246-b2b2-f0e919057467",
+  },
+  {
+    id: "e53945ea5-7a89-44eb-b43f-03de6bef8390-1fe8a12f-9a77-488a-af6d-444a6c3fb83a",
+    source: "53945ea5-7a89-44eb-b43f-03de6bef8390",
+    target: "1fe8a12f-9a77-488a-af6d-444a6c3fb83a",
+  },
+  {
+    id: "e31ecf55a-c0e2-4246-b2b2-f0e919057467-f5fa5312-f89e-44c7-b6d7-5601bd0a5638",
+    source: "31ecf55a-c0e2-4246-b2b2-f0e919057467",
+    target: "f5fa5312-f89e-44c7-b6d7-5601bd0a5638",
+  },
+];
