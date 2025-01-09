@@ -16,10 +16,10 @@ import {
 
 import { getTargetsBySource } from "./utils";
 
-import {
-  chapterFlowEdges,
-  chapterFlowNodes,
-} from "../../app/admin/adminUtils/chaptersFlowData";
+// import {
+//   chapterFlowEdges,
+//   chapterFlowNodes,
+// } from "../../app/admin/adminUtils/chaptersFlowData";
 
 import { getDocDataFromCollectionByIdClient } from "@/db/domain/domain";
 

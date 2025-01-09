@@ -4,7 +4,7 @@ import {
   persistState as persistState,
   loadStatePersisted,
 } from "@/db/localstorage";
-import { testsall } from "@/app/admin/adminUtils/tasksData";
+// import { testsall } from "@/app/admin/adminUtils/tasksData";
 import { getDocDataFromCollectionByIdClient } from "@/db/domain/domain";
 
 const useNavigator = () => {
