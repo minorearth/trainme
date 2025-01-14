@@ -9,8 +9,12 @@ await initAdmin();
 export const getData = async (data) => {
   const firestore = getFirestore();
   const { uid, pts } = decrypt2(data);
+  console.log("meta", JSON.stringify(decrypt2(data)));
+
   const userMetaRef = firestore.collection("usermeta").doc(uid);
   const snapshot = await userMetaRef.get();
+  console.log("fock", JSON.stringify(snapshot.data()));
+
   const { rating } = snapshot.data();
   userMetaRef.update({ rating: rating + pts });
 
