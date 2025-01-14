@@ -4,13 +4,7 @@ import cowntdown from "@/store/cowntdown";
 import alertdialog from "@/store/dialog";
 import cowntdownbutton from "@/store/cowntdownbutton";
 
-const useCheck = ({
-  NextTaskOrCompleteTest,
-  NextTaskAndAddRecapNoEffect,
-  runPythonCode,
-  setCode,
-  setEditorDisabled,
-}) => {
+const useCheck = ({ NextTaskOrCompleteTest, runPythonCode, setCode }) => {
   const checkTask = async (code, test) => {
     const { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked } =
       await runCheckers(code, test, runPythonCode);

@@ -1,7 +1,8 @@
+// "use server";
 import { SignJWT, jwtVerify } from "jose";
 import { AES, enc } from "crypto-js";
 
-const secretKey = process.env.NEXT_DEFAULT_EMAIL;
+const secretKey = process.env.FIREBASE_PRIVATE_SECRET;
 const key = new TextEncoder().encode(secretKey);
 
 export async function encrypt(payload) {

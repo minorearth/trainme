@@ -2,14 +2,25 @@
 import { getFirestore } from "firebase-admin/firestore";
 // import "server-only";
 import { initAdmin } from "./firebaseAdmin";
+import { encrypt2, decrypt2 } from "./encryption";
 
 await initAdmin();
 
-export const getLinks = async () => {
+export const getData = async (data) => {
   const firestore = getFirestore();
-  const linkSnapshot = await firestore.collection("test").get();
-  const documents = linkSnapshot.docs.map((link) => ({
-    test: link.data().test,
-  }));
-  return documents;
+  const { uid, pts } = decrypt2(data);
+  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  const snapshot = await userMetaRef.get();
+  const { rating } = snapshot.data();
+  userMetaRef.update({ rating: rating + pts });
+
+  // Set the 'capital' field of the city
+
+  // const documents = linkSnapshot.docs.map((link) => ({
+  //   test: link.data().test,
+  // }));
+  // return JSON.stringify(linkSnapshot.data());
+  console.log("fock", JSON.stringify(snapshot.data()));
+
+  // return decrypt2(data);
 };

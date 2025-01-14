@@ -44,12 +44,7 @@ const defaultEdgeOptions = {
   markerEnd: "edge-circle",
 };
 
-const Flow = ({
-  setTestsStartedPage,
-  userid,
-  navState,
-  setNextChaptersNoEffect,
-}) => {
+const Flow = ({ setTestsStartedPage, userid, navState }) => {
   const fullFillProgess = (unlocked, completed, chapterFlowNodes, edges) => {
     const full = chapterFlowNodes.map((node) => ({
       ...node,

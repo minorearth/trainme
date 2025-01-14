@@ -6,15 +6,16 @@ export const saveChapterCompleted = async ({
   userid,
   errors,
   nextchapters,
+  pts,
 }) => {
   const profile = getValueObj("profile");
-  setValueObj("profile", {
-    unlocked: [...nextchapters],
-    completed: [...profile.completed, chapter],
-    stats: [...profile.stats, { chapter, errors }],
-    currentchapter: chapter,
-    userid,
-  });
+  // setValueObj("profile", {
+  //   unlocked: [...nextchapters],
+  //   completed: [...profile.completed, chapter],
+  //   stats: [...profile.stats, { chapter, errors }],
+  //   currentchapter: chapter,
+  //   userid,
+  // });
   return nextchapters;
 };
 

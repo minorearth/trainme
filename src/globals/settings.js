@@ -1,5 +1,6 @@
 import local from "./local";
 const stn = {
+  needCt: false,
   collections: {
     SURVEY_RESULTS: "surveysresults",
     SURVEYS: "surveys",

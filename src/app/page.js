@@ -1,9 +1,11 @@
 "use client";
-import Navigator from "@/components/Navigator/navigator";
-import Countdown from "@/components/common/countdown/countdown";
-import { initAdmin } from "@/db/SA/firebaseAdmin";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-export default function Page({ params }) {
-  return <Navigator />;
-  // return <Stopwatch />;
+export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/login");
+  }, []);
 }

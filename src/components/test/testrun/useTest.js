@@ -5,6 +5,15 @@ import { CollectionsOutlined } from "@mui/icons-material";
 import alertdialog from "@/store/dialog";
 import local from "@/globals/local";
 import cowntdownbutton from "@/store/cowntdownbutton";
+import user from "@/store/user";
+
+import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
+import { getData } from "@/db/SA/firebaseSA";
+
+import {
+  persistState as persistState,
+  loadStatePersisted,
+} from "@/db/localstorage";
 
 const useTest = ({
   nav,
@@ -32,11 +41,21 @@ const useTest = ({
   }
 
   const runAccomplish = async () => {
-    const unlocked = await saveChapterCompleted({
-      chapter: nav.chapter,
-      errors: 0,
-      nextchapters: nav.nextchapters,
-    });
+    const state = loadStatePersisted();
+    // getData(
+    //   encrypt2({
+    //     chapter: nav.chapter,
+    //     errors: 0,
+    //     nextchapters: nav.nextchapters,
+    //     pts: state.pts,
+    //   })
+    // );
+    // const unlocked = await saveChapterCompleted({
+    //   chapter: nav.chapter,
+    //   errors: 0,
+    //   nextchapters: nav.nextchapters,
+    //   pts: state.pts,
+    // });
     setCongratPage({
       unlockedtoshow: unlocked,
       lastcompleted: nav.chapter,
@@ -74,11 +93,44 @@ const useTest = ({
     }
   };
 
+  const getSense = () => {
+    const { pts } = loadStatePersisted();
+    if (!pts) {
+      return 0;
+    } else {
+      return pts;
+    }
+  };
+
   const NextTaskOrCompleteTest = async ({ error, errorMsg }) => {
+    const state = loadStatePersisted();
+    // setValueObj("profile", {
+    //   unlocked: [...nextchapters],
+    //   completed: [...profile.completed, chapter],
+    //   stats: [...profile.stats, { chapter, errors }],
+    //   currentchapter: chapter,
+    //   userid,
+    // });
+    const zu = await getData(
+      encrypt2({
+        chapter: nav.chapter,
+        errors: 0,
+        nextchapters: nav.nextchapters,
+        pts: state.pts,
+        uid: user.userid,
+      })
+    );
+    console.log("fffff", zu);
+
     editorRef.current.getModel().setValue("");
     switch (true) {
       case nav.taskId != tests.length - 1 && !error:
-        changeState({ data: { taskId: nav.taskId + 1 } });
+        changeState({
+          data: {
+            taskId: nav.taskId + 1,
+            pts: getSense() + 1,
+          },
+        });
         return;
       case nav.taskId == tests.length - 1 && !error:
         if (

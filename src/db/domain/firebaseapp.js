@@ -2,7 +2,8 @@
 import { initializeApp } from "firebase/app";
 import { initializeFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import user from "@/store/user";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -23,3 +24,19 @@ export const db = initializeFirestore(app, {
 
 // export const storage = getStorage(app);
 export const auth = getAuth(app);
+
+onAuthStateChanged(auth, (fbuser) => {
+  if (fbuser) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/auth.user
+    const uid = fbuser.uid;
+    user.setUserid(uid);
+    console.log("here we go");
+    // ...
+  } else {
+    console.log("here we go agaaain");
+
+    // User is signed out
+    // ...
+  }
+});

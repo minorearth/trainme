@@ -6,6 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { observer } from "mobx-react-lite";
+
 import alertdialog from "@/store/dialog";
 import local from "@/globals/local";
 import GradientBox from "@/components/gradientBox";

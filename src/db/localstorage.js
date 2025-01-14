@@ -1,13 +1,39 @@
+import { decrypt2, encrypt2 } from "@/globals/utils/encryption";
+import stn from "@/globals/settings";
+
 export const getUserId = () => {
   return localStorage.getItem("userid");
 };
 
-export const persistState = (state) => {
-  return localStorage.setItem("state", state);
+export const updateState = (data) => {
+  const state = localStorage.getItem("state");
+  if (stn.needCt) {
+    const stateLS = state != null ? JSON.parse(decrypt2(state)) : {};
+    localStorage.setItem(
+      "state",
+      encrypt2(JSON.stringify({ ...stateLS, ...data }))
+    );
+  } else {
+    const stateLS = state != null ? JSON.parse(state) : {};
+    localStorage.setItem("state", JSON.stringify({ ...stateLS, ...data }));
+  }
 };
 
-export const loadStatePersisted = (state) => {
-  return localStorage.getItem("state");
+export const persistState = (state) => {
+  if (stn.needCt) {
+    localStorage.setItem("state", encrypt2(JSON.stringify(state)));
+  } else {
+    localStorage.setItem("state", JSON.stringify(state));
+  }
+};
+
+export const loadStatePersisted = () => {
+  const state = localStorage.getItem("state");
+  if (stn.needCt) {
+    return state != null ? JSON.parse(decrypt2(state)) : null;
+  } else {
+    return state != null ? JSON.parse(state) : null;
+  }
 };
 
 export const setUserId = () => {

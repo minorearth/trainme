@@ -21,13 +21,15 @@ import {
 // } from "@/app/db/storage";
 
 // import { setAllIndexed, createIndexspealout2 } from "@/app/db/indexAdmin";
-// import {
-//   setPersistenceDB,
-//   signIn,
-//   resetPsw,
-//   SignUpUser,
-//   signOutUser,
-// } from "@/app/db/authentication";
+import {
+  setPersistenceDB,
+  signIn,
+  resetPsw,
+  SignUpUser,
+  signOutUser,
+} from "@/db/CA/authentication";
+
+import { createNewUser } from "@/db/CA/profile";
 
 export const updateDocFieldsInCollectionByIdClient = async (
   collectionName,
@@ -137,9 +139,9 @@ export const deleteDocFromCollectionClient = async (collectionName, id) => {
 //   await deleteFile(storage, relativePath);
 // };
 
-// export const createNewUserClient = async (userId, name, company) => {
-//   return await createNewUser(db, userId, name, company);
-// };
+export const createNewUserClient = async (userId, name, company) => {
+  return await createNewUser(db, userId, name, company);
+};
 
 // export const createIndexspealout = async (manager, slice) => {
 //   await createIndexspealout2(db, manager, slice);
@@ -153,17 +155,17 @@ export const сopyDocClient = async (collection, oldindex, newindex) => {
 //   await setPersistenceDB(auth);
 // };
 
-// export const signInClient = async (email, password) => {
-//   return await signIn(auth, email, password);
-// };
+export const signInClient = async (email, password) => {
+  return await signIn(auth, email, password);
+};
 
-// export const resetPswClient = (email) => {
-//   resetPsw(auth, email);
-// };
+export const resetPswClient = (email) => {
+  resetPsw(auth, email);
+};
 
-// export const SignUpUserClient = async (email, password, name, company) => {
-//   await SignUpUser(auth, email, password, name, company);
-// };
+export const SignUpUserClient = async (email, password, name, company) => {
+  await SignUpUser(auth, email, password, name, company);
+};
 
 // export const signOutUserClient = async () => {
 //   await signOutUser(auth);
