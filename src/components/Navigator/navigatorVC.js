@@ -3,57 +3,56 @@ import { useEffect, useState, useLayoutEffect } from "react";
 import {
   persistState,
   loadStatePersisted,
-  updateState,
+  updateStateLS,
 } from "@/db/localstorage";
 // import { auth } from "@/db/domain/firebaseapp";
 import { getAuth } from "firebase/auth";
 import user from "@/store/user";
+import { getTests, setFlowNodes, getTestsRecap } from "./navigatorVM";
+import { getUseMetaData } from "@/db/SA/firebaseSA";
 
-// import { testsall } from "@/app/admin/adminUtils/tasksData";
-import { getDocDataFromCollectionByIdClient } from "@/db/domain/domain";
+// import { saveChapterCompleted } from "@/db/domain";
+
+import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
+import { setUseMetaData } from "@/db/SA/firebaseSA";
+import { getTargetsBySource } from "./utils";
 
 const useNavigator = () => {
   const userid = "1";
   const [loading, setLoading] = useState(true);
   const [tests, setTests] = useState([]);
   const [navState, setNavState] = useState();
-
-  const getTests = async (chapter) => {
-    //local, do not remove
-    // const filteredTasks = testsall.filter((test) => test.chapterid == chapter);
-    const filteredTasks = await getDocDataFromCollectionByIdClient(
-      "tasks",
-      chapter
-    );
-    return filteredTasks.data.tasks;
-  };
-
-  const getTestsRecap = (chapter, recapTasks, tasks) => {
-    const filteredTasks = tasks
-      .filter((test) => test.chapterid == chapter)
-      .filter((test, id) => recapTasks.includes(id));
-    return filteredTasks;
-  };
+  const [flow, setFlow] = useState();
 
   const initialState = {
     page: "flow",
     chapter: -1,
     taskId: 0,
-    nextchapters: [],
-    unlockedtoshow: stn.INITIAL_UNLOCKED,
+    // nextchapters: [],
     recapTasks: [],
     taskstage: "",
+    pts: 0,
   };
 
+  const reLoadFlow = async () => {
+    const userProgress = await getUseMetaData(user.userid);
+    console.log("userProgress", userProgress);
+    setFlowNodes({ progress: userProgress, setFlow, setTestsStartedPage });
+    const statePers = updateStateLS({
+      ...initialState,
+      userProgress: {
+        unlocked: userProgress.unlocked,
+        completed: userProgress.completed,
+        lastunlocked: userProgress.lastunlocked,
+      },
+      uid: user.userid,
+    });
+    setNavState(statePers);
+    return statePers;
+  };
   useEffect(() => {
     const doLoad = async () => {
-      let statePers = loadStatePersisted();
-      if (!statePers) {
-        persistState(initialState);
-        statePers = loadStatePersisted();
-      }
-      // updateState({ uid: user.userid });
-      setNavState(statePers);
+      const statePers = await reLoadFlow();
 
       if (statePers.chapter != -1) {
         const tasks = await getTests(statePers.chapter);
@@ -73,7 +72,7 @@ const useNavigator = () => {
     doLoad();
   }, [user]);
 
-  const setTestsStartedPage = async (chapter, nextchapters) => {
+  const setTestsStartedPage = async (chapter) => {
     setNavState((state) => {
       const newState = {
         ...state,
@@ -81,7 +80,7 @@ const useNavigator = () => {
         page: "testsStarted",
         taskId: 0,
         recapTasks: [],
-        nextchapters,
+        // nextchapters,
         taskstage: "WIP",
       };
       persistState(newState);
@@ -108,15 +107,14 @@ const useNavigator = () => {
     setTests(getTestsRecap(navState.chapter, recapTasks, tests));
   };
 
-  const setCongratPage = ({ unlockedtoshow, lastcompleted }) => {
+  const setCongratPage = () => {
     setTests([]);
     setNavState((state) => {
       const newState = {
         ...state,
-        unlockedtoshow,
-        lastcompleted,
         taskstage: "WIP",
         page: "congrat",
+        pts: 0,
       };
       persistState(newState);
       return newState;
@@ -124,7 +122,6 @@ const useNavigator = () => {
   };
 
   const setTestInterrupted = () => {
-    setTests([]);
     setNavState((state) => {
       const newState = { ...state, page: "flow", taskstage: "" };
       persistState(newState);
@@ -153,6 +150,24 @@ const useNavigator = () => {
     persistState({ ...state, ...data });
   };
 
+  const runAccomplish = async (pts) => {
+    const state = loadStatePersisted();
+    const lastcompleted = navState.chapter;
+    if (lastcompleted != "") {
+      const unlocked = getTargetsBySource(lastcompleted, flow.edges);
+      await setUseMetaData(
+        encrypt2({
+          lastcompleted,
+          unlocked,
+          pts,
+          uid: user.userid,
+        })
+      );
+      await reLoadFlow();
+    }
+    setCongratPage({});
+  };
+
   return {
     actions: {
       setRunTestsPage,
@@ -163,11 +178,13 @@ const useNavigator = () => {
       setTestInterrupted,
       setTestsStartedPage,
       setCongratPage,
+      runAccomplish,
     },
     navState,
     loading,
     tests,
     userid,
+    flow,
   };
 };
 

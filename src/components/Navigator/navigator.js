@@ -14,22 +14,11 @@ import { observer } from "mobx-react-lite";
 import Countdown from "../common/countdown/countdown";
 import countdown from "@/store/cowntdown";
 import { useEffect } from "react";
-import { getData } from "@/db/SA/firebaseSA";
+import { setUseMetaData } from "@/db/SA/firebaseSA";
 import { getDocDataFromCollectionByIdClient } from "@/db/domain/domain";
 
 const Navigator = observer(() => {
-  useEffect(() => {
-    const zu = async () => {
-      // const res = await getData();
-      // console.log("ressss", res);
-      const res2 = await getDocDataFromCollectionByIdClient(
-        "test",
-        "dxZyO6QfYHjAUXRXUGdY"
-      );
-    };
-    zu();
-  }, []);
-  const { actions, navState, loading, tests, userid } = useNavigator();
+  const { actions, navState, loading, tests, userid, flow } = useNavigator();
 
   const darkTheme = createTheme({
     palette: {
@@ -55,13 +44,12 @@ const Navigator = observer(() => {
         <AlertDialog />
         {countdown.dialogState.visible && <Countdown />}
 
-        {navState.page == "flow" && !loading && (
+        {navState.page == "flow" && !loading && !!flow && (
           <ReactFlowProvider>
             <Flow
               setTestsStartedPage={actions.setTestsStartedPage}
-              setNextChaptersNoEffect={actions.setNextChaptersNoEffect}
               navState={navState}
-              userid={userid}
+              flow={flow}
             />
           </ReactFlowProvider>
         )}

@@ -1,30 +1,37 @@
 "use server";
-import { getFirestore } from "firebase-admin/firestore";
+import { getFirestore, FieldValue } from "firebase-admin/firestore";
 // import "server-only";
 import { initAdmin } from "./firebaseAdmin";
 import { encrypt2, decrypt2 } from "./encryption";
 
 await initAdmin();
 
-export const getData = async (data) => {
+export const setUseMetaData = async (data) => {
   const firestore = getFirestore();
-  const { uid, pts } = decrypt2(data);
-  console.log("meta", JSON.stringify(decrypt2(data)));
-
+  const { uid, pts, lastcompleted, unlocked } = decrypt2(data);
   const userMetaRef = firestore.collection("usermeta").doc(uid);
   const snapshot = await userMetaRef.get();
-  console.log("fock", JSON.stringify(snapshot.data()));
-
   const { rating } = snapshot.data();
-  userMetaRef.update({ rating: rating + pts });
+  userMetaRef.update({
+    rating: rating + pts,
+    completed: FieldValue.arrayUnion(lastcompleted),
+    unlocked: FieldValue.arrayUnion(...unlocked),
+    lastunlocked: unlocked,
+  });
+};
 
-  // Set the 'capital' field of the city
+export const getUseMetaData = async (uid) => {
+  const firestore = getFirestore();
+  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  const snapshot = await userMetaRef.get();
+  return snapshot.data();
 
+  // const res = await washingtonRef.update({
+  //   population: FieldValue.increment(50)
+  // });
   // const documents = linkSnapshot.docs.map((link) => ({
   //   test: link.data().test,
   // }));
   // return JSON.stringify(linkSnapshot.data());
-  console.log("fock", JSON.stringify(snapshot.data()));
-
   // return decrypt2(data);
 };

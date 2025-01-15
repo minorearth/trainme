@@ -9,27 +9,15 @@ import {
   useEdgesState,
   addEdge,
   useReactFlow,
-  ReactFlowProvider,
   Panel,
   useOnViewportChange,
 } from "@xyflow/react";
 
-import { getTargetsBySource } from "./utils";
-
-// import {
-//   chapterFlowEdges,
-//   chapterFlowNodes,
-// } from "../../app/admin/adminUtils/chaptersFlowData";
-
-import { getDocDataFromCollectionByIdClient } from "@/db/domain/domain";
-
 import "@xyflow/react/dist/base.css";
 import "./styles.css";
 
-import TurboNode from "./TurboNode.js";
-import TurboEdge from "./TurboEdge.js";
-
-import { getProgress } from "@/db/domain";
+import TurboNode from "./components/TurboNode.js";
+import TurboEdge from "./components/TurboEdge.js";
 
 const nodeTypes = {
   turbo: TurboNode,
@@ -44,52 +32,17 @@ const defaultEdgeOptions = {
   markerEnd: "edge-circle",
 };
 
-const Flow = ({ setTestsStartedPage, userid, navState }) => {
-  const fullFillProgess = (unlocked, completed, chapterFlowNodes, edges) => {
-    const full = chapterFlowNodes.map((node) => ({
-      ...node,
-      data: {
-        ...node.data,
-        unlocked: unlocked.includes(node.id),
-        completed: completed.includes(node.id),
-        action: (id) => {
-          const nextchapters = getTargetsBySource(id, edges);
-          setTestsStartedPage(id, nextchapters);
-        },
-      },
-    }));
-    return full;
-  };
+const Flow = ({ navState, flow }) => {
   const { fitView } = useReactFlow();
   const [nodes, setNodes, onNodesChange] = useNodesState();
 
-  const progress = useRef({});
   useEffect(() => {
-    const getUserProgress = async () => {
-      progress.current = await getProgress(userid);
-      getDocDataFromCollectionByIdClient(
-        "chapters",
-        "lpN57HSZBLZCnP2j9l9L"
-      ).then((data) => {
-        // console.log("data", data.data);
-        const edges = data.data.chapterFlowEdges;
-        setEdges(edges);
-        setNodes(
-          fullFillProgess(
-            progress.current.unlocked,
-            progress.current.completed,
-            data.data.chapterFlowNodes,
-            edges
-            // chapterFlowNodes
-          )
-        );
-      });
-    };
-    getUserProgress();
+    setEdges(flow.edges);
+    setNodes(flow.nodes);
   }, []);
 
   useEffect(() => {
-    const unlockedNodesToShow = navState.unlockedtoshow;
+    const unlockedNodesToShow = navState.userProgress.lastunlocked;
     if (unlockedNodesToShow.length > 0) {
       for (let i = 0; i < unlockedNodesToShow.length; i++) {
         setTimeout(() => {

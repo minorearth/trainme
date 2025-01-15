@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { saveChapterCompleted } from "@/db/domain";
+// import { saveChapterCompleted } from "@/db/domain";
 import dialog from "@/store/dialog";
 import { CollectionsOutlined } from "@mui/icons-material";
 import alertdialog from "@/store/dialog";
@@ -8,7 +8,7 @@ import cowntdownbutton from "@/store/cowntdownbutton";
 import user from "@/store/user";
 
 import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
-import { getData } from "@/db/SA/firebaseSA";
+import { setUseMetaData } from "@/db/SA/firebaseSA";
 
 import {
   persistState as persistState,
@@ -19,9 +19,9 @@ const useTest = ({
   nav,
   tests,
   changeState,
-  setCongratPage,
   changeStateNoEffect,
   setRunTestsPageRecap,
+  runAccomplish,
 }) => {
   const [currTask, setCurrTask] = useState({});
   const editorRef = useRef(null);
@@ -39,28 +39,6 @@ const useTest = ({
       }
     });
   }
-
-  const runAccomplish = async () => {
-    const state = loadStatePersisted();
-    // getData(
-    //   encrypt2({
-    //     chapter: nav.chapter,
-    //     errors: 0,
-    //     nextchapters: nav.nextchapters,
-    //     pts: state.pts,
-    //   })
-    // );
-    // const unlocked = await saveChapterCompleted({
-    //   chapter: nav.chapter,
-    //   errors: 0,
-    //   nextchapters: nav.nextchapters,
-    //   pts: state.pts,
-    // });
-    setCongratPage({
-      unlockedtoshow: unlocked,
-      lastcompleted: nav.chapter,
-    });
-  };
 
   useEffect(() => {
     reRunTaskOrCompleteTest();
@@ -111,20 +89,20 @@ const useTest = ({
     //   currentchapter: chapter,
     //   userid,
     // });
-    const zu = await getData(
-      encrypt2({
-        chapter: nav.chapter,
-        errors: 0,
-        nextchapters: nav.nextchapters,
-        pts: state.pts,
-        uid: user.userid,
-      })
-    );
-    console.log("fffff", zu);
+    // const zu = await setUseMetaData(
+    //   encrypt2({
+    //     chapter: nav.chapter,
+    //     errors: 0,
+    //     nextchapters: nav.nextchapters,
+    //     pts: state.pts,
+    //     uid: user.userid,
+    //   })
+    // );
 
     editorRef.current.getModel().setValue("");
     switch (true) {
       case nav.taskId != tests.length - 1 && !error:
+        console.log("yoyo");
         changeState({
           data: {
             taskId: nav.taskId + 1,
@@ -135,10 +113,12 @@ const useTest = ({
       case nav.taskId == tests.length - 1 && !error:
         if (
           nav.taskstage == "recap" ||
-          nav.taskstage == "accomplished_suspended" ||
-          nav.recapTasks.length == 0
+          nav.taskstage == "accomplished_suspended"
         ) {
-          runAccomplish();
+          runAccomplish(getSense());
+        }
+        if (nav.recapTasks.length == 0) {
+          runAccomplish(getSense() + 1);
         }
         if (
           nav.recapTasks.length > 0 &&

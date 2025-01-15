@@ -5,17 +5,18 @@ export const getUserId = () => {
   return localStorage.getItem("userid");
 };
 
-export const updateState = (data) => {
+export const updateStateLS = (data) => {
   const state = localStorage.getItem("state");
   if (stn.needCt) {
     const stateLS = state != null ? JSON.parse(decrypt2(state)) : {};
-    localStorage.setItem(
-      "state",
-      encrypt2(JSON.stringify({ ...stateLS, ...data }))
-    );
+    const newVal = { ...stateLS, ...data };
+    localStorage.setItem("state", encrypt2(JSON.stringify(newVal)));
+    return newVal;
   } else {
     const stateLS = state != null ? JSON.parse(state) : {};
-    localStorage.setItem("state", JSON.stringify({ ...stateLS, ...data }));
+    const newVal = { ...stateLS, ...data };
+    localStorage.setItem("state", JSON.stringify(newVal));
+    return newVal;
   }
 };
 
