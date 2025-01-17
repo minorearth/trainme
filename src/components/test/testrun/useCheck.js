@@ -1,8 +1,5 @@
 import { runCheckers, getErrorMessage } from "./taskCheckersUtils";
 import local from "@/globals/local";
-import cowntdown from "@/store/cowntdown";
-import alertdialog from "@/store/dialog";
-import cowntdownbutton from "@/store/cowntdownbutton";
 
 const useCheck = ({ NextTaskOrCompleteTest, runPythonCode, setCode }) => {
   const checkTask = async (code, test) => {
@@ -14,8 +11,14 @@ const useCheck = ({ NextTaskOrCompleteTest, runPythonCode, setCode }) => {
       mustHaveChecked,
       forbiddenChecked
     );
-    NextTaskOrCompleteTest({ error: error != "", errorMsg: error });
+    const isError = error != "";
+    NextTaskOrCompleteTest({
+      error: isError,
+      errorMsg: error,
+      earned: isError ? 0 : 1,
+    });
     setCode("");
+    return error != "";
   };
 
   return { checkTask };

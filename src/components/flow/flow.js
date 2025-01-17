@@ -12,12 +12,19 @@ import {
   Panel,
   useOnViewportChange,
 } from "@xyflow/react";
+import { Box } from "@mui/material";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 
 import "@xyflow/react/dist/base.css";
 import "./styles.css";
 
 import TurboNode from "./components/TurboNode.js";
 import TurboEdge from "./components/TurboEdge.js";
+
+import { BiCoinStack } from "react-icons/bi";
+import { RiLogoutCircleRLine } from "react-icons/ri";
+import alertdialog from "@/store/dialog";
 
 const nodeTypes = {
   turbo: TurboNode,
@@ -32,16 +39,17 @@ const defaultEdgeOptions = {
   markerEnd: "edge-circle",
 };
 
-const Flow = ({ navState, flow }) => {
+const Flow = ({ navState, flow, fit }) => {
   const { fitView } = useReactFlow();
   const [nodes, setNodes, onNodesChange] = useNodesState();
 
   useEffect(() => {
+    console.log("flow rerendered", flow.nodes);
     setEdges(flow.edges);
     setNodes(flow.nodes);
-  }, []);
+  }, [flow]);
 
-  useEffect(() => {
+  const showUnlocked = () => {
     const unlockedNodesToShow = navState.userProgress.lastunlocked;
     if (unlockedNodesToShow.length > 0) {
       for (let i = 0; i < unlockedNodesToShow.length; i++) {
@@ -53,6 +61,11 @@ const Flow = ({ navState, flow }) => {
         }, i * 2000);
       }
     }
+  };
+  fit.current = showUnlocked;
+
+  useEffect(() => {
+    !alertdialog.dialogState.visible && showUnlocked();
   }, [nodes]);
 
   useOnViewportChange({
@@ -89,14 +102,34 @@ const Flow = ({ navState, flow }) => {
       minZoom={1}
     >
       <Controls showInteractive={false} />
-      <Panel position="top-left">
-        <button
-          onClick={() => {
-            fitView({ nodes: [{ id: "1" }], duration: 500 });
+      <Panel position="top-left" style={{ width: "97%" }}>
+        {/* <Box sx={{ width: "100%", opacity: 1, }}> */}
+        <Paper
+          elevation={0}
+          sx={{
+            width: "100%",
+            backgroundColor: "transparent",
+            display: "flex",
+            flexDirection: "row",
+            padding: "4px",
+            justifyContent: "space-evenly",
           }}
         >
-          Focus node
-        </button>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              padding: "4px",
+            }}
+          >
+            <BiCoinStack size={"40px"} />
+            <Typography variant="h4" gutterBottom>
+              {navState.userProgress.rating}
+            </Typography>
+          </Box>
+          <RiLogoutCircleRLine size={"40px"} onClick={() => {}} />
+        </Paper>{" "}
+        {/* </Box> */}
       </Panel>
       <svg>
         <defs>

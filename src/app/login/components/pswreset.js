@@ -5,9 +5,9 @@ import Button from "@mui/material/Button";
 import Link from "./link";
 import Typography from "@mui/material/Typography";
 import { observer } from "mobx-react-lite";
+import { resetPswClient } from "@/db/domain/domain";
 
 import AlertDialog from "@/components/common/dialog";
-import { resetPswClient } from "@/db/domain/domain";
 import alertdialog from "@/store/dialog";
 import local from "@/globals/local";
 import authenticationForm from "@/store/authentication";
@@ -18,6 +18,7 @@ const PswReset = observer(() => {
     alertdialog.showDialog(
       local.ru.msg.alert.PSW_RECOVERY_TITLE,
       local.ru.msg.alert.PSW_RECOVERY_TEXT,
+      1,
       () => {
         authenticationForm.showSignIn();
       }

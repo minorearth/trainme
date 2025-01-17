@@ -8,33 +8,47 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from "@mui/icons-material/Lock";
 import CheckIcon from "@mui/icons-material/Check";
+import { IoPricetag } from "react-icons/io5";
+import { BiCoinStack } from "react-icons/bi";
+import { RiArrowRightLine } from "react-icons/ri";
+import { GoArrowRight } from "react-icons/go";
+
+import { BsUnlock } from "react-icons/bs";
 
 const TurboNode = memo(({ data }) => {
   return (
     <>
       <div className="cloud gradient">
         <div style={{ width: "30px" }}>
-          {data.unlocked ? (
-            <LockOpenIcon />
-          ) : data.completed ? (
+          {data.completed ? (
             <CheckIcon />
+          ) : data.unlocked ? (
+            <LockOpenIcon />
           ) : (
             <LockIcon />
           )}
         </div>
       </div>
 
-      <div className="wrapper gradient" onClick={() => data.action(data.id)}>
+      <div className="wrapper gradient" onClick={() => data.action(data)}>
         <div className="inner">
           <div className="body">
-            <div className="icon">
-              <FunctionIcon />
-            </div>
-            <div>
-              <pre>
+            <div style={{ width: "100%" }}>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <div className="icon">
+                  <FunctionIcon />
+                </div>
                 <div className="title">{data.title}</div>
-              </pre>
+              </div>
               {data.subline && <div className="subline">{data.subline}</div>}
+              {data.unlockpts && !data.paid && (
+                <div className="cost">
+                  <BiCoinStack />
+                  <p>{data.unlockpts}</p>
+                  <GoArrowRight />
+                  <BsUnlock />
+                </div>
+              )}
             </div>
           </div>
           <Handle type="target" position={Position.Left} />

@@ -12,7 +12,6 @@ import usePythonRunner from "./withPythonRunner";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import LinearProgressWithLabel from "@/components/test/testrun/components/LinearProgress";
 import useCheck from "./useCheck";
@@ -34,6 +33,7 @@ const Test = observer(({ tests, actions, nav }) => {
     setOutput,
     setEditorDisabled,
     handleEditorDidMount,
+    getSense,
   } = useTest({
     nav,
     tests,
@@ -62,7 +62,6 @@ const Test = observer(({ tests, actions, nav }) => {
         padding: "5px",
       }}
     >
-      {/* <LinearProgressWithLabel value={(nav.taskId / tests.length) * 100} / */}
       <LinearProgressWithLabel
         value={((nav.taskId + 1) / tests.length) * 100}
         label={`${nav.taskId + 1}\\${tests.length}`}
@@ -124,8 +123,7 @@ const Test = observer(({ tests, actions, nav }) => {
           <Button
             onClick={async (e) => {
               if (!pyodide2 || executing) return;
-
-              await checkTask(currTask.code, tests[nav.taskId], tests.length);
+              checkTask(currTask.code, tests[nav.taskId], tests.length);
             }}
             disabled={!pyodide2 || executing}
             variant="outlined"

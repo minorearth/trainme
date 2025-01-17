@@ -28,7 +28,6 @@ export function encrypt2(data) {
 }
 
 export function decrypt2(data) {
-  console.log("asdasd", data);
   var bytes = AES.decrypt(data, key, { iv: iv });
   var decryptedData = JSON.parse(bytes.toString(enc.Utf8));
   return decryptedData;

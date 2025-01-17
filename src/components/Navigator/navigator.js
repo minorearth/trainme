@@ -13,12 +13,14 @@ import AlertDialog from "@/components/common/dialog";
 import { observer } from "mobx-react-lite";
 import Countdown from "../common/countdown/countdown";
 import countdown from "@/store/cowntdown";
-import { useEffect } from "react";
-import { setUseMetaData } from "@/db/SA/firebaseSA";
-import { getDocDataFromCollectionByIdClient } from "@/db/domain/domain";
+import { useEffect, useRef } from "react";
+import { Button } from "@mui/material";
+import { resetUseMetaData } from "@/db/SA/firebaseSA";
 
 const Navigator = observer(() => {
-  const { actions, navState, loading, tests, userid, flow } = useNavigator();
+  const fit = useRef();
+
+  const { actions, navState, loading, tests, userid, flow } = useNavigator(fit);
 
   const darkTheme = createTheme({
     palette: {
@@ -41,8 +43,15 @@ const Navigator = observer(() => {
           height: "100vh",
         }}
       >
-        <AlertDialog />
         {countdown.dialogState.visible && <Countdown />}
+        <AlertDialog />
+        <Button
+          onClick={() => {
+            resetUseMetaData();
+          }}
+        >
+          reset
+        </Button>
 
         {navState.page == "flow" && !loading && !!flow && (
           <ReactFlowProvider>
@@ -50,12 +59,13 @@ const Navigator = observer(() => {
               setTestsStartedPage={actions.setTestsStartedPage}
               navState={navState}
               flow={flow}
+              fit={fit}
             />
           </ReactFlowProvider>
         )}
 
         {navState.page == "testsStarted" && !loading && (
-          <Start setRunTestsPage={actions.setRunTestsPage} />
+          <Start actions={actions} nav={navState} />
         )}
 
         {navState.page == "testrun" && tests?.length != 0 && (
@@ -63,7 +73,11 @@ const Navigator = observer(() => {
         )}
 
         {navState.page == "congrat" && (
-          <Congrat setTestAccomplished={actions.setTestAccomplished} />
+          <Congrat
+            setTestAccomplished={actions.setTestAccomplished}
+            nav={navState}
+            actions={actions}
+          />
         )}
       </Box>
     </ThemeProvider>

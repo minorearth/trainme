@@ -31,11 +31,8 @@ onAuthStateChanged(auth, (fbuser) => {
     // https://firebase.google.com/docs/reference/js/auth.user
     const uid = fbuser.uid;
     user.setUserid(uid);
-    console.log("here we go");
     // ...
   } else {
-    console.log("here we go agaaain");
-
     // User is signed out
     // ...
   }

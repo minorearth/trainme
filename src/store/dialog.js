@@ -2,15 +2,21 @@ import { makeObservable, makeAutoObservable } from "mobx";
 class alertdialog {
   dialogState = { visible: false, text: "", title: "" };
 
-  showDialog(title, text, action = () => {}) {
+  showDialog(title, text, type, actionOk = () => {}, actionCancel = () => {}) {
     this.dialogState.title = title;
     this.dialogState.text = text;
     this.dialogState.visible = true;
-    this.dialogState.action = action;
+    this.dialogState.actionOk = actionOk;
+    this.dialogState.actionCancel = actionCancel;
+    this.dialogState.type = type;
   }
-  closeDialog() {
+  okDialog() {
     this.dialogState.visible = false;
-    this.dialogState.action();
+    this.dialogState.actionOk();
+  }
+  cancelDialog() {
+    this.dialogState.visible = false;
+    this.dialogState.actionCancel();
   }
 
   constructor() {

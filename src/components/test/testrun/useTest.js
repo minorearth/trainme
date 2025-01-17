@@ -55,13 +55,16 @@ const useTest = ({
     switch (true) {
       case nav.taskId == tests.length - 1 &&
         nav.taskstage == "accomplished_suspended":
-        runAccomplish();
+        // const pts = getSense();
+        // changeStateNoEffect({ pts });
+        runAccomplish(pts);
         return;
       case nav.taskId == tests.length - 1 && nav.taskstage == "recap_suspended":
         changeState({ data: { taskstage: "recap" } });
         dialog.showDialog(
           "Повторение",
           "Попробуй еще раз решить ошибочные задачи",
+          1,
           () => setRunTestsPageRecap(nav.recapTasks)
         );
         return;
@@ -80,33 +83,14 @@ const useTest = ({
     }
   };
 
-  const NextTaskOrCompleteTest = async ({ error, errorMsg }) => {
-    const state = loadStatePersisted();
-    // setValueObj("profile", {
-    //   unlocked: [...nextchapters],
-    //   completed: [...profile.completed, chapter],
-    //   stats: [...profile.stats, { chapter, errors }],
-    //   currentchapter: chapter,
-    //   userid,
-    // });
-    // const zu = await setUseMetaData(
-    //   encrypt2({
-    //     chapter: nav.chapter,
-    //     errors: 0,
-    //     nextchapters: nav.nextchapters,
-    //     pts: state.pts,
-    //     uid: user.userid,
-    //   })
-    // );
-
+  const NextTaskOrCompleteTest = async ({ error, errorMsg, earned = 0 }) => {
     editorRef.current.getModel().setValue("");
     switch (true) {
       case nav.taskId != tests.length - 1 && !error:
-        console.log("yoyo");
         changeState({
           data: {
             taskId: nav.taskId + 1,
-            pts: getSense() + 1,
+            pts: getSense() + earned,
           },
         });
         return;
@@ -115,19 +99,25 @@ const useTest = ({
           nav.taskstage == "recap" ||
           nav.taskstage == "accomplished_suspended"
         ) {
-          runAccomplish(getSense());
+          const pts = getSense();
+          runAccomplish(pts);
         }
         if (nav.recapTasks.length == 0) {
-          runAccomplish(getSense() + 1);
+          const pts = getSense() + earned;
+          // changeStateNoEffect({ pts });
+          runAccomplish(pts);
         }
         if (
           nav.recapTasks.length > 0 &&
           (nav.taskstage == "WIP" || nav.taskstage == "recap_suspended")
         ) {
-          changeState({ data: { taskstage: "recap" } });
+          changeState({
+            data: { taskstage: "recap", pts: getSense() + earned },
+          });
           dialog.showDialog(
             "Повторение",
             "Попробуй еще раз решить ошибочные задачи",
+            1,
             () => setRunTestsPageRecap(nav.recapTasks)
           );
         }
@@ -137,8 +127,9 @@ const useTest = ({
         alertdialog.showDialog(
           local.ru.msg.alert.PSW_TEST_ERROR,
           `${errorMsg}. Смотри верный код в окне редактора`,
+          1,
+
           () => {
-            console.log(tests, nav.taskId, nav);
             setCode(tests[nav.taskId].rightcode);
             setEditorDisabled(true);
             cowntdownbutton.showDialog();
@@ -210,6 +201,7 @@ const useTest = ({
     setOutput,
     setEditorDisabled,
     handleEditorDidMount,
+    getSense,
   };
 };
 

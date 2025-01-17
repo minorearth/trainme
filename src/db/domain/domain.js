@@ -71,7 +71,6 @@ export const getDocDataFromCollectionByIdClient = async (
   collectionName,
   id
 ) => {
-  console.log("rrrrrrr", collectionName, id);
   return await getDocDataFromCollectionById(db, collectionName, id);
 };
 

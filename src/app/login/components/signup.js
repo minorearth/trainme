@@ -35,6 +35,7 @@ const SignUp = () => {
       dialog.showDialog(
         local.ru.msg.alert.PSW_ACOUNT_CREATED_TITLE,
         local.ru.msg.alert.PSW_ACOUNT_CREATED_TEXT,
+        1,
         () => {
           authenticationForm.showSignIn();
         }

@@ -11,13 +11,12 @@ import alertdialog from "@/store/dialog";
 import local from "@/globals/local";
 import GradientBox from "@/components/gradientBox";
 import { Box } from "@mui/material";
-import "./dialog.css";
 
 const AlertDialog = observer(() => {
   return (
     <Dialog
       open={alertdialog.dialogState.visible}
-      onClose={() => alertdialog.closeDialog()}
+      onClose={() => alertdialog.okDialog()}
       sx={{
         "& .MuiPaper-root": {
           backgroundImage:
@@ -31,21 +30,6 @@ const AlertDialog = observer(() => {
             transform: "translate(-50%, -50%) rotate(-360deg)",
           },
         },
-        // "& .MuiPaper-root::before": {
-        //   content: "''",
-        //   position: "absolute",
-        //   height: "100%",
-        //   width: "100%",
-        //   top: "40%",
-        //   left: "50%",
-        //   translate: "-50% -50%",
-
-        //   backgroundImage:
-        //     "conic-gradient(  #e92a67,#a853ba,#2a8af6, #2a8af600,  #e92a67)",
-        //   filter: "blur(15rem)",
-        //   padding: "5px",
-        //   // zIndex: "-1",
-        // },
         "& .MuiTypography-root": { backgroundColor: "black" },
         "& .MuiDialogContent-root": { backgroundColor: "black" },
         "& .MuiDialogActions-root": { backgroundColor: "black" },
@@ -56,9 +40,16 @@ const AlertDialog = observer(() => {
         <DialogContentText>{alertdialog.dialogState.text}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => alertdialog.closeDialog()} autoFocus>
+        <Button
+          onClick={() => {
+            alertdialog.okDialog();
+          }}
+        >
           {local.ru.caption.ALERT_OK}
         </Button>
+        {alertdialog.dialogState.type == 2 && (
+          <Button onClick={() => alertdialog.cancelDialog()}>{"Отмена"}</Button>
+        )}
       </DialogActions>
     </Dialog>
   );

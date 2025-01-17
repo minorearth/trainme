@@ -4,8 +4,18 @@ import Button from "@mui/material/Button";
 import CongratAnimation from "@/components/test/congrat/congratulation/congratAnimation";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { useTheme } from "@mui/material/styles";
+import TextAnimated from "@/components/common/textAnimated/textAnimated";
+import { useEffect, useState } from "react";
+import { loadStatePersisted } from "@/db/localstorage";
 
-const Congrat = ({ setTestAccomplished }) => {
+let pts;
+const Congrat = ({ setTestAccomplished, nav, actions }) => {
+  const [pts, setPts] = useState(10);
+  useEffect(() => {
+    const { pts } = loadStatePersisted();
+    setPts(pts);
+  }, []);
+
   const theme = useTheme();
   return (
     <Box
@@ -20,12 +30,17 @@ const Congrat = ({ setTestAccomplished }) => {
       }}
     >
       <CongratAnimation />
+      <Box sx={{}}></Box>
+      {pts != 0 && <TextAnimated text={`Вы заработали ${pts} очков`} />}
 
       <Button
         sx={{ mt: 3, mb: 3 }}
         variant="outlined"
         aria-label="repeat"
-        onClick={() => setTestAccomplished(false)}
+        onClick={async () => {
+          await actions.reLoadFlow();
+          setTestAccomplished(false);
+        }}
         endIcon={<ReplayIcon />}
       >
         {"Вернуться к курсу"}

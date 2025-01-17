@@ -80,7 +80,7 @@ const local = {
 
       AUTH_LOGOUT: "Выйти",
 
-      ALERT_OK: "Понятно",
+      ALERT_OK: "Ok",
     },
     msg: {
       snack: {

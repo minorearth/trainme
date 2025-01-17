@@ -36,16 +36,9 @@ const checkForbidden = (code, musthave, musthaveRe) => {
   const codeLines = cleanUpCode(code).join();
   const forbiddenCheck1 = musthave.map((item) => !codeLines.includes(item));
   const forbiddenCheck = forbiddenCheck1.every(Boolean);
-  console.log(forbiddenCheck1, forbiddenCheck, musthave, musthaveRe, code);
 
   const forbiddenReCheck1 = musthaveRe.map((item) => {
     const regex = new RegExp(item, "g");
-    console.log(
-      regex,
-      codeLines,
-      codeLines.match(regex),
-      codeLines.match(regex) == null
-    );
 
     return codeLines.match(regex) == null;
   });
@@ -82,7 +75,6 @@ export const runCheckers = async (code, test, runPythonCode) => {
     test.restrictions.forbidden,
     test.restrictions.forbiddenRe
   );
-  console.log(codeChecked, linesChecked, mustHaveChecked, forbiddenChecked);
   return { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked };
 };
 
@@ -94,7 +86,6 @@ export const getErrorMessage = (
 ) => {
   const intro = "Ты допустил следующие ошибки: ";
   const errorList = [];
-  // console.log(codeChecked, linesChecked, mustHaveChecked);
   !codeChecked && errorList.push(stn.errors.error4);
   !mustHaveChecked && errorList.push(stn.errors.error1);
   !linesChecked && errorList.push(stn.errors.error2);
@@ -113,24 +104,3 @@ export const getErrorMessage = (
       return "";
   }
 };
-
-// export const getErrorMessage = (
-//   codeChecked,
-//   linesChecked,
-//   mustHaveChecked,
-//   forbiddenChecked
-// ) => {
-//   console.log(codeChecked, linesChecked, mustHaveChecked);
-//   switch (true) {
-//     case [!mustHaveChecked, codeChecked, linesChecked].every(Boolean):
-//       return stn.errors.error1;
-//     case [mustHaveChecked, codeChecked, !linesChecked].every(Boolean):
-//       return stn.errors.error2;
-//     case [!mustHaveChecked, codeChecked, !linesChecked].every(Boolean):
-//       return stn.errors.error3;
-//     case [!codeChecked].every(Boolean):
-//       return stn.errors.error4;
-//     case [codeChecked && linesChecked && mustHaveChecked].every(Boolean):
-//       return "";
-//   }
-// };

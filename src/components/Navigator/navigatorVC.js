@@ -5,19 +5,14 @@ import {
   loadStatePersisted,
   updateStateLS,
 } from "@/db/localstorage";
-// import { auth } from "@/db/domain/firebaseapp";
-import { getAuth } from "firebase/auth";
 import user from "@/store/user";
 import { getTests, setFlowNodes, getTestsRecap } from "./navigatorVM";
 import { getUseMetaData } from "@/db/SA/firebaseSA";
-
-// import { saveChapterCompleted } from "@/db/domain";
-
 import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
 import { setUseMetaData } from "@/db/SA/firebaseSA";
 import { getTargetsBySource } from "./utils";
 
-const useNavigator = () => {
+const useNavigator = (fit) => {
   const userid = "1";
   const [loading, setLoading] = useState(true);
   const [tests, setTests] = useState([]);
@@ -28,7 +23,6 @@ const useNavigator = () => {
     page: "flow",
     chapter: -1,
     taskId: 0,
-    // nextchapters: [],
     recapTasks: [],
     taskstage: "",
     pts: 0,
@@ -36,20 +30,24 @@ const useNavigator = () => {
 
   const reLoadFlow = async () => {
     const userProgress = await getUseMetaData(user.userid);
-    console.log("userProgress", userProgress);
-    setFlowNodes({ progress: userProgress, setFlow, setTestsStartedPage });
+    const state = loadStatePersisted();
+
+    setFlowNodes({
+      progress: userProgress,
+      setFlow,
+      setTestsStartedPage,
+      reLoadFlow,
+    });
     const statePers = updateStateLS({
       ...initialState,
-      userProgress: {
-        unlocked: userProgress.unlocked,
-        completed: userProgress.completed,
-        lastunlocked: userProgress.lastunlocked,
-      },
+      ...state,
+      userProgress,
       uid: user.userid,
     });
     setNavState(statePers);
     return statePers;
   };
+
   useEffect(() => {
     const doLoad = async () => {
       const statePers = await reLoadFlow();
@@ -72,71 +70,6 @@ const useNavigator = () => {
     doLoad();
   }, [user]);
 
-  const setTestsStartedPage = async (chapter) => {
-    setNavState((state) => {
-      const newState = {
-        ...state,
-        chapter,
-        page: "testsStarted",
-        taskId: 0,
-        recapTasks: [],
-        // nextchapters,
-        taskstage: "WIP",
-      };
-      persistState(newState);
-      return newState;
-    });
-    const tasks = await getTests(chapter);
-    setTests(tasks);
-  };
-
-  const setRunTestsPage = () => {
-    setNavState((state) => {
-      const newState = { ...state, page: "testrun" };
-      persistState({ ...state, page: "testrun" });
-      return newState;
-    });
-  };
-
-  const setRunTestsPageRecap = (recapTasks) => {
-    setNavState((state) => {
-      const newState = { ...state, taskstage: "recap", taskId: 0 };
-      persistState(newState);
-      return newState;
-    });
-    setTests(getTestsRecap(navState.chapter, recapTasks, tests));
-  };
-
-  const setCongratPage = () => {
-    setTests([]);
-    setNavState((state) => {
-      const newState = {
-        ...state,
-        taskstage: "WIP",
-        page: "congrat",
-        pts: 0,
-      };
-      persistState(newState);
-      return newState;
-    });
-  };
-
-  const setTestInterrupted = () => {
-    setNavState((state) => {
-      const newState = { ...state, page: "flow", taskstage: "" };
-      persistState(newState);
-      return newState;
-    });
-  };
-
-  const setTestAccomplished = () => {
-    setNavState((state) => {
-      const newState = { ...state, page: "flow" };
-      persistState(newState);
-      return newState;
-    });
-  };
-
   const changeState = ({ data }) => {
     setNavState((state) => {
       const newState = { ...state, ...data };
@@ -145,32 +78,63 @@ const useNavigator = () => {
     });
   };
 
+  const setTestsStartedPage = async ({ chapter, repeat }) => {
+    changeState({
+      data: {
+        chapter,
+        page: "testsStarted",
+        taskId: 0,
+        recapTasks: [],
+        taskstage: "WIP",
+        repeat,
+      },
+    });
+    const tasks = await getTests(chapter);
+    setTests(tasks);
+  };
+
+  const setRunTestsPageRecap = (recapTasks) => {
+    changeState({ data: { taskstage: "recap", taskId: 0 } });
+    setTests(getTestsRecap(navState.chapter, recapTasks, tests));
+  };
+
+  const setCongratPage = (pts) => {
+    changeState({ data: { page: "congrat", pts } });
+  };
+
+  const setTestInterrupted = () => {
+    changeState({ data: { page: "flow", taskstage: "" } });
+  };
+
+  const setTestAccomplished = () => {
+    changeState({ data: { page: "flow", pts: 0, taskstage: "" } });
+    // fit.current();
+  };
+
   const changeStateNoEffect = (data) => {
     const state = loadStatePersisted();
     persistState({ ...state, ...data });
   };
 
   const runAccomplish = async (pts) => {
-    const state = loadStatePersisted();
-    const lastcompleted = navState.chapter;
-    if (lastcompleted != "") {
-      const unlocked = getTargetsBySource(lastcompleted, flow.edges);
+    if (!navState.repeat) {
+      const unlocked = getTargetsBySource(navState.chapter, flow.edges);
       await setUseMetaData(
         encrypt2({
-          lastcompleted,
+          lastcompleted: navState.chapter,
           unlocked,
           pts,
           uid: user.userid,
         })
       );
-      await reLoadFlow();
+      setCongratPage(pts);
+    } else {
+      setCongratPage(0);
     }
-    setCongratPage({});
   };
 
   return {
     actions: {
-      setRunTestsPage,
       changeState,
       changeStateNoEffect,
       setRunTestsPageRecap,
@@ -179,6 +143,7 @@ const useNavigator = () => {
       setTestsStartedPage,
       setCongratPage,
       runAccomplish,
+      reLoadFlow,
     },
     navState,
     loading,
