@@ -124,7 +124,7 @@ export const getTests = async (chapter) => {
         ...task,
         defaultcode: task.rightcode,
       }))
-    : filteredTasks;
+    : filteredTasks.data.tasks;
 
   return res;
 };
