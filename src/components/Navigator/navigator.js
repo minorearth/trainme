@@ -15,7 +15,7 @@ import Countdown from "../common/countdown/countdown";
 import countdown from "@/store/cowntdown";
 import { useEffect, useRef } from "react";
 import progress from "@/store/progress";
-import AdminPanel from "@/app/admin/adminpanel";
+import AdminPanel from "@/components/admin/adminpanel";
 import stn from "@/globals/settings";
 
 const Navigator = observer(() => {
