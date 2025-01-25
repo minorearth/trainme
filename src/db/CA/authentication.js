@@ -44,7 +44,7 @@ export const resetPsw = (auth, email) => {
   sendPasswordResetEmail(auth, email);
 };
 
-export const SignUpUser = async (auth, email, password, name, company) => {
+export const SignUpUser = async (auth, email, password, name) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -53,7 +53,7 @@ export const SignUpUser = async (auth, email, password, name, company) => {
     );
     const userid = userCredential.user.uid;
     sendEmailVerification(userCredential.user).then(() => {});
-    createNewUserClient(userid, name, company);
+    createNewUserClient(userid, name);
     return userCredential.user.uid;
   } catch (error) {
     const errorCode = error.code;

@@ -15,19 +15,23 @@ import {
 import { Box } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import { useRouter } from "next/navigation";
 
 import "@xyflow/react/dist/base.css";
 import "./styles.css";
 
 import TurboNode from "./components/TurboNode.js";
 import TurboEdge from "./components/TurboEdge.js";
+import AnimNode from "./components/AnimNode";
 
 import { BiCoinStack } from "react-icons/bi";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import alertdialog from "@/store/dialog";
+import { signOutUserClient } from "@/db/domain/domain";
 
 const nodeTypes = {
   turbo: TurboNode,
+  animation: AnimNode,
 };
 
 const edgeTypes = {
@@ -42,6 +46,7 @@ const defaultEdgeOptions = {
 const Flow = ({ navState, flow, fit }) => {
   const { fitView } = useReactFlow();
   const [nodes, setNodes, onNodesChange] = useNodesState();
+  const router = useRouter();
 
   useEffect(() => {
     console.log("flow rerendered", flow.nodes);
@@ -94,6 +99,10 @@ const Flow = ({ navState, flow, fit }) => {
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
+      translateExtent={[
+        [-250, -250],
+        [1000, 2500],
+      ]}
       // fitView
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
@@ -127,7 +136,13 @@ const Flow = ({ navState, flow, fit }) => {
               {navState.userProgress.rating}
             </Typography>
           </Box>
-          <RiLogoutCircleRLine size={"40px"} onClick={() => {}} />
+          <RiLogoutCircleRLine
+            size={"40px"}
+            onClick={async () => {
+              await signOutUserClient();
+              router.push(`/login/`);
+            }}
+          />
         </Paper>{" "}
         {/* </Box> */}
       </Panel>

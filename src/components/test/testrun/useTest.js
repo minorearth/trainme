@@ -55,7 +55,7 @@ const useTest = ({
     switch (true) {
       case nav.taskId == tests.length - 1 &&
         nav.taskstage == "accomplished_suspended":
-        // const pts = getSense();
+        const pts = getSense();
         // changeStateNoEffect({ pts });
         runAccomplish(pts);
         return;
@@ -132,7 +132,7 @@ const useTest = ({
           () => {
             setCode(tests[nav.taskId].rightcode);
             setEditorDisabled(true);
-            cowntdownbutton.showDialog();
+            cowntdownbutton.showButton();
           }
         );
         if (nav.taskstage != "recap" && nav.taskId != tests.length - 1) {

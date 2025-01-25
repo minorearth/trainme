@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import { observer } from "mobx-react-lite";
 import { resetPswClient } from "@/db/domain/domain";
 
-import AlertDialog from "@/components/common/dialog";
+import AlertDialog from "@/components/common/dialog/dialog";
 import alertdialog from "@/store/dialog";
 import local from "@/globals/local";
 import authenticationForm from "@/store/authentication";

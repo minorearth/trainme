@@ -1,14 +1,14 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 class countdownbutton {
-  dialogState = { visible: false, action: () => {} };
+  state = { visible: false, action: () => {} };
 
-  showDialog(action = () => {}) {
-    this.dialogState.visible = true;
-    this.dialogState.action = action;
+  showButton(action = () => {}) {
+    this.state.visible = true;
+    this.state.action = action;
   }
-  closeDialog() {
-    this.dialogState.visible = false;
-    this.dialogState.action();
+  hideButton() {
+    this.state.visible = false;
+    this.state.action();
   }
 
   constructor() {

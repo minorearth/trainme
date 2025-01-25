@@ -9,26 +9,48 @@ import Start from "@/components/test/start";
 import Test from "@/components/test/testrun/test";
 import useNavigator from "./navigatorVC";
 import Progress from "@/components/common/progress";
-import AlertDialog from "@/components/common/dialog";
+import AlertDialog from "@/components/common/dialog/dialog";
 import { observer } from "mobx-react-lite";
 import Countdown from "../common/countdown/countdown";
 import countdown from "@/store/cowntdown";
 import { useEffect, useRef } from "react";
-import { Button } from "@mui/material";
-import { resetUseMetaData } from "@/db/SA/firebaseSA";
+import progress from "@/store/progress";
+import AdminPanel from "@/app/admin/adminpanel";
+import stn from "@/globals/settings";
 
 const Navigator = observer(() => {
   const fit = useRef();
+  console.log(
+    "stn.mode.DEV_MODE",
+    stn.mode.DEV_MODE,
+    process.env.NEXT_PUBLIC_DEV_MODE
+  );
 
   const { actions, navState, loading, tests, userid, flow } = useNavigator(fit);
 
+  // https://zenoo.github.io/mui-theme-creator/
   const darkTheme = createTheme({
+    typography: {
+      body1: {
+        fontFamily: "Monaco",
+      },
+    },
+
     palette: {
       mode: "dark",
       background: { default: "#1E1E1E", paper: "#1E1E1E" },
     },
     colorSchemes: {
       dark: true,
+    },
+    components: {
+      MuiInputBase: {
+        styleOverrides: {
+          root: {
+            fontFamily: "Monaco",
+          },
+        },
+      },
     },
   });
 
@@ -43,15 +65,10 @@ const Navigator = observer(() => {
           height: "100vh",
         }}
       >
+        <Progress open={progress.showProgress} />
         {countdown.dialogState.visible && <Countdown />}
         <AlertDialog />
-        <Button
-          onClick={() => {
-            resetUseMetaData();
-          }}
-        >
-          reset
-        </Button>
+        {stn.mode.DEV_MODE && <AdminPanel flow={flow} />}
 
         {navState.page == "flow" && !loading && !!flow && (
           <ReactFlowProvider>

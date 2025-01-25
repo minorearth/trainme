@@ -12,7 +12,7 @@ import { logout } from "@/db/SA/session";
 import { observer } from "mobx-react-lite";
 
 import { signInClient } from "@/db/domain/domain";
-import AlertDialog from "@/components/common/dialog";
+import AlertDialog from "@/components/common/dialog/dialog";
 import user from "@/store/user";
 import Snack from "@/components/common/snackbar";
 import authenticationForm from "@/store/authentication";

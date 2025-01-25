@@ -3,6 +3,9 @@ import alertdialog from "@/store/dialog";
 import { payChapter } from "@/db/SA/firebaseSA";
 import { encrypt2 } from "@/globals/utils/encryption";
 import user from "@/store/user";
+import stn from "@/globals/settings";
+import cowntdownbutton from "@/store/cowntdownbutton";
+import progressCircle from "@/store/progress";
 
 const fullFillProgess = (
   progress,
@@ -40,14 +43,24 @@ const fullFillProgess = (
             () => {}
           );
         }
-        if (unlocked && !paid && rating >= unlockpts) {
+        if (
+          unlocked &&
+          !paid &&
+          rating >= unlockpts &&
+          !progressCircle.showProgress
+        ) {
           alertdialog.showDialog(
             "Не  оплачен",
             "Данный раздел не оплачен. Купить?",
             2,
             async () => {
-              await payChapter(encrypt2({ pts: -unlockpts, id, uid }));
-              reLoadFlow();
+              progressCircle.setShowProgress(true);
+              await payChapter(
+                encrypt2({ pts: -unlockpts, id, uid, lastunlocked: [id] })
+              );
+              data.paid = true;
+              await reLoadFlow();
+              progressCircle.setShowProgress(false);
             },
             () => {}
           );
@@ -63,6 +76,7 @@ const fullFillProgess = (
         }
 
         if (unlocked && paid && !completed) {
+          cowntdownbutton.hideButton();
           setTestsStartedPage({ chapter: id, repeat: false });
         }
         if (unlocked && paid && completed) {
@@ -92,6 +106,7 @@ export const setFlowNodes = async ({
         setTestsStartedPage,
         reLoadFlow
       );
+      console.log("nodesss", nodes);
       setFlow({ edges, nodes });
     }
   );
@@ -104,7 +119,14 @@ export const getTests = async (chapter) => {
     "tasks",
     chapter
   );
-  return filteredTasks.data.tasks;
+  const res = stn.mode.ALL_RIGHT_CODE
+    ? filteredTasks.data.tasks.map((task) => ({
+        ...task,
+        defaultcode: task.rightcode,
+      }))
+    : filteredTasks;
+
+  return res;
 };
 
 export const getTestsRecap = (chapter, recapTasks, tasks) => {

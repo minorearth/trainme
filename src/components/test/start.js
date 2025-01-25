@@ -16,9 +16,10 @@ export default function Start({ actions, nav }) {
         width: "100%",
         height: "100%",
         display: "flex",
-        flexDirection: "row",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        justifyItems: "center",
         backgroundColor: theme.palette.background.default,
       }}
     >
@@ -28,10 +29,19 @@ export default function Start({ actions, nav }) {
         }}
         variant="outlined"
       >
-        Начать урок
+        {nav.repeat ? "Повторяем урок" : "Начать урок"}
       </Button>
-      <Typography sx={{ textAlign: "center" }}>
-        {nav.repeat ? "Повторение" : "Новьё"}
+      <Typography
+        sx={{
+          textAlign: "center",
+          maxWidth: "600px",
+          width: "70%",
+          marginTop: "20px",
+        }}
+      >
+        {!nav.repeat
+          ? "Постарайтесь решить задачу с первого раза, за это начисляются монеты, которые используются для открытия новых уроков"
+          : "В режиме повторения начисляется гораздо меньше монет"}
       </Typography>
     </Box>
   );

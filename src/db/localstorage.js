@@ -7,7 +7,7 @@ export const getUserId = () => {
 
 export const updateStateLS = (data) => {
   const state = localStorage.getItem("state");
-  if (stn.needCt) {
+  if (stn.mode.needCt) {
     const stateLS = state != null ? JSON.parse(decrypt2(state)) : {};
     const newVal = { ...stateLS, ...data };
     localStorage.setItem("state", encrypt2(JSON.stringify(newVal)));
@@ -21,7 +21,7 @@ export const updateStateLS = (data) => {
 };
 
 export const persistState = (state) => {
-  if (stn.needCt) {
+  if (stn.mode.needCt) {
     localStorage.setItem("state", encrypt2(JSON.stringify(state)));
   } else {
     localStorage.setItem("state", JSON.stringify(state));
@@ -30,7 +30,7 @@ export const persistState = (state) => {
 
 export const loadStatePersisted = () => {
   const state = localStorage.getItem("state");
-  if (stn.needCt) {
+  if (stn.mode.needCt) {
     return state != null ? JSON.parse(decrypt2(state)) : null;
   } else {
     return state != null ? JSON.parse(state) : null;

@@ -139,8 +139,8 @@ export const deleteDocFromCollectionClient = async (collectionName, id) => {
 //   await deleteFile(storage, relativePath);
 // };
 
-export const createNewUserClient = async (userId, name, company) => {
-  return await createNewUser(db, userId, name, company);
+export const createNewUserClient = async (userId, name) => {
+  return await createNewUser(db, userId, name);
 };
 
 // export const createIndexspealout = async (manager, slice) => {
@@ -163,13 +163,13 @@ export const resetPswClient = (email) => {
   resetPsw(auth, email);
 };
 
-export const SignUpUserClient = async (email, password, name, company) => {
-  await SignUpUser(auth, email, password, name, company);
+export const SignUpUserClient = async (email, password, name) => {
+  await SignUpUser(auth, email, password, name);
 };
 
-// export const signOutUserClient = async () => {
-//   await signOutUser(auth);
-// };
+export const signOutUserClient = async () => {
+  await signOutUser(auth);
+};
 
 // export const backupClient = async () => {
 //   await backup(db);

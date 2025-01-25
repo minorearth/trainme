@@ -119,7 +119,7 @@ const Test = observer(({ tests, actions, nav }) => {
             : "Выполнить"}
         </Button>
 
-        {!cowntdownbutton.dialogState.visible && (
+        {!cowntdownbutton.state.visible && (
           <Button
             onClick={async (e) => {
               if (!pyodide2 || executing) return;
@@ -131,12 +131,12 @@ const Test = observer(({ tests, actions, nav }) => {
             Проверить!
           </Button>
         )}
-        {cowntdownbutton.dialogState.visible && (
+        {cowntdownbutton.state.visible && (
           <CountdownButton
             onClick={() => {
               NextTaskOrCompleteTest({ error: false });
               setEditorDisabled(false);
-              cowntdownbutton.closeDialog();
+              cowntdownbutton.hideButton();
             }}
             variant="outlined"
           />
@@ -202,8 +202,24 @@ const Test = observer(({ tests, actions, nav }) => {
             sx={{
               width: "100%",
               flex: 1,
+              typography: "body1",
             }}
+            // inputProps={{
+            //   style: {
+            //     color: "#405D72",
+            //     fontSize: 20,
+            //     // fontStyle: "italic",
+            //     // fontWeight: "bold",
+            //     // fontFamily: myFont.style.fontFamily,
+            //   },
+            // }}
             slotProps={{
+              htmlInput: {
+                style: {
+                  // fontFamily: `Monaco`,
+                  // fontFeatureSettings: `"liga" 0, "calt" 0`,
+                },
+              },
               inputLabel: {
                 shrink: true,
               },

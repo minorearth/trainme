@@ -21,7 +21,7 @@ const CountdownButton = (props) => {
         if (valueRef.current == 0) {
           setIsRunning(false);
           document.getElementById("countdownbtn").click();
-          countdownbutton.closeDialog();
+          countdownbutton.hideButton();
         } else
           setValue((prevState) => {
             valueRef.current = prevState;

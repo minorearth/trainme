@@ -7,7 +7,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
 import { SignUpUserClient } from "@/db/domain/domain";
-import AlertDialog from "@/components/common/dialog";
+import AlertDialog from "@/components/common/dialog/dialog";
 import dialog from "@/store/dialog";
 import local from "@/globals/local";
 import authenticationForm from "@/store/authentication";
@@ -20,18 +20,18 @@ const SignUp = () => {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [nameError, setNameError] = React.useState(false);
   const [nameErrorMessage, setNameErrorMessage] = React.useState("");
-  const [companyError, setCompanyError] = React.useState(false);
-  const [companyErrorMessage, setCompanyErrorMessage] = React.useState("");
+  // const [companyError, setCompanyError] = React.useState(false);
+  // const [companyErrorMessage, setCompanyErrorMessage] = React.useState("");
 
   const handleRegister = async () => {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     const name = document.getElementById("name").value;
-    const company = document.getElementById("company").value;
-    const isValid = validateInputs(email, password, name, company);
+    // const company = document.getElementById("company").value;
+    const isValid = validateInputs(email, password, name);
 
     if (isValid) {
-      const userC = await SignUpUserClient(email, password, name, company);
+      const userC = await SignUpUserClient(email, password, name);
       dialog.showDialog(
         local.ru.msg.alert.PSW_ACOUNT_CREATED_TITLE,
         local.ru.msg.alert.PSW_ACOUNT_CREATED_TEXT,
@@ -43,7 +43,7 @@ const SignUp = () => {
     }
   };
 
-  const validateInputs = (email, password, name, company) => {
+  const validateInputs = (email, password, name) => {
     let isValid = true;
 
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
@@ -73,14 +73,14 @@ const SignUp = () => {
       setNameErrorMessage("");
     }
 
-    if (!company || company.length < 1) {
-      setCompanyError(true);
-      setCompanyErrorMessage(local.ru.msg.snack.AUTH_ENTER_VALID_COMPANY);
-      isValid = false;
-    } else {
-      setCompanyError(false);
-      setCompanyErrorMessage("");
-    }
+    // if (!company || company.length < 1) {
+    //   setCompanyError(true);
+    //   setCompanyErrorMessage(local.ru.msg.snack.AUTH_ENTER_VALID_COMPANY);
+    //   isValid = false;
+    // } else {
+    //   setCompanyError(false);
+    //   setCompanyErrorMessage("");
+    // }
 
     return isValid;
   };
@@ -118,7 +118,7 @@ const SignUp = () => {
           color={nameError ? "error" : "primary"}
         />
       </FormControl>
-      <FormControl>
+      {/* <FormControl>
         <TextField
           name="company"
           label={local.ru.caption.AUTH_ENTER_COMPANY}
@@ -131,7 +131,7 @@ const SignUp = () => {
           helperText={companyErrorMessage}
           color={companyError ? "error" : "primary"}
         />
-      </FormControl>
+      </FormControl> */}
       <FormControl>
         <TextField
           required

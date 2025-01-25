@@ -12,6 +12,7 @@ import { IoPricetag } from "react-icons/io5";
 import { BiCoinStack } from "react-icons/bi";
 import { RiArrowRightLine } from "react-icons/ri";
 import { GoArrowRight } from "react-icons/go";
+import CongratAnimation from "@/components/test/congrat/congratulation/congratAnimation";
 
 import { BsUnlock } from "react-icons/bs";
 

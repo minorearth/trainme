@@ -28,6 +28,7 @@ export const getDocsKeyValue = async (db, collectionName, key, value) => {
 };
 
 export const setDocInCollection = async (db, collectionName, data, id) => {
+  console.log("data", data);
   await setDoc(doc(db, collectionName, id), data);
 };
 

@@ -1,6 +1,11 @@
 import local from "./local";
 const stn = {
-  needCt: false,
+  mode: {
+    needCt: false,
+    ALL_RIGHT_CODE: true,
+    DEV_MODE: process.env.NEXT_PUBLIC_DEV_MODE == "YES",
+  },
+  INIT_CHAPTER: "4680f00b-b586-413c-890a-9669b4b7b1c3",
   collections: {
     SURVEY_RESULTS: "surveysresults",
     SURVEYS: "surveys",

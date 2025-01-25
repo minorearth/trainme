@@ -1,7 +1,7 @@
 "use client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import CongratAnimation from "@/components/test/congrat/congratulation/congratAnimation";
+import Animation from "@/components/test/congrat/congratulation/congratAnimation";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { useTheme } from "@mui/material/styles";
 import TextAnimated from "@/components/common/textAnimated/textAnimated";
@@ -29,7 +29,7 @@ const Congrat = ({ setTestAccomplished, nav, actions }) => {
         backgroundColor: theme.palette.background.default,
       }}
     >
-      <CongratAnimation />
+      <Animation width={"700px"} height={"700px"} name={"success"} />
       <Box sx={{}}></Box>
       {pts != 0 && <TextAnimated text={`Вы заработали ${pts} очков`} />}
 

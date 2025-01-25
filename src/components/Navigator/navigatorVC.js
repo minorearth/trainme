@@ -119,6 +119,7 @@ const useNavigator = (fit) => {
   const runAccomplish = async (pts) => {
     if (!navState.repeat) {
       const unlocked = getTargetsBySource(navState.chapter, flow.edges);
+      console.log("unlocked", unlocked);
       await setUseMetaData(
         encrypt2({
           lastcompleted: navState.chapter,

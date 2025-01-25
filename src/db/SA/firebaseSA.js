@@ -12,24 +12,30 @@ export const setUseMetaData = async (data) => {
   const userMetaRef = firestore.collection("usermeta").doc(uid);
   const snapshot = await userMetaRef.get();
   const { rating } = snapshot.data();
-  userMetaRef.update({
-    rating: rating + pts,
-    completed: FieldValue.arrayUnion(lastcompleted),
-    unlocked: FieldValue.arrayUnion(...unlocked),
-    lastunlocked: unlocked,
-  });
+  if (unlocked.length != 0) {
+    userMetaRef.update({
+      rating: rating + pts,
+      completed: FieldValue.arrayUnion(lastcompleted),
+      unlocked: FieldValue.arrayUnion(...unlocked),
+      lastunlocked: unlocked,
+    });
+  } else {
+    userMetaRef.update({
+      rating: rating + pts,
+      completed: FieldValue.arrayUnion(lastcompleted),
+    });
+  }
 };
 
 export const payChapter = async (data) => {
   const firestore = getFirestore();
-  const { pts, id, uid } = decrypt2(data);
+  const { pts, id, uid, lastunlocked } = decrypt2(data);
   console.log("server", decrypt2(data));
   const userMetaRef = firestore.collection("usermeta").doc(uid);
-  // const snapshot = await userMetaRef.get();
-  // const { rating } = snapshot.data();
   userMetaRef.update({
     rating: FieldValue.increment(pts),
     paid: FieldValue.arrayUnion(id),
+    lastunlocked,
   });
 };
 
@@ -41,6 +47,32 @@ export const resetUseMetaData = async () => {
   userMetaRef.update({
     completed: [],
     unlocked: ["4680f00b-b586-413c-890a-9669b4b7b1c3"],
+    lastunlocked: ["4680f00b-b586-413c-890a-9669b4b7b1c3"],
+    paid: [],
+  });
+};
+
+export const unlockAndCompleteAll = async (unlocked) => {
+  const firestore = getFirestore();
+  const userMetaRef = firestore
+    .collection("usermeta")
+    .doc("EoufdeogIZN2e02o7MulUGhnscR2");
+  userMetaRef.update({
+    completed: unlocked,
+    unlocked,
+    lastunlocked: ["4680f00b-b586-413c-890a-9669b4b7b1c3"],
+    paid: [],
+  });
+};
+
+export const unlockAll = async (unlocked) => {
+  const firestore = getFirestore();
+  const userMetaRef = firestore
+    .collection("usermeta")
+    .doc("EoufdeogIZN2e02o7MulUGhnscR2");
+  userMetaRef.update({
+    completed: [],
+    unlocked,
     lastunlocked: ["4680f00b-b586-413c-890a-9669b4b7b1c3"],
     paid: [],
   });
