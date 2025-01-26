@@ -5,16 +5,21 @@ import Avatar from "@mui/material/Avatar";
 import CssBaseline from "@mui/material/CssBaseline";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import local from "@/globals/local";
+import background from "./background.json";
+
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 function Copyright(props) {
   return (
     <Typography
-      variant="body2"
+      // variant="body2"
       color="text.secondary"
       align="center"
       {...props}
@@ -34,18 +39,31 @@ const Layout = ({ children }) => {
     <Grid container component="main" sx={{ height: "100vh" }}>
       <CssBaseline />
       <Grid
-        item
-        xs={false}
-        sm={4}
-        md={7}
-        sx={{
-          backgroundImage: `url(/wall.jpg)`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        size={{ xs: 0, sm: 6, md: 8 }}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        sx={
+          {
+            // backgroundImage: `url(/wall.jpg)`,
+            // backgroundRepeat: "no-repeat",
+            // backgroundSize: "cover",
+            // backgroundPosition: "center",
+          }
+        }
+      >
+        <Lottie
+          // style={{ al }}
+          animationData={background}
+          loop={true}
+        ></Lottie>
+      </Grid>
+      <Grid
+        size={{ xs: 12, sm: 6, md: 4 }}
+        component={Paper}
+        elevation={6}
+        square
+      >
         <Box
           sx={{
             my: 8,

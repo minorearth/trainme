@@ -10,7 +10,7 @@ const local = {
       APP_DESCRIPTION: "Быстрёнок-самый быстрый способ собрать фото и файлы",
       DROP_UNITS: "байт",
       AUTH_REMEMBER: "Вспомнил!",
-      AUTH_FORGOT: "Забыли пароль?",
+      AUTH_FORGOT: "Сбросить пароль",
       AUTH_HAVE_ACCOUNT: "Уже есть аккаунт?",
       AUTH_HAVE_NOACCOUNT: "Нет аккаунта?",
       PICK_SURVEY_TYPE: "Что будем делать?",
@@ -69,7 +69,7 @@ const local = {
       AUTH_ENTER_PSW: "Введите пароль",
       AUTH_ENTER_NAME: "Введите имя",
       AUTH_ENTER_COMPANY: "Введите организацию",
-      AUTH_SIGNUP: "Зарегистрироваться",
+      AUTH_SIGNUP: "Создать",
 
       FILE_TYPE_IMG: "Изображения",
       FILE_TYPE_ANYFILE: "Любые файлы",
@@ -92,9 +92,12 @@ const local = {
         JOB_DONE: "Все OK! Молодец",
         WRONG_EXT: "Файл не поддерживается, возможно нужно добавить расширение",
 
-        AUTH_ENTER_VALID_EMAIL: "Please enter a valid email address.",
+        AUTH_ENTER_VALID_EMAIL: "Введите правильный email",
+        // AUTH_ENTER_VALID_EMAIL: "Please enter a valid email address.",
         AUTH_ENTER_VALID_PSW: "Password must be at least 6 characters long.",
-        AUTH_ENTER_VALID_NAME: "Name is required.",
+        // AUTH_ENTER_VALID_PSW: "Пароль должен быть более 5 символов",
+        AUTH_ENTER_VALID_NAME: "Введите имя",
+        // AUTH_ENTER_VALID_NAME: "Name is required.",
         AUTH_ENTER_VALID_COMPANY: "Company is required.",
       },
       alert: {

@@ -1,5 +1,7 @@
 import "./globals.css";
 import local from "@/globals/local";
+import { ThemeProvider } from "@mui/material/styles";
+import { darkTheme } from "@/app/theme";
 
 export const metadata = {
   title: local.ru.text.APP_NAME,
@@ -9,7 +11,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <ThemeProvider theme={darkTheme}>
+        <body>{children}</body>
+      </ThemeProvider>
     </html>
   );
 }
