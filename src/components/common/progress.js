@@ -2,6 +2,7 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import { Paper } from "@mui/material";
 
 const Progress = ({ open, perc = 0 }) => {
   return (
@@ -22,13 +23,15 @@ const Progress = ({ open, perc = 0 }) => {
           justifyContent: "center",
         }}
       >
-        <Typography
-          variant="caption"
-          component="div"
-          sx={{ color: "white", fontSize: 20 }}
-        >
-          {`${perc}%`}
-        </Typography>
+        <Paper elevation={0} sx={{ padding: "3px" }}>
+          <Typography
+            variant="caption"
+            component="div"
+            sx={{ color: "white", fontSize: 20 }}
+          >
+            {`${perc}%`}
+          </Typography>
+        </Paper>
       </Box>
     </Backdrop>
   );
