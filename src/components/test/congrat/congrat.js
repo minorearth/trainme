@@ -31,7 +31,7 @@ const Congrat = ({ setTestAccomplished, nav, actions }) => {
     >
       <Animation width={"700px"} height={"700px"} name={"success"} />
       <Box sx={{}}></Box>
-      {pts != 0 && <TextAnimated text={`Вы заработали ${pts} очков`} />}
+      {pts != 0 && <TextAnimated text={`Заработанные монеты: ${pts} `} />}
 
       <Button
         sx={{ mt: 3, mb: 3 }}

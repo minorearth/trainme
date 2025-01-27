@@ -1,7 +1,10 @@
 import { stn } from "@/constants";
 
 const eqArrays = (a, b) => {
-  return a.every((val, idx) => val === b[idx]);
+  return (
+    a.every((val, idx) => val === b[idx]) &&
+    b.every((val, idx) => val === a[idx])
+  );
 };
 
 const cleanUpCode = (code) => {
@@ -64,6 +67,7 @@ const checkCode = async (code, test, runPythonCode) => {
 
 export const runCheckers = async (code, test, runPythonCode) => {
   const codeChecked = await checkCode(code, test, runPythonCode);
+  console.log("code, test", code, test);
   const linesChecked = checkLines(code, test.restrictions.maxlines);
   const mustHaveChecked = checkMustHave(
     code,

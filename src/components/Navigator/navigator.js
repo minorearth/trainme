@@ -1,7 +1,6 @@
 "use client";
 import Box from "@mui/material/Box";
 import Flow from "../flow/flow";
-import CssBaseline from "@mui/material/CssBaseline";
 import { ReactFlowProvider } from "@xyflow/react";
 import Congrat from "@/components/test/congrat/congrat";
 import Start from "@/components/test/start";
@@ -31,7 +30,6 @@ const Navigator = observer(() => {
         height: "100vh",
       }}
     >
-      <CssBaseline />
       <Progress open={progress.showProgress} />
       {countdown.dialogState.visible && <Countdown />}
       <AlertDialog />

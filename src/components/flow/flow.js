@@ -100,8 +100,8 @@ const Flow = ({ navState, flow, fit }) => {
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
       translateExtent={[
-        [-250, -250],
-        [1000, 2500],
+        [0, -250],
+        [1300, 2500],
       ]}
       // fitView
       nodeTypes={nodeTypes}
