@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 196 196"
+   width="196"
+   height="196"
+   preserveAspectRatio="xMidYMid"
+   version="1.1"
+   id="svg6"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <clipPath
+       id="__lottie_element_6">
+      <rect
+         width="596"
+         height="842"
+         x="0"
+         y="0"
+         id="rect1" />
+    </clipPath>
+  </defs>
+  <g
+     clip-path="url(#__lottie_element_6)"
+     id="g6"
+     transform="translate(-260.4446,-242.95505)">
+    <g
+       transform="matrix(1.7,0,0,1.7,-208.60001,-294.70001)"
+       opacity="1"
+       style="display:block"
+       id="g5">
+      <g
+         opacity="1"
+         transform="translate(262.32001,447.23999)"
+         id="g1">
+        <path
+           stroke-linecap="round"
+           stroke-linejoin="miter"
+           fill-opacity="0"
+           stroke-miterlimit="4"
+           stroke="#616161"
+           stroke-opacity="1"
+           stroke-width="13"
+           d="M 0,0"
+           id="path1" />
+      </g>
+      <g
+         opacity="1"
+         transform="translate(305.34,401.57999)"
+         id="g2">
+        <path
+           stroke-linecap="round"
+           stroke-linejoin="miter"
+           fill-opacity="0"
+           stroke-miterlimit="4"
+           stroke="#fb8303"
+           stroke-opacity="1"
+           stroke-width="13"
+           d="M -5.638,5.638 C 19.572001,-19.572001 46.98,-46.979 46.98,-46.979"
+           id="path2" />
+      </g>
+      <g
+         opacity="1"
+         transform="translate(329.25,378.241)"
+         id="g3">
+        <path
+           stroke-linecap="round"
+           stroke-linejoin="miter"
+           fill-opacity="0"
+           stroke-miterlimit="4"
+           stroke="#fb8303"
+           stroke-opacity="1"
+           stroke-width="13"
+           d="m -23.188,-24.662001 c 6.537001,-0.008 44.126,-0.055 44.126,-0.055 1.771999,-0.002 3.212,1.433998 3.212,3.207998 0,0 0,46.228001 0,46.228001"
+           id="path3" />
+      </g>
+      <g
+         opacity="1"
+         transform="translate(333.35999,374.28)"
+         id="g4">
+        <path
+           stroke-linecap="round"
+           stroke-linejoin="miter"
+           fill-opacity="0"
+           stroke-miterlimit="4"
+           stroke="#616161"
+           stroke-opacity="1"
+           stroke-width="13"
+           d="m -50.759998,2.52 v -47.279998 c 0,-3.711003 3.008999,-6.720002 6.719997,-6.720002 h 88.080002 c 3.710998,0 7.398887,3.185496 7.398887,6.896499 v 76.36119 13.208606 c 0,3.711003 -3.461592,5.814815 -7.17259,5.814815 H -2.52"
+           id="path4" />
+      </g>
+    </g>
+  </g>
+</svg>

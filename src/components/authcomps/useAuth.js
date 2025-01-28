@@ -14,6 +14,7 @@ import dialog from "@/store/dialog";
 import authForm from "@/store/authentication";
 import local from "@/globals/local";
 import { resetPswClient } from "@/db/domain/domain";
+import progressStore from "../common/progress/progressStore";
 
 export const useAuth = () => {
   const router = useRouter();
@@ -61,13 +62,14 @@ export const useAuth = () => {
 
   const handleSignInSubmit = async (event) => {
     event.preventDefault();
+    progressStore.setShowProgress(true);
     const data = new FormData(event.currentTarget);
     const email = data.get("email");
     const password = data.get("password");
     const isValid = validateSignInInputs(email);
 
     if (isValid) {
-      authNow(email, password);
+      await authNow(email, password);
     }
   };
 

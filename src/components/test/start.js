@@ -25,7 +25,7 @@ export default function Start({ actions, nav }) {
     >
       <Button
         onClick={() => {
-          actions.changeState({ data: { page: "testrun" } });
+          actions.changeState({ data: { page: "testrun", pts: 0 } });
         }}
         variant="outlined"
       >

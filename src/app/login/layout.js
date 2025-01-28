@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import local from "@/globals/local";
 import background from "./background.json";
+import Progress from "@/components/common/progress/progress";
 
 import dynamic from "next/dynamic";
 
@@ -37,6 +38,8 @@ function Copyright(props) {
 const Layout = ({ children }) => {
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
+      <Progress />
+
       <Grid
         size={{ xs: 0, sm: 6, md: 8 }}
         display="flex"

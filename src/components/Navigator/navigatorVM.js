@@ -5,7 +5,7 @@ import { encrypt2 } from "@/globals/utils/encryption";
 import user from "@/store/user";
 import stn from "@/globals/settings";
 import cowntdownbutton from "@/store/cowntdownbutton";
-import progressCircle from "@/store/progress";
+import progressCircle from "@/components/common/progress/progressStore";
 
 const fullFillProgess = (
   progress,

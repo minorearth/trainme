@@ -7,6 +7,7 @@ import laptop from "./lottie/laptop.json";
 import digits from "./lottie/digits.json";
 import circle from "./lottie/circle.json";
 import condition from "./lottie/condition.json";
+import python from "./lottie/python.json";
 
 // import Lottie from "lottie-react";
 import dynamic from "next/dynamic";
@@ -25,6 +26,8 @@ const getLottie = (name) => {
       return circle;
     case name == "condition":
       return condition;
+    case name == "python":
+      return python;
     default:
   }
 

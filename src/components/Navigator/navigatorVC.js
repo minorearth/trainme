@@ -11,6 +11,7 @@ import { getUseMetaData } from "@/db/SA/firebaseSA";
 import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
 import { setUseMetaData } from "@/db/SA/firebaseSA";
 import { getTargetsBySource } from "./utils";
+import progressStore from "../common/progress/progressStore";
 
 const useNavigator = (fit) => {
   const userid = "1";
@@ -49,6 +50,7 @@ const useNavigator = (fit) => {
   };
 
   useEffect(() => {
+    progressStore.setShowProgress(true);
     const doLoad = async () => {
       const statePers = await reLoadFlow();
 
@@ -66,6 +68,7 @@ const useNavigator = (fit) => {
         }
       }
       setLoading(false);
+      progressStore.setShowProgress(false);
     };
     doLoad();
   }, [user]);
