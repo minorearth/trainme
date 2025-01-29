@@ -100,7 +100,7 @@ export const useAuth = () => {
     const data = new FormData(event.currentTarget);
     const email = data.get("email");
     const password = data.get("password");
-    const name = document.getElementById("name").value;
+    const name = data.get("name");
     const isValid = validateSignUpInputs(email, password, name);
 
     if (isValid) {
