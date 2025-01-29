@@ -1,12 +1,12 @@
 "use client";
 import { createTheme } from "@mui/material/styles";
 // import Monaco from "/Monaco.ttf";
-import localFont from "next/font/local";
+// import localFont from "next/font/local";
 import { ruRU as coreruRU } from "@mui/material/locale";
 
-const myFont = localFont({
-  src: "./Monaco.ttf",
-});
+// const myFont = localFont({
+//   src: "./Monaco.ttf",
+// });
 
 // Font files can be colocated inside of `pages`
 
@@ -14,7 +14,7 @@ const myFont = localFont({
 export const darkTheme = createTheme({
   typography: {
     body1: {
-      fontFamily: myFont.style.fontFamily,
+      // fontFamily: myFont.style.fontFamily,
       color: "#AAAAAA",
     },
   },
@@ -42,7 +42,7 @@ export const darkTheme = createTheme({
     MuiInputBase: {
       styleOverrides: {
         root: {
-          fontFamily: myFont.style.fontFamily,
+          // fontFamily: myFont.style.fontFamily,
         },
       },
     },
