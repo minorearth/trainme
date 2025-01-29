@@ -31,45 +31,43 @@ const Navigator = observer(() => {
         <Splash action={setShowSplash} duration={5000} navState={navState} />
       )}
       {!showSplash && (
-        <ThemeProvider theme={darkTheme}>
-          <Box
-            sx={{
-              width: "100%",
-              height: "100vh",
-            }}
-          >
-            {countdown.dialogState.visible && <Countdown />}
-            <AlertDialog />
-            {stn.mode.DEV_MODE && <AdminPanel flow={flow} />}
+        <Box
+          sx={{
+            width: "100%",
+            height: "100vh",
+          }}
+        >
+          {countdown.dialogState.visible && <Countdown />}
+          <AlertDialog />
+          {stn.mode.DEV_MODE && <AdminPanel flow={flow} />}
 
-            {navState.page == "flow" && !loading && !!flow && (
-              <ReactFlowProvider>
-                <Flow
-                  setTestsStartedPage={actions.setTestsStartedPage}
-                  navState={navState}
-                  flow={flow}
-                  fit={fit}
-                />
-              </ReactFlowProvider>
-            )}
-
-            {navState.page == "testsStarted" && !loading && (
-              <Start actions={actions} nav={navState} />
-            )}
-
-            {navState.page == "testrun" && tests?.length != 0 && (
-              <Test nav={navState} tests={tests} actions={actions} />
-            )}
-
-            {navState.page == "congrat" && (
-              <Congrat
-                setTestAccomplished={actions.setTestAccomplished}
-                nav={navState}
-                actions={actions}
+          {navState.page == "flow" && !loading && !!flow && (
+            <ReactFlowProvider>
+              <Flow
+                setTestsStartedPage={actions.setTestsStartedPage}
+                navState={navState}
+                flow={flow}
+                fit={fit}
               />
-            )}
-          </Box>
-        </ThemeProvider>
+            </ReactFlowProvider>
+          )}
+
+          {navState.page == "testsStarted" && !loading && (
+            <Start actions={actions} nav={navState} />
+          )}
+
+          {navState.page == "testrun" && tests?.length != 0 && (
+            <Test nav={navState} tests={tests} actions={actions} />
+          )}
+
+          {navState.page == "congrat" && (
+            <Congrat
+              setTestAccomplished={actions.setTestAccomplished}
+              nav={navState}
+              actions={actions}
+            />
+          )}
+        </Box>
       )}
     </Box>
   );
