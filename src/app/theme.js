@@ -1,6 +1,5 @@
 "use client";
 import { createTheme } from "@mui/material/styles";
-import Monaco from "/Monaco.ttf";
 import localFont from "next/font/local";
 import { ruRU as coreruRU } from "@mui/material/locale";
 
