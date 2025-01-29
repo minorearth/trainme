@@ -34,7 +34,7 @@ const Navigator = observer(() => {
         <Box
           sx={{
             width: "100%",
-            // height: "100vh",
+            height: "100vh",
           }}
         >
           {countdown.dialogState.visible && <Countdown />}

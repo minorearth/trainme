@@ -20,7 +20,7 @@ const CountdownButton = (props) => {
       interval = setInterval(() => {
         if (valueRef.current == 0) {
           setIsRunning(false);
-          // document.getElementById("countdownbtn").click();
+          document.getElementById("countdownbtn").click();
           countdownbutton.hideButton();
         } else
           setValue((prevState) => {
