@@ -4,21 +4,24 @@ import { useEffect } from "react";
 import Logo from "./animation.json";
 import Lottie from "lottie-react";
 
-const Splash = ({ action, duration }) => {
+const Splash = ({ action, duration, navState }) => {
   useEffect(() => {
-    setTimeout(() => {
-      action();
-    }, duration);
-  }, []);
+    navState &&
+      setTimeout(() => {
+        action(false);
+      }, duration);
+  }, [navState]);
 
   return (
     <Box
       sx={{
         display: "flex",
+        flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        height: "100%",
+        height: "100vh",
         width: "100%",
+        backgroundColor: "black",
       }}
     >
       <Lottie

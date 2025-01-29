@@ -4,12 +4,13 @@ import { useEffect } from "react";
 import Logo from "./animation.json";
 import Lottie from "lottie-react";
 
-const Splash = ({ action, duration }) => {
+const Splash = ({ action, duration, loaded }) => {
   useEffect(() => {
-    setTimeout(() => {
-      action();
-    }, duration);
-  }, []);
+    loaded &&
+      setTimeout(() => {
+        action();
+      }, duration);
+  }, [loaded]);
 
   return (
     <Box

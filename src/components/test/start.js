@@ -32,6 +32,7 @@ export default function Start({ actions, nav }) {
         {nav.repeat ? "Повторяем урок" : "Начать урок"}
       </Button>
       <Typography
+        variant="body1"
         sx={{
           textAlign: "center",
           maxWidth: "600px",

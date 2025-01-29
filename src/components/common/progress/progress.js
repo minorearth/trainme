@@ -12,16 +12,17 @@ import { observer } from "mobx-react-lite";
 const Progress = observer(({}) => {
   const [close, setClose] = useState(false);
   useEffect(() => {
-    progress.showProgress && setClose(true);
-    setTimeout(() => {
-      setClose(false);
-    }, 3000);
-  }, []);
+    progress.state.showProgress && setClose(true);
+    progress.state.showProgress &&
+      setTimeout(() => {
+        setClose(false);
+      }, progress.state.delay);
+  }, [progress.state]);
 
   return (
     <Backdrop
       sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
-      open={close || progress.showProgress}
+      open={close || progress.state.showProgress}
     >
       <Box
         sx={{
@@ -33,11 +34,14 @@ const Progress = observer(({}) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "black",
+          backgroundColor: progress.state.background ? "black" : "transparent",
         }}
-      >
-        <Animation width={"700px"} height={"700px"} name={"python"} />
-      </Box>
+      ></Box>
+      <Animation
+        width={"700px"}
+        height={"700px"}
+        name={progress.state.animation}
+      />
     </Backdrop>
   );
 });

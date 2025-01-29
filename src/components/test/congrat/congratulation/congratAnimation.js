@@ -8,6 +8,7 @@ import digits from "./lottie/digits.json";
 import circle from "./lottie/circle.json";
 import condition from "./lottie/condition.json";
 import python from "./lottie/python.json";
+import progressdots from "./lottie/progressdots.json";
 
 // import Lottie from "lottie-react";
 import dynamic from "next/dynamic";
@@ -28,6 +29,8 @@ const getLottie = (name) => {
       return condition;
     case name == "python":
       return python;
+    case name == "progressdots":
+      return progressdots;
     default:
   }
 
@@ -35,7 +38,6 @@ const getLottie = (name) => {
 };
 
 const Animation = ({ height, width, name }) => {
-  console.log(height, width, name);
   return (
     <Box
       sx={{

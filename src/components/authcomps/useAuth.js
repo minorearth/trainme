@@ -70,7 +70,10 @@ export const useAuth = () => {
 
     if (isValid) {
       await authNow(email, password);
+    } else {
+      progressStore.setCloseProgress();
     }
+    progressStore.setCloseProgress();
   };
 
   const handleForgetPswSubmit = (event) => {

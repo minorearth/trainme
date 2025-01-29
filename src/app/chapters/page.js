@@ -11,14 +11,14 @@ import { darkTheme } from "@/app/theme";
 
 const Page = observer(({ params }) => {
   useEffect(() => {
-    progressStore.setShowProgress(true);
+    // progressStore.setShowProgress(true);
+    // progressStore.setShowProgress(true, true, "python", 4000);
   }, []);
 
   return (
     <ThemeProvider theme={darkTheme}>
       <Progress />
-      <CssBaseline />
-
+      {/* <CssBaseline /> */}
       {!!user.userid && <Navigator />}
     </ThemeProvider>
   );

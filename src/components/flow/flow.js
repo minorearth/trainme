@@ -49,7 +49,6 @@ const Flow = ({ navState, flow, fit }) => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log("flow rerendered", flow.nodes);
     setEdges(flow.edges);
     setNodes(flow.nodes);
   }, [flow]);

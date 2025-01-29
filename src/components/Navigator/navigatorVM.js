@@ -47,7 +47,7 @@ const fullFillProgess = (
           unlocked &&
           !paid &&
           rating >= unlockpts &&
-          !progressCircle.showProgress
+          !progressCircle.state.showProgress
         ) {
           alertdialog.showDialog(
             "Не  оплачен",
@@ -60,7 +60,7 @@ const fullFillProgess = (
               );
               data.paid = true;
               await reLoadFlow();
-              progressCircle.setShowProgress(false);
+              progressCircle.setCloseProgress();
             },
             () => {}
           );
@@ -106,7 +106,6 @@ export const setFlowNodes = async ({
         setTestsStartedPage,
         reLoadFlow
       );
-      console.log("nodesss", nodes);
       setFlow({ edges, nodes });
     }
   );

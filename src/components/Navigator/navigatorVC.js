@@ -49,9 +49,9 @@ const useNavigator = (fit) => {
     return statePers;
   };
 
-  useEffect(() => {
-    progressStore.setShowProgress(true);
-  }, []);
+  // useEffect(() => {
+  //   progressStore.setShowProgress(true, true, "python", 4000);
+  // }, []);
 
   useEffect(() => {
     const doLoad = async () => {
@@ -71,7 +71,7 @@ const useNavigator = (fit) => {
         }
       }
       setLoading(false);
-      progressStore.setShowProgress(false);
+      progressStore.setCloseProgress();
     };
     doLoad();
   }, [user]);
@@ -125,7 +125,6 @@ const useNavigator = (fit) => {
   const runAccomplish = async (pts) => {
     if (!navState.repeat) {
       const unlocked = getTargetsBySource(navState.chapter, flow.edges);
-      console.log("unlocked", unlocked);
       await setUseMetaData(
         encrypt2({
           lastcompleted: navState.chapter,
