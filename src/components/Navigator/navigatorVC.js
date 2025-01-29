@@ -51,6 +51,9 @@ const useNavigator = (fit) => {
 
   useEffect(() => {
     progressStore.setShowProgress(true);
+  }, []);
+
+  useEffect(() => {
     const doLoad = async () => {
       const statePers = await reLoadFlow();
 

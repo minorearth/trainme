@@ -5,10 +5,12 @@ import { observer } from "mobx-react-lite";
 import SignIn from "../../components/authcomps/signin";
 import SignUp from "../../components/authcomps/signup";
 import PswRest from "../../components/authcomps/pswreset";
+import Progress from "@/components/common/progress/progress";
 
 const Page = observer(() => {
   return (
     <>
+      <Progress />
       {authForm.signIn && <SignIn />}
       {authForm.signUp && <SignUp />}
       {authForm.pswReset && <PswRest />}

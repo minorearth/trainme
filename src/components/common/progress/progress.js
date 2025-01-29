@@ -12,7 +12,7 @@ import { observer } from "mobx-react-lite";
 const Progress = observer(({}) => {
   const [close, setClose] = useState(false);
   useEffect(() => {
-    setClose(true);
+    progress.showProgress && setClose(true);
     setTimeout(() => {
       setClose(false);
     }, 3000);

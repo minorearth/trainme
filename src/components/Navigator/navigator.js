@@ -23,7 +23,6 @@ const Navigator = observer(() => {
 
   return (
     <>
-      <Progress />
       {navState && (
         <Box
           sx={{
