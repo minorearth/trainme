@@ -2,7 +2,7 @@
 import { createTheme } from "@mui/material/styles";
 // import Monaco from "/Monaco.ttf";
 // import localFont from "next/font/local";
-import { ruRU as coreruRU } from "@mui/material/locale";
+// import { ruRU as coreruRU } from "@mui/material/locale";
 
 // const myFont = localFont({
 //   src: "./Monaco.ttf",
@@ -47,5 +47,5 @@ export const darkTheme = createTheme({
       },
     },
   },
-  coreruRU,
+  // coreruRU,
 });

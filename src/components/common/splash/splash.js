@@ -3,7 +3,8 @@ import React from "react";
 import { Box } from "@mui/material";
 import { useEffect } from "react";
 import Logo from "./animation.json";
-import Lottie from "lottie-react";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 const Splash = ({ action, duration, navState }) => {
   useEffect(() => {
@@ -20,7 +21,7 @@ const Splash = ({ action, duration, navState }) => {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        // height: "100vh",
         width: "100%",
         backgroundColor: "black",
       }}

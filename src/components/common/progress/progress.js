@@ -34,7 +34,7 @@ const Progress = observer(({}) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: progress.state.background ? "black" : "transparent",
+          // backgroundColor: progress.state.background ? "black" : "transparent",
         }}
       ></Box>
       <Animation
