@@ -11,6 +11,9 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import local from "@/globals/local";
 import background from "./background.json";
+import { ThemeProvider } from "@mui/material/styles";
+import { darkTheme } from "@/app/theme";
+import { CssBaseline } from "@mui/material";
 
 import dynamic from "next/dynamic";
 
@@ -36,51 +39,54 @@ function Copyright(props) {
 
 const Layout = ({ children }) => {
   return (
-    <Grid container component="main" sx={{ height: "100vh" }}>
-      <Grid
-        size={{ xs: 0, sm: 6, md: 8 }}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        sx={
-          {
-            // backgroundImage: `url(/wall.jpg)`,
-            // backgroundRepeat: "no-repeat",
-            // backgroundSize: "cover",
-            // backgroundPosition: "center",
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <Grid container component="main" sx={{ height: "100vh" }}>
+        <Grid
+          size={{ xs: 0, sm: 6, md: 8 }}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          sx={
+            {
+              // backgroundImage: `url(/wall.jpg)`,
+              // backgroundRepeat: "no-repeat",
+              // backgroundSize: "cover",
+              // backgroundPosition: "center",
+            }
           }
-        }
-      >
-        <Lottie
-          // style={{ al }}
-          animationData={background}
-          loop={true}
-        ></Lottie>
-      </Grid>
-      <Grid
-        size={{ xs: 12, sm: 6, md: 4 }}
-        component={Paper}
-        elevation={6}
-        square
-      >
-        <Box
-          sx={{
-            my: 8,
-            mx: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
         >
-          <Avatar onClick={() => {}} sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
+          <Lottie
+            // style={{ al }}
+            animationData={background}
+            loop={true}
+          ></Lottie>
+        </Grid>
+        <Grid
+          size={{ xs: 12, sm: 6, md: 4 }}
+          component={Paper}
+          elevation={6}
+          square
+        >
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Avatar onClick={() => {}} sx={{ m: 1, bgcolor: "secondary.main" }}>
+              <LockOutlinedIcon />
+            </Avatar>
 
-          {children}
-          <Copyright sx={{ mt: 5 }} />
-        </Box>
+            {children}
+            <Copyright sx={{ mt: 5 }} />
+          </Box>
+        </Grid>
       </Grid>
-    </Grid>
+    </ThemeProvider>
   );
 };
 export default Layout;

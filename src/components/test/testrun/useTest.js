@@ -9,6 +9,8 @@ import user from "@/store/user";
 
 import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
 import { setUseMetaData } from "@/db/SA/firebaseSA";
+import progressStore from "@/components/common/progress/progressStore";
+import splashCDStore from "@/components/common/splashCountDown/splashCDStore";
 
 import {
   persistState as persistState,
@@ -160,6 +162,9 @@ const useTest = ({
     editorRef.current.getModel().setValue("");
     switch (true) {
       case nav.taskId != tests.length - 1 && !error:
+        // progressStore.setShowProgress(true, false, "python", 2000);
+        // progressStore.setCloseProgress();
+        splashCDStore.setShow(false, "ok", 1500);
         nextTask({ pts: getSense() + earned });
         return;
       case nav.taskId == tests.length - 1 && !error:

@@ -9,6 +9,7 @@ import circle from "./lottie/circle.json";
 import condition from "./lottie/condition.json";
 import python from "./lottie/python.json";
 import progressdots from "./lottie/progressdots.json";
+import ok from "./lottie/ok.json";
 
 // import Lottie from "lottie-react";
 import dynamic from "next/dynamic";
@@ -31,13 +32,18 @@ const getLottie = (name) => {
       return python;
     case name == "progressdots":
       return progressdots;
+    case name == "ok":
+      return ok;
     default:
   }
 
   success;
 };
 
-const Animation = ({ height, width, name }) => {
+const Animation = ({ height, width, name, actionyy = () => {} }) => {
+  const fuckYuo = () => {
+    actionyy();
+  };
   return (
     <Box
       sx={{
@@ -51,7 +57,10 @@ const Animation = ({ height, width, name }) => {
       <Lottie
         style={{ height, width }}
         animationData={getLottie(name)}
-        loop={true}
+        loop={false}
+        onAnimationEnd={() => actionyy()}
+        onLoopComplete={() => actionyy()}
+        // onComplete={() => actionyy()}
       ></Lottie>
     </Box>
   );
