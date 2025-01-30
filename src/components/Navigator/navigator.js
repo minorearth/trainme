@@ -19,16 +19,18 @@ import { darkTheme } from "@/app/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import SplashCD from "@/components/common/splashCountDown/splashCD";
 import stn from "@/globals/settings";
+import usePyodide from "@/components/Navigator/usePyodide.js";
 
 const Navigator = observer(() => {
   const fit = useRef();
   const [showSplash, setShowSplash] = useState(true);
   const { actions, navState, loading, tests, userid, flow } = useNavigator(fit);
+  const { pyodide2 } = usePyodide();
 
   return (
     <Box sx={{ backgroundColor: darkTheme.palette.background.default }}>
       {showSplash && (
-        <Splash action={setShowSplash} duration={1000} navState={navState} />
+        <Splash action={setShowSplash} duration={4000} navState={navState} />
       )}
       {!showSplash && (
         <Box
@@ -58,7 +60,12 @@ const Navigator = observer(() => {
           )}
 
           {navState.page == "testrun" && tests?.length != 0 && (
-            <Test nav={navState} tests={tests} actions={actions} />
+            <Test
+              nav={navState}
+              tests={tests}
+              actions={actions}
+              pyodide={pyodide2}
+            />
           )}
 
           {navState.page == "congrat" && (

@@ -49,10 +49,6 @@ const useNavigator = (fit) => {
     return statePers;
   };
 
-  // useEffect(() => {
-  //   progressStore.setShowProgress(true, true, "python", 4000);
-  // }, []);
-
   useEffect(() => {
     const doLoad = async () => {
       const statePers = await reLoadFlow();

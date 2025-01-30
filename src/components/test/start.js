@@ -26,8 +26,7 @@ export default function Start({ actions, nav }) {
     >
       <Button
         onClick={() => {
-          // progressStore.setShowProgress(true);
-          progressStore.setShowProgress(true, false, "python", 10000);
+          progressStore.setShowProgress(true, false, "progressdots", 2000);
 
           actions.changeState({ data: { page: "testrun", pts: 0 } });
         }}

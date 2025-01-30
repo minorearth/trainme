@@ -1,4 +1,7 @@
+import { useState, useEffect, useCallback } from "react";
+import { useScript } from "@uidotdev/usehooks";
 import { stn } from "@/constants";
+const PYODIDE_VERSION = "0.26.4";
 
 // https://www.reddit.com/r/nextjs/comments/194r5jn/does_anyone_know_how_to_use_pyodide_with_nextjs/?rdt=49197
 
@@ -14,9 +17,25 @@ class StdinHandler {
   }
 }
 
-export default function usePythonRunner({ setOutput, pyodide }) {
+export default function usePythonRunner({ setOutput }) {
+  const [pyodide2, setPyodide] = useState(null);
+
+  const pyodideScriptStatus = useScript(
+    `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/pyodide.js`
+  );
+  useEffect(() => {
+    if (pyodideScriptStatus === "ready" && !pyodide2) {
+      (async () => {
+        const loadedPyodide = await globalThis.loadPyodide({
+          indexURL: `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/`,
+        });
+        setPyodide(loadedPyodide);
+      })();
+    }
+  }, [pyodideScriptStatus, pyodide2]);
+
   const runPythonCode = async (code, stdIn) => {
-    if (pyodide) {
+    if (pyodide2) {
       let output = [];
       const stdout = (msg) => {
         output.push(msg);
@@ -31,11 +50,11 @@ export default function usePythonRunner({ setOutput, pyodide }) {
       try {
         const stdInSplitted = stdIn.split("\n");
 
-        pyodide.setStdin(new StdinHandler(stdInSplitted));
-        pyodide.setStdout({ batched: stdout });
+        pyodide2.setStdin(new StdinHandler(stdInSplitted));
+        pyodide2.setStdout({ batched: stdout });
         setOutput([]);
-        if (pyodide) {
-          await pyodide.runPython(code);
+        if (pyodide2) {
+          await pyodide2.runPython(code);
           return output;
         }
       } catch (e) {
@@ -48,6 +67,7 @@ export default function usePythonRunner({ setOutput, pyodide }) {
   };
 
   return {
+    pyodide2,
     runPythonCode,
   };
 }

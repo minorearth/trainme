@@ -22,7 +22,7 @@ import { observer } from "mobx-react-lite";
 import cowntdownbutton from "@/store/cowntdownbutton";
 import progressStore from "@/components/common/progress/progressStore";
 
-const Test = observer(({ tests, actions, nav }) => {
+const Test = observer(({ tests, actions, nav, pyodide }) => {
   const [executing, setExecuting] = useState(false);
   const [editorDarkMode, setEditorDarkMode] = useState("darkMode");
   const theme = useTheme();
@@ -42,7 +42,7 @@ const Test = observer(({ tests, actions, nav }) => {
     ...actions,
   });
 
-  const { pyodide2, runPythonCode } = usePythonRunner({ setOutput });
+  const { runPythonCode } = usePythonRunner({ setOutput, pyodide });
   const { checkTask } = useCheck({
     NextTaskOrCompleteTest,
     NextTaskAndAddRecapNoEffect,
@@ -56,7 +56,7 @@ const Test = observer(({ tests, actions, nav }) => {
   }, []);
 
   return (
-    pyodide2 && (
+    pyodide && (
       <Box
         sx={{
           width: "100%",
@@ -109,15 +109,15 @@ const Test = observer(({ tests, actions, nav }) => {
         >
           <Button
             onClick={async (e) => {
-              if (!pyodide2 || executing) return;
+              if (!pyodide || executing) return;
               setExecuting(true);
               await runPythonCode(currTask.code, currTask.input);
               setExecuting(false);
             }}
             variant="outlined"
-            disabled={!pyodide2 || executing}
+            disabled={!pyodide || executing}
           >
-            {!pyodide2
+            {!pyodide
               ? "Загружается..."
               : executing
               ? "Выполняется..."
@@ -127,10 +127,10 @@ const Test = observer(({ tests, actions, nav }) => {
           {!cowntdownbutton.state.visible && (
             <Button
               onClick={async (e) => {
-                if (!pyodide2 || executing) return;
+                if (!pyodide || executing) return;
                 checkTask(currTask.code, tests[nav.taskId], tests.length);
               }}
-              disabled={!pyodide2 || executing}
+              disabled={!pyodide || executing}
               variant="outlined"
             >
               Проверить!
