@@ -41,9 +41,6 @@ const getLottie = (name) => {
 };
 
 const Animation = ({ height, width, name, actionyy = () => {} }) => {
-  const fuckYuo = () => {
-    actionyy();
-  };
   return (
     <Box
       sx={{
@@ -57,10 +54,9 @@ const Animation = ({ height, width, name, actionyy = () => {} }) => {
       <Lottie
         style={{ height, width }}
         animationData={getLottie(name)}
-        loop={false}
-        onAnimationEnd={() => actionyy()}
-        onLoopComplete={() => actionyy()}
-        // onComplete={() => actionyy()}
+        loop={true}
+        autoPlay={false}
+        renderer={"svg"}
       ></Lottie>
     </Box>
   );

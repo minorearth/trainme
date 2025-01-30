@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import progressStore from "../common/progress/progressStore";
 
 export default function Start({ actions, nav }) {
   const theme = useTheme();
@@ -25,6 +26,9 @@ export default function Start({ actions, nav }) {
     >
       <Button
         onClick={() => {
+          // progressStore.setShowProgress(true);
+          progressStore.setShowProgress(true, false, "python", 10000);
+
           actions.changeState({ data: { page: "testrun", pts: 0 } });
         }}
         variant="outlined"

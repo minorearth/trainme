@@ -12,9 +12,8 @@ import { observer } from "mobx-react-lite";
 const Progress = observer(({}) => {
   const [close, setClose] = useState(false);
   useEffect(() => {
-    console.log("progress.state.showProgress", progress.state.showProgress);
     progress.state.showProgress && setClose(true);
-    !progress.state.showProgress &&
+    progress.state.showProgress &&
       setTimeout(() => {
         setClose(false);
       }, progress.state.delay);

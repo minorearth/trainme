@@ -21,9 +21,6 @@ class splashCD {
       background,
       animation,
     };
-    // setTimeout(() => {
-    //   this.state["showSplashCD"] = false;
-    // }, delay);
   }
 }
 

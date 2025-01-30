@@ -16,7 +16,7 @@ const SplashCD = observer(({}) => {
     if (ref.current) {
       ref.current?.goToAndPlay(0);
     }
-  }, [ref.current, splashCDStore.state]);
+  }, [splashCDStore.state]);
 
   return (
     <Backdrop

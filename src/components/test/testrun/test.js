@@ -20,6 +20,7 @@ import Progress from "@/components/common/progress/progress";
 import CountdownButton from "@/components/common/countdown/CountdownButton";
 import { observer } from "mobx-react-lite";
 import cowntdownbutton from "@/store/cowntdownbutton";
+import progressStore from "@/components/common/progress/progressStore";
 
 const Test = observer(({ tests, actions, nav }) => {
   const [executing, setExecuting] = useState(false);
@@ -49,6 +50,10 @@ const Test = observer(({ tests, actions, nav }) => {
     setCode,
     setEditorDisabled,
   });
+
+  useEffect(() => {
+    progressStore.setCloseProgress();
+  }, []);
 
   return (
     pyodide2 && (
