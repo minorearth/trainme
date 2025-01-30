@@ -1,15 +1,23 @@
 "use client";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
-import splashCD from "./splashCDStore";
+import { useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import splashCDStore from "./splashCDStore";
 import dynamic from "next/dynamic";
-import LottieView from "./lottieView";
+import ok from "@/components/test/congrat/congratulation/lottie/ok.json";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 const SplashCD = observer(({}) => {
+  const ref = useRef();
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current?.goToAndPlay(0);
+    }
+  }, [ref.current, splashCDStore.state]);
+
   return (
     <Backdrop
       sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
@@ -30,7 +38,16 @@ const SplashCD = observer(({}) => {
             : "transparent",
         }}
       ></Box>
-      <LottieView action={splashCD.setCloseProgress} />
+      <Lottie
+        lottieRef={ref}
+        style={{ height: "400px", width: "400px" }}
+        animationData={ok}
+        autoPlay={false}
+        loop={false}
+        onComplete={() => {
+          splashCDStore.setCloseProgress();
+        }}
+      />
     </Backdrop>
   );
 });
