@@ -160,10 +160,14 @@ export const signInClient = async (email, password) => {
 };
 
 export const resetPswClient = (email) => {
+  auth.languageCode = "ru";
   resetPsw(auth, email);
 };
 
 export const SignUpUserClient = async (email, password, name) => {
+  // https://github.com/firebase/firebaseui-web/blob/master/LANGUAGES.md
+  auth.languageCode = "ru";
+  // auth.useDeviceLanguage();
   await SignUpUser(auth, email, password, name);
 };
 
