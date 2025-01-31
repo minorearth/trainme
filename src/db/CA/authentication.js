@@ -20,7 +20,11 @@ export const setPersistenceDB = async (auth) => {
 export const signIn = async (auth, email, password) => {
   await logout();
   await setPersistenceDB(auth);
-  await signInWithEmailAndPassword(auth, email, password);
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (e) {
+    return "invalid";
+  }
   const getid = new Promise((resolved, rejected) => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {

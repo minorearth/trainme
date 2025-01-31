@@ -58,6 +58,15 @@ export const checkSignUpFields = ({ email, password, name }) => {
   return { isValid, errors };
 };
 
+export const checkSignInFields = ({ email, password }) => {
+  const errors = {
+    email: checkMail(email),
+    password: checkPsw(password),
+  };
+  const isValid = allValid(errors);
+  return { isValid, errors };
+};
+
 export const checkResetPswFields = ({ email }) => {
   const errors = {
     email: checkMail(email),

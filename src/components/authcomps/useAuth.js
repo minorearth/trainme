@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import {
   checkSignUpFields,
   checkResetPswFields,
+  checkSignInFields,
 } from "@/components/authcomps/authUtils";
 
 import { SignUpUserClient } from "@/db/domain/domain";
@@ -32,12 +33,24 @@ export const useAuth = () => {
         "Зайдите в почту и перейдите...",
         1,
         () => {
-          authForm.showSignIn();
+          // authForm.showSignIn();
         }
       );
-    } else {
-      router.push(`/chapters`);
+      return;
     }
+
+    if (uid == "invalid") {
+      alertdialog.showDialog(
+        "Неверный логин или пароль",
+        "Перепроверьте все еще раз",
+        1,
+        () => {
+          // authForm.showSignIn();
+        }
+      );
+      return;
+    }
+    router.push(`/chapters`);
   };
 
   const validateResetPswInputs = (email) => {
@@ -48,8 +61,12 @@ export const useAuth = () => {
     return errors.isValid;
   };
 
-  const validateSignInInputs = (email) => {
-    return validateResetPswInputs(email);
+  const validateSignInInputs = (email, password) => {
+    const errors = checkSignInFields({ email, password });
+    Object.keys(errors.errors).forEach((key) =>
+      authForm.setState(key, errors.errors[key])
+    );
+    return errors.isValid;
   };
 
   const validateSignUpInputs = (email, password, name) => {
@@ -66,12 +83,9 @@ export const useAuth = () => {
     const data = new FormData(event.currentTarget);
     const email = data.get("email");
     const password = data.get("password");
-    const isValid = validateSignInInputs(email);
-
+    const isValid = validateSignInInputs(email, password);
     if (isValid) {
       await authNow(email, password);
-    } else {
-      progressStore.setCloseProgress();
     }
     progressStore.setCloseProgress();
   };
