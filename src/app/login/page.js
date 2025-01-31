@@ -9,12 +9,12 @@ import Progress from "@/components/common/progress/progress";
 
 const Page = observer(() => {
   return (
-    <>
+    <React.Fragment>
       <Progress />
       {authForm.signIn && <SignIn />}
       {authForm.signUp && <SignUp />}
       {authForm.pswReset && <PswRest />}
-    </>
+    </React.Fragment>
   );
 });
 

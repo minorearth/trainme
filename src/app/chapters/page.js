@@ -8,9 +8,9 @@ import { darkTheme } from "@/app/theme";
 const Page = observer(({ params }) => {
   return (
     <>
-      <ThemeProvider theme={darkTheme}>
-        {!!user.userid && <Navigator />}
-      </ThemeProvider>
+      {/* <ThemeProvider theme={darkTheme}> */}
+      {!!user.userid && <Navigator />}
+      {/* </ThemeProvider> */}
     </>
   );
 });

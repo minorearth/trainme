@@ -14,6 +14,11 @@ import background from "./background.json";
 import { ThemeProvider } from "@mui/material/styles";
 import { darkTheme } from "@/app/theme";
 import { CssBaseline } from "@mui/material";
+import DLSwitch from "@/components/common/themeswitch/themeSwitch";
+import { useCustomTheme } from "@/app/theme";
+import themeSwitchStore from "@/components/common/themeswitch/themeSwitchStore";
+import { observer } from "mobx-react-lite";
+import { useState } from "react";
 
 import dynamic from "next/dynamic";
 
@@ -38,23 +43,27 @@ function Copyright(props) {
 }
 
 const Layout = ({ children }) => {
+  const [darkTheme, setDarkTheme] = useState(true);
+  const { customTheme } = useCustomTheme({ darkTheme });
+
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={customTheme}>
       <CssBaseline />
-      <Grid container component="main" sx={{ height: "100vh" }}>
+      <Grid container sx={{ height: "100vh" }}>
         <Grid
           size={{ xs: 0, sm: 6, md: 8 }}
           display="flex"
           justifyContent="center"
           alignItems="center"
-          sx={
-            {
-              // backgroundImage: `url(/wall.jpg)`,
-              // backgroundRepeat: "no-repeat",
-              // backgroundSize: "cover",
-              // backgroundPosition: "center",
-            }
-          }
+          component={Box}
+          sx={{ backgroundColor: customTheme.palette.background.default }}
+          // sx={{
+          //   // backgroundImage: `url(/wall.jpg)`,
+          //   // backgroundRepeat: "no-repeat",
+          //   // backgroundSize: "cover",
+          //   // backgroundPosition: "center",
+          //   backgroundColor: customTheme?.palette?.background?.default,
+          // }}
         >
           <Lottie
             // style={{ al }}
@@ -65,7 +74,7 @@ const Layout = ({ children }) => {
         <Grid
           size={{ xs: 12, sm: 6, md: 4 }}
           component={Paper}
-          elevation={6}
+          elevation={0}
           square
         >
           <Box
@@ -83,6 +92,7 @@ const Layout = ({ children }) => {
 
             {children}
             <Copyright sx={{ mt: 5 }} />
+            <DLSwitch setDarkTheme={setDarkTheme} />
           </Box>
         </Grid>
       </Grid>
