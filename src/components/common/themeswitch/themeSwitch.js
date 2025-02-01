@@ -7,6 +7,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import themeSwitch from "./themeSwitchStore";
+import { loadSetupPersisted, persistSetup } from "@/db/localstorage";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -64,22 +65,25 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function DLSwitch({ setDarkTheme }) {
-  const [checked, setChecked] = useState(true);
+export default function DLSwitch() {
+  const [checked, setChecked] = useState();
+
+  React.useEffect(() => {
+    const setup = loadSetupPersisted();
+    console.log(setup);
+    // setup != null ? setChecked(setup.darktheme) : setChecked(true);
+    // setup != null
+    //   ? themeSwitch.setDarkMode(setup.darktheme)
+    //   : themeSwitch.setDarkMode(true);
+  }, []);
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
-    setDarkTheme(event.target.checked);
-    // console.log(themeSwitch.state.darkmode, event.target.checked);
-    // themeSwitch.setDarkMode(event.target.checked);
+    themeSwitch.setDarkMode(event.target.checked);
+    persistSetup({ darktheme: event.target.checked });
   };
 
   return (
-    <MaterialUISwitch
-      checked={checked}
-      onChange={handleChange}
-      sx={{ m: 1 }}
-      defaultChecked
-    />
+    <MaterialUISwitch checked={checked} onChange={handleChange} sx={{ m: 1 }} />
   );
 }

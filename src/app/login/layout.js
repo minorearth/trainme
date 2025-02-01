@@ -16,6 +16,7 @@ import { darkTheme } from "@/app/theme";
 import { CssBaseline } from "@mui/material";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import { useCustomTheme } from "@/app/theme";
+
 import themeSwitchStore from "@/components/common/themeswitch/themeSwitchStore";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
@@ -43,8 +44,7 @@ function Copyright(props) {
 }
 
 const Layout = ({ children }) => {
-  const [darkTheme, setDarkTheme] = useState(true);
-  const { customTheme } = useCustomTheme({ darkTheme });
+  const { customTheme } = useCustomTheme();
 
   return (
     <ThemeProvider theme={customTheme}>
@@ -55,8 +55,10 @@ const Layout = ({ children }) => {
           display="flex"
           justifyContent="center"
           alignItems="center"
-          component={Box}
-          sx={{ backgroundColor: customTheme.palette.background.default }}
+          // component={Box}
+          sx={{
+            backgroundColor: themeSwitchStore.darkmode ? "#121212" : "white",
+          }}
           // sx={{
           //   // backgroundImage: `url(/wall.jpg)`,
           //   // backgroundRepeat: "no-repeat",
@@ -65,11 +67,7 @@ const Layout = ({ children }) => {
           //   backgroundColor: customTheme?.palette?.background?.default,
           // }}
         >
-          <Lottie
-            // style={{ al }}
-            animationData={background}
-            loop={true}
-          ></Lottie>
+          <Lottie animationData={background} loop={true}></Lottie>
         </Grid>
         <Grid
           size={{ xs: 12, sm: 6, md: 4 }}
@@ -92,7 +90,7 @@ const Layout = ({ children }) => {
 
             {children}
             <Copyright sx={{ mt: 5 }} />
-            <DLSwitch setDarkTheme={setDarkTheme} />
+            <DLSwitch />
           </Box>
         </Grid>
       </Grid>

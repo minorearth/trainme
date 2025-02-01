@@ -11,6 +11,8 @@ import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
 import { setUseMetaData } from "@/db/SA/firebaseSA";
 import progressStore from "@/components/common/progress/progressStore";
 import splashCDStore from "@/components/common/splashCountDown/splashCDStore";
+import { useTheme } from "@mui/material/styles";
+import tinycolor from "tinycolor2";
 
 import {
   persistState as persistState,
@@ -32,9 +34,34 @@ const useTest = ({
   const setEditorDisabled = (disabled) => {
     editorDisabled.current = { disabled };
   };
+  const theme = useTheme();
 
-  function handleEditorDidMount(editor, monaco) {
+  function handleEditorDidMount({ editor, monaco, darkmode }) {
     editorRef.current = editor;
+    monaco.editor.defineTheme("pk", {
+      base: darkmode ? "vs-dark" : "vs",
+      inherit: true,
+      rules: [
+        {
+          token: "identifier",
+          foreground: "9CDCFE",
+        },
+        {
+          token: "identifier.function",
+          foreground: "DCDCAA",
+        },
+        {
+          token: "type",
+          foreground: "1AAFB0",
+        },
+      ],
+      colors: {
+        "editor.background": tinycolor(
+          theme.palette.background.default
+        ).toHexString(),
+      },
+    });
+    monaco.editor.setTheme("pk");
     editor.onKeyDown((event) => {
       if (editorDisabled.current.disabled) {
         event.preventDefault();

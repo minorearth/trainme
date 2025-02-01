@@ -1,14 +1,14 @@
 import { makeAutoObservable, makeObservable } from "mobx";
 
 class themeSwitch {
-  state = { darkmode: true };
+  darkmode = true;
 
   constructor() {
     makeAutoObservable(this);
   }
 
   setDarkMode(darkmode) {
-    this.state = { ...this.state, darkmode };
+    this.darkmode = darkmode;
   }
 }
 

@@ -21,10 +21,11 @@ import CountdownButton from "@/components/common/countdown/CountdownButton";
 import { observer } from "mobx-react-lite";
 import cowntdownbutton from "@/store/cowntdownbutton";
 import progressStore from "@/components/common/progress/progressStore";
+import themeSwitch from "@/components/common/themeswitch/themeSwitchStore";
 
 const Test = observer(({ tests, actions, nav, pyodide }) => {
   const [executing, setExecuting] = useState(false);
-  const [editorDarkMode, setEditorDarkMode] = useState("darkMode");
+  // const [editorDarkMode, setEditorDarkMode] = useState("darkMode");
   const theme = useTheme();
   const {
     NextTaskOrCompleteTest,
@@ -166,12 +167,18 @@ const Test = observer(({ tests, actions, nav, pyodide }) => {
           <Editor
             height="50vh"
             width="100%"
-            theme={editorDarkMode ? "vs-dark" : "vs"}
+            theme={"pk"}
             options={EditorOptions}
             language="python"
             value={currTask.code}
             onChange={(value, e) => setCode(value ?? "")}
-            onMount={handleEditorDidMount}
+            onMount={(editor, monaco) =>
+              handleEditorDidMount({
+                editor,
+                monaco,
+                darkmode: themeSwitch.darkmode,
+              })
+            }
           />
         </Box>
         <Paper elevation={0}>

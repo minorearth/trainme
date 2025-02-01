@@ -37,6 +37,15 @@ export const loadStatePersisted = () => {
   }
 };
 
+export const loadSetupPersisted = () => {
+  const state = localStorage.getItem("setup");
+  return state != null ? JSON.parse(state) : null;
+};
+
+export const persistSetup = (state) => {
+  localStorage.setItem("setup", JSON.stringify(state));
+};
+
 export const setUserId = () => {
   return localStorage.setItem("userid", 1);
 };

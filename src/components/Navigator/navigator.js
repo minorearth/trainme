@@ -15,7 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import progress from "@/components/common/progress/progressStore";
 import AdminPanel from "@/components/admin/adminpanel";
 import Splash from "@/components/common/splash/splash";
-import { darkTheme } from "@/app/theme";
+import { customTheme } from "@/app/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import SplashCD from "@/components/common/splashCountDown/splashCD";
 import stn from "@/globals/settings";
@@ -28,7 +28,8 @@ const Navigator = observer(() => {
   const { pyodide2 } = usePyodide();
 
   return (
-    <Box sx={{ backgroundColor: darkTheme.palette.background.default }}>
+    <Box>
+      {/* <Box sx={{ backgroundColor: customTheme.palette.background.default }}> */}
       {showSplash && (
         <Splash action={setShowSplash} duration={4000} navState={navState} />
       )}

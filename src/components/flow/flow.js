@@ -16,6 +16,7 @@ import { Box } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/navigation";
+import { useTheme } from "@mui/material/styles";
 
 import "@xyflow/react/dist/base.css";
 import "./styles.css";
@@ -28,6 +29,7 @@ import { BiCoinStack } from "react-icons/bi";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 import alertdialog from "@/store/dialog";
 import { signOutUserClient } from "@/db/domain/domain";
+import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 
 const nodeTypes = {
   turbo: TurboNode,
@@ -44,6 +46,7 @@ const defaultEdgeOptions = {
 };
 
 const Flow = ({ navState, flow, fit }) => {
+  const theme = useTheme();
   const { fitView } = useReactFlow();
   const [nodes, setNodes, onNodesChange] = useNodesState();
   const router = useRouter();
@@ -91,82 +94,99 @@ const Flow = ({ navState, flow, fit }) => {
   );
 
   return (
-    <ReactFlow
-      nodesDraggable={false}
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
-      translateExtent={[
-        [0, -250],
-        [1300, 2500],
-      ]}
-      // fitView
-      nodeTypes={nodeTypes}
-      edgeTypes={edgeTypes}
-      defaultEdgeOptions={defaultEdgeOptions}
-      maxZoom={2}
-      minZoom={1}
+    <Box
+      sx={{
+        width: "100vw",
+        height: "100vh",
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.background.default,
+      }}
     >
-      <Controls showInteractive={false} />
-      <Panel position="top-left" style={{ width: "97%" }}>
-        {/* <Box sx={{ width: "100%", opacity: 1, }}> */}
-        <Paper
-          elevation={0}
-          sx={{
-            width: "100%",
-            backgroundColor: "transparent",
-            display: "flex",
-            flexDirection: "row",
-            padding: "4px",
-            justifyContent: "space-evenly",
-          }}
-        >
-          <Box
+      <ReactFlow
+        nodesDraggable={false}
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        translateExtent={[
+          [0, -250],
+          [1300, 2500],
+        ]}
+        // fitView
+        nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        defaultEdgeOptions={defaultEdgeOptions}
+        maxZoom={2}
+        minZoom={1}
+      >
+        <Controls showInteractive={false} />
+        <Panel position="top-left" style={{ width: "97%" }}>
+          {/* <Box sx={{ width: "100%", opacity: 1, }}> */}
+          <Paper
+            elevation={0}
             sx={{
+              width: "100%",
+              backgroundColor: "transparent",
               display: "flex",
               flexDirection: "row",
               padding: "4px",
+              justifyContent: "space-evenly",
             }}
           >
-            <BiCoinStack size={"40px"} />
-            <Typography variant="h4" gutterBottom>
-              {navState.userProgress.rating}
-            </Typography>
-          </Box>
-          <RiLogoutCircleRLine
-            size={"40px"}
-            onClick={async () => {
-              await signOutUserClient();
-              router.push(`/login/`);
-            }}
-          />
-        </Paper>{" "}
-        {/* </Box> */}
-      </Panel>
-      <svg>
-        <defs>
-          <linearGradient id="edge-gradient">
-            <stop offset="0%" stopColor="#ae53ba" />
-            <stop offset="100%" stopColor="#2a8af6" />
-          </linearGradient>
+            <DLSwitch />
 
-          <marker
-            id="edge-circle"
-            viewBox="-5 -5 10 10"
-            refX="0"
-            refY="0"
-            markerUnits="strokeWidth"
-            markerWidth="10"
-            markerHeight="10"
-            orient="auto"
-          >
-            <circle stroke="#2a8af6" strokeOpacity="0.75" r="2" cx="0" cy="0" />
-          </marker>
-        </defs>
-      </svg>
-    </ReactFlow>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                padding: "4px",
+              }}
+            >
+              <BiCoinStack size={"40px"} />
+              <Typography variant="h4" gutterBottom>
+                {navState.userProgress.rating}
+              </Typography>
+            </Box>
+            <RiLogoutCircleRLine
+              size={"40px"}
+              onClick={async () => {
+                await signOutUserClient();
+                router.push(`/login/`);
+              }}
+            />
+          </Paper>
+          {/* </Box> */}
+        </Panel>
+        <svg>
+          <defs>
+            <linearGradient id="edge-gradient">
+              <stop offset="0%" stopColor="#ae53ba" />
+              <stop offset="100%" stopColor="#2a8af6" />
+            </linearGradient>
+
+            <marker
+              id="edge-circle"
+              viewBox="-5 -5 10 10"
+              refX="0"
+              refY="0"
+              markerUnits="strokeWidth"
+              markerWidth="10"
+              markerHeight="10"
+              orient="auto"
+            >
+              <circle
+                stroke="#2a8af6"
+                strokeOpacity="0.75"
+                r="2"
+                cx="0"
+                cy="0"
+              />
+            </marker>
+          </defs>
+        </svg>
+      </ReactFlow>
+    </Box>
   );
 };
 
