@@ -1,11 +1,9 @@
-"use client";
 import { createTheme } from "@mui/material/styles";
 import localFont from "next/font/local";
 import { ruRU as coreruRU } from "@mui/material/locale";
 import themeSwitchStore from "@/components/common/themeswitch/themeSwitchStore";
 import { useEffect, useMemo, useState } from "react";
 import { reaction } from "mobx";
-import { loadSetupPersisted } from "@/db/localstorage";
 
 const myFont = localFont({
   src: "./Monaco.ttf",
@@ -14,17 +12,16 @@ const myFont = localFont({
 export const useCustomTheme = () => {
   const [darkTheme, setDarkTheme] = useState(() => themeSwitchStore.darkmode);
 
-  // reaction(
-  //   () => themeSwitchStore.darkmode,
-  //   (v) => setDarkTheme(v)
-  // );
   useEffect(() => {
-    const setup = loadSetupPersisted();
-    const darkTheme = setup != null ? setup.darktheme : true;
-    setDarkTheme(darkTheme);
+    // const darkTheme = setup != null ? setup.darktheme : true;
+    // console.log("darkTheme", darkTheme);
+    // themeSwitchStore.setDarkMode(darkTheme);
+    setDarkTheme(themeSwitchStore.darkmode);
     reaction(
       () => themeSwitchStore.darkmode,
-      (v) => setDarkTheme(v)
+      (v) => {
+        setDarkTheme(v);
+      }
     );
   }, []);
 
@@ -42,8 +39,8 @@ export const useCustomTheme = () => {
     // },
 
     colorSchemes: {
-      dark: darkTheme,
-      // dark: true,
+      // dark: darkTheme,
+      dark: false,
     },
 
     components: {
