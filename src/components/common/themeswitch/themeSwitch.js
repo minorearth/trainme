@@ -63,13 +63,13 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function DLSwitch() {
-  const setup = loadSetupPersisted();
-  const darkTheme = setup != null ? setup.darktheme : true;
-
-  const [checked, setChecked] = useState(darkTheme);
-  themeSwitch.setDarkMode(darkTheme);
+  const [checked, setChecked] = useState(true);
 
   useEffect(() => {
+    const setup = loadSetupPersisted();
+    const darkTheme = setup != null ? setup.darktheme : true;
+    setChecked(darkTheme);
+    themeSwitch.setDarkMode(darkTheme);
     // const setup = loadSetupPersisted();
     // console.log(setup);
     // setup != null ? setChecked(setup.darktheme) : setChecked(true);
