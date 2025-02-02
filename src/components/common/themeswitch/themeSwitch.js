@@ -70,7 +70,7 @@ export default function DLSwitch() {
   const darkTheme = setup != null ? setup.darktheme : true;
 
   const [checked, setChecked] = useState(darkTheme);
-  themeSwitch.darkmode = darkTheme;
+  themeSwitch.setDarkMode(darkTheme);
 
   React.useEffect(() => {
     // const setup = loadSetupPersisted();
