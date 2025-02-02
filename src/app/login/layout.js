@@ -1,5 +1,5 @@
 "use client";
-import "@/globals/globals.css";
+// import "@/globals/globals.css";
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 
@@ -56,9 +56,9 @@ const Layout = ({ children }) => {
           justifyContent="center"
           alignItems="center"
           // component={Box}
-          sx={{
-            backgroundColor: themeSwitchStore.darkmode ? "#121212" : "white",
-          }}
+          // sx={{
+          //   backgroundColor: customTheme.palette.background.default,
+          // }}
           // sx={{
           //   // backgroundImage: `url(/wall.jpg)`,
           //   // backgroundRepeat: "no-repeat",
@@ -71,9 +71,9 @@ const Layout = ({ children }) => {
         </Grid>
         <Grid
           size={{ xs: 12, sm: 6, md: 4 }}
-          component={Paper}
+          // component={Paper}
           elevation={0}
-          square
+          // square
         >
           <Box
             sx={{

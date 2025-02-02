@@ -11,12 +11,18 @@ import alertdialog from "@/store/dialog";
 import local from "@/globals/local";
 import GradientBox from "@/components/common/dialog/gradientBox";
 import { Box } from "@mui/material";
+import Paper from "@mui/material/Paper";
+
+import { useTheme } from "@mui/material/styles";
 
 const AlertDialog = observer(() => {
+  const theme = useTheme();
+
   return (
     <Dialog
       open={alertdialog.dialogState.visible}
       onClose={() => alertdialog.okDialog()}
+      // component={Paper}
       sx={{
         "& .MuiPaper-root": {
           backgroundImage:
@@ -30,9 +36,15 @@ const AlertDialog = observer(() => {
             transform: "translate(-50%, -50%) rotate(-360deg)",
           },
         },
-        "& .MuiTypography-root": { backgroundColor: "black" },
-        "& .MuiDialogContent-root": { backgroundColor: "black" },
-        "& .MuiDialogActions-root": { backgroundColor: "black" },
+        "& .MuiTypography-root": {
+          backgroundColor: theme.palette.background.default,
+        },
+        "& .MuiDialogContent-root": {
+          backgroundColor: theme.palette.background.default,
+        },
+        "& .MuiDialogActions-root": {
+          backgroundColor: theme.palette.background.default,
+        },
       }}
     >
       <DialogTitle>{alertdialog.dialogState.title}</DialogTitle>

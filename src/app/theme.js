@@ -14,9 +14,14 @@ const myFont = localFont({
 export const useCustomTheme = () => {
   const [darkTheme, setDarkTheme] = useState(() => themeSwitchStore.darkmode);
 
+  // reaction(
+  //   () => themeSwitchStore.darkmode,
+  //   (v) => setDarkTheme(v)
+  // );
   useEffect(() => {
     const setup = loadSetupPersisted();
-    setDarkTheme(setup.darktheme);
+    const darkTheme = setup != null ? setup.darktheme : true;
+    setDarkTheme(darkTheme);
     reaction(
       () => themeSwitchStore.darkmode,
       (v) => setDarkTheme(v)
@@ -38,6 +43,7 @@ export const useCustomTheme = () => {
 
     colorSchemes: {
       dark: darkTheme,
+      // dark: true,
     },
 
     components: {
