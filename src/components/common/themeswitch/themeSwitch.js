@@ -1,13 +1,10 @@
-import * as React from "react";
+"use client";
 import { styled } from "@mui/material/styles";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import themeSwitch from "./themeSwitchStore";
 import { loadSetupPersisted, persistSetup } from "@/db/localstorage";
+import { useEffect } from "react";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -72,7 +69,7 @@ export default function DLSwitch() {
   const [checked, setChecked] = useState(darkTheme);
   themeSwitch.setDarkMode(darkTheme);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // const setup = loadSetupPersisted();
     // console.log(setup);
     // setup != null ? setChecked(setup.darktheme) : setChecked(true);

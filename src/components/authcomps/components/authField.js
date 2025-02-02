@@ -46,7 +46,7 @@ const AuthField = observer(({ type }) => {
       label={getProps(type).label}
       name={type}
       autoComplete={getProps(type).auto}
-      autoFocus
+      // autoFocus
       type={type == "password" ? type : null}
       onChange={(e) => handleChange(e)}
       error={authForm.state[type].error}

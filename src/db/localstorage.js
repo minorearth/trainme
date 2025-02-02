@@ -1,3 +1,4 @@
+"use client";
 import { decrypt2, encrypt2 } from "@/globals/utils/encryption";
 import stn from "@/globals/settings";
 
