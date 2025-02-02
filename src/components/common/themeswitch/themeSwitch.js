@@ -3,9 +3,8 @@ import { styled } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import { useState } from "react";
 import themeSwitch from "./themeSwitchStore";
-import { persistSetup } from "@/db/localstorage";
+import { loadSetupPersisted, persistSetup } from "@/db/localstorage";
 import { useEffect } from "react";
-import { observer } from "mobx-react-lite";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -63,14 +62,14 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const DLSwitch = observer(({ darkTheme }) => {
-  // const setup = loadSetupPersisted();
-  // const darkTheme = setup != null ? setup.darktheme : true;
-
-  // const [checked, setChecked] = useState();
+export default function DLSwitch() {
+  const [checked, setChecked] = useState(true);
 
   useEffect(() => {
-    // themeSwitch.setDarkMode(darkTheme);
+    const setup = loadSetupPersisted();
+    const darkTheme = setup != null ? setup.darktheme : true;
+    setChecked(darkTheme);
+    themeSwitch.setDarkMode(darkTheme);
     // const setup = loadSetupPersisted();
     // console.log(setup);
     // setup != null ? setChecked(setup.darktheme) : setChecked(true);
@@ -80,18 +79,12 @@ const DLSwitch = observer(({ darkTheme }) => {
   }, []);
 
   const handleChange = (event) => {
-    // setChecked(event.target.checked);
+    setChecked(event.target.checked);
     themeSwitch.setDarkMode(event.target.checked);
     persistSetup({ darktheme: event.target.checked });
   };
 
   return (
-    <MaterialUISwitch
-      checked={themeSwitch.darkmode}
-      onChange={handleChange}
-      sx={{ m: 1 }}
-    />
+    <MaterialUISwitch checked={checked} onChange={handleChange} sx={{ m: 1 }} />
   );
-});
-
-export default DLSwitch;
+}

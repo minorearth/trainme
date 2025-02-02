@@ -1,5 +1,5 @@
 "use client";
-import "@/globals/globals.css";
+// import "@/globals/globals.css";
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 
@@ -45,11 +45,10 @@ function Copyright(props) {
 
 const Layout = ({ children }) => {
   const { customTheme } = useCustomTheme();
-  console.log(customTheme, "customTheme");
 
   return (
     <ThemeProvider theme={customTheme}>
-      {/* <CssBaseline /> */}
+      <CssBaseline />
       <Grid container sx={{ height: "100vh" }}>
         <Grid
           size={{ xs: 0, sm: 6, md: 8 }}
@@ -91,7 +90,7 @@ const Layout = ({ children }) => {
 
             {children}
             <Copyright sx={{ mt: 5 }} />
-            <DLSwitch darkTheme={darkTheme} />
+            <DLSwitch />
           </Box>
         </Grid>
       </Grid>
