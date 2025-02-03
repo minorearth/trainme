@@ -60,7 +60,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function DLSwitch({ editorRef }) {
+export default function DLSwitch({ monacoRef }) {
   const { mode, setMode } = useColorScheme();
 
   if (!mode) {
@@ -70,8 +70,8 @@ export default function DLSwitch({ editorRef }) {
   const handleChange = (event) => {
     setMode(event.target.checked ? "dark" : "light");
     event.target.checked
-      ? editorRef.current.editor.setTheme("pk")
-      : editorRef.current.editor.setTheme("vs");
+      ? monacoRef?.current.editor.setTheme("pk")
+      : monacoRef?.current.editor.setTheme("vs");
 
     // event.target.checked ? "dark" : "light"
   };

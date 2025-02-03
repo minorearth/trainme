@@ -30,6 +30,7 @@ import { RiLogoutCircleRLine } from "react-icons/ri";
 import alertdialog from "@/store/dialog";
 import { signOutUserClient } from "@/db/domain/domain";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
+import Fab from "@mui/material/Fab";
 
 const nodeTypes = {
   turbo: TurboNode,
@@ -148,13 +149,15 @@ const Flow = ({ navState, flow, fit }) => {
                 {navState.userProgress.rating}
               </Typography>
             </Box>
-            <RiLogoutCircleRLine
-              size={"40px"}
-              onClick={async () => {
-                await signOutUserClient();
-                router.push(`/login/`);
-              }}
-            />
+            <Fab size="small" color="primary" aria-label="add">
+              <RiLogoutCircleRLine
+                size={"40px"}
+                onClick={async () => {
+                  await signOutUserClient();
+                  router.push(`/login/`);
+                }}
+              />
+            </Fab>
           </Paper>
           {/* </Box> */}
         </Panel>

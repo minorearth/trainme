@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import progressStore from "../common/progress/progressStore";
+import Paper from "@mui/material/Paper";
 
 export default function Start({ actions, nav }) {
   const theme = useTheme();

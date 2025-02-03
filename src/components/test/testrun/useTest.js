@@ -28,7 +28,9 @@ const useTest = ({
   runAccomplish,
 }) => {
   const [currTask, setCurrTask] = useState({});
+  const monacoRef = useRef(null);
   const editorRef = useRef(null);
+
   const editorDisabled = useRef({ disabled: false });
 
   const setEditorDisabled = (disabled) => {
@@ -37,7 +39,8 @@ const useTest = ({
   const theme = useTheme();
 
   function handleEditorDidMount({ editor, monaco, darkmode }) {
-    editorRef.current = monaco;
+    monacoRef.current = monaco;
+    editorRef.current = editor;
     monaco.editor.defineTheme("pk", {
       base: "vs-dark",
       inherit: true,
@@ -72,8 +75,8 @@ const useTest = ({
 
   function setTheme(darkmode) {
     darkmode
-      ? editorRef.current.editor.setTheme("pk")
-      : editorRef.current.editor.setTheme("vs");
+      ? monacoRef.current.editor.setTheme("pk")
+      : monacoRef.current.editor.setTheme("vs");
   }
 
   useEffect(() => {
@@ -172,7 +175,7 @@ const useTest = ({
   };
 
   const ErrorCountDownPressed = async () => {
-    editorRef.current.editor.getModel().setValue("");
+    editorRef.current.getModel().setValue("");
 
     if (nav.taskId != tests.length - 1) {
       nextTask({ pts: getSense() });
@@ -193,7 +196,11 @@ const useTest = ({
   };
 
   const NextTaskOrCompleteTest = async ({ error, errorMsg, earned = 0 }) => {
-    editorRef.current.editor.getModel().setValue("");
+    editorRef.current.getModel().setValue("");
+    console.log(
+      "nav.taskId != tests.length - 1 && !error",
+      nav.taskId != tests.length - 1 && !error
+    );
     switch (true) {
       case nav.taskId != tests.length - 1 && !error:
         // progressStore.setShowProgress(true, false, "python", 2000);
@@ -268,7 +275,7 @@ const useTest = ({
     handleEditorDidMount,
     getSense,
     ErrorCountDownPressed,
-    editorRef,
+    monacoRef,
   };
 };
 

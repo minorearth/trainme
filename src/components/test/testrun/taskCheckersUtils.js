@@ -67,7 +67,6 @@ const checkCode = async (code, test, runPythonCode) => {
 
 export const runCheckers = async (code, test, runPythonCode) => {
   const codeChecked = await checkCode(code, test, runPythonCode);
-  console.log("code, test", code, test);
   const linesChecked = checkLines(code, test.restrictions.maxlines);
   const mustHaveChecked = checkMustHave(
     code,

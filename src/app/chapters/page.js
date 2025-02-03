@@ -4,6 +4,7 @@ import user from "@/store/user";
 import { observer } from "mobx-react-lite";
 import { ThemeProvider } from "@mui/material/styles";
 import { useCustomTheme } from "@/app/theme";
+import { CssBaseline } from "@mui/material";
 
 const Page = observer(({ params }) => {
   const { customTheme } = useCustomTheme();
@@ -11,6 +12,7 @@ const Page = observer(({ params }) => {
   return (
     <>
       <ThemeProvider theme={customTheme}>
+        <CssBaseline />
         {!!user.userid && <Navigator />}
       </ThemeProvider>
     </>

@@ -39,7 +39,7 @@ const Test = observer(({ tests, actions, nav, pyodide }) => {
     setEditorDisabled,
     handleEditorDidMount,
     getSense,
-    editorRef,
+    monacoRef,
   } = useTest({
     nav,
     tests,
@@ -165,7 +165,7 @@ const Test = observer(({ tests, actions, nav, pyodide }) => {
           >
             Выйти
           </Button>
-          <DLSwitch editorRef={editorRef} />
+          <DLSwitch monacoRef={monacoRef} />
         </Box>
         <Box
           sx={{
