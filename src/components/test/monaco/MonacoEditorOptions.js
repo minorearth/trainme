@@ -12,6 +12,7 @@ export const EditorOptions = {
   formatOnPaste: true,
   formatOnType: true,
   lineHeight: 1.5,
+  renderLineHighlight: "none",
   minimap: {
     enabled: false,
   },

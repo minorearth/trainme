@@ -12,21 +12,21 @@ const myFont = localFont({
 });
 
 export const useCustomTheme = () => {
-  const [darkTheme, setDarkTheme] = useState(() => themeSwitchStore.darkmode);
+  // const [darkTheme, setDarkTheme] = useState(() => themeSwitchStore.darkmode);
 
   // reaction(
   //   () => themeSwitchStore.darkmode,
   //   (v) => setDarkTheme(v)
   // );
-  useEffect(() => {
-    const setup = loadSetupPersisted();
-    const darkTheme = setup != null ? setup.darktheme : true;
-    setDarkTheme(darkTheme);
-    reaction(
-      () => themeSwitchStore.darkmode,
-      (v) => setDarkTheme(v)
-    );
-  }, []);
+  // useEffect(() => {
+  // const setup = loadSetupPersisted();
+  // const darkTheme = setup != null ? setup.darktheme : true;
+  //   setDarkTheme(darkTheme);
+  //   reaction(
+  //     () => themeSwitchStore.darkmode,
+  //     (v) => setDarkTheme(v)
+  //   );
+  // }, []);
 
   const customTheme = createTheme({
     typography: {
@@ -40,10 +40,14 @@ export const useCustomTheme = () => {
     //   mode: "dark",
     //   background: { default: "#1E1E1E", paper: "#1E1E1E" },
     // },
+    // palette: {
+    //   mode: "dark",
+    // },
 
     colorSchemes: {
-      dark: darkTheme,
-      // dark: true,
+      // dark: darkTheme,
+      dark: true,
+      light: true,
     },
 
     components: {

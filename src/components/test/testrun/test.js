@@ -22,6 +22,8 @@ import { observer } from "mobx-react-lite";
 import cowntdownbutton from "@/store/cowntdownbutton";
 import progressStore from "@/components/common/progress/progressStore";
 import themeSwitch from "@/components/common/themeswitch/themeSwitchStore";
+import DLSwitch from "@/components/common/themeswitch/themeSwitch";
+import { useColorScheme } from "@mui/material/styles";
 
 const Test = observer(({ tests, actions, nav, pyodide }) => {
   const [executing, setExecuting] = useState(false);
@@ -37,6 +39,7 @@ const Test = observer(({ tests, actions, nav, pyodide }) => {
     setEditorDisabled,
     handleEditorDidMount,
     getSense,
+    editorRef,
   } = useTest({
     nav,
     tests,
@@ -51,6 +54,12 @@ const Test = observer(({ tests, actions, nav, pyodide }) => {
     setCode,
     setEditorDisabled,
   });
+
+  const { mode, setMode } = useColorScheme();
+
+  if (!mode) {
+    return null;
+  }
 
   useEffect(() => {
     progressStore.setCloseProgress();
@@ -156,6 +165,7 @@ const Test = observer(({ tests, actions, nav, pyodide }) => {
           >
             Выйти
           </Button>
+          <DLSwitch editorRef={editorRef} />
         </Box>
         <Box
           sx={{
@@ -176,7 +186,7 @@ const Test = observer(({ tests, actions, nav, pyodide }) => {
               handleEditorDidMount({
                 editor,
                 monaco,
-                darkmode: themeSwitch.darkmode,
+                darkmode: mode == "dark" ? true : false,
               })
             }
           />

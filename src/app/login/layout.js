@@ -12,14 +12,9 @@ import Link from "@mui/material/Link";
 import local from "@/globals/local";
 import background from "./background.json";
 import { ThemeProvider } from "@mui/material/styles";
-import { darkTheme } from "@/app/theme";
 import { CssBaseline } from "@mui/material";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import { useCustomTheme } from "@/app/theme";
-
-import themeSwitchStore from "@/components/common/themeswitch/themeSwitchStore";
-import { observer } from "mobx-react-lite";
-import { useState } from "react";
 
 import dynamic from "next/dynamic";
 
@@ -27,12 +22,7 @@ const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 function Copyright(props) {
   return (
-    <Typography
-      // variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
+    <Typography color="text.secondary" align="center" {...props}>
       {"Copyright © "}
       <Link color="inherit" href={process.env.NEXT_PUBLIC_DOMAIN}>
         {local.ru.text.APP_NAME}
@@ -55,25 +45,14 @@ const Layout = ({ children }) => {
           display="flex"
           justifyContent="center"
           alignItems="center"
-          // component={Box}
-          // sx={{
-          //   backgroundColor: customTheme.palette.background.default,
-          // }}
-          // sx={{
-          //   // backgroundImage: `url(/wall.jpg)`,
-          //   // backgroundRepeat: "no-repeat",
-          //   // backgroundSize: "cover",
-          //   // backgroundPosition: "center",
-          //   backgroundColor: customTheme?.palette?.background?.default,
-          // }}
         >
           <Lottie animationData={background} loop={true}></Lottie>
         </Grid>
         <Grid
           size={{ xs: 12, sm: 6, md: 4 }}
-          // component={Paper}
+          component={Paper}
           elevation={0}
-          // square
+          square
         >
           <Box
             sx={{

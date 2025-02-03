@@ -37,9 +37,9 @@ const useTest = ({
   const theme = useTheme();
 
   function handleEditorDidMount({ editor, monaco, darkmode }) {
-    editorRef.current = editor;
+    editorRef.current = monaco;
     monaco.editor.defineTheme("pk", {
-      base: darkmode ? "vs-dark" : "vs",
+      base: "vs-dark",
       inherit: true,
       rules: [
         {
@@ -56,17 +56,24 @@ const useTest = ({
         },
       ],
       colors: {
-        "editor.background": tinycolor(
-          theme.palette.background.default
-        ).toHexString(),
+        "editor.background": "#121212",
+        // "editor.background": tinycolor(
+        //   theme.palette.background.default
+        // ).toHexString(),
       },
     });
-    monaco.editor.setTheme("pk");
+    setTheme(darkmode);
     editor.onKeyDown((event) => {
       if (editorDisabled.current.disabled) {
         event.preventDefault();
       }
     });
+  }
+
+  function setTheme(darkmode) {
+    darkmode
+      ? editorRef.current.editor.setTheme("pk")
+      : editorRef.current.editor.setTheme("vs");
   }
 
   useEffect(() => {
@@ -165,7 +172,7 @@ const useTest = ({
   };
 
   const ErrorCountDownPressed = async () => {
-    editorRef.current.getModel().setValue("");
+    editorRef.current.editor.getModel().setValue("");
 
     if (nav.taskId != tests.length - 1) {
       nextTask({ pts: getSense() });
@@ -186,7 +193,7 @@ const useTest = ({
   };
 
   const NextTaskOrCompleteTest = async ({ error, errorMsg, earned = 0 }) => {
-    editorRef.current.getModel().setValue("");
+    editorRef.current.editor.getModel().setValue("");
     switch (true) {
       case nav.taskId != tests.length - 1 && !error:
         // progressStore.setShowProgress(true, false, "python", 2000);
@@ -261,6 +268,7 @@ const useTest = ({
     handleEditorDidMount,
     getSense,
     ErrorCountDownPressed,
+    editorRef,
   };
 };
 

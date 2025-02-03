@@ -1,10 +1,8 @@
 "use client";
 import { styled } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
-import { useState } from "react";
-import themeSwitch from "./themeSwitchStore";
-import { loadSetupPersisted, persistSetup } from "@/db/localstorage";
 import { useEffect } from "react";
+import { useColorScheme } from "@mui/material/styles";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -62,29 +60,27 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function DLSwitch() {
-  const [checked, setChecked] = useState(true);
+export default function DLSwitch({ editorRef }) {
+  const { mode, setMode } = useColorScheme();
 
-  useEffect(() => {
-    const setup = loadSetupPersisted();
-    const darkTheme = setup != null ? setup.darktheme : true;
-    setChecked(darkTheme);
-    themeSwitch.setDarkMode(darkTheme);
-    // const setup = loadSetupPersisted();
-    // console.log(setup);
-    // setup != null ? setChecked(setup.darktheme) : setChecked(true);
-    // setup != null
-    //   ? themeSwitch.setDarkMode(setup.darktheme)
-    //   : themeSwitch.setDarkMode(true);
-  }, []);
+  if (!mode) {
+    return null;
+  }
 
   const handleChange = (event) => {
-    setChecked(event.target.checked);
-    themeSwitch.setDarkMode(event.target.checked);
-    persistSetup({ darktheme: event.target.checked });
+    setMode(event.target.checked ? "dark" : "light");
+    event.target.checked
+      ? editorRef.current.editor.setTheme("pk")
+      : editorRef.current.editor.setTheme("vs");
+
+    // event.target.checked ? "dark" : "light"
   };
 
   return (
-    <MaterialUISwitch checked={checked} onChange={handleChange} sx={{ m: 1 }} />
+    <MaterialUISwitch
+      checked={mode == "dark" ? true : false}
+      onChange={handleChange}
+      sx={{ m: 1 }}
+    />
   );
 }
