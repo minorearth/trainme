@@ -13,6 +13,8 @@ export const EditorOptions = {
   formatOnType: true,
   lineHeight: 1.5,
   renderLineHighlight: "none",
+  renderIndentGuides: false,
+  overviewRulerLanes: 0,
   minimap: {
     enabled: false,
   },

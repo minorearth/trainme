@@ -24,6 +24,8 @@ import progressStore from "@/components/common/progress/progressStore";
 import themeSwitch from "@/components/common/themeswitch/themeSwitchStore";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import { useColorScheme } from "@mui/material/styles";
+import Grid from "@mui/material/Grid2";
+import { Panel } from "@/components/common/formcontrol";
 
 const Test = observer(({ tests, actions, nav, pyodide }) => {
   const [executing, setExecuting] = useState(false);
@@ -77,184 +79,143 @@ const Test = observer(({ tests, actions, nav, pyodide }) => {
           padding: "5px",
         }}
       >
-        <LinearProgressWithLabel
-          value={((nav.taskId + 1) / tests.length) * 100}
-          label={`${nav.taskId + 1}\\${tests.length}`}
-        />
-
-        <Box>
-          <Paper elevation={0} sx={{ padding: "3px" }}>
-            <Typography variant="body1" gutterBottom>
-              {currTask.task}
-            </Typography>
-          </Paper>
-          <TextField
-            sx={{
-              width: "100%",
-            }}
-            slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
-            }}
-            id="outlined-multiline-static"
-            label="Входные данные"
-            multiline
-            rows={4}
-            value={currTask.input}
-            onChange={(event) => {
-              // setInput(event.target.value);
-            }}
-          />
-        </Box>
-
         <Box
           sx={{
-            width: "100%",
-            padding: "5px",
             display: "flex",
             flexDirection: "row",
-            justifyContent: "space-around",
           }}
         >
-          <Button
-            onClick={async (e) => {
-              if (!pyodide || executing) return;
-              setExecuting(true);
-              await runPythonCode(currTask.code, currTask.input);
-              setExecuting(false);
-            }}
-            variant="outlined"
-            disabled={!pyodide || executing}
-          >
-            {!pyodide
-              ? "Загружается..."
-              : executing
-              ? "Выполняется..."
-              : "Выполнить"}
-          </Button>
-
-          {!cowntdownbutton.state.visible && (
-            <Button
-              onClick={async (e) => {
-                if (!pyodide || executing) return;
-                checkTask(currTask.code, tests[nav.taskId], tests.length);
-              }}
-              disabled={!pyodide || executing}
-              variant="outlined"
-            >
-              Проверить!
-            </Button>
-          )}
-          {cowntdownbutton.state.visible && (
-            <CountdownButton
-              onClick={() => {
-                // NextTaskOrCompleteTest({ error: false });
-                ErrorCountDownPressed();
-                setEditorDisabled(false);
-                cowntdownbutton.hideButton();
-              }}
-              variant="outlined"
-            />
-          )}
-          <Button
-            onClick={() => {
-              actions.setTestInterrupted();
-            }}
-            variant="outlined"
-          >
-            Выйти
-          </Button>
+          <LinearProgressWithLabel
+            value={((nav.taskId + 1) / tests.length) * 100}
+            label={`${nav.taskId + 1}\\${tests.length}`}
+          />
           <DLSwitch monacoRef={monacoRef} />
         </Box>
-        <Box
-          sx={{
-            border: "1px solid #525252",
-            borderRadius: "2px",
-            marginBottom: "5px",
-          }}
-        >
-          <Editor
-            height="50vh"
-            width="100%"
-            theme={"pk"}
-            options={EditorOptions}
-            language="python"
-            value={currTask.code}
-            onChange={(value, e) => setCode(value ?? "")}
-            onMount={(editor, monaco) =>
-              handleEditorDidMount({
-                editor,
-                monaco,
-                darkmode: mode == "dark" ? true : false,
-              })
-            }
-          />
-        </Box>
-        <Paper elevation={0}>
-          <Typography variant="body1" gutterBottom>
-            {currTask.restrictErrors}
-          </Typography>
-          <Box
-            sx={{
-              width: "100%",
-              // padding: "5px",
-              display: "flex",
-              flexDirection: "row",
 
-              justifyContent: "space-around",
-            }}
-          >
-            <TextField
-              sx={{
-                width: "100%",
-                flex: 1,
-              }}
-              slotProps={{
-                inputLabel: {
-                  shrink: true,
-                },
-              }}
-              id="output"
-              label="Выходные данные"
-              multiline
-              rows={4}
-              value={currTask.output}
-            />
-            <TextField
-              sx={{
-                width: "100%",
-                flex: 1,
-                typography: "body1",
-              }}
-              // inputProps={{
-              //   style: {
-              //     color: "#405D72",
-              //     fontSize: 20,
-              //     // fontStyle: "italic",
-              //     // fontWeight: "bold",
-              //     // fontFamily: myFont.style.fontFamily,
-              //   },
-              // }}
-              slotProps={{
-                htmlInput: {
-                  style: {
-                    // fontFamily: `Monaco`,
-                    // fontFeatureSettings: `"liga" 0, "calt" 0`,
-                  },
-                },
-                inputLabel: {
-                  shrink: true,
-                },
-              }}
-              id="expected"
-              label="Ожидаемый результат"
-              multiline
-              rows={4}
-              value={currTask.expectedOutput}
-            />
-          </Box>
-        </Paper>
+        <Grid container spacing={2} columns={{ xs: 1, md: 3 }}>
+          <Grid size={{ xs: 1, md: 1 }}>
+            <Panel label={"Выполни задание"}>
+              <Typography variant="body1" gutterBottom>
+                {currTask.task}
+              </Typography>
+            </Panel>
+          </Grid>
+          <Grid size={{ xs: 1, md: 2 }}>
+            <Panel label={"Редактор кода"}>
+              <Editor
+                height="50vh"
+                width="100%"
+                theme={"pk"}
+                options={EditorOptions}
+                language="python"
+                value={currTask.code}
+                onChange={(value, e) => setCode(value ?? "")}
+                onMount={(editor, monaco) =>
+                  handleEditorDidMount({
+                    editor,
+                    monaco,
+                    darkmode: mode == "dark" ? true : false,
+                  })
+                }
+              />
+
+              <Box
+                sx={{
+                  width: "100%",
+                  marginTop: "15px",
+                  marginBottom: "10px",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                }}
+              >
+                <Button
+                  onClick={async (e) => {
+                    if (!pyodide || executing) return;
+                    setExecuting(true);
+                    await runPythonCode(currTask.code, currTask.input);
+                    setExecuting(false);
+                  }}
+                  variant="outlined"
+                  disabled={!pyodide || executing}
+                >
+                  {!pyodide
+                    ? "Загружается..."
+                    : executing
+                    ? "Выполняется..."
+                    : "Выполнить"}
+                </Button>
+
+                {!cowntdownbutton.state.visible && (
+                  <Button
+                    onClick={async (e) => {
+                      if (!pyodide || executing) return;
+                      checkTask(currTask.code, tests[nav.taskId], tests.length);
+                    }}
+                    disabled={!pyodide || executing}
+                    variant="outlined"
+                  >
+                    Проверить!
+                  </Button>
+                )}
+                {cowntdownbutton.state.visible && (
+                  <CountdownButton
+                    onClick={() => {
+                      // NextTaskOrCompleteTest({ error: false });
+                      ErrorCountDownPressed();
+                      setEditorDisabled(false);
+                      cowntdownbutton.hideButton();
+                    }}
+                    variant="outlined"
+                  />
+                )}
+                {/* <Button
+                  onClick={() => {
+                    actions.setTestInterrupted();
+                  }}
+                  variant="outlined"
+                >
+                  Выйти
+                </Button> */}
+              </Box>
+            </Panel>
+          </Grid>
+        </Grid>
+
+        <Grid
+          container
+          spacing={2}
+          columns={{ xs: 1, sm: 3 }}
+          sx={{ marginTop: "10px", flexGrow: 1 }}
+        >
+          <Grid size={{ xs: 1, md: 1 }}>
+            <Panel label={"Входные данные"}>
+              <pre>
+                <Typography variant="body1" gutterBottom>
+                  {currTask.input}
+                </Typography>
+              </pre>
+            </Panel>
+          </Grid>
+          <Grid size={{ xs: 1, md: 1 }}>
+            <Panel label={"Выходные данные"}>
+              <pre>
+                <Typography variant="body1" gutterBottom>
+                  {currTask.output}
+                </Typography>
+              </pre>
+            </Panel>
+          </Grid>
+          <Grid size={{ xs: 1, md: 1 }}>
+            <Panel label={"Ожидаемый результат"}>
+              <pre>
+                <Typography variant="body1" gutterBottom>
+                  {currTask.expectedOutput}
+                </Typography>
+              </pre>
+            </Panel>
+          </Grid>
+        </Grid>
       </Box>
     )
   );

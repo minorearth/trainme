@@ -9,13 +9,18 @@ import { GoArrowRight } from "react-icons/go";
 import styled from "@emotion/styled";
 import { BsUnlock } from "react-icons/bs";
 import { useTheme } from "@mui/material/styles";
+import localFont from "next/font/local";
+
+const myFont = localFont({
+  src: "../../../app/Monaco.ttf",
+});
 
 const Wrapper = styled.div(({ theme }) => ({
   borderRadius: "var(--node-border-radius)",
   display: "flex",
   height: "auto",
   minWidth: "150px",
-  fontFamily: "Monaco",
+  fontFamily: myFont.style.fontFamily,
   fontWeight: "500",
   letterSpacing: "-0.2px",
   boxShadow: "var(--node-box-shadow)",

@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite";
 import local from "@/globals/local";
 import { useState } from "react";
 import authForm from "@/store/authentication";
+import { useTheme } from "@mui/material/styles";
 
 const getProps = (type) => {
   switch (true) {
@@ -30,6 +31,7 @@ const getProps = (type) => {
 };
 
 const AuthField = observer(({ type }) => {
+  const theme = useTheme();
   const [value, setValue] = useState("");
   const handleChange = (e) => {
     setValue(e.target.value);
@@ -38,6 +40,18 @@ const AuthField = observer(({ type }) => {
 
   return (
     <TextField
+      sx={{
+        "& :-webkit-autofill": {
+          WebkitBoxShadow: `0 0 0 100px ${theme.palette.background.default.toString()} inset`,
+          WebkitTextFillColor: "ffffff",
+        },
+      }}
+      // sx={{
+      //   "& :-webkit-autofill": {
+      //     WebkitBoxShadow: `0 0 0 100px ${theme.palette.background.default} inset`,
+      //     WebkitTextFillColor: "ffffff",
+      //   },
+      // }}
       margin="normal"
       value={value}
       required

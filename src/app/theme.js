@@ -2,37 +2,16 @@
 import { createTheme } from "@mui/material/styles";
 import localFont from "next/font/local";
 import { ruRU as coreruRU } from "@mui/material/locale";
-import themeSwitchStore from "@/components/common/themeswitch/themeSwitchStore";
-import { useEffect, useMemo, useState } from "react";
-import { reaction } from "mobx";
-import { loadSetupPersisted } from "@/db/localstorage";
 
 const myFont = localFont({
   src: "./Monaco.ttf",
 });
 
 export const useCustomTheme = () => {
-  // const [darkTheme, setDarkTheme] = useState(() => themeSwitchStore.darkmode);
-
-  // reaction(
-  //   () => themeSwitchStore.darkmode,
-  //   (v) => setDarkTheme(v)
-  // );
-  // useEffect(() => {
-  // const setup = loadSetupPersisted();
-  // const darkTheme = setup != null ? setup.darktheme : true;
-  //   setDarkTheme(darkTheme);
-  //   reaction(
-  //     () => themeSwitchStore.darkmode,
-  //     (v) => setDarkTheme(v)
-  //   );
-  // }, []);
-
   const customTheme = createTheme({
     typography: {
       body1: {
         fontFamily: myFont.style.fontFamily,
-        // color: "#AAAAAA",
       },
     },
 
@@ -40,12 +19,8 @@ export const useCustomTheme = () => {
     //   mode: "dark",
     //   background: { default: "#1E1E1E", paper: "#1E1E1E" },
     // },
-    // palette: {
-    //   mode: "dark",
-    // },
 
     colorSchemes: {
-      // dark: darkTheme,
       dark: true,
       light: true,
     },
@@ -70,28 +45,16 @@ export const useCustomTheme = () => {
           },
         },
       },
+      MuiInputLabel: {
+        styleOverrides: {
+          root: {
+            fontSize: "1.3rem",
+          },
+        },
+      },
     },
     coreruRU,
   });
 
   return { customTheme };
 };
-
-// const defaultTheme = useMemo(
-//   () =>
-//       createTheme({
-//           palette: {
-//               mode: appStore.colorMode,
-//               text: {
-//                   primary: appStore.colorMode === "light" ? "#000033" : "#FFF",
-//               },
-//               background: {
-//                   default: appStore.colorMode === "light" ? "#E7EBF0" : "#121212",
-//               },
-//           },
-//           shape: {
-//               borderRadius: 4,
-//           },
-//       }),
-//   [appStore.colorMode]
-// );
