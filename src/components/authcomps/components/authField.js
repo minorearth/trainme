@@ -41,8 +41,9 @@ const AuthField = observer(({ type }) => {
   return (
     <TextField
       sx={{
-        "& :-webkit-autofill": {
-          WebkitBoxShadow: `0 0 0 100px ${theme.palette.background.default.toString()} inset`,
+        "&:-webkit-autofill": {
+          // WebkitBoxShadow: `0 0 0 100px ${theme.palette.background.default.toString()} inset`,
+          WebkitBoxShadow: `0 0 0 100px #fff inset `,
           WebkitTextFillColor: "ffffff",
         },
       }}
@@ -60,7 +61,7 @@ const AuthField = observer(({ type }) => {
       label={getProps(type).label}
       name={type}
       autoComplete={getProps(type).auto}
-      // autoFocus
+      autoFocus={type == "email" ? true : false}
       type={type == "password" ? type : null}
       onChange={(e) => handleChange(e)}
       error={authForm.state[type].error}

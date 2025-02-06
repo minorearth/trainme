@@ -6,14 +6,30 @@ import { observer } from "mobx-react-lite";
 import splashCDStore from "./splashCDStore";
 import dynamic from "next/dynamic";
 import ok from "@/components/test/congrat/congratulation/lottie/ok.json";
+import { autorun, reaction, action } from "mobx";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 const SplashCD = observer(({}) => {
   const ref = useRef();
 
+  // autorun(() => {
+  //   console.log("asadasdasdasdasdasd");
+  //   !splashCDStore.state.showSplashCD && splashCDStore.state.action2();
+  // });
   useEffect(() => {
-    if (ref.current) {
+    return reaction(
+      () => splashCDStore.state.showSplashCD,
+      () => {
+        if (!splashCDStore.state.showSplashCD) {
+          action(splashCDStore.state.action2());
+        }
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    if (ref.current && splashCDStore.state.showSplashCD) {
       ref.current?.goToAndPlay(0);
     }
   }, [splashCDStore.state]);

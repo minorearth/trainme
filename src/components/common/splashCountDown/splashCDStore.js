@@ -5,6 +5,7 @@ class splashCD {
     showSplashCD: false,
     background: true,
     animation: "progressdots",
+    action2: () => {},
   };
 
   constructor() {
@@ -12,14 +13,15 @@ class splashCD {
   }
 
   setCloseProgress() {
-    this.state = { showSplashCD: false };
+    this.state = { ...this.state, showSplashCD: false };
   }
 
-  setShow(background = false, animation, delay) {
+  setShow(background = false, animation, delay, action2 = () => {}) {
     this.state = {
       showSplashCD: true,
       background,
       animation,
+      action2,
     };
   }
 }

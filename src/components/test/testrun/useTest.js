@@ -1,23 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-// import { saveChapterCompleted } from "@/db/domain";
 import dialog from "@/store/dialog";
-import { CollectionsOutlined } from "@mui/icons-material";
 import alertdialog from "@/store/dialog";
 import local from "@/globals/local";
 import cowntdownbutton from "@/store/cowntdownbutton";
-import user from "@/store/user";
-
-import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
-import { setUseMetaData } from "@/db/SA/firebaseSA";
-import progressStore from "@/components/common/progress/progressStore";
 import splashCDStore from "@/components/common/splashCountDown/splashCDStore";
 import { useTheme } from "@mui/material/styles";
-import tinycolor from "tinycolor2";
-
-import {
-  persistState as persistState,
-  loadStatePersisted,
-} from "@/db/localstorage";
+import { loadStatePersisted } from "@/db/localstorage";
 
 const useTest = ({
   nav,
@@ -26,58 +14,10 @@ const useTest = ({
   changeStateNoEffect,
   setRunTestsPageRecap,
   runAccomplish,
+  editorRef,
+  setEditorDisabled,
 }) => {
   const [currTask, setCurrTask] = useState({});
-  const monacoRef = useRef(null);
-  const editorRef = useRef(null);
-
-  const editorDisabled = useRef({ disabled: false });
-
-  const setEditorDisabled = (disabled) => {
-    editorDisabled.current = { disabled };
-  };
-  const theme = useTheme();
-
-  function handleEditorDidMount({ editor, monaco, darkmode }) {
-    monacoRef.current = monaco;
-    editorRef.current = editor;
-    monaco.editor.defineTheme("pk", {
-      base: "vs-dark",
-      inherit: true,
-      rules: [
-        {
-          token: "identifier",
-          foreground: "9CDCFE",
-        },
-        {
-          token: "identifier.function",
-          foreground: "DCDCAA",
-        },
-        {
-          token: "type",
-          foreground: "1AAFB0",
-        },
-      ],
-      colors: {
-        "editor.background": "#121212",
-        // "editor.background": tinycolor(
-        //   theme.palette.background.default
-        // ).toHexString(),
-      },
-    });
-    setTheme(darkmode);
-    editor.onKeyDown((event) => {
-      if (editorDisabled.current.disabled) {
-        event.preventDefault();
-      }
-    });
-  }
-
-  function setTheme(darkmode) {
-    darkmode
-      ? monacoRef.current.editor.setTheme("pk")
-      : monacoRef.current.editor.setTheme("vs");
-  }
 
   useEffect(() => {
     processSuspendedAfterError();
@@ -176,6 +116,7 @@ const useTest = ({
 
   const ErrorCountDownPressed = async () => {
     editorRef.current.getModel().setValue("");
+    setEditorDisabled(false);
 
     if (nav.taskId != tests.length - 1) {
       nextTask({ pts: getSense() });
@@ -197,26 +138,26 @@ const useTest = ({
 
   const NextTaskOrCompleteTest = async ({ error, errorMsg, earned = 0 }) => {
     editorRef.current.getModel().setValue("");
-    console.log(
-      "nav.taskId != tests.length - 1 && !error",
-      nav.taskId != tests.length - 1 && !error
-    );
     switch (true) {
       case nav.taskId != tests.length - 1 && !error:
-        // progressStore.setShowProgress(true, false, "python", 2000);
-        // progressStore.setCloseProgress();
-        splashCDStore.setShow(false, "ok", 1500);
+        splashCDStore.setShow(false, "ok", 500, () => {});
         nextTask({ pts: getSense() + earned });
         return;
       case nav.taskId == tests.length - 1 && !error:
         if (nav.taskstage == "recap") {
-          runAccomplish(getSense());
+          splashCDStore.setShow(false, "ok", 500, () =>
+            runAccomplish(getSense())
+          );
         }
         if (nav.recapTasks.length == 0 && nav.taskstage == "WIP") {
-          runAccomplish(getSense() + earned);
+          splashCDStore.setShow(false, "ok", 500, () =>
+            runAccomplish(getSense() + earned)
+          );
         }
-        if (nav.recapTasks.length > 0 && nav.taskstage == "WIP") {
-          doRecap({ pts: getSense() + earned });
+        if (nav.recapTasks.length != 0 && nav.taskstage == "WIP") {
+          splashCDStore.setShow(false, "ok", 500, () =>
+            doRecap({ pts: getSense() + earned })
+          );
         }
         return;
       case error:
@@ -269,101 +210,11 @@ const useTest = ({
   return {
     NextTaskOrCompleteTest,
     currTask,
-    setCode,
     setOutput,
-    setEditorDisabled,
-    handleEditorDidMount,
     getSense,
     ErrorCountDownPressed,
-    monacoRef,
+    setCode,
   };
 };
 
 export default useTest;
-
-// const NextTaskOrCompleteTest = async ({ error, errorMsg, earned = 0 }) => {
-//   editorRef.current.getModel().setValue("");
-//   switch (true) {
-//     case nav.taskId != tests.length - 1 && !error:
-//       changeState({
-//         data: {
-//           taskId: nav.taskId + 1,
-//           pts: getSense() + earned,
-//         },
-//       });
-//       return;
-//     case nav.taskId == tests.length - 1 && !error:
-//       if (
-//         nav.taskstage == "recap" ||
-//         nav.taskstage == "accomplished_suspended"
-//       ) {
-//         const pts = getSense();
-//         runAccomplish(pts);
-//       }
-//       if (nav.recapTasks.length == 0) {
-//         const pts = getSense() + earned;
-//         // changeStateNoEffect({ pts });
-//         runAccomplish(pts);
-//       }
-//       if (
-//         nav.recapTasks.length > 0 &&
-//         (nav.taskstage == "WIP" || nav.taskstage == "recap_suspended")
-//       ) {
-//         changeState({
-//           data: { taskstage: "recap", pts: getSense() + earned },
-//         });
-//         dialog.showDialog(
-//           "Повторение",
-//           "Попробуй еще раз решить ошибочные задачи",
-//           1,
-//           () => setRunTestsPageRecap(nav.recapTasks)
-//         );
-//       }
-//       return;
-//     case error:
-//       alertdialog.showDialog(
-//         local.ru.msg.alert.PSW_TEST_ERROR,
-//         `${errorMsg}. Смотри верный код в окне редактора`,
-//         1,
-
-//         () => {
-//           setCode(tests[nav.taskId].rightcode);
-//           setEditorDisabled(true);
-//           cowntdownbutton.showButton();
-//         }
-//       );
-//       if (nav.taskstage != "recap" && nav.taskId != tests.length - 1) {
-//         const recapTasks = [...nav.recapTasks, nav.taskId];
-//         nav.recapTasks = recapTasks;
-//         changeStateNoEffect({
-//           recapTasks: recapTasks,
-//           taskId: nav.taskId + 1,
-//         });
-//       }
-
-//       if (nav.taskstage == "recap" && nav.taskId != tests.length - 1) {
-//         changeStateNoEffect({
-//           taskId: nav.taskId + 1,
-//         });
-//       }
-//       if (nav.taskstage != "recap" && nav.taskId == tests.length - 1) {
-//         nav.taskstage = "recap_suspended";
-//         const recapTasks = [...nav.recapTasks, nav.taskId];
-//         nav.recapTasks = recapTasks;
-//         changeStateNoEffect({
-//           taskstage: "recap_suspended",
-//           recapTasks,
-//         });
-//       }
-//       if (nav.taskstage == "recap" && nav.taskId == tests.length - 1) {
-//         nav.taskstage = "accomplished_suspended";
-//         changeStateNoEffect({
-//           taskstage: "accomplished_suspended",
-//         });
-//       }
-//       return;
-
-//     default:
-//       return "";
-//   }
-// };

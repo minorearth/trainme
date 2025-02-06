@@ -121,7 +121,7 @@ const Flow = ({ navState, flow, fit }) => {
         maxZoom={2}
         minZoom={1}
       >
-        <Controls showInteractive={false} />
+        {/* <Controls showInteractive={false} /> */}
         <Panel position="top-left" style={{ width: "97%" }}>
           {/* <Box sx={{ width: "100%", opacity: 1, }}> */}
           <Paper

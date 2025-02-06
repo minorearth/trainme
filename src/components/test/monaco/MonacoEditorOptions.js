@@ -32,4 +32,5 @@ export const EditorOptions = {
   tabSize: 4,
   quickSuggestions: true,
   wordBasedSuggestions: true,
+  wordWrap: "on",
 };

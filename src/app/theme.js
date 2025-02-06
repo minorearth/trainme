@@ -39,19 +39,26 @@ export const useCustomTheme = () => {
       //   `,
       // },
       MuiInputBase: {
+        // https://github.com/mui/material-ui/issues/14427
+        input: {
+          "&:-webkit-autofill": {
+            transitionDelay: "9999s",
+            transitionProperty: "background-color, color",
+          },
+        },
         styleOverrides: {
           root: {
             fontFamily: myFont.style.fontFamily,
           },
         },
       },
-      MuiInputLabel: {
-        styleOverrides: {
-          root: {
-            fontSize: "1.3rem",
-          },
-        },
-      },
+      // MuiInputLabel: {
+      //   styleOverrides: {
+      //     root: {
+      //       fontSize: "1.3rem",
+      //     },
+      //   },
+      // },
     },
     coreruRU,
   });

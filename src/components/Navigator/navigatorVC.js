@@ -50,6 +50,11 @@ const useNavigator = (fit) => {
   };
 
   useEffect(() => {
+    document.addEventListener("copy", (e) => {
+      e.clipboardData.setData("text/plain", "No Copying!");
+      e.preventDefault();
+    });
+
     const doLoad = async () => {
       const statePers = await reLoadFlow();
 
@@ -119,6 +124,7 @@ const useNavigator = (fit) => {
   };
 
   const runAccomplish = async (pts) => {
+    console.log("lalalala");
     if (!navState.repeat) {
       const unlocked = getTargetsBySource(navState.chapter, flow.edges);
       await setUseMetaData(

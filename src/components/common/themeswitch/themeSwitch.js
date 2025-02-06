@@ -72,8 +72,6 @@ export default function DLSwitch({ monacoRef }) {
     event.target.checked
       ? monacoRef?.current.editor.setTheme("pk")
       : monacoRef?.current.editor.setTheme("vs");
-
-    // event.target.checked ? "dark" : "light"
   };
 
   return (

@@ -33,7 +33,7 @@ export const useAuth = () => {
         "Зайдите в почту и перейдите...",
         1,
         () => {
-          // authForm.showSignIn();
+          progressStore.setCloseProgress();
         }
       );
       return;
@@ -45,7 +45,7 @@ export const useAuth = () => {
         "Перепроверьте все еще раз",
         1,
         () => {
-          // authForm.showSignIn();
+          progressStore.setCloseProgress();
         }
       );
       return;
@@ -86,8 +86,9 @@ export const useAuth = () => {
     const isValid = validateSignInInputs(email, password);
     if (isValid) {
       await authNow(email, password);
+    } else {
+      progressStore.setCloseProgress();
     }
-    progressStore.setCloseProgress();
   };
 
   const handleForgetPswSubmit = (event) => {

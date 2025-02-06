@@ -1,51 +1,46 @@
 "use client";
-//github.com/alankrantas/monaco-python-live-editor?tab=readme-ov-file
-// https://alankrantas.github.io/monaco-python-live-editor/
-
 import { useTheme } from "@mui/material/styles";
-
-import Editor from "@monaco-editor/react";
 import { useState, useEffect, useRef } from "react";
-import { EditorOptions } from "@/components/test/monaco/MonacoEditorOptions";
 import Typography from "@mui/material/Typography";
 import usePythonRunner from "./withPythonRunner";
-import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
 import LinearProgressWithLabel from "@/components/test/testrun/components/LinearProgress";
 import useCheck from "./useCheck";
 import useTest from "./useTest";
-import Progress from "@/components/common/progress/progress";
 import CountdownButton from "@/components/common/countdown/CountdownButton";
 import { observer } from "mobx-react-lite";
 import cowntdownbutton from "@/store/cowntdownbutton";
 import progressStore from "@/components/common/progress/progressStore";
-import themeSwitch from "@/components/common/themeswitch/themeSwitchStore";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import { useColorScheme } from "@mui/material/styles";
 import Grid from "@mui/material/Grid2";
 import { Panel } from "@/components/common/formcontrol";
+import MonacoEd from "./MonacoEd";
+import useMonaco from "./useMonaco";
 
 const Test = observer(({ tests, actions, nav, pyodide }) => {
   const [executing, setExecuting] = useState(false);
-  // const [editorDarkMode, setEditorDarkMode] = useState("darkMode");
+  const monacoRef = useRef(null);
+  const editorRef = useRef(null);
+
   const theme = useTheme();
+  const { mode, setMode } = useColorScheme();
+  const { setEditorDisabled } = useMonaco({});
+
   const {
     NextTaskOrCompleteTest,
     ErrorCountDownPressed,
     NextTaskAndAddRecapNoEffect,
-    currTask,
-    setCode,
     setOutput,
-    setEditorDisabled,
-    handleEditorDidMount,
-    getSense,
-    monacoRef,
+    setCode,
+    currTask,
   } = useTest({
     nav,
     tests,
+    editorRef,
     ...actions,
+    setEditorDisabled: (disabled) => setEditorDisabled(disabled, editorRef),
   });
 
   const { runPythonCode } = usePythonRunner({ setOutput, pyodide });
@@ -56,8 +51,6 @@ const Test = observer(({ tests, actions, nav, pyodide }) => {
     setCode,
     setEditorDisabled,
   });
-
-  const { mode, setMode } = useColorScheme();
 
   if (!mode) {
     return null;
@@ -102,23 +95,13 @@ const Test = observer(({ tests, actions, nav, pyodide }) => {
           </Grid>
           <Grid size={{ xs: 1, md: 2 }}>
             <Panel label={"Редактор кода"}>
-              <Editor
-                height="50vh"
-                width="100%"
-                theme={"pk"}
-                options={EditorOptions}
-                language="python"
-                value={currTask.code}
-                onChange={(value, e) => setCode(value ?? "")}
-                onMount={(editor, monaco) =>
-                  handleEditorDidMount({
-                    editor,
-                    monaco,
-                    darkmode: mode == "dark" ? true : false,
-                  })
-                }
+              <MonacoEd
+                currTask={currTask}
+                mode={mode}
+                setCode={setCode}
+                monacoRef={monacoRef}
+                editorRef={editorRef}
               />
-
               <Box
                 sx={{
                   width: "100%",
@@ -161,22 +144,21 @@ const Test = observer(({ tests, actions, nav, pyodide }) => {
                 {cowntdownbutton.state.visible && (
                   <CountdownButton
                     onClick={() => {
-                      // NextTaskOrCompleteTest({ error: false });
                       ErrorCountDownPressed();
-                      setEditorDisabled(false);
+
                       cowntdownbutton.hideButton();
                     }}
                     variant="outlined"
                   />
                 )}
-                {/* <Button
+                <Button
                   onClick={() => {
                     actions.setTestInterrupted();
                   }}
                   variant="outlined"
                 >
                   Выйти
-                </Button> */}
+                </Button>
               </Box>
             </Panel>
           </Grid>

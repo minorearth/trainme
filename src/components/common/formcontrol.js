@@ -22,7 +22,7 @@ export const Panel = ({ children, label }) => {
         minHeight: "200px",
       }}
     >
-      <FormLabel component="Legend">{label}</FormLabel>
+      <FormLabel component="legend">{label}</FormLabel>
       <FormGroup row>{children}</FormGroup>
     </FormControl>
   );
