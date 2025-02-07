@@ -1,6 +1,6 @@
 import { makeAutoObservable, makeObservable } from "mobx";
 
-class splashCD {
+class splashAction {
   state = {
     showSplashCD: false,
     background: true,
@@ -26,4 +26,4 @@ class splashCD {
   }
 }
 
-export default new splashCD();
+export default new splashAction();

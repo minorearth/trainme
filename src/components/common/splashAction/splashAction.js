@@ -3,20 +3,16 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import { useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react-lite";
-import splashCDStore from "./splashCDStore";
+import splashCDStore from "./splashActionStore";
 import dynamic from "next/dynamic";
-import ok from "@/components/test/congrat/congratulation/lottie/ok.json";
-import { autorun, reaction, action } from "mobx";
+import { reaction, action } from "mobx";
+import { getLottie } from "../animation/getLottie";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
-const SplashCD = observer(({}) => {
+const SplashAction = observer(({ name }) => {
   const ref = useRef();
 
-  // autorun(() => {
-  //   console.log("asadasdasdasdasdasd");
-  //   !splashCDStore.state.showSplashCD && splashCDStore.state.action2();
-  // });
   useEffect(() => {
     return reaction(
       () => splashCDStore.state.showSplashCD,
@@ -57,7 +53,7 @@ const SplashCD = observer(({}) => {
       <Lottie
         lottieRef={ref}
         style={{ height: "400px", width: "400px" }}
-        animationData={ok}
+        animationData={getLottie(name)}
         autoPlay={false}
         loop={false}
         onComplete={() => {
@@ -68,4 +64,4 @@ const SplashCD = observer(({}) => {
   );
 });
 
-export default SplashCD;
+export default SplashAction;

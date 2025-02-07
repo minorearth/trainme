@@ -1,7 +1,7 @@
 "use client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Animation from "@/components/test/congrat/congratulation/congratAnimation";
+import Animation from "@/components/common/animation/Animation";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { useTheme } from "@mui/material/styles";
 import TextAnimated from "@/components/common/textAnimated/textAnimated";

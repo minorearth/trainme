@@ -3,7 +3,7 @@ import dialog from "@/store/dialog";
 import alertdialog from "@/store/dialog";
 import local from "@/globals/local";
 import cowntdownbutton from "@/store/cowntdownbutton";
-import splashCDStore from "@/components/common/splashCountDown/splashCDStore";
+import splashCDStore from "@/components/common/splashAction/splashActionStore";
 import { useTheme } from "@mui/material/styles";
 import { loadStatePersisted } from "@/db/localstorage";
 

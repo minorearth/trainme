@@ -2,7 +2,7 @@
 import Box from "@mui/material/Box";
 import Flow from "../flow/flow";
 import { ReactFlowProvider } from "@xyflow/react";
-import Congrat from "@/components/test/congrat/congrat";
+import Congrat from "@/components/test/congrat";
 import Start from "@/components/test/start";
 import Test from "@/components/test/testrun/test";
 import useNavigator from "./navigatorVC";
@@ -12,28 +12,28 @@ import { observer } from "mobx-react-lite";
 import Countdown from "../common/countdown/countdown";
 import countdown from "@/store/cowntdown";
 import { useEffect, useRef, useState } from "react";
-import progress from "@/components/common/progress/progressStore";
 import AdminPanel from "@/components/admin/adminpanel";
-import Splash from "@/components/common/splash/splash";
-import { customTheme } from "@/app/theme";
-import { ThemeProvider } from "@mui/material/styles";
-import SplashCD from "@/components/common/splashCountDown/splashCD";
+import SplashTimeout from "@/components/common/splashTimeout/splashTimeout";
+import SplashAction from "@/components/common/splashAction/splashAction";
 import stn from "@/globals/settings";
 import usePyodide from "@/components/Navigator/usePyodide.js";
 
 const Navigator = observer(() => {
   const fit = useRef();
-  const [showSplash, setShowSplash] = useState(true);
+  const [showSplashTimeout, setShowSplashTimeout] = useState(true);
   const { actions, navState, loading, tests, userid, flow } = useNavigator(fit);
   const { pyodide2 } = usePyodide();
 
   return (
     <Box>
-      {/* <Box sx={{ backgroundColor: customTheme.palette.background.default }}> */}
-      {showSplash && (
-        <Splash action={setShowSplash} duration={4000} navState={navState} />
+      {(loading || !pyodide2 || showSplashTimeout) && (
+        <SplashTimeout
+          action={setShowSplashTimeout}
+          duration={4000}
+          navState={navState}
+        />
       )}
-      {!showSplash && (
+      {!loading && pyodide2 && !showSplashTimeout && (
         <Box
           sx={{
             width: "100%",
@@ -44,7 +44,7 @@ const Navigator = observer(() => {
           <AlertDialog />
           {stn.mode.DEV_MODE && <AdminPanel flow={flow} />}
           <Progress />
-          <SplashCD />
+          <SplashAction name={"ok"} />
           {navState.page == "flow" && !loading && !!flow && (
             <ReactFlowProvider>
               <Flow

@@ -2,13 +2,10 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { useEffect } from "react";
-import Logo from "./animation.json";
-import dynamic from "next/dynamic";
 import { useTheme } from "@mui/material/styles";
+import Animation from "../animation/Animation";
 
-const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
-
-const Splash = ({ action, duration, navState }) => {
+const SplashTimeout = ({ action, duration, navState }) => {
   const theme = useTheme();
 
   useEffect(() => {
@@ -30,13 +27,9 @@ const Splash = ({ action, duration, navState }) => {
         backgroundColor: theme.palette.background.default,
       }}
     >
-      <Lottie
-        style={{ height: "700px", width: "700px" }}
-        animationData={Logo}
-        loop={true}
-      ></Lottie>
+      <Animation height={"700px"} width={"700px"} name={"logo"} />
     </Box>
   );
 };
 
-export default Splash;
+export default SplashTimeout;
