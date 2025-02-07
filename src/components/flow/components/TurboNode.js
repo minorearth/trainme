@@ -16,7 +16,7 @@ const myFont = localFont({
 });
 
 const Wrapper = styled.div(({ theme }) => ({
-  borderRadius: "var(--node-border-radius)",
+  borderRadius: "12px",
   display: "flex",
   height: "auto",
   minWidth: "150px",
@@ -48,7 +48,7 @@ const Wrapper = styled.div(({ theme }) => ({
     display: "flex",
     padding: "2px",
     position: "relative",
-    borderRadius: "10px",
+    borderRadius: "12px",
     flexGrow: 1,
   },
   "& .gradient:before": {

@@ -9,9 +9,9 @@ import { observer } from "mobx-react-lite";
 
 import alertdialog from "@/store/dialog";
 import local from "@/globals/local";
-import GradientBox from "@/components/common/dialog/gradientBox";
 import { Box } from "@mui/material";
 import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
 
 import { useTheme } from "@mui/material/styles";
 
@@ -23,6 +23,9 @@ const AlertDialog = observer(() => {
       open={alertdialog.dialogState.visible}
       onClose={() => alertdialog.okDialog()}
       // component={Paper}
+      // fullWidth={true}
+      maxWidth={"md"}
+      minWidth={"xs"}
       sx={{
         "& .MuiPaper-root": {
           backgroundImage:
@@ -49,7 +52,20 @@ const AlertDialog = observer(() => {
     >
       <DialogTitle>{alertdialog.dialogState.title}</DialogTitle>
       <DialogContent>
-        <DialogContentText>{alertdialog.dialogState.text}</DialogContentText>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            m: "auto",
+            width: "fit-content",
+          }}
+        >
+          <DialogContentText
+            sx={{ display: "inline-block", whiteSpace: "pre-line" }}
+          >
+            {alertdialog.dialogState.text}
+          </DialogContentText>
+        </Box>
       </DialogContent>
       <DialogActions>
         <Button

@@ -19,17 +19,11 @@ import { useTheme } from "@mui/material/styles";
 
 import "@xyflow/react/dist/base.css";
 import "./styles.css";
-
 import TurboNode from "./components/TurboNode.js";
 import TurboEdge from "./components/TurboEdge.js";
 import AnimNode from "./components/AnimNode";
-
-import { BiCoinStack } from "react-icons/bi";
-import { RiLogoutCircleRLine } from "react-icons/ri";
 import alertdialog from "@/store/dialog";
-import { signOutUserClient } from "@/db/domain/domain";
-import DLSwitch from "@/components/common/themeswitch/themeSwitch";
-import Fab from "@mui/material/Fab";
+import FlowPanel from "./components/panel";
 
 const nodeTypes = {
   turbo: TurboNode,
@@ -49,7 +43,6 @@ const Flow = ({ navState, flow, fit }) => {
   const theme = useTheme();
   const { fitView } = useReactFlow();
   const [nodes, setNodes, onNodesChange] = useNodesState();
-  const router = useRouter();
 
   useEffect(() => {
     setEdges(flow.edges);
@@ -113,77 +106,13 @@ const Flow = ({ navState, flow, fit }) => {
           [0, -250],
           [1300, 2500],
         ]}
-        // fitView
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         defaultEdgeOptions={defaultEdgeOptions}
         maxZoom={2}
         minZoom={1}
       >
-        <Panel position="top-left" style={{ width: "97%" }}>
-          <Paper
-            elevation={0}
-            sx={{
-              width: "100%",
-              backgroundColor: "transparent",
-              display: "flex",
-              flexDirection: "row",
-              padding: "4px",
-              justifyContent: "space-evenly",
-            }}
-          >
-            <DLSwitch />
-
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                padding: "4px",
-              }}
-            >
-              <BiCoinStack size={"40px"} />
-              <Typography variant="h4" gutterBottom>
-                {navState.userProgress.rating}
-              </Typography>
-            </Box>
-            <Fab size="small" color="primary" aria-label="add">
-              <RiLogoutCircleRLine
-                size={"40px"}
-                onClick={async () => {
-                  await signOutUserClient();
-                  router.push(`/login/`);
-                }}
-              />
-            </Fab>
-          </Paper>
-        </Panel>
-        <svg>
-          <defs>
-            <linearGradient id="edge-gradient">
-              <stop offset="0%" stopColor="#ae53ba" />
-              <stop offset="100%" stopColor="#2a8af6" />
-            </linearGradient>
-
-            <marker
-              id="edge-circle"
-              viewBox="-5 -5 10 10"
-              refX="0"
-              refY="0"
-              markerUnits="strokeWidth"
-              markerWidth="10"
-              markerHeight="10"
-              orient="auto"
-            >
-              <circle
-                stroke="#2a8af6"
-                strokeOpacity="0.75"
-                r="2"
-                cx="0"
-                cy="0"
-              />
-            </marker>
-          </defs>
-        </svg>
+        <FlowPanel navState={navState} />
       </ReactFlow>
     </Box>
   );

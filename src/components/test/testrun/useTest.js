@@ -103,7 +103,7 @@ const useTest = ({
   const showRightCodeAfterError = ({ errorMsg }) => {
     alertdialog.showDialog(
       local.ru.msg.alert.PSW_TEST_ERROR,
-      `${errorMsg}. Смотри верный код в окне редактора`,
+      errorMsg,
       1,
 
       () => {

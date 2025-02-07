@@ -8,9 +8,13 @@ const eqArrays = (a, b) => {
 };
 
 const cleanUpCode = (code) => {
-  const codeLines = code
+  let codeLines = code.replaceAll("#", "markdown");
+  console.log(codeLines);
+  codeLines = codeLines
     .split("\n")
-    .map((line) => line.replace(/#.*/g, "").replace(/[\n\t ]/g, ""))
+    .map((line) =>
+      line.replaceAll(/markdown.*/g, "").replaceAll(/[\n\t ]/g, "")
+    )
     .filter((line) => line != "");
   return codeLines;
 };
@@ -87,15 +91,18 @@ export const getErrorMessage = (
   mustHaveChecked,
   forbiddenChecked
 ) => {
-  const intro = "Ты допустил следующие ошибки: ";
+  const intro = "Ты допустил следующие ошибки:\n\n ";
   const errorList = [];
-  !codeChecked && errorList.push(stn.errors.error4);
-  !mustHaveChecked && errorList.push(stn.errors.error1);
-  !linesChecked && errorList.push(stn.errors.error2);
-  !forbiddenChecked && errorList.push(stn.errors.error6);
+  !codeChecked && errorList.push(`☹️ ${stn.errors.error4}\n`);
+  !mustHaveChecked && errorList.push(`😢 ${stn.errors.error1}\n`);
+  !linesChecked && errorList.push(`🫤 ${stn.errors.error2}\n\n`);
+  !forbiddenChecked && errorList.push(`🫢 ${stn.errors.error6}`);
+
   let errorMsg = "";
   if (errorList.length != 0) {
-    errorMsg = intro + errorList.join(", ");
+    errorList.push(`\nСмотри верный код в окне редактора`);
+
+    errorMsg = intro + errorList.join("");
   }
 
   switch (true) {
