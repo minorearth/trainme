@@ -29,7 +29,7 @@ const Navigator = observer(() => {
       {(loading || !pyodide2 || showSplashTimeout) && (
         <SplashTimeout
           action={setShowSplashTimeout}
-          duration={4000}
+          duration={400}
           navState={navState}
         />
       )}

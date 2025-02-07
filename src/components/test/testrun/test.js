@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import usePythonRunner from "./withPythonRunner";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
 import LinearProgressWithLabel from "@/components/test/testrun/components/LinearProgress";
 import useCheck from "./useCheck";
 import useTest from "./useTest";
@@ -16,8 +17,9 @@ import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import { useColorScheme } from "@mui/material/styles";
 import Grid from "@mui/material/Grid2";
 import { Panel } from "@/components/common/formcontrol";
-import MonacoEd from "./MonacoEd";
-import useMonaco from "./useMonaco";
+import MonacoEd from "./components/monaco/MonacoEd";
+import useMonaco from "./components/monaco/useMonaco";
+import Animation from "@/components/common/animation/Animation";
 
 const Test = observer(({ tests, actions, nav, pyodide }) => {
   const [executing, setExecuting] = useState(false);
@@ -76,8 +78,17 @@ const Test = observer(({ tests, actions, nav, pyodide }) => {
           sx={{
             display: "flex",
             flexDirection: "row",
+            alignItems: "center",
           }}
         >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <Animation height={"80px"} width={"80px"} name={"sheep"} />
+          </Box>
           <LinearProgressWithLabel
             value={((nav.taskId + 1) / tests.length) * 100}
             label={`${nav.taskId + 1}\\${tests.length}`}
@@ -88,7 +99,10 @@ const Test = observer(({ tests, actions, nav, pyodide }) => {
         <Grid container spacing={2} columns={{ xs: 1, md: 3 }}>
           <Grid size={{ xs: 1, md: 1 }}>
             <Panel label={"Выполни задание"}>
-              <Typography variant="body1" gutterBottom>
+              <Typography
+                variant="body1"
+                sx={{ display: "inline-block", whiteSpace: "pre-line" }}
+              >
                 {currTask.task}
               </Typography>
             </Panel>

@@ -2,7 +2,7 @@ import local from "./local";
 const stn = {
   mode: {
     needCt: false,
-    ALL_RIGHT_CODE: process.env.NEXT_PUBLIC_ALL_RIGHT_CODE == "NO",
+    ALL_RIGHT_CODE: process.env.NEXT_PUBLIC_ALL_RIGHT_CODE == "YES",
     DEV_MODE: process.env.NEXT_PUBLIC_DEV_MODE == "YES",
   },
   INIT_CHAPTER: "4680f00b-b586-413c-890a-9669b4b7b1c3",

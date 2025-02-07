@@ -14,6 +14,11 @@ export const useCustomTheme = () => {
         fontFamily: myFont.style.fontFamily,
       },
     },
+    //   MuiTypography: {
+    //     root: {
+    //       wordWrap: "break-word"
+    //     }
+    //  }
 
     // palette: {
     //   mode: "dark",
@@ -38,6 +43,13 @@ export const useCustomTheme = () => {
       //     }
       //   `,
       // },
+      MuiTypography: {
+        styleOverrides: {
+          root: {
+            wordWrap: "break-word",
+          },
+        },
+      },
       MuiInputBase: {
         // https://github.com/mui/material-ui/issues/14427
         input: {

@@ -11,7 +11,7 @@ function LinearProgressWithLabel({ value, label }) {
         <LinearProgress
           variant="determinate"
           value={value}
-          sx={{ height: 10 }}
+          sx={{ height: 20 }}
         />
       </Box>
       <Box sx={{ minWidth: 35 }}>

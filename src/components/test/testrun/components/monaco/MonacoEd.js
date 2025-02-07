@@ -3,8 +3,8 @@
 // https://alankrantas.github.io/monaco-python-live-editor/
 import { useTheme } from "@mui/material/styles";
 import Editor from "@monaco-editor/react";
-import { EditorOptions } from "@/components/test/monaco/MonacoEditorOptions";
-import useMonaco from "@/components/test/testrun/useMonaco";
+import { EditorOptions } from "@/components/test/testrun/components/monaco/MonacoEditorOptions";
+import useMonaco from "@/components/test/testrun/components/monaco/useMonaco";
 
 const MonacoEd = ({ currTask, setCode, mode, monacoRef, editorRef }) => {
   const theme = useTheme();

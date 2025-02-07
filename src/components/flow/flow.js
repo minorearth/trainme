@@ -4,7 +4,6 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import {
   ReactFlow,
-  Controls,
   useNodesState,
   useEdgesState,
   addEdge,
@@ -121,9 +120,7 @@ const Flow = ({ navState, flow, fit }) => {
         maxZoom={2}
         minZoom={1}
       >
-        {/* <Controls showInteractive={false} /> */}
         <Panel position="top-left" style={{ width: "97%" }}>
-          {/* <Box sx={{ width: "100%", opacity: 1, }}> */}
           <Paper
             elevation={0}
             sx={{
@@ -159,7 +156,6 @@ const Flow = ({ navState, flow, fit }) => {
               />
             </Fab>
           </Paper>
-          {/* </Box> */}
         </Panel>
         <svg>
           <defs>
