@@ -9,19 +9,22 @@ const eqArrays = (a, b) => {
 
 const cleanUpCode = (code) => {
   let codeLines = code.replaceAll("#", "markdown");
-  console.log(codeLines);
-  codeLines = codeLines
-    .split("\n")
-    .map((line) =>
-      line.replaceAll(/markdown.*/g, "").replaceAll(/[\n\t ]/g, "")
-    )
-    .filter((line) => line != "");
+  console.log("1", codeLines);
+  codeLines = codeLines.split("\n");
+  console.log("2", codeLines);
+  codeLines = codeLines.map((line) => line.replaceAll(/markdown.*/g, ""));
+  console.log("3", codeLines);
+  codeLines = codeLines.map((line) => line.replaceAll(/[\n\t ]/g, ""));
+  console.log("4", codeLines);
+  codeLines = codeLines.filter((line) => line != "");
+  console.log("5", codeLines);
   return codeLines;
 };
 
 // [[].*for.*in.*[]]
 const checkLines = (code, maxlines) => {
   const codeLines = cleanUpCode(code);
+  console.log("codeLines", codeLines);
   return maxlines >= codeLines.length;
 };
 
