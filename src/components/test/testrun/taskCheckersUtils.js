@@ -10,7 +10,7 @@ const eqArrays = (a, b) => {
 const cleanUpCode = (code) => {
   let codeLines = code.replaceAll("#", "markdown");
   console.log("1", codeLines);
-  codeLines = codeLines.split("\n");
+  codeLines = codeLines.match(/[^\r\n]+/g);
   console.log("2", codeLines);
   codeLines = codeLines.map((line) => line.replaceAll(/markdown.*/g, ""));
   console.log("3", codeLines);
