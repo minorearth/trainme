@@ -8,17 +8,11 @@ const eqArrays = (a, b) => {
 };
 
 const cleanUpCode = (code) => {
-  let codeLines = code.replaceAll("#", "markdown");
-  console.log("1", codeLines);
-  codeLines = codeLines.match(/[^\r\n]+/g);
-  console.log("2", codeLines);
-  codeLines = codeLines.map((line) => line.replaceAll(/markdown.*/g, ""));
-  console.log("3", codeLines);
-  codeLines = codeLines.map((line) => line.replaceAll(/[\n\t ]/g, ""));
-  console.log("4", codeLines);
-  codeLines = codeLines.filter((line) => line != "");
-  console.log("5", codeLines);
-  return codeLines;
+  return code
+    .match(/[^\r\n]+/g)
+    .map((line) => line.replaceAll(/#.*/g, ""))
+    .map((line) => line.replaceAll(/[\n\t ]/g, ""))
+    .filter((line) => line != "");
 };
 
 // [[].*for.*in.*[]]
