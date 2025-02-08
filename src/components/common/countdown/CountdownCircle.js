@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Button } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Backdrop from "@mui/material/Backdrop";
 import countdown from "@/store/cowntdown";
 
 const sec = 15 * 1000;

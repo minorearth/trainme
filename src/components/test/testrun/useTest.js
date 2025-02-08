@@ -39,6 +39,14 @@ const useTest = ({
     });
   };
 
+  const nextTaskNoPts = () => {
+    changeState({
+      data: {
+        taskId: nav.taskId + 1,
+      },
+    });
+  };
+
   const doRecap = ({ pts }) => {
     changeState({
       data: { taskstage: "recap", pts },
@@ -197,8 +205,10 @@ const useTest = ({
 
   const setNextTask = (id) => {
     const test = tests[id];
+    console.log(test);
     setCurrTask({
       task: test.task,
+      tasktype: test.tasktype,
       input: test.defaultinput.join("\n"),
       code: test.defaultcode,
       expectedOutput: test.defaultoutput.join("\n"),
@@ -209,6 +219,7 @@ const useTest = ({
 
   return {
     NextTaskOrCompleteTest,
+    nextTaskNoPts,
     currTask,
     setOutput,
     getSense,

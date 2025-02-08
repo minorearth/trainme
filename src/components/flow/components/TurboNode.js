@@ -1,6 +1,5 @@
 import React, { memo } from "react";
 import { Handle, Position } from "@xyflow/react";
-import FunctionIcon from "./FunctionIcon.js";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from "@mui/icons-material/Lock";
 import CheckIcon from "@mui/icons-material/Check";
@@ -10,6 +9,7 @@ import styled from "@emotion/styled";
 import { BsUnlock } from "react-icons/bs";
 import { useTheme } from "@mui/material/styles";
 import localFont from "next/font/local";
+import { RxLayers } from "react-icons/rx";
 
 const myFont = localFont({
   src: "../../../app/Monaco.ttf",
@@ -72,7 +72,7 @@ const Wrapper = styled.div(({ theme }) => ({
   "& .inner": {
     background: theme.palette.background.default,
     padding: "20px 20px",
-    borderRadius: "var(--node-border-radius)",
+    borderRadius: "10px",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -143,7 +143,7 @@ const Wrapper = styled.div(({ theme }) => ({
   },
 }));
 
-const TurboNode = memo(({ data, body }) => {
+const TurboNode = memo(({ data }) => {
   const theme = useTheme();
 
   return (
@@ -164,9 +164,15 @@ const TurboNode = memo(({ data, body }) => {
         <div className="inner">
           <div className="body">
             <div style={{ width: "100%" }}>
-              <div style={{ display: "flex", flexDirection: "row" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
                 <div className="icon">
-                  <FunctionIcon />
+                  <RxLayers />
                 </div>
                 <div className="title">{data.title}</div>
               </div>

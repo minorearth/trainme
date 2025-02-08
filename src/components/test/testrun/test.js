@@ -20,18 +20,19 @@ import { Panel } from "@/components/common/formcontrol";
 import MonacoEd from "./components/monaco/MonacoEd";
 import useMonaco from "./components/monaco/useMonaco";
 import Animation from "@/components/common/animation/Animation";
+import Navigation from "@/components/test/testrun/components/navigation";
 
 const Test = observer(({ tests, actions, nav, pyodide }) => {
-  const [executing, setExecuting] = useState(false);
   const monacoRef = useRef(null);
   const editorRef = useRef(null);
 
   const theme = useTheme();
-  const { mode, setMode } = useColorScheme();
+  const { mode } = useColorScheme();
   const { setEditorDisabled } = useMonaco({});
 
   const {
     NextTaskOrCompleteTest,
+    nextTaskNoPts,
     ErrorCountDownPressed,
     NextTaskAndAddRecapNoEffect,
     setOutput,
@@ -116,64 +117,17 @@ const Test = observer(({ tests, actions, nav, pyodide }) => {
                 monacoRef={monacoRef}
                 editorRef={editorRef}
               />
-              <Box
-                sx={{
-                  width: "100%",
-                  marginTop: "15px",
-                  marginBottom: "10px",
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                }}
-              >
-                <Button
-                  onClick={async (e) => {
-                    if (!pyodide || executing) return;
-                    setExecuting(true);
-                    await runPythonCode(currTask.code, currTask.input);
-                    setExecuting(false);
-                  }}
-                  variant="outlined"
-                  disabled={!pyodide || executing}
-                >
-                  {!pyodide
-                    ? "Загружается..."
-                    : executing
-                    ? "Выполняется..."
-                    : "Выполнить"}
-                </Button>
-
-                {!cowntdownbutton.state.visible && (
-                  <Button
-                    onClick={async (e) => {
-                      if (!pyodide || executing) return;
-                      checkTask(currTask.code, tests[nav.taskId], tests.length);
-                    }}
-                    disabled={!pyodide || executing}
-                    variant="outlined"
-                  >
-                    Проверить!
-                  </Button>
-                )}
-                {cowntdownbutton.state.visible && (
-                  <CountdownButton
-                    onClick={() => {
-                      ErrorCountDownPressed();
-
-                      cowntdownbutton.hideButton();
-                    }}
-                    variant="outlined"
-                  />
-                )}
-                <Button
-                  onClick={() => {
-                    actions.setTestInterrupted();
-                  }}
-                  variant="outlined"
-                >
-                  Выйти
-                </Button>
-              </Box>
+              <Navigation
+                checkTask={checkTask}
+                tests={tests}
+                actions={actions}
+                nav={nav}
+                pyodide={pyodide}
+                ErrorCountDownPressed={ErrorCountDownPressed}
+                currTask={currTask}
+                runPythonCode={runPythonCode}
+                nextTaskNoPts={nextTaskNoPts}
+              />
             </Panel>
           </Grid>
         </Grid>

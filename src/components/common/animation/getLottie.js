@@ -8,6 +8,7 @@ import progressdots from "./lottie/progressdots.json";
 import sheep from "./lottie/sheep.json";
 import logo from "./lottie/logo.json";
 import ok from "./lottie/ok.json";
+import coins from "./lottie/coins.json";
 
 export const getLottie = (name) => {
   switch (true) {
@@ -31,6 +32,8 @@ export const getLottie = (name) => {
       return logo;
     case name == "ok":
       return ok;
+    case name == "coins":
+      return coins;
     default:
   }
 };

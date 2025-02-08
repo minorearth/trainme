@@ -9,7 +9,7 @@ import useNavigator from "./navigatorVC";
 import Progress from "@/components/common/progress/progress";
 import AlertDialog from "@/components/common/dialog/dialog";
 import { observer } from "mobx-react-lite";
-import Countdown from "../common/countdown/countdown";
+import Countdown from "../common/countdown/CountdownCircle";
 import countdown from "@/store/cowntdown";
 import { useEffect, useRef, useState } from "react";
 import AdminPanel from "@/components/admin/adminpanel";
