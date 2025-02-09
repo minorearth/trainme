@@ -4,14 +4,13 @@ import alertdialog from "@/store/dialog";
 import local from "@/globals/local";
 import cowntdownbutton from "@/store/cowntdownbutton";
 import splashCDStore from "@/components/common/splashAction/splashActionStore";
-import { useTheme } from "@mui/material/styles";
-import { loadStatePersisted } from "@/db/localstorage";
+import { getSense } from "@/db/localstorage";
 
 const useTest = ({
   nav,
   tests,
   changeState,
-  changeStateNoEffect,
+  persistStateNoEffect,
   setRunTestsPageRecap,
   runAccomplish,
   editorRef,
@@ -47,7 +46,8 @@ const useTest = ({
     });
   };
 
-  const doRecap = ({ pts }) => {
+  const doRecap = () => {
+    const pts = getSense();
     changeState({
       data: { taskstage: "recap", pts },
     });
@@ -63,10 +63,10 @@ const useTest = ({
     switch (true) {
       case nav.taskId == tests.length - 1 &&
         nav.taskstage == "accomplished_suspended":
-        runAccomplish(getSense());
+        runAccomplish();
         return;
       case nav.taskId == tests.length - 1 && nav.taskstage == "recap_suspended":
-        doRecap({ pts: getSense() });
+        doRecap();
         return;
       default:
         return "";
@@ -76,7 +76,7 @@ const useTest = ({
   const addErrorTaskToRecap = () => {
     const recapTasks = [...nav.recapTasks, nav.taskId];
     nav.recapTasks = recapTasks;
-    changeStateNoEffect({
+    persistStateNoEffect({
       recapTasks: recapTasks,
       taskId: nav.taskId + 1,
     });
@@ -84,7 +84,7 @@ const useTest = ({
 
   const errorOnLastRecapTask = () => {
     nav.taskstage = "accomplished_suspended";
-    changeStateNoEffect({
+    persistStateNoEffect({
       taskstage: "accomplished_suspended",
     });
   };
@@ -93,19 +93,10 @@ const useTest = ({
     nav.taskstage = "recap_suspended";
     const recapTasks = [...nav.recapTasks, nav.taskId];
     nav.recapTasks = recapTasks;
-    changeStateNoEffect({
+    persistStateNoEffect({
       taskstage: "recap_suspended",
       recapTasks,
     });
-  };
-
-  const getSense = () => {
-    const { pts } = loadStatePersisted();
-    if (!pts) {
-      return 0;
-    } else {
-      return pts;
-    }
   };
 
   const showRightCodeAfterError = ({ errorMsg }) => {
@@ -127,45 +118,65 @@ const useTest = ({
     setEditorDisabled(false);
 
     if (nav.taskId != tests.length - 1) {
-      nextTask({ pts: getSense() });
+      nextTaskNoPts();
       return;
     }
     if (
       nav.taskId == tests.length - 1 &&
       (nav.taskstage == "recap" || nav.taskstage == "accomplished_suspended")
     ) {
-      runAccomplish(getSense());
+      runAccomplish();
     }
     if (
       nav.recapTasks.length > 0 &&
       (nav.taskstage == "WIP" || nav.taskstage == "recap_suspended")
     ) {
-      doRecap({ pts: getSense() });
+      doRecap();
     }
   };
 
-  const NextTaskOrCompleteTest = async ({ error, errorMsg, earned = 0 }) => {
+  const getEarned = (error, taskstage, repeat, overflow) => {
+    let pts = getSense();
+    if (overflow) {
+      return pts;
+    }
+    if (!error && taskstage == "WIP" && !repeat) {
+      pts += 10;
+    }
+    if (!error && taskstage == "recap" && !repeat) {
+      pts += 2;
+    }
+    if (!error && taskstage == "WIP" && repeat) {
+      pts += 2;
+    }
+    if (!error && taskstage == "recap" && repeat) {
+      pts += 1;
+    }
+    persistStateNoEffect({ pts });
+    return pts;
+  };
+
+  const ok = (action = () => {}) => {
+    splashCDStore.setShow(false, "ok", 500, () => action());
+  };
+
+  const NextTaskOrCompleteTest = async ({ error, errorMsg }) => {
     editorRef.current.getModel().setValue("");
+    const pts = getEarned(error, nav.taskstage, nav.repeat, nav.overflow);
     switch (true) {
       case nav.taskId != tests.length - 1 && !error:
-        splashCDStore.setShow(false, "ok", 500, () => {});
-        nextTask({ pts: getSense() + earned });
+        ok();
+        nextTask({ pts });
         return;
       case nav.taskId == tests.length - 1 && !error:
         if (nav.taskstage == "recap") {
-          splashCDStore.setShow(false, "ok", 500, () =>
-            runAccomplish(getSense())
-          );
+          ok(runAccomplish);
         }
         if (nav.recapTasks.length == 0 && nav.taskstage == "WIP") {
-          splashCDStore.setShow(false, "ok", 500, () =>
-            runAccomplish(getSense() + earned)
-          );
+          ok(runAccomplish);
         }
         if (nav.recapTasks.length != 0 && nav.taskstage == "WIP") {
-          splashCDStore.setShow(false, "ok", 500, () =>
-            doRecap({ pts: getSense() + earned })
-          );
+          ok(doRecap);
         }
         return;
       case error:
@@ -175,7 +186,7 @@ const useTest = ({
         }
 
         if (nav.taskstage == "recap" && nav.taskId != tests.length - 1) {
-          changeStateNoEffect({
+          persistStateNoEffect({
             taskId: nav.taskId + 1,
           });
         }

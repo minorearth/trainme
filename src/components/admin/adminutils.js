@@ -6,6 +6,7 @@ import { testsall } from "@/components/admin/output";
 import { setDocInCollectionClient } from "@/db/domain/domain";
 
 export const load = () => {
+  console.log("sasdasdasd", chapterFlowNodes);
   setDocInCollectionClient(
     "chapters",
     { chapterFlowNodes, chapterFlowEdges },

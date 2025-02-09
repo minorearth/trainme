@@ -14,6 +14,7 @@ import useMonaco from "./components/monaco/useMonaco";
 import Animation from "@/components/common/animation/Animation";
 import InOutPanel from "@/components/test/testrun/components/InOutPanel";
 import TaskAndCodePanel from "@/components/test/testrun/components/taskAndCodePanel";
+import TopPanel from "@/components/test/testrun/components/TopPanel";
 
 const Test = observer(({ tests, actions, nav, pyodide }) => {
   const monacoRef = useRef(null);
@@ -54,20 +55,8 @@ const Test = observer(({ tests, actions, nav, pyodide }) => {
           padding: "5px",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <Animation height={"80px"} width={"80px"} name={"sheep"} />
-          <LinearProgressWithLabel
-            value={((nav.taskId + 1) / tests.length) * 100}
-            label={`${nav.taskId + 1}\\${tests.length}`}
-          />
-          <DLSwitch monacoRef={monacoRef} />
-        </Box>
+        <TopPanel tests={tests} nav={nav} monacoRef={monacoRef} />
+
         <TaskAndCodePanel
           {...testFeed}
           checkTask={checkTask}

@@ -78,7 +78,7 @@ export default function DLSwitch({ monacoRef }) {
     <MaterialUISwitch
       checked={mode == "dark" ? true : false}
       onChange={handleChange}
-      sx={{ m: 1 }}
+      sx={{ m: 1, marginLeft: "20px" }}
     />
   );
 }

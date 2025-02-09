@@ -12,6 +12,7 @@ import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
 import { setUseMetaData } from "@/db/SA/firebaseSA";
 import { getTargetsBySource } from "./utils";
 import progressStore from "../common/progress/progressStore";
+import { getSense } from "@/db/localstorage";
 
 const useNavigator = (fit) => {
   const userid = "1";
@@ -85,7 +86,7 @@ const useNavigator = (fit) => {
     });
   };
 
-  const setTestsStartedPage = async ({ chapter, repeat }) => {
+  const setTestsStartedPage = async ({ chapter, repeat, overflow }) => {
     changeState({
       data: {
         chapter,
@@ -94,6 +95,7 @@ const useNavigator = (fit) => {
         recapTasks: [],
         taskstage: "WIP",
         repeat,
+        overflow,
       },
     });
     const tasks = await getTests(chapter);
@@ -118,33 +120,29 @@ const useNavigator = (fit) => {
     // fit.current();
   };
 
-  const changeStateNoEffect = (data) => {
+  const persistStateNoEffect = (data) => {
     const state = loadStatePersisted();
     persistState({ ...state, ...data });
   };
 
-  const runAccomplish = async (pts) => {
-    console.log("lalalala");
-    if (!navState.repeat) {
-      const unlocked = getTargetsBySource(navState.chapter, flow.edges);
-      await setUseMetaData(
-        encrypt2({
-          lastcompleted: navState.chapter,
-          unlocked,
-          pts,
-          uid: user.userid,
-        })
-      );
-      setCongratPage(pts);
-    } else {
-      setCongratPage(0);
-    }
+  const runAccomplish = async () => {
+    const pts = getSense();
+    const unlocked = getTargetsBySource(navState.chapter, flow.edges);
+    await setUseMetaData(
+      encrypt2({
+        lastcompleted: navState.chapter,
+        unlocked,
+        pts,
+        uid: user.userid,
+      })
+    );
+    setCongratPage(pts);
   };
 
   return {
     actions: {
       changeState,
-      changeStateNoEffect,
+      persistStateNoEffect,
       setRunTestsPageRecap,
       setTestAccomplished,
       setTestInterrupted,

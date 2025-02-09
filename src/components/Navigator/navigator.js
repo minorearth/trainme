@@ -4,7 +4,7 @@ import Flow from "../flow/flow";
 import { ReactFlowProvider } from "@xyflow/react";
 import Congrat from "@/components/test/congrat";
 import Start from "@/components/test/start";
-import Test from "@/components/test/testrun/test";
+import Test from "@/components/test/testrun/Test";
 import useNavigator from "./navigatorVC";
 import Progress from "@/components/common/progress/progress";
 import AlertDialog from "@/components/common/dialog/dialog";

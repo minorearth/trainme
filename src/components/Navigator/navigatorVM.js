@@ -14,7 +14,8 @@ const fullFillProgess = (
   setTestsStartedPage,
   reLoadFlow
 ) => {
-  const { unlocked, completed, paid, rating } = progress;
+  const { unlocked, completed, paid, rating, stat } = progress;
+
   const full = chapterFlowNodes.map((node) => ({
     ...node,
     data: {
@@ -22,10 +23,14 @@ const fullFillProgess = (
       unlocked: unlocked.includes(node.id),
       completed: completed.includes(node.id),
       paid: paid.includes(node.id) || !node.data.unlockpts,
+      overflow: stat[node.id]?.sum
+        ? stat[node.id].sum >= node.data.maxcoins
+        : false,
       rating,
       uid: user.userid,
       action: (data) => {
-        const { unlocked, paid, completed, id, unlockpts, uid } = data;
+        const { unlocked, paid, completed, id, unlockpts, uid, overflow } =
+          data;
         if (!unlocked && !paid) {
           alertdialog.showDialog(
             "Заблокировано и не оплачено",
@@ -77,10 +82,10 @@ const fullFillProgess = (
 
         if (unlocked && paid && !completed) {
           cowntdownbutton.hideButton();
-          setTestsStartedPage({ chapter: id, repeat: false });
+          setTestsStartedPage({ chapter: id, repeat: false, overflow });
         }
         if (unlocked && paid && completed) {
-          setTestsStartedPage({ chapter: id, repeat: true });
+          setTestsStartedPage({ chapter: id, repeat: true, overflow });
         }
       },
     },

@@ -29,6 +29,11 @@ export const persistState = (state) => {
   }
 };
 
+export const getSense = () => {
+  const { pts } = loadStatePersisted();
+  return !pts ? 0 : pts;
+};
+
 export const loadStatePersisted = () => {
   const state = localStorage.getItem("state");
   if (stn.mode.needCt) {
