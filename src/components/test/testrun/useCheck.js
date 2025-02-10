@@ -3,6 +3,10 @@ import local from "@/globals/local";
 
 const useCheck = ({ NextTaskOrCompleteTest, runPythonCode, setCode }) => {
   const checkTask = async (code, test) => {
+    if (!code) {
+      return;
+    }
+    console.log("code", code);
     const { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked } =
       await runCheckers(code, test, runPythonCode);
     const error = getErrorMessage(
