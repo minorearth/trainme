@@ -48,7 +48,7 @@ const Test = observer((props) => {
           display: "flex",
           flexDirection: "column",
           backgroundColor: theme.palette.background.default,
-          padding: "5px",
+          padding: "6px",
         }}
       >
         <TopPanel {...props} monacoRef={monacoRef} />
