@@ -4,6 +4,7 @@ import Grid from "@mui/material/Grid2";
 import { Panel } from "@/components/common/formcontrol";
 
 const InOutPanel = ({ currTask }) => {
+  console.log("currTask.output", currTask.output);
   return (
     <Grid
       container
@@ -16,7 +17,10 @@ const InOutPanel = ({ currTask }) => {
           <Typography
             variant="body1"
             gutterBottom
-            sx={{ display: "inline-block", whiteSpace: "pre-line" }}
+            sx={{
+              display: "inline-block",
+              whiteSpace: "pre-wrap",
+            }}
           >
             {currTask.input}
           </Typography>
@@ -27,7 +31,10 @@ const InOutPanel = ({ currTask }) => {
           <Typography
             variant="body1"
             gutterBottom
-            sx={{ display: "inline-block", whiteSpace: "pre-line" }}
+            sx={{
+              display: "inline-block",
+              whiteSpace: "pre-wrap",
+            }}
           >
             {currTask.output}
           </Typography>
@@ -38,7 +45,7 @@ const InOutPanel = ({ currTask }) => {
           <Typography
             variant="body1"
             gutterBottom
-            sx={{ display: "inline-block", whiteSpace: "pre-line" }}
+            sx={{ display: "inline-block", whiteSpace: "pre-wrap" }}
           >
             {currTask.expectedOutput}
           </Typography>

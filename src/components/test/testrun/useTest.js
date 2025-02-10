@@ -6,16 +6,14 @@ import cowntdownbutton from "@/store/cowntdownbutton";
 import splashCDStore from "@/components/common/splashAction/splashActionStore";
 import { getSense } from "@/db/localstorage";
 
-const useTest = ({
-  nav,
-  tests,
-  changeState,
-  persistStateNoEffect,
-  setRunTestsPageRecap,
-  runAccomplish,
-  editorRef,
-  setEditorDisabled,
-}) => {
+const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
+  const {
+    changeState,
+    persistStateNoEffect,
+    setRunTestsPageRecap,
+    runAccomplish,
+  } = actions;
+
   const [currTask, setCurrTask] = useState({});
 
   useEffect(() => {

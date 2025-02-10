@@ -63,9 +63,9 @@ const useMonaco = ({ editorRef, monacoRef }) => {
     document.addEventListener(
       "paste",
       (event) => {
-        console.log("paste capture in monaco editor contianer");
-        event.preventDefault();
-        event.stopPropagation();
+        // TODO: uncomment
+        // event.preventDefault();
+        // event.stopPropagation();
       },
       true
     );

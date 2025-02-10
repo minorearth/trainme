@@ -49,7 +49,19 @@ export const resetUseMetaData = async () => {
     completed: [],
     unlocked: ["4680f00b-b586-413c-890a-9669b4b7b1c3"],
     lastunlocked: ["4680f00b-b586-413c-890a-9669b4b7b1c3"],
+    rating: 0,
     paid: [],
+    stat: {},
+  });
+};
+
+export const getMoney = async () => {
+  const firestore = getFirestore();
+  const userMetaRef = firestore
+    .collection("usermeta")
+    .doc("EoufdeogIZN2e02o7MulUGhnscR2");
+  userMetaRef.update({
+    rating: 100000,
   });
 };
 

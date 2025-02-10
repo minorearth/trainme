@@ -4,6 +4,7 @@ import {
   resetUseMetaData,
   unlockAll,
   unlockAndCompleteAll,
+  getMoney,
 } from "@/db/SA/firebaseSA";
 import { load } from "@/components/admin/adminutils";
 
@@ -41,6 +42,13 @@ const AdminPanel = ({ flow }) => {
         }}
       >
         load
+      </Button>
+      <Button
+        onClick={() => {
+          getMoney();
+        }}
+      >
+        money
       </Button>
     </>
   );
