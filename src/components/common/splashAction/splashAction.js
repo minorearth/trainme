@@ -52,7 +52,7 @@ const SplashAction = observer(({ name }) => {
       ></Box>
       <Lottie
         lottieRef={ref}
-        style={{ height: "400px", width: "400px" }}
+        style={{ height: "700px", width: "700px" }}
         animationData={getLottie(name)}
         autoPlay={false}
         loop={false}

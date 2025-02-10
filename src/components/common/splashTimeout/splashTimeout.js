@@ -20,14 +20,16 @@ const SplashTimeout = ({ action, duration, navState }) => {
       sx={{
         display: "flex",
         flex: 1,
+        flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
         width: "100%",
         backgroundColor: theme.palette.background.default,
+        paddingLeft: "20px",
       }}
     >
-      <Animation height={"700px"} width={"700px"} name={"logo"} />
+      <Animation height={"400px"} width={"400px"} name={"logo"} />
     </Box>
   );
 };

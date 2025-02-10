@@ -35,6 +35,7 @@ const Navigator = observer(() => {
       )}
       {!loading && pyodide2 && !showSplashTimeout && (
         <Box
+          id="human"
           sx={{
             width: "100%",
             height: "100vh",

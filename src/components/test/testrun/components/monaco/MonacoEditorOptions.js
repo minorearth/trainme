@@ -2,6 +2,7 @@ export const EditorOptions = {
   automaticLayout: true,
   contextmenu: false,
   dragAndDrop: false,
+  alwaysConsumeMouseWheel: false,
   dropIntoEditor: {
     enabled: false,
   },
@@ -25,7 +26,7 @@ export const EditorOptions = {
   scrollbar: {
     verticalScrollbarSize: 9,
     horizontalScrollbarSize: 9,
-    alwaysConsumeMouseWheel: false,
+    // alwaysConsumeMouseWheel: false,
   },
   scrollBeyondLastLine: false,
   smoothScrolling: true,
