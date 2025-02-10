@@ -53,6 +53,7 @@ const AuthField = observer(({ type }) => {
       //     WebkitTextFillColor: "ffffff",
       //   },
       // }}
+      slotProps={{ inputLabel: { shrink: true } }}
       margin="normal"
       value={value}
       required
