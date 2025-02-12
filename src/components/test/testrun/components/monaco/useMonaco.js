@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useTheme } from "@mui/material/styles";
 import { useCallback } from "react";
+import { Background } from "@xyflow/react";
 
 const useMonaco = ({ editorRef, monacoRef }) => {
   const theme = useTheme();
@@ -48,6 +49,10 @@ const useMonaco = ({ editorRef, monacoRef }) => {
         {
           token: "type",
           foreground: "1AAFB0",
+        },
+        {
+          token: "comment",
+          fontStyle: "italic bold",
         },
       ],
       colors: {
