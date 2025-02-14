@@ -12,7 +12,7 @@ import "./styles.css";
 import FlowPanel from "./components/FlowPanel.js";
 import useFlow from "./useFlow";
 
-const Flow = ({ navState, flow, fit }) => {
+const Flow = ({ navState, flow, fit, setTestsStartedPage }) => {
   const theme = useTheme();
   const flowOptions = useFlow({ navState, flow, fit });
 
@@ -29,13 +29,16 @@ const Flow = ({ navState, flow, fit }) => {
         nodesDraggable={false}
         translateExtent={[
           [0, -250],
-          [1300, 2500],
+          [1300, 3500],
         ]}
         maxZoom={2}
         minZoom={1}
         {...flowOptions}
       >
-        <FlowPanel navState={navState} />
+        <FlowPanel
+          navState={navState}
+          setTestsStartedPage={setTestsStartedPage}
+        />
       </ReactFlow>
     </Box>
   );

@@ -19,6 +19,7 @@ const TaskAndCodePanel = (props) => {
     checkTask,
     runPythonCode,
     nextTaskNoPts,
+    prevTaskNoPts,
     ErrorCountDownPressed,
   } = props;
   return (
@@ -52,6 +53,7 @@ const TaskAndCodePanel = (props) => {
             currTask={currTask}
             runPythonCode={runPythonCode}
             nextTaskNoPts={nextTaskNoPts}
+            prevTaskNoPts={prevTaskNoPts}
           />
         </Panel>
       </Grid>

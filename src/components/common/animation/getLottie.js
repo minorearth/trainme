@@ -9,6 +9,8 @@ import sheep from "./lottie/sheep.json";
 import logo from "./lottie/logo.json";
 import ok from "./lottie/ok.json";
 import coins from "./lottie/coins.json";
+import book from "./lottie/book.json";
+import exit from "./lottie/exit.json";
 
 export const getLottie = (name) => {
   switch (true) {
@@ -34,6 +36,10 @@ export const getLottie = (name) => {
       return ok;
     case name == "coins":
       return coins;
+    case name == "book":
+      return book;
+    case name == "exit":
+      return exit;
     default:
   }
 };

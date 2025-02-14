@@ -18,6 +18,7 @@ const Navigation = observer(
     currTask,
     runPythonCode,
     nextTaskNoPts,
+    prevTaskNoPts,
   }) => {
     const [executing, setExecuting] = useState(false);
     console.log("currTask.tasktype", currTask.tasktype);
@@ -63,12 +64,24 @@ const Navigation = observer(
             Проверить!
           </Button>
         )}
+        {nav.taskstage == "textbook" && (
+          <Button
+            onClick={() => {
+              prevTaskNoPts();
+            }}
+            variant="outlined"
+            disabled={nav.taskId <= 0}
+          >
+            Назад
+          </Button>
+        )}
         {currTask.tasktype == "guide" && (
           <Button
             onClick={() => {
               nextTaskNoPts();
             }}
             variant="outlined"
+            disabled={nav.taskId >= tests.length - 1}
           >
             Продолжить
           </Button>

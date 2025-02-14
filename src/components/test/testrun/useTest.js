@@ -44,6 +44,14 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
     });
   };
 
+  const prevTaskNoPts = () => {
+    changeState({
+      data: {
+        taskId: nav.taskId - 1,
+      },
+    });
+  };
+
   const doRecap = () => {
     const pts = getSense();
     changeState({
@@ -229,6 +237,7 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
   return {
     NextTaskOrCompleteTest,
     nextTaskNoPts,
+    prevTaskNoPts,
     currTask,
     setOutput,
     getSense,

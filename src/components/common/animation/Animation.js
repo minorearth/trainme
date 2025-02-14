@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
-const Animation = ({ height, width, name }) => {
+const Animation = ({ height, width, name, onClick = () => {} }) => {
   return (
     <Box
       sx={{
@@ -15,6 +15,7 @@ const Animation = ({ height, width, name }) => {
         justifyContent: "center",
         alignItems: "center",
       }}
+      onClick={() => onClick()}
     >
       <Lottie
         style={{ height, width }}

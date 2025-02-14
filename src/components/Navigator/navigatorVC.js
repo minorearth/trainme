@@ -6,7 +6,12 @@ import {
   updateStateLS,
 } from "@/db/localstorage";
 import user from "@/store/user";
-import { getTests, setFlowNodes, getTestsRecap } from "./navigatorVM";
+import {
+  getTests,
+  setFlowNodes,
+  getTestsRecap,
+  getTextBook,
+} from "./navigatorVM";
 import { getUseMetaData } from "@/db/SA/firebaseSA";
 import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
 import { setUseMetaData } from "@/db/SA/firebaseSA";
@@ -68,6 +73,8 @@ const useNavigator = (fit) => {
           setTests(
             getTestsRecap(statePers.chapter, statePers.recapTasks, tasks)
           );
+        } else if (statePers.taskstage == "textbook") {
+          changeState({ data: initialState });
         } else {
           setTests(tasks);
         }
@@ -86,20 +93,43 @@ const useNavigator = (fit) => {
     });
   };
 
-  const setTestsStartedPage = async ({ chapter, repeat, overflow }) => {
-    changeState({
-      data: {
-        chapter,
-        page: "testsStarted",
-        taskId: 0,
-        recapTasks: [],
-        taskstage: "WIP",
-        repeat,
-        overflow,
-      },
-    });
-    const tasks = await getTests(chapter);
-    setTests(tasks);
+  const setTestsStartedPage = async ({
+    chapter,
+    repeat,
+    overflow,
+    textbook,
+    navState,
+  }) => {
+    if (textbook) {
+      changeState({
+        data: {
+          chapter,
+          page: "testrun",
+          pts: 0,
+          taskId: 0,
+          recapTasks: [],
+          taskstage: "textbook",
+          repeat,
+          overflow,
+        },
+      });
+      const tasks = await getTextBook(chapter, navState);
+      setTests(tasks);
+    } else {
+      changeState({
+        data: {
+          chapter,
+          page: "testsStarted",
+          taskId: 0,
+          recapTasks: [],
+          taskstage: "WIP",
+          repeat,
+          overflow,
+        },
+      });
+      const tasks = await getTests(chapter);
+      setTests(tasks);
+    }
   };
 
   const setRunTestsPageRecap = (recapTasks) => {

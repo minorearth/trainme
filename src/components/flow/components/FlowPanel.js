@@ -15,8 +15,9 @@ import { RiLogoutCircleRLine } from "react-icons/ri";
 import { signOutUserClient } from "@/db/domain/domain";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import Fab from "@mui/material/Fab";
+import Animation from "@/components/common/animation/Animation";
 
-const FlowPanel = ({ navState }) => {
+const FlowPanel = ({ navState, setTestsStartedPage }) => {
   const theme = useTheme();
   const router = useRouter();
 
@@ -47,6 +48,31 @@ const FlowPanel = ({ navState }) => {
             {navState.userProgress.rating}
           </Typography>
         </Box>
+        <Animation
+          height={"60px"}
+          width={"60px"}
+          name={"book"}
+          onClick={async () => {
+            setTestsStartedPage({
+              chapter: "2e31a4ae-242d-4c55-b801-ef12ccc06013",
+              repeat: false,
+              overflow: true,
+              textbook: true,
+              navState,
+            });
+          }}
+        />
+
+        {/* <Animation
+          height={"60px"}
+          width={"60px"}
+          name={"exit"}
+          onClick={async () => {
+            await signOutUserClient();
+            router.push(`/login/`);
+          }}
+        /> */}
+
         <Fab size="small" color="black" aria-label="add">
           <RiLogoutCircleRLine
             size={"40px"}

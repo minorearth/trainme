@@ -123,6 +123,10 @@ export const getTests = async (chapter) => {
     "tasks",
     chapter
   );
+
+  if (!filteredTasks.data) {
+    return [];
+  }
   const res = stn.mode.ALL_RIGHT_CODE
     ? filteredTasks.data.tasks.map((task) => ({
         ...task,
@@ -131,6 +135,24 @@ export const getTests = async (chapter) => {
     : filteredTasks.data.tasks;
 
   return res;
+};
+
+export const getTextBook = async (chapter, nav) => {
+  //local, do not remove
+  // const filteredTasks = testsall.filter((test) => test.chapterid == chapter);
+  const filteredTasks = await getDocDataFromCollectionByIdClient(
+    "tasks",
+    chapter
+  );
+  const unlockedTheory = filteredTasks.data.tasks.filter((item) =>
+    nav.userProgress.completed.includes(item.chapterparentid)
+  );
+
+  if (!filteredTasks.data) {
+    return [];
+  }
+
+  return unlockedTheory;
 };
 
 export const getTestsRecap = (chapter, recapTasks, tasks) => {
