@@ -3,7 +3,6 @@ import {
   chapterFlowEdges,
 } from "@/components/admin/chaptersFlowData";
 import { testsall } from "@/components/admin/output";
-import { textbook } from "@/components/admin/textbook";
 import { setDocInCollectionClient } from "@/db/domain/domain";
 
 export const load = () => {
