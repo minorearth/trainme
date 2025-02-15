@@ -1,5 +1,5 @@
 import { stn } from "@/constants";
-import { useEffect, useState, useLayoutEffect } from "react";
+import { useEffect, useState, useLayoutEffect, useRef } from "react";
 import {
   persistState,
   loadStatePersisted,
@@ -23,6 +23,10 @@ const useNavigator = (fit) => {
   const userid = "1";
   const [loading, setLoading] = useState(true);
   const [tests, setTests] = useState([]);
+  // const tests = useRef();
+  // const setTests = (tests) => {
+  //   tests.current = tests;
+  // };
   const [navState, setNavState] = useState();
   const [flow, setFlow] = useState();
 
@@ -104,7 +108,7 @@ const useNavigator = (fit) => {
       changeState({
         data: {
           chapter,
-          page: "testrun",
+          page: "testsStarted",
           pts: 0,
           taskId: 0,
           recapTasks: [],

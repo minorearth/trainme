@@ -20,6 +20,11 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
     processSuspendedAfterError();
   }, []);
 
+  useEffect(() => {
+    console.log(tests);
+    nav.taskId != tests.length && setNextTask(nav.taskId);
+  }, [nav]);
+
   const setOutput = (output) => {
     setCurrTask((state) => ({
       ...state,
@@ -209,10 +214,6 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
     }
   };
 
-  useEffect(() => {
-    nav.taskId != tests.length && setNextTask(nav.taskId);
-  }, [nav]);
-
   const setCode = (code) => {
     setCurrTask((state) => ({
       ...state,
@@ -222,7 +223,6 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
 
   const setNextTask = (id) => {
     const test = tests[id];
-    console.log(test);
     setCurrTask({
       task: test.task,
       tasktype: test.tasktype,

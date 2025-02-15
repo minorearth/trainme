@@ -18,7 +18,6 @@ const cleanUpCode = (code) => {
 // [[].*for.*in.*[]]
 const checkLines = (code, maxlines) => {
   const codeLines = cleanUpCode(code);
-  console.log("codeLines", codeLines);
   return maxlines >= codeLines.length;
 };
 

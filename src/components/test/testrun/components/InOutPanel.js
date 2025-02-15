@@ -4,7 +4,6 @@ import Grid from "@mui/material/Grid2";
 import { Panel } from "@/components/common/formcontrol";
 
 const InOutPanel = ({ currTask }) => {
-  console.log("currTask.output", currTask.output);
   return (
     <Grid
       container

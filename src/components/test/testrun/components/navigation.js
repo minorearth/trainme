@@ -21,7 +21,6 @@ const Navigation = observer(
     prevTaskNoPts,
   }) => {
     const [executing, setExecuting] = useState(false);
-    console.log("currTask.tasktype", currTask.tasktype);
 
     return (
       <Box

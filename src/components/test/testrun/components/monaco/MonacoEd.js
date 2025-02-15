@@ -22,8 +22,6 @@ function touchmove(e) {
   var deltaX = e.touches[0].clientX - startX,
     deltaY = e.touches[0].clientY - startY;
   document.querySelector("body").scrollBy(0, -deltaY / 100);
-
-  console.log("Delta x,y", deltaX, deltaY);
 }
 
 const MonacoEd = ({ currTask, setCode, mode, monacoRef, editorRef }) => {

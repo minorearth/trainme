@@ -6,7 +6,6 @@ const useCheck = ({ NextTaskOrCompleteTest, runPythonCode, setCode }) => {
     if (!code) {
       return;
     }
-    console.log("code", code);
     const { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked } =
       await runCheckers(code, test, runPythonCode);
     const error = getErrorMessage(

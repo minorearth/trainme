@@ -19,7 +19,6 @@ export default function usePythonRunner({ setOutput, pyodide }) {
     if (pyodide) {
       let output = [];
       const stdout = (msg) => {
-        console.log("msg", msg);
         output.push(msg);
         setOutput(output.join("\n"));
       };
