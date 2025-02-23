@@ -11,6 +11,7 @@ import AuthField from "@/components/authcomps/components/authField";
 import { useAuth } from "@/components/authcomps/useAuth";
 import { ForgetPsw } from "@/components/authcomps/components/navigation/ForgetPsw";
 import { ShowSignUp } from "@/components/authcomps/components/navigation/ShowSignUp";
+import FormControl from "@mui/material/FormControl";
 
 const SignIn = observer(() => {
   const { handleSignInSubmit } = useAuth();
@@ -21,12 +22,20 @@ const SignIn = observer(() => {
         component="form"
         noValidate
         onSubmit={handleSignInSubmit}
-        sx={{ mt: 1 }}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          mt: 1,
+          width: "100%",
+        }}
       >
         <AlertDialog />
         <Snack />
-        <AuthField type={"email"} />
-        <AuthField type={"password"} />
+        <FormControl>
+          <AuthField type={"email"} />
+          <AuthField type={"password"} />
+        </FormControl>
         <Button
           type="submit"
           fullWidth

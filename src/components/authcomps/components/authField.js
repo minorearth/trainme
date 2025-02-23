@@ -46,7 +46,14 @@ const AuthField = observer(({ type }) => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        width: "100%",
+      }}
+    >
       <TextField
         sx={{
           "&:-webkit-autofill": {
