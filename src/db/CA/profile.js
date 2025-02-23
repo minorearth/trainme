@@ -20,6 +20,7 @@ export const createNewUser = async (db, userId, name) => {
       unlocked: [stn.INIT_CHAPTER],
       completed: [],
       paid: [],
+      stat: {},
     },
     userId
   );

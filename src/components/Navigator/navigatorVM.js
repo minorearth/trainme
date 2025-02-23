@@ -15,7 +15,7 @@ const fullFillProgess = (
   reLoadFlow
 ) => {
   const { unlocked, completed, paid, rating, stat } = progress;
-
+  console.log("chapterFlowNodes", chapterFlowNodes);
   const full = chapterFlowNodes.map((node) => ({
     ...node,
     data: {

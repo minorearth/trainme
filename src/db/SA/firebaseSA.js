@@ -10,8 +10,6 @@ export const setUseMetaData = async (data) => {
   const firestore = getFirestore();
   const { uid, pts, lastcompleted, unlocked } = decrypt2(data);
   const userMetaRef = firestore.collection("usermeta").doc(uid);
-  // const snapshot = await userMetaRef.get();
-  // const { rating } = snapshot.data();
   if (unlocked.length != 0) {
     userMetaRef.update({
       rating: FieldValue.increment(pts),
