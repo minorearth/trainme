@@ -6,6 +6,11 @@ import local from "@/globals/local";
 import { useState } from "react";
 import authForm from "@/store/authentication";
 import { useTheme } from "@mui/material/styles";
+import { Box, Button } from "@mui/material";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 
 const getProps = (type) => {
   switch (true) {
@@ -33,45 +38,71 @@ const getProps = (type) => {
 const AuthField = observer(({ type }) => {
   const theme = useTheme();
   const [value, setValue] = useState("");
+  const [showPsw, setShowPsw] = useState(type == "password");
+
   const handleChange = (e) => {
     setValue(e.target.value);
     authForm.setState(type, { value: e.target.value });
   };
 
   return (
-    <TextField
-      sx={{
-        "&:-webkit-autofill": {
-          // WebkitBoxShadow: `0 0 0 100px ${theme.palette.background.default.toString()} inset`,
-          WebkitBoxShadow: `0 0 0 100px #fff inset `,
-          WebkitTextFillColor: "ffffff",
-        },
-      }}
-      // sx={{
-      //   "& :-webkit-autofill": {
-      //     WebkitBoxShadow: `0 0 0 100px ${theme.palette.background.default} inset`,
-      //     WebkitTextFillColor: "ffffff",
-      //   },
-      // }}
-      slotProps={{ inputLabel: { shrink: true } }}
-      margin="normal"
-      value={value}
-      required
-      fullWidth
-      id={type}
-      label={getProps(type).label}
-      name={type}
-      autoComplete={getProps(type).auto}
-      autoFocus={type == "email" ? true : false}
-      type={type == "password" ? type : null}
-      onChange={(e) => handleChange(e)}
-      error={authForm.state[type].error}
-      helperText={authForm.state[type].helperText}
-      color={authForm.state[type].error ? "error" : "primary"}
+    <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+      <TextField
+        sx={{
+          "&:-webkit-autofill": {
+            // WebkitBoxShadow: `0 0 0 100px ${theme.palette.background.default.toString()} inset`,
+            WebkitBoxShadow: `0 0 0 100px #fff inset `,
+            WebkitTextFillColor: "ffffff",
+          },
+        }}
+        // sx={{
+        //   "& :-webkit-autofill": {
+        //     WebkitBoxShadow: `0 0 0 100px ${theme.palette.background.default} inset`,
+        //     WebkitTextFillColor: "ffffff",
+        //   },
+        // }}
 
-      //   defaultValue={process.env.NEXT_DEFAULT_EMAIL}
-      //   defaultValue={process.env.NEXT_DEFAULT_PSW}
-    />
+        slotProps={{
+          inputLabel: { shrink: true },
+          input: {
+            endAdornment: type == "password" && (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() => {
+                    setShowPsw((state) => !state);
+                  }}
+                  edge="end"
+                >
+                  {showPsw ? (
+                    <RemoveRedEyeOutlinedIcon />
+                  ) : (
+                    <VisibilityOffOutlinedIcon />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
+        }}
+        margin="normal"
+        value={value}
+        required
+        fullWidth
+        id={type}
+        label={getProps(type).label}
+        name={type}
+        autoComplete={getProps(type).auto}
+        autoFocus={type == "email" ? true : false}
+        type={showPsw ? "password" : null}
+        onChange={(e) => handleChange(e)}
+        error={authForm.state[type].error}
+        helperText={authForm.state[type].helperText}
+        color={authForm.state[type].error ? "error" : "primary"}
+
+        //   defaultValue={process.env.NEXT_DEFAULT_EMAIL}
+        //   defaultValue={process.env.NEXT_DEFAULT_PSW}
+      />
+    </Box>
   );
 });
 
