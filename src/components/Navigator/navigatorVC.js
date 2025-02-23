@@ -18,6 +18,7 @@ import { setUseMetaData } from "@/db/SA/firebaseSA";
 import { getTargetsBySource } from "./utils";
 import progressStore from "../common/progress/progressStore";
 import { getSense } from "@/db/localstorage";
+import alertdialog from "@/store/dialog";
 
 const useNavigator = (fit) => {
   const userid = "1";
@@ -105,20 +106,31 @@ const useNavigator = (fit) => {
     navState,
   }) => {
     if (textbook) {
-      changeState({
-        data: {
-          chapter,
-          page: "testsStarted",
-          pts: 0,
-          taskId: 0,
-          recapTasks: [],
-          taskstage: "textbook",
-          repeat,
-          overflow,
-        },
-      });
       const tasks = await getTextBook(chapter, navState);
-      setTests(tasks);
+      if (tasks.length) {
+        changeState({
+          data: {
+            chapter,
+            page: "testsStarted",
+            pts: 0,
+            taskId: 0,
+            recapTasks: [],
+            taskstage: "textbook",
+            repeat,
+            overflow,
+          },
+        });
+        setTests(tasks);
+      } else {
+        alertdialog.showDialog(
+          "В учебнике нет отрытых тем",
+          "Темы в учебнике открываются по мере проходжения курса",
+          1,
+          () => {
+            progressStore.setCloseProgress();
+          }
+        );
+      }
     } else {
       changeState({
         data: {
