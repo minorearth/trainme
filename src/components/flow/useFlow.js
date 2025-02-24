@@ -80,7 +80,6 @@ const useFlow = ({ navState, flow, fit }) => {
     onConnect,
     onNodesChange,
     onEdgesChange,
-    showUnlocked,
     nodeTypes,
     edgeTypes,
     defaultEdgeOptions,

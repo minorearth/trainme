@@ -25,7 +25,7 @@ const AlertDialog = observer(() => {
       // component={Paper}
       // fullWidth={true}
       maxWidth={"md"}
-      minWidth={"xs"}
+      // minWidth={"xs"}
       sx={{
         "& .MuiPaper-root": {
           backgroundImage:

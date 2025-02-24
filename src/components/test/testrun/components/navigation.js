@@ -6,6 +6,7 @@ import CountdownButton from "@/components/common/countdown/CountdownButton";
 import { observer } from "mobx-react-lite";
 import cowntdownbutton from "@/store/cowntdownbutton";
 import Animation from "@/components/common/animation/Animation";
+import stn from "@/globals/settings";
 
 const Navigation = observer(
   ({
@@ -94,14 +95,17 @@ const Navigation = observer(
             variant="outlined"
           />
         )}
-        <Button
-          onClick={() => {
-            actions.setTestInterrupted();
-          }}
-          variant="outlined"
-        >
-          Выйти
-        </Button>
+
+        {stn.mode.DEV_MODE && (
+          <Button
+            onClick={() => {
+              actions.setTestInterrupted();
+            }}
+            variant="outlined"
+          >
+            Выйти
+          </Button>
+        )}
       </Box>
     );
   }
