@@ -233,11 +233,22 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
       restrictErrors: "",
     });
   };
+  const refreshInput = () => {
+    console.log("im");
+    const test = tests[nav.taskId];
+    currTask.input = test.defaultinput.join("\n");
+    refreshTask({ input: test.defaultinput.join("\n") });
+  };
+
+  const refreshTask = (data) => {
+    setCurrTask((state) => ({ ...state, ...data }));
+  };
 
   return {
     NextTaskOrCompleteTest,
     nextTaskNoPts,
     prevTaskNoPts,
+    refreshInput,
     currTask,
     setOutput,
     getSense,

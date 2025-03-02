@@ -27,7 +27,7 @@ const Test = observer((props) => {
     setEditorDisabled: (disabled) => setEditorDisabled(disabled, editorRef),
   });
 
-  const { setOutput, currTask } = testFeed;
+  const { setOutput, currTask, refreshInput } = testFeed;
   const { runPythonCode } = usePythonRunner({ setOutput, pyodide });
   const { checkTask } = useCheck({ ...testFeed, runPythonCode });
 
@@ -61,8 +61,9 @@ const Test = observer((props) => {
           mode={mode}
           monacoRef={monacoRef}
           editorRef={editorRef}
+          refreshInput={refreshInput}
         />
-        <InOutPanel currTask={currTask} />
+        <InOutPanel currTask={currTask} refreshInput={refreshInput} />
       </Box>
     )
   );

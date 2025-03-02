@@ -21,6 +21,7 @@ const TaskAndCodePanel = (props) => {
     nextTaskNoPts,
     prevTaskNoPts,
     ErrorCountDownPressed,
+    refreshInput,
   } = props;
   return (
     <Grid container spacing={2} columns={{ xs: 1, md: 3 }}>
@@ -54,6 +55,7 @@ const TaskAndCodePanel = (props) => {
             runPythonCode={runPythonCode}
             nextTaskNoPts={nextTaskNoPts}
             prevTaskNoPts={prevTaskNoPts}
+            refreshInput={refreshInput}
           />
         </Panel>
       </Grid>

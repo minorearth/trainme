@@ -20,6 +20,7 @@ const Navigation = observer(
     runPythonCode,
     nextTaskNoPts,
     prevTaskNoPts,
+    refreshInput,
   }) => {
     const [executing, setExecuting] = useState(false);
 
@@ -55,6 +56,7 @@ const Navigation = observer(
           <Button
             onClick={async (e) => {
               if (!pyodide || executing) return;
+              refreshInput();
               checkTask(currTask.code, tests[nav.taskId], tests.length);
             }}
             disabled={!pyodide || executing}

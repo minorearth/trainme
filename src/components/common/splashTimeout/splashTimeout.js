@@ -4,6 +4,7 @@ import { Box } from "@mui/material";
 import { useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
 import Animation from "../animation/Animation";
+import Loader from "../CSSSplash";
 
 const SplashTimeout = ({ action, duration, navState }) => {
   const theme = useTheme();
@@ -29,7 +30,8 @@ const SplashTimeout = ({ action, duration, navState }) => {
         paddingLeft: "20px",
       }}
     >
-      <Animation height={"400px"} width={"400px"} name={"logo"} />
+      {/* <Animation height={"400px"} width={"400px"} name={"logo"} /> */}
+      <Loader />
     </Box>
   );
 };
