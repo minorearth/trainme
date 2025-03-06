@@ -52,7 +52,8 @@ const useMonaco = ({ editorRef, monacoRef }) => {
         },
         {
           token: "comment",
-          fontStyle: "italic bold",
+          fontStyle: "bold",
+          // fontStyle: "italic bold",
         },
       ],
       colors: {

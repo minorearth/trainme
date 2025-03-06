@@ -108,16 +108,39 @@ const Wrapper = styled.div(({ theme }) => ({
     boxShadow: "var(--node-box-shadow)",
     zIndex: 1,
   },
-  "& .cost": {
+
+  "& .bottom": {
     marginBottom: "0px",
-    display: ["flex", "flex"],
+    display: "flex",
     flexDirection: "row",
     width: "100%",
     height: "30px",
     padding: "1px",
     overflow: "hidden",
     zIndex: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+
+  "& .cost": {
+    marginBottom: "0px",
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    // height: "30px",
+    // padding: "1px",
+    // overflow: "hidden",
+    zIndex: 1,
     justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  "& .sum": {
+    marginBottom: "0px",
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    zIndex: 1,
+    justifyContent: "flex-start",
     alignItems: "center",
   },
   "& .cost div": {
@@ -177,14 +200,30 @@ const TurboNode = memo(({ data }) => {
                 <div className="title">{data.title}</div>
               </div>
               {data.subline && <div className="subline">{data.subline}</div>}
-              {data.unlockpts && !data.paid && (
+              <div className="bottom">
+                <div className="sum">
+                  <p>{`${data.sum} \\ ${data.maxcoins}  `}</p>
+                  <BiCoinStack />
+                </div>
+
+                {data.unlockpts && !data.paid && (
+                  <div className="cost">
+                    <BiCoinStack />
+                    <p>{data.unlockpts}</p>
+                    <GoArrowRight />
+                    <BsUnlock />
+                  </div>
+                )}
+              </div>
+
+              {/* {data.unlockpts && !data.paid && (
                 <div className="cost">
                   <BiCoinStack />
                   <p>{data.unlockpts}</p>
                   <GoArrowRight />
                   <BsUnlock />
                 </div>
-              )}
+              )} */}
             </div>
           </div>
           <Handle type="target" position={Position.Left} />

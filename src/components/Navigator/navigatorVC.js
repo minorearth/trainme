@@ -104,6 +104,7 @@ const useNavigator = (fit) => {
     overflow,
     textbook,
     navState,
+    remainsum,
   }) => {
     if (textbook) {
       const tasks = await getTextBook(chapter, navState);
@@ -141,6 +142,7 @@ const useNavigator = (fit) => {
           taskstage: "WIP",
           repeat,
           overflow,
+          remainsum,
         },
       });
       const tasks = await getTests(chapter);
@@ -172,7 +174,7 @@ const useNavigator = (fit) => {
   };
 
   const runAccomplish = async () => {
-    const pts = getSense();
+    const pts = Math.min(getSense(), navState.remainsum);
     const unlocked = getTargetsBySource(navState.chapter, flow.edges);
     await setUseMetaData(
       encrypt2({

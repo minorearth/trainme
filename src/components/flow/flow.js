@@ -29,7 +29,7 @@ const Flow = ({ navState, flow, fit, setTestsStartedPage }) => {
         nodesDraggable={false}
         translateExtent={[
           [0, -250],
-          [1300, 3500],
+          [1300, 7500],
         ]}
         maxZoom={2}
         minZoom={1}

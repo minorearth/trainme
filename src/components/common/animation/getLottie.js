@@ -11,6 +11,7 @@ import ok from "./lottie/ok.json";
 import coins from "./lottie/coins.json";
 import book from "./lottie/book.json";
 import exit from "./lottie/exit.json";
+import flag from "./lottie/flag.json";
 
 export const getLottie = (name) => {
   switch (true) {
@@ -40,6 +41,8 @@ export const getLottie = (name) => {
       return book;
     case name == "exit":
       return exit;
+    case name == "flag":
+      return flag;
     default:
   }
 };
