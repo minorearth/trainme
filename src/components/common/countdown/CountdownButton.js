@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import countdownbutton from "@/store/cowntdownbutton";
 import Button from "@mui/material/Button";
 
-const sec = 5 * 1000;
+const sec = 20 * 1000;
 const speed = 100;
 const CountdownButton = (props) => {
   const [isRunning, setIsRunning] = useState(true);

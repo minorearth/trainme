@@ -11,7 +11,7 @@ const cleanUpCode = (code) => {
   return code
     .match(/[^\r\n]+/g)
     .map((line) => line.replaceAll(/#.*/g, ""))
-    .map((line) => line.replaceAll(/[\n\t ]/g, ""))
+    .map((line) => line.replaceAll(/[\n\t]/g, ""))
     .filter((line) => line != "");
 };
 
@@ -23,6 +23,7 @@ const checkLines = (code, maxlines) => {
 
 const checkMustHave = (code, musthave, musthaveRe) => {
   const codeLines = cleanUpCode(code).join();
+
   const musthaveCheck = musthave
     .map((item) => codeLines.includes(item))
     .every(Boolean);

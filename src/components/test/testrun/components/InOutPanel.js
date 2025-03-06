@@ -60,16 +60,17 @@ const InOutPanel = (props) => {
           <Input
             id="standard-multiline-flexible"
             multiline
-            rows={4}
+            // rows={4}
             fullWidth
+            height="100%"
             disableUnderline
+            rows={7}
             onChange={(e) => handleChange(e)}
             // variant="standard"
             value={inValue}
             sx={{
               display: "inline-block",
               whiteSpace: "pre-wrap",
-              height: "100%",
             }}
           />
         </Panel>

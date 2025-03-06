@@ -20,6 +20,7 @@ export const Panel = ({ children, label }) => {
         flex: 1,
         height: "100%",
         minHeight: "200px",
+        "& .MuiFormGroup-root": { height: "100%" },
       }}
     >
       <FormLabel component="legend">{label}</FormLabel>

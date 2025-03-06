@@ -21,7 +21,6 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
   }, []);
 
   useEffect(() => {
-    console.log(tests);
     nav.taskId != tests.length && setNextTask(nav.taskId);
   }, [nav]);
 
@@ -221,20 +220,33 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
     }));
   };
 
+  const formatForbidden = (forbidden, forbiddenRe, maxlines) => {
+    const formatted = `# Запрещенные приёмы: ${forbidden.join(
+      ", "
+    )}\n# Максимальное количество строк кода: ${maxlines}\n`;
+    return formatted;
+  };
+
   const setNextTask = (id) => {
     const test = tests[id];
     setCurrTask({
       task: test.task,
       tasktype: test.tasktype,
       input: test.defaultinput.join("\n"),
-      code: test.defaultcode,
+      code:
+        test.defaultcode +
+        formatForbidden(
+          test.restrictions.forbidden,
+          test.restrictions.forbiddenRe,
+          test.restrictions.maxlines
+        ),
       expectedOutput: test.defaultoutput.join("\n"),
+
       output: "",
       restrictErrors: "",
     });
   };
   const refreshInput = () => {
-    console.log("im");
     const test = tests[nav.taskId];
     currTask.input = test.defaultinput.join("\n");
     refreshTask({ input: test.defaultinput.join("\n") });
