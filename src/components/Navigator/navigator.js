@@ -17,6 +17,8 @@ import SplashTimeout from "@/components/common/splashTimeout/splashTimeout";
 import SplashAction from "@/components/common/splashAction/splashAction";
 import stn from "@/globals/settings";
 import usePyodide from "@/components/Navigator/usePyodide.js";
+import Card from "../courses/course";
+import Courses from "../courses/courses";
 
 const Navigator = observer(() => {
   const fit = useRef();
@@ -46,6 +48,12 @@ const Navigator = observer(() => {
           {stn.mode.DEV_MODE && <AdminPanel flow={flow} />}
           <Progress />
           <SplashAction name={"ok"} />
+          {navState.page == "courses" && !loading && !!flow && (
+            <Courses
+              showCourse={() => actions.changeState({ data: { page: "flow" } })}
+            />
+          )}
+
           {navState.page == "flow" && !loading && !!flow && (
             <ReactFlowProvider>
               <Flow

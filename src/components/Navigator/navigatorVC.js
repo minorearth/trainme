@@ -32,7 +32,7 @@ const useNavigator = (fit) => {
   const [flow, setFlow] = useState();
 
   const initialState = {
-    page: "flow",
+    page: "courses",
     chapter: -1,
     taskId: 0,
     recapTasks: [],

@@ -10,6 +10,7 @@ import { BsUnlock } from "react-icons/bs";
 import { useTheme } from "@mui/material/styles";
 import localFont from "next/font/local";
 import { RxLayers } from "react-icons/rx";
+import Animation from "@/components/common/animation/Animation";
 
 const myFont = localFont({
   src: "../../../app/Monaco.ttf",
@@ -201,9 +202,28 @@ const TurboNode = memo(({ data }) => {
               </div>
               {data.subline && <div className="subline">{data.subline}</div>}
               <div className="bottom">
-                <div className="sum">
-                  <p>{`${data.sum} \\ ${data.maxcoins}  `}</p>
-                  <BiCoinStack />
+                <div style={{ width: "100%" }}>
+                  <span
+                    style={{ fontSize: 20, display: "inline-block" }}
+                  >{`${data.sum}`}</span>
+                  <span
+                    style={{
+                      fontSize: 10,
+                      padding: "0 4px",
+                      display: "inline-block",
+                    }}
+                  >
+                    /
+                  </span>
+                  <span
+                    style={{ fontSize: 10, display: "inline-block" }}
+                  >{`${data.maxcoins}`}</span>
+                  {/* <BiCoinStack fontSize="8" sx={{ paddingTop: "10px" }} /> */}
+                  <span
+                    style={{ display: "inline-block", verticalAlign: "sub" }}
+                  >
+                    <Animation height={"15px"} width={"15px"} name={"coins"} />
+                  </span>
                 </div>
 
                 {data.unlockpts && !data.paid && (

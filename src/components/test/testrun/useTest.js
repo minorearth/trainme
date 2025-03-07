@@ -220,11 +220,18 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
     }));
   };
 
-  const formatForbidden = (forbidden, forbiddenRe, maxlines) => {
-    const formatted = `# Запрещенные приёмы: ${forbidden.join(
-      ", "
-    )}\n# Максимальное количество строк кода: ${maxlines}\n`;
-    return formatted;
+  const formatForbidden = (forbidden, forbiddenRe, maxlines, tasktype) => {
+    let res = "";
+    res += `\n\n# Ограничения:\n# Максимальное количество строк кода: ${maxlines}\n`;
+
+    if (tasktype != "task") {
+      return "";
+    }
+    if (forbidden.length) {
+      res += `# Запрещенные приёмы: ${forbidden.join(", ")}\n`;
+    }
+
+    return res;
   };
 
   const setNextTask = (id) => {
@@ -238,7 +245,8 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
         formatForbidden(
           test.restrictions.forbidden,
           test.restrictions.forbiddenRe,
-          test.restrictions.maxlines
+          test.restrictions.maxlines,
+          test.tasktype
         ),
       expectedOutput: test.defaultoutput.join("\n"),
 
