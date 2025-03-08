@@ -6,15 +6,15 @@ import { useTheme } from "@mui/material/styles";
 import Animation from "../animation/Animation";
 import Loader from "../CSSSplash";
 
-const SplashTimeout = ({ action, duration, navState }) => {
+const SplashTimeout = ({ action, duration, appState }) => {
   const theme = useTheme();
 
   useEffect(() => {
-    navState &&
+    appState &&
       setTimeout(() => {
         action(false);
       }, duration);
-  }, [navState]);
+  }, [appState]);
 
   return (
     <Box

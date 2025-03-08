@@ -31,7 +31,7 @@ const defaultEdgeOptions = {
   markerEnd: "edge-circle",
 };
 
-const useFlow = ({ navState, flow, fit }) => {
+const useFlow = ({ appState, flow }) => {
   const { fitView } = useReactFlow();
   const [nodes, setNodes, onNodesChange] = useNodesState();
   const [edges, setEdges, onEdgesChange] = useEdgesState();
@@ -46,7 +46,7 @@ const useFlow = ({ navState, flow, fit }) => {
   }, [nodes]);
 
   const showUnlocked = () => {
-    const unlockedNodesToShow = navState.userProgress.lastunlocked;
+    const unlockedNodesToShow = appState.userProgress.lastunlocked;
     if (unlockedNodesToShow.length > 0) {
       for (let i = 0; i < unlockedNodesToShow.length; i++) {
         setTimeout(() => {
@@ -58,7 +58,6 @@ const useFlow = ({ navState, flow, fit }) => {
       }
     }
   };
-  fit.current = showUnlocked;
 
   useOnViewportChange({
     // onEnd: (viewport) => {

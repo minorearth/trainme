@@ -5,7 +5,7 @@ import LinearProgressWithLabel from "@/components/test/testrun/components/Linear
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import Animation from "@/components/common/animation/Animation";
 import Typography from "@mui/material/Typography";
-const TopPanel = ({ tests, nav, monacoRef }) => {
+const TopPanel = ({ tests, appState, monacoRef }) => {
   const theme = useTheme();
 
   return (
@@ -18,15 +18,15 @@ const TopPanel = ({ tests, nav, monacoRef }) => {
     >
       <Animation height={"80px"} width={"80px"} name={"sheep"} />
       <LinearProgressWithLabel
-        value={((nav.taskId + 1) / tests.length) * 100}
-        label={`${nav.taskId + 1}\\${tests.length}`}
+        value={((appState.taskId + 1) / tests.length) * 100}
+        label={`${appState.taskId + 1}\\${tests.length}`}
       />
       <Animation height={"50px"} width={"50px"} name={"coins"} />
       <Typography
         variant="body2"
         sx={{ color: "text.secondary", fontSize: 22 }}
       >
-        {nav.pts}
+        {appState.pts}
       </Typography>
 
       <DLSwitch monacoRef={monacoRef} />

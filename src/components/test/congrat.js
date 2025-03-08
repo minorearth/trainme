@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { loadStatePersisted } from "@/db/localstorage";
 
 let pts;
-const Congrat = ({ setTestAccomplished, nav, actions }) => {
+const Congrat = ({ setTestAccomplished, appState, actions }) => {
   const [pts, setPts] = useState(10);
   useEffect(() => {
     const { pts } = loadStatePersisted();
@@ -38,7 +38,7 @@ const Congrat = ({ setTestAccomplished, nav, actions }) => {
         variant="outlined"
         aria-label="repeat"
         onClick={async () => {
-          await actions.reLoadFlow();
+          await actions.loadCourseFlow();
           setTestAccomplished(false);
         }}
         endIcon={<ReplayIcon />}

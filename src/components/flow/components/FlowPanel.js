@@ -17,7 +17,7 @@ import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import Fab from "@mui/material/Fab";
 import Animation from "@/components/common/animation/Animation";
 
-const FlowPanel = ({ navState, setTestsStartedPage }) => {
+const FlowPanel = ({ appState, setTestsStartedPage, actions }) => {
   const theme = useTheme();
   const router = useRouter();
 
@@ -45,7 +45,7 @@ const FlowPanel = ({ navState, setTestsStartedPage }) => {
         >
           <BiCoinStack size={"40px"} />
           <Typography variant="h4" gutterBottom>
-            {navState.userProgress.rating}
+            {appState.userProgress.rating}
           </Typography>
         </Box>
         <Animation
@@ -58,7 +58,7 @@ const FlowPanel = ({ navState, setTestsStartedPage }) => {
               repeat: false,
               overflow: true,
               textbook: true,
-              navState,
+              appState,
             });
           }}
         />
@@ -77,8 +77,13 @@ const FlowPanel = ({ navState, setTestsStartedPage }) => {
           <RiLogoutCircleRLine
             size={"40px"}
             onClick={async () => {
-              await signOutUserClient();
-              router.push(`/login/`);
+              actions.changeState({
+                launchedCourse: "",
+                page: "courses",
+              });
+
+              // await signOutUserClient();
+              // router.push(`/login/`);
             }}
           />
         </Fab>

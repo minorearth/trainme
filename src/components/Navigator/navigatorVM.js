@@ -6,13 +6,15 @@ import user from "@/store/user";
 import stn from "@/globals/settings";
 import cowntdownbutton from "@/store/cowntdownbutton";
 import progressCircle from "@/components/common/progress/progressStore";
+import { courses } from "@/globals/courses";
 
 const fullFillProgess = (
   progress,
   chapterFlowNodes,
   edges,
   setTestsStartedPage,
-  reLoadFlow
+  loadCourse,
+  courseid
 ) => {
   const { unlocked, completed, paid, rating, stat } = progress;
   const full = chapterFlowNodes.map((node) => ({
@@ -73,7 +75,7 @@ const fullFillProgess = (
                 encrypt2({ pts: -unlockpts, id, uid, lastunlocked: [id] })
               );
               data.paid = true;
-              await reLoadFlow();
+              await loadCourse();
               progressCircle.setCloseProgress();
             },
             () => {}
@@ -91,7 +93,12 @@ const fullFillProgess = (
 
         if (unlocked && paid && !completed) {
           cowntdownbutton.hideButton();
-          setTestsStartedPage({ chapter: id, repeat: false, overflow });
+          setTestsStartedPage({
+            chapter: id,
+            repeat: false,
+            overflow,
+            courseid,
+          });
         }
         if (unlocked && paid && completed) {
           setTestsStartedPage({
@@ -99,6 +106,7 @@ const fullFillProgess = (
             repeat: true,
             overflow,
             remainsum,
+            courseid,
           });
         }
       },
@@ -108,33 +116,34 @@ const fullFillProgess = (
 };
 
 export const setFlowNodes = async ({
+  courseid,
   progress,
   setFlow,
   setTestsStartedPage,
-  reLoadFlow,
+  loadCourse,
 }) => {
-  // progress.current = await getProgress(userid);
-  // progress.current = userProgress;
-  getDocDataFromCollectionByIdClient("chapters", "lpN57HSZBLZCnP2j9l9L").then(
-    (data) => {
-      const edges = data.data.chapterFlowEdges;
-      const nodes = fullFillProgess(
-        progress,
-        data.data.chapterFlowNodes,
-        edges,
-        setTestsStartedPage,
-        reLoadFlow
-      );
-      setFlow({ edges, nodes });
-    }
-  );
+  getDocDataFromCollectionByIdClient(
+    "chapters",
+    courses[courseid].chaptersdoc
+  ).then((data) => {
+    const edges = data.data.chapterFlowEdges;
+    const nodes = fullFillProgess(
+      progress,
+      data.data.chapterFlowNodes,
+      edges,
+      setTestsStartedPage,
+      loadCourse,
+      courseid
+    );
+    setFlow({ edges, nodes });
+  });
 };
 
-export const getTests = async (chapter) => {
+export const getTests = async (chapter, courseid) => {
   //local, do not remove
   // const filteredTasks = testsall.filter((test) => test.chapterid == chapter);
   const filteredTasks = await getDocDataFromCollectionByIdClient(
-    "tasks",
+    courses[courseid].taskcollection,
     chapter
   );
 
@@ -151,15 +160,15 @@ export const getTests = async (chapter) => {
   return res;
 };
 
-export const getTextBook = async (chapter, nav) => {
+export const getTextBook = async (chapter, appState, courseid) => {
   //local, do not remove
   // const filteredTasks = testsall.filter((test) => test.chapterid == chapter);
   const filteredTasks = await getDocDataFromCollectionByIdClient(
-    "tasks",
+    courses[courseid].taskcollection,
     chapter
   );
   const unlockedTheory = filteredTasks.data.tasks.filter((item) =>
-    nav.userProgress.completed.includes(item.chapterparentid)
+    appState.userProgress.completed.includes(item.chapterparentid)
   );
 
   if (!filteredTasks.data) {

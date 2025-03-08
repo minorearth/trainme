@@ -6,7 +6,13 @@ import cowntdownbutton from "@/store/cowntdownbutton";
 import splashCDStore from "@/components/common/splashAction/splashActionStore";
 import { getSense } from "@/db/localstorage";
 
-const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
+const useTest = ({
+  appState,
+  tests,
+  actions,
+  editorRef,
+  setEditorDisabled,
+}) => {
   const {
     changeState,
     persistStateNoEffect,
@@ -21,8 +27,8 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
   }, []);
 
   useEffect(() => {
-    nav.taskId != tests.length && setNextTask(nav.taskId);
-  }, [nav]);
+    appState.taskId != tests.length && setNextTask(appState.taskId);
+  }, [appState]);
 
   const setOutput = (output) => {
     setCurrTask((state) => ({
@@ -33,49 +39,42 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
 
   const nextTask = ({ pts }) => {
     changeState({
-      data: {
-        taskId: nav.taskId + 1,
-        pts,
-      },
+      taskId: appState.taskId + 1,
+      pts,
     });
   };
 
   const nextTaskNoPts = () => {
     changeState({
-      data: {
-        taskId: nav.taskId + 1,
-      },
+      taskId: appState.taskId + 1,
     });
   };
 
   const prevTaskNoPts = () => {
     changeState({
-      data: {
-        taskId: nav.taskId - 1,
-      },
+      taskId: appState.taskId - 1,
     });
   };
 
   const doRecap = () => {
     const pts = getSense();
-    changeState({
-      data: { taskstage: "recap", pts },
-    });
+    changeState({ taskstage: "recap", pts });
     dialog.showDialog(
       "Повторение",
       "Попробуй еще раз решить ошибочные задачи",
       1,
-      () => setRunTestsPageRecap(nav.recapTasks)
+      () => setRunTestsPageRecap(appState.recapTasks)
     );
   };
 
   const processSuspendedAfterError = async () => {
     switch (true) {
-      case nav.taskId == tests.length - 1 &&
-        nav.taskstage == "accomplished_suspended":
+      case appState.taskId == tests.length - 1 &&
+        appState.taskstage == "accomplished_suspended":
         runAccomplish();
         return;
-      case nav.taskId == tests.length - 1 && nav.taskstage == "recap_suspended":
+      case appState.taskId == tests.length - 1 &&
+        appState.taskstage == "recap_suspended":
         doRecap();
         return;
       default:
@@ -84,25 +83,25 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
   };
 
   const addErrorTaskToRecap = () => {
-    const recapTasks = [...nav.recapTasks, nav.taskId];
-    nav.recapTasks = recapTasks;
+    const recapTasks = [...appState.recapTasks, appState.taskId];
+    appState.recapTasks = recapTasks;
     persistStateNoEffect({
       recapTasks: recapTasks,
-      taskId: nav.taskId + 1,
+      taskId: appState.taskId + 1,
     });
   };
 
   const errorOnLastRecapTask = () => {
-    nav.taskstage = "accomplished_suspended";
+    appState.taskstage = "accomplished_suspended";
     persistStateNoEffect({
       taskstage: "accomplished_suspended",
     });
   };
 
   const errorOnLastWIPTask = () => {
-    nav.taskstage = "recap_suspended";
-    const recapTasks = [...nav.recapTasks, nav.taskId];
-    nav.recapTasks = recapTasks;
+    appState.taskstage = "recap_suspended";
+    const recapTasks = [...appState.recapTasks, appState.taskId];
+    appState.recapTasks = recapTasks;
     persistStateNoEffect({
       taskstage: "recap_suspended",
       recapTasks,
@@ -116,7 +115,7 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
       1,
 
       () => {
-        setCode(tests[nav.taskId].rightcode);
+        setCode(tests[appState.taskId].rightcode);
         setEditorDisabled(true);
         cowntdownbutton.showButton();
       }
@@ -127,19 +126,20 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
     editorRef.current.getModel().setValue("");
     setEditorDisabled(false);
 
-    if (nav.taskId != tests.length - 1) {
+    if (appState.taskId != tests.length - 1) {
       nextTaskNoPts();
       return;
     }
     if (
-      nav.taskId == tests.length - 1 &&
-      (nav.taskstage == "recap" || nav.taskstage == "accomplished_suspended")
+      appState.taskId == tests.length - 1 &&
+      (appState.taskstage == "recap" ||
+        appState.taskstage == "accomplished_suspended")
     ) {
       runAccomplish();
     }
     if (
-      nav.recapTasks.length > 0 &&
-      (nav.taskstage == "WIP" || nav.taskstage == "recap_suspended")
+      appState.recapTasks.length > 0 &&
+      (appState.taskstage == "WIP" || appState.taskstage == "recap_suspended")
     ) {
       doRecap();
     }
@@ -172,38 +172,55 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
 
   const NextTaskOrCompleteTest = async ({ error, errorMsg }) => {
     editorRef.current.getModel().setValue("");
-    const pts = getEarned(error, nav.taskstage, nav.repeat, nav.overflow);
+    const pts = getEarned(
+      error,
+      appState.taskstage,
+      appState.repeat,
+      appState.overflow
+    );
     switch (true) {
-      case nav.taskId != tests.length - 1 && !error:
+      case appState.taskId != tests.length - 1 && !error:
         ok();
         nextTask({ pts });
         return;
-      case nav.taskId == tests.length - 1 && !error:
-        if (nav.taskstage == "recap") {
+      case appState.taskId == tests.length - 1 && !error:
+        if (appState.taskstage == "recap") {
           ok(runAccomplish);
         }
-        if (nav.recapTasks.length == 0 && nav.taskstage == "WIP") {
+        if (appState.recapTasks.length == 0 && appState.taskstage == "WIP") {
           ok(runAccomplish);
         }
-        if (nav.recapTasks.length != 0 && nav.taskstage == "WIP") {
+        if (appState.recapTasks.length != 0 && appState.taskstage == "WIP") {
           ok(doRecap);
         }
         return;
       case error:
         showRightCodeAfterError({ errorMsg });
-        if (nav.taskstage != "recap" && nav.taskId != tests.length - 1) {
+        if (
+          appState.taskstage != "recap" &&
+          appState.taskId != tests.length - 1
+        ) {
           addErrorTaskToRecap();
         }
 
-        if (nav.taskstage == "recap" && nav.taskId != tests.length - 1) {
+        if (
+          appState.taskstage == "recap" &&
+          appState.taskId != tests.length - 1
+        ) {
           persistStateNoEffect({
-            taskId: nav.taskId + 1,
+            taskId: appState.taskId + 1,
           });
         }
-        if (nav.taskstage != "recap" && nav.taskId == tests.length - 1) {
+        if (
+          appState.taskstage != "recap" &&
+          appState.taskId == tests.length - 1
+        ) {
           errorOnLastWIPTask();
         }
-        if (nav.taskstage == "recap" && nav.taskId == tests.length - 1) {
+        if (
+          appState.taskstage == "recap" &&
+          appState.taskId == tests.length - 1
+        ) {
           errorOnLastRecapTask();
         }
         return;
@@ -222,7 +239,7 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
 
   const formatForbidden = (forbidden, forbiddenRe, maxlines, tasktype) => {
     let res = "";
-    res += `\n\n# Ограничения:\n# Максимальное количество строк кода: ${maxlines}\n`;
+    res += `\n\n# Ограничения:\n# Максимальное количество строк кода: ${maxlines}`;
 
     if (tasktype != "task") {
       return "";
@@ -255,7 +272,7 @@ const useTest = ({ nav, tests, actions, editorRef, setEditorDisabled }) => {
     });
   };
   const refreshInput = () => {
-    const test = tests[nav.taskId];
+    const test = tests[appState.taskId];
     currTask.input = test.defaultinput.join("\n");
     refreshTask({ input: test.defaultinput.join("\n") });
   };

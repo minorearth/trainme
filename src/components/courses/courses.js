@@ -45,6 +45,7 @@ const Courses = ({ showCourse }) => {
           showCourse={showCourse}
           title={"БАЗОВЫЙ КУРС"}
           text={"Шаг за шаг с нуля познаем основы проограммирования на Python"}
+          id={"6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0"}
         />
       </Grid>
       <Grid
@@ -57,6 +58,7 @@ const Courses = ({ showCourse }) => {
           showCourse={showCourse}
           title={"ПРОДВИНУТОЕ ПРОГРАММИРОВАНИЕ"}
           text={"Постигааем продвинутые функции языка Python"}
+          id={"a3905595-437e-47f3-b749-28ea5362bd39"}
         />
       </Grid>
       <Grid
@@ -71,6 +73,7 @@ const Courses = ({ showCourse }) => {
           text={
             "Подготовка к решению задач ЕГЭ. Все типы задач. Разные способы решения - от Базового до Pro"
           }
+          id={"6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0"}
         />
       </Grid>
     </Grid>

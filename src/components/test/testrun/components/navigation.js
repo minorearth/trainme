@@ -12,7 +12,7 @@ const Navigation = observer(
   ({
     tests,
     actions,
-    nav,
+    appState,
     pyodide,
     checkTask,
     ErrorCountDownPressed,
@@ -57,7 +57,7 @@ const Navigation = observer(
             onClick={async (e) => {
               if (!pyodide || executing) return;
               refreshInput();
-              checkTask(currTask.code, tests[nav.taskId], tests.length);
+              checkTask(currTask.code, tests[appState.taskId], tests.length);
             }}
             disabled={!pyodide || executing}
             variant="outlined"
@@ -66,13 +66,13 @@ const Navigation = observer(
             Проверить!
           </Button>
         )}
-        {nav.taskstage == "textbook" && (
+        {appState.taskstage == "textbook" && (
           <Button
             onClick={() => {
               prevTaskNoPts();
             }}
             variant="outlined"
-            disabled={nav.taskId <= 0}
+            disabled={appState.taskId <= 0}
           >
             Назад
           </Button>
@@ -83,7 +83,7 @@ const Navigation = observer(
               nextTaskNoPts();
             }}
             variant="outlined"
-            disabled={nav.taskId >= tests.length - 1}
+            disabled={appState.taskId >= tests.length - 1}
           >
             Продолжить
           </Button>

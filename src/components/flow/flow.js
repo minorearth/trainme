@@ -12,9 +12,10 @@ import "./styles.css";
 import FlowPanel from "./components/FlowPanel.js";
 import useFlow from "./useFlow";
 
-const Flow = ({ navState, flow, fit, setTestsStartedPage }) => {
+const Flow = ({ appState, flow, setTestsStartedPage, actions }) => {
   const theme = useTheme();
-  const flowOptions = useFlow({ navState, flow, fit });
+  const flowOptions = useFlow({ appState, flow });
+  console.log(flow, appState);
 
   return (
     <Box
@@ -36,8 +37,9 @@ const Flow = ({ navState, flow, fit, setTestsStartedPage }) => {
         {...flowOptions}
       >
         <FlowPanel
-          navState={navState}
+          appState={appState}
           setTestsStartedPage={setTestsStartedPage}
+          actions={actions}
         />
       </ReactFlow>
     </Box>

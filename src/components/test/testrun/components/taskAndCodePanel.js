@@ -9,7 +9,7 @@ const TaskAndCodePanel = (props) => {
   const {
     tests,
     actions,
-    nav,
+    appState,
     pyodide,
     currTask,
     monacoRef,
@@ -48,7 +48,7 @@ const TaskAndCodePanel = (props) => {
             checkTask={checkTask}
             tests={tests}
             actions={actions}
-            nav={nav}
+            appState={appState}
             pyodide={pyodide}
             ErrorCountDownPressed={ErrorCountDownPressed}
             currTask={currTask}

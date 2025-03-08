@@ -9,23 +9,23 @@ import Typography from "@mui/material/Typography";
 import progressStore from "../common/progress/progressStore";
 import Paper from "@mui/material/Paper";
 
-const getIntro = (nav) => {
-  if (nav.taskstage == "textbook") {
+const getIntro = (appState) => {
+  if (appState.taskstage == "textbook") {
     return "Приветствуем вас в учебнике 📘 ! В учебнике доступна теория только по открытым темам";
   }
 
-  if (!nav.repeat) {
+  if (!appState.repeat) {
     return "Постарайтесь решить задачу с первого раза, за это начисляются монеты, которые используются для открытия новых уроков";
   }
-  if (nav.repeat) {
+  if (appState.repeat) {
     return "В режиме повторения начисляется гораздо меньше монет";
   }
-  if (nav.overflow) {
+  if (appState.overflow) {
     return "Вы достигли лимита монет по этой главе😭, здесь вы уже их не заработаете🚫";
   }
 };
 
-export default function Start({ actions, nav }) {
+export default function Start({ actions, appState }) {
   const theme = useTheme();
 
   return (
@@ -44,11 +44,11 @@ export default function Start({ actions, nav }) {
       <Button
         onClick={() => {
           progressStore.setShowProgress(true, false, "progressdots", 2000);
-          actions.changeState({ data: { page: "testrun", pts: 0 } });
+          actions.changeState({ page: "testrun", pts: 0 });
         }}
         variant="outlined"
       >
-        {nav.repeat ? "Повторяем урок" : "Начать урок"}
+        {appState.repeat ? "Повторяем урок" : "Начать урок"}
       </Button>
       <Typography
         variant="body1"
@@ -59,7 +59,7 @@ export default function Start({ actions, nav }) {
           marginTop: "20px",
         }}
       >
-        {getIntro(nav)}
+        {getIntro(appState)}
       </Typography>
     </Box>
   );

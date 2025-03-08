@@ -17,13 +17,11 @@ import SplashTimeout from "@/components/common/splashTimeout/splashTimeout";
 import SplashAction from "@/components/common/splashAction/splashAction";
 import stn from "@/globals/settings";
 import usePyodide from "@/components/Navigator/usePyodide.js";
-import Card from "../courses/course";
 import Courses from "../courses/courses";
 
 const Navigator = observer(() => {
-  const fit = useRef();
   const [showSplashTimeout, setShowSplashTimeout] = useState(true);
-  const { actions, navState, loading, tests, userid, flow } = useNavigator(fit);
+  const { actions, appState, loading, tests, userid, flow } = useNavigator();
   const { pyodide2 } = usePyodide();
 
   return (
@@ -32,7 +30,7 @@ const Navigator = observer(() => {
         <SplashTimeout
           action={setShowSplashTimeout}
           duration={4000}
-          navState={navState}
+          appState={appState}
         />
       )}
       {!loading && pyodide2 && !showSplashTimeout && (
@@ -48,40 +46,41 @@ const Navigator = observer(() => {
           {stn.mode.DEV_MODE && <AdminPanel flow={flow} />}
           <Progress />
           <SplashAction name={"ok"} />
-          {navState.page == "courses" && !loading && !!flow && (
-            <Courses
-              showCourse={() => actions.changeState({ data: { page: "flow" } })}
-            />
+          {appState.launchedCourse == "" && (
+            <Courses showCourse={actions.loadCourse} />
           )}
 
-          {navState.page == "flow" && !loading && !!flow && (
-            <ReactFlowProvider>
-              <Flow
-                setTestsStartedPage={actions.setTestsStartedPage}
-                navState={navState}
-                flow={flow}
-                fit={fit}
-              />
-            </ReactFlowProvider>
+          {appState.page == "flow" &&
+            !loading &&
+            !!flow &&
+            appState.launchedCourse && (
+              <ReactFlowProvider>
+                <Flow
+                  setTestsStartedPage={actions.setTestsStartedPage}
+                  appState={appState}
+                  actions={actions}
+                  flow={flow}
+                />
+              </ReactFlowProvider>
+            )}
+
+          {appState.page == "testsStarted" && !loading && (
+            <Start actions={actions} appState={appState} />
           )}
 
-          {navState.page == "testsStarted" && !loading && (
-            <Start actions={actions} nav={navState} />
-          )}
-
-          {navState.page == "testrun" && tests?.length != 0 && (
+          {appState.page == "testrun" && tests?.length != 0 && (
             <Test
-              nav={navState}
+              appState={appState}
               tests={tests}
               actions={actions}
               pyodide={pyodide2}
             />
           )}
 
-          {navState.page == "congrat" && (
+          {appState.page == "congrat" && (
             <Congrat
               setTestAccomplished={actions.setTestAccomplished}
-              nav={navState}
+              appState={appState}
               actions={actions}
             />
           )}
