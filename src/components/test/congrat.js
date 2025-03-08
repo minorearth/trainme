@@ -38,7 +38,7 @@ const Congrat = ({ setTestAccomplished, appState, actions }) => {
         variant="outlined"
         aria-label="repeat"
         onClick={async () => {
-          await actions.loadCourseFlow();
+          await actions.loadCourse(appState.launchedCourse);
           setTestAccomplished(false);
         }}
         endIcon={<ReplayIcon />}

@@ -58,45 +58,53 @@ const useNavigator = () => {
   };
 
   const loadCourseFlow = async (courseid, appStatePersisted) => {
+    console.log("im here");
     // const courseid = id == "" ? stateUpdated.launchedCourse : id;
     if (appStatePersisted.chapter != -1) {
       showtests(appStatePersisted, courseid);
-    } else {
-      setFlowNodes({
-        courseid,
-        progress: appStatePersisted.userProgress,
-        setFlow,
-        setTestsStartedPage,
-        loadCourse: () => loadCourse(courseid),
-      });
     }
+    setFlowNodes({
+      courseid,
+      progress: appStatePersisted.userProgress,
+      setFlow,
+      setTestsStartedPage,
+      loadCourse: () => loadCourse(courseid),
+    });
   };
 
-  const loadCourse = async (id) => {
-    const statePersisted = await refetchUserMetaAndPersist();
-    if (id) {
-      changeState({ ...statePersisted, launchedCourse: id, page: "flow" });
-      await loadCourseFlow(id, statePersisted);
-    }
+  const loadCourse = async (launchedCourse) => {
+    const currStatePersisted = loadStatePersisted();
+    const statePersisted = await refetchUserMetaAndPersist(
+      launchedCourse,
+      currStatePersisted
+    );
+    await loadCourseFlow(launchedCourse, statePersisted);
+    changeState({ ...statePersisted, launchedCourse, page: "flow" });
     setLoading(false);
     progressStore.setCloseProgress();
   };
 
-  const reloadCourse = async () => {
-    const statePersisted = await refetchUserMetaAndPersist();
-    statePersisted.launchedCourse &&
-      (await loadCourseFlow(statePersisted.launchedCourse, statePersisted));
+  const reloadCourse = async (currStatePersisted) => {
+    const statePersisted = await refetchUserMetaAndPersist(
+      currStatePersisted.launchedCourse,
+      currStatePersisted
+    );
+    await loadCourseFlow(statePersisted.launchedCourse, statePersisted);
     changeState({ ...statePersisted });
     setLoading(false);
     progressStore.setCloseProgress();
   };
 
-  const refetchUserMetaAndPersist = async () => {
-    const userProgress = await getUseMetaData(user.userid);
-    const state = loadStatePersisted();
+  const refetchUserMetaAndPersist = async (
+    launchedCourse,
+    currStatePersisted
+  ) => {
+    const allUserMeta = await getUseMetaData(user.userid);
+    const userProgress = allUserMeta.courses[launchedCourse];
+
     const stateToUpdated = {
       ...initialState,
-      ...state,
+      ...currStatePersisted,
       userProgress,
       uid: user.userid,
     };
@@ -109,7 +117,14 @@ const useNavigator = () => {
       e.clipboardData.setData("text/plain", "No Copying!");
       e.preventDefault();
     });
-    reloadCourse();
+    const currStatePersisted = loadStatePersisted();
+    if (currStatePersisted && currStatePersisted.launchedCourse) {
+      reloadCourse(currStatePersisted);
+    } else {
+      changeState(initialState);
+      setLoading(false);
+      progressStore.setCloseProgress();
+    }
   }, [user]);
 
   const changeState = (data) => {
@@ -192,14 +207,17 @@ const useNavigator = () => {
   };
 
   const runAccomplish = async () => {
+    console.log(getSense());
     const pts = Math.min(getSense(), appState.remainsum);
     const unlocked = getTargetsBySource(appState.chapter, flow.edges);
+
     await setUseMetaData(
       encrypt2({
         lastcompleted: appState.chapter,
         unlocked,
         pts,
         uid: user.userid,
+        launchedCourse: appState.launchedCourse,
       })
     );
     setCongratPage(pts);

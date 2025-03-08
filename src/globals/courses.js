@@ -13,6 +13,6 @@ export const courses = {
     taskcollection: "tasks2",
     chaptersdoc: "RlDOeZgfpHfKE2YdH1BS",
     textbookchapter: "21e195e8-af63-4527-826f-b49c8a8b599e",
-    firstchapter: "4680f00b-b586-413c-890a-9669b4b7b1c3",
+    firstchapter: "747977df-714b-414a-b086-def87e1fd15d",
   },
 };

@@ -25,7 +25,11 @@ const fullFillProgess = (
       completed: completed.includes(node.id),
       paid: paid.includes(node.id) || !node.data.unlockpts,
       sum: stat[node.id]?.sum || 0,
-      remainsum: node.data.maxcoins - stat[node.id]?.sum || 0,
+      remainsum: !stat[node.id]?.sum
+        ? node.data.maxcoins
+        : node.data.maxcoins - stat[node.id]?.sum || 0,
+      // remainsum: node.data.maxcoins,
+
       overflow: stat[node.id]?.sum
         ? stat[node.id].sum >= node.data.maxcoins
         : false,
@@ -97,6 +101,7 @@ const fullFillProgess = (
             chapter: id,
             repeat: false,
             overflow,
+            remainsum,
             courseid,
           });
         }
