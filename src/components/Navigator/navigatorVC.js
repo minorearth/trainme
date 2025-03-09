@@ -11,6 +11,7 @@ import {
   setFlowNodes,
   getTestsRecap,
   getTextBook,
+  getRandomTasks,
 } from "./navigatorVM";
 import { getUseMetaData } from "@/db/SA/firebaseSA";
 import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
@@ -19,6 +20,7 @@ import { getTargetsBySource } from "./utils";
 import progressStore from "../common/progress/progressStore";
 import { getSense } from "@/db/localstorage";
 import alertdialog from "@/store/dialog";
+import { CollectionsOutlined } from "@mui/icons-material";
 
 const useNavigator = () => {
   const userid = "1";
@@ -58,7 +60,6 @@ const useNavigator = () => {
   };
 
   const loadCourseFlow = async (courseid, appStatePersisted) => {
-    console.log("im here");
     // const courseid = id == "" ? stateUpdated.launchedCourse : id;
     if (appStatePersisted.chapter != -1) {
       showtests(appStatePersisted, courseid);
@@ -73,6 +74,7 @@ const useNavigator = () => {
   };
 
   const loadCourse = async (launchedCourse) => {
+    setFlow();
     const currStatePersisted = loadStatePersisted();
     const statePersisted = await refetchUserMetaAndPersist(
       launchedCourse,
@@ -135,6 +137,80 @@ const useNavigator = () => {
     });
   };
 
+  const openTextBook = async ({
+    chapter,
+    courseid,
+    repeat,
+    overflow,
+    appState,
+  }) => {
+    const tasks = await getTextBook(chapter, appState, courseid);
+    if (tasks.length) {
+      changeState({
+        chapter,
+        page: "testsStarted",
+        pts: 0,
+        taskId: 0,
+        recapTasks: [],
+        taskstage: "textbook",
+        repeat,
+        overflow,
+      });
+      setTests(tasks);
+    } else {
+      alertdialog.showDialog(
+        "В учебнике нет отрытых тем",
+        "Темы в учебнике открываются по мере проходжения курса",
+        1,
+        () => {
+          progressStore.setCloseProgress();
+        }
+      );
+    }
+  };
+
+  const openRecapTasks = async ({
+    chapter,
+    courseid,
+    repeat,
+    overflow,
+    appState,
+  }) => {
+    changeState({
+      chapter,
+      page: "testsStarted",
+      taskId: 0,
+      recapTasks: [],
+      taskstage: "WIP",
+      repeat,
+      overflow,
+      remainsum,
+    });
+    const tasks = await getRandomTasks(chapter, courseid, appState);
+    setTests(tasks);
+  };
+
+  const openTasks = async ({
+    chapter,
+    courseid,
+    repeat,
+    overflow,
+    remainsum,
+  }) => {
+    changeState({
+      chapter,
+      page: "testsStarted",
+      taskId: 0,
+      recapTasks: [],
+      taskstage: "WIP",
+      repeat,
+      overflow,
+      remainsum,
+    });
+    const tasks = await getTests(chapter, courseid);
+    setTests(tasks);
+  };
+
   const setTestsStartedPage = async ({
     chapter,
     repeat,
@@ -143,44 +219,16 @@ const useNavigator = () => {
     appState,
     remainsum,
     courseid,
+    nodemode,
   }) => {
     if (textbook) {
-      const tasks = await getTextBook(chapter, appState, courseid);
-      if (tasks.length) {
-        changeState({
-          chapter,
-          page: "testsStarted",
-          pts: 0,
-          taskId: 0,
-          recapTasks: [],
-          taskstage: "textbook",
-          repeat,
-          overflow,
-        });
-        setTests(tasks);
-      } else {
-        alertdialog.showDialog(
-          "В учебнике нет отрытых тем",
-          "Темы в учебнике открываются по мере проходжения курса",
-          1,
-          () => {
-            progressStore.setCloseProgress();
-          }
-        );
-      }
-    } else {
-      changeState({
-        chapter,
-        page: "testsStarted",
-        taskId: 0,
-        recapTasks: [],
-        taskstage: "WIP",
-        repeat,
-        overflow,
-        remainsum,
-      });
-      const tasks = await getTests(chapter, courseid);
-      setTests(tasks);
+      openTextBook({ chapter, courseid, repeat, overflow, appState });
+    }
+    if (nodemode == "recap") {
+      openRecapTasks({ chapter, courseid, repeat, overflow, appState });
+    }
+    if (nodemode == "addhoc" || nodemode == "newtopic") {
+      openTasks({ chapter, courseid, repeat, overflow, remainsum });
     }
   };
 
@@ -207,7 +255,6 @@ const useNavigator = () => {
   };
 
   const runAccomplish = async () => {
-    console.log(getSense());
     const pts = Math.min(getSense(), appState.remainsum);
     const unlocked = getTargetsBySource(appState.chapter, flow.edges);
 

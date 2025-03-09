@@ -15,7 +15,6 @@ import useFlow from "./useFlow";
 const Flow = ({ appState, flow, setTestsStartedPage, actions }) => {
   const theme = useTheme();
   const flowOptions = useFlow({ appState, flow });
-  console.log(flow, appState);
 
   return (
     <Box

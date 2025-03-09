@@ -43,11 +43,17 @@ const Navigator = observer(() => {
         >
           {countdown.dialogState.visible && <Countdown />}
           <AlertDialog />
-          {stn.mode.DEV_MODE && <AdminPanel flow={flow} />}
+          {stn.mode.DEV_MODE && (
+            <AdminPanel
+              flow={flow}
+              appState={appState}
+              loadCourse={actions.loadCourse}
+            />
+          )}
           <Progress />
           <SplashAction name={"ok"} />
           {appState.launchedCourse == "" && (
-            <Courses showCourse={actions.loadCourse} />
+            <Courses loadCourse={actions.loadCourse} />
           )}
 
           {appState.page == "flow" &&

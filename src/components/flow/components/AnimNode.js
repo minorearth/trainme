@@ -4,5 +4,5 @@ import Animation from "@/components/common/animation/Animation.js";
 const AnimNode = memo(({ data }) => {
   return <Animation width={"200px"} height={"200px"} name={data.lottie} />;
 });
-AnimNode.displayName = "TurboNode";
+AnimNode.displayName = "AnimNode";
 export default AnimNode;

@@ -40,6 +40,7 @@ export const updateDocFieldsInCollectionByIdClient = async (
 };
 
 export const setDocInCollectionClient = async (collectionName, data, id) => {
+  console.log("asddasd", collectionName, data, id);
   await setDocInCollection(db, collectionName, data, id);
 };
 

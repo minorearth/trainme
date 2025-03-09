@@ -1,15 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
-const Card = ({ title, text, showCourse, id }) => {
+const Card = ({ title, text, loadCourse, id }) => {
   return (
     <StyledWrapper>
       <div
         className="parent"
         onClick={() => {
-          console.log(id);
-          console.log(showCourse);
-          showCourse(id);
+          loadCourse(id);
         }}
       >
         <div className="card">

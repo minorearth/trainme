@@ -9,6 +9,13 @@ import { testsall2 } from "@/components/admin/course2";
 import { setDocInCollectionClient } from "@/db/domain/domain";
 import { courses } from "@/globals/courses";
 
+const getChapteeLevels = (chapters) => {
+  return chapters.reduce(
+    (acc, item) => ({ ...acc, [item.id]: item.data.level }),
+    {}
+  );
+};
+
 export const load = () => {
   const a = [chapterFlowNodes1, chapterFlowNodes2];
   const b = [chapterFlowEdges1, chapterFlowEdges2];
@@ -26,18 +33,30 @@ export const load = () => {
       courses[v[id]].chaptersdoc
     );
 
-    let chapters = a[id].map((chapter) => chapter.id);
-    chapters = [...chapters, courses[v[id]].textbookchapter];
-    console.log(chapters);
-
-    chapters.forEach((chapterid) => {
-      const tasks = d[id].filter((test) => test.chapterid == chapterid);
-      tasks.length != 0 &&
-        setDocInCollectionClient(
-          courses[v[id]].taskcollection,
-          { tasks },
-          chapterid
-        );
+    // LoadTasks
+    const idLevels = getChapteeLevels(a[id]);
+    const allTasks = d[id].map((task) => {
+      return { ...task, level: idLevels[task.chapterparentid] };
     });
+    console.log("allTasks", allTasks);
+
+    setDocInCollectionClient(
+      courses[v[id]].taskcollection,
+      { allTasks },
+      "alltasks"
+    );
+
+    // let chapters = a[id].map((chapter) => chapter.id);
+    // chapters = [...chapters, courses[v[id]].textbookchapter];
+    // chapters.forEach((chapterid) => {
+    //   const tasks = d[id].filter((test) => test.chapterid == chapterid);
+    //   tasks.length != 0 &&
+    //     setDocInCollectionClient(
+    //       courses[v[id]].taskcollection,
+    //       { tasks },
+    //       chapterid
+    //     );
+    // });
+    //
   });
 };

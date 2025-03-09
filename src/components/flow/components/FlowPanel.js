@@ -59,6 +59,7 @@ const FlowPanel = ({ appState, setTestsStartedPage, actions }) => {
               overflow: true,
               textbook: true,
               appState,
+              courseid: appState.launchedCourse,
             });
           }}
         />

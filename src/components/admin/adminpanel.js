@@ -5,33 +5,56 @@ import {
   unlockAll,
   unlockAndCompleteAll,
   getMoney,
+  setMoney,
 } from "@/db/SA/firebaseSA";
 import { load } from "@/components/admin/adminutils";
+import { courses } from "@/globals/courses";
+import Input from "@mui/material/Input";
+import { useState } from "react";
 
-const AdminPanel = ({ flow }) => {
+const AdminPanel = ({ flow, appState, loadCourse }) => {
+  const [inValue, setInValue] = useState(5000);
+
+  const handleChange = (e) => {
+    setInValue(e.target.value);
+  };
+
   return (
     <>
       <Button
-        onClick={() => {
-          resetUseMetaData();
+        onClick={async () => {
+          await resetUseMetaData(
+            courses[appState.launchedCourse].firstchapter,
+            appState.launchedCourse,
+            appState.uid
+          );
+          loadCourse(appState.launchedCourse);
         }}
       >
         reset
       </Button>
       <Button
-        onClick={() => {
-          unlockAll(
-            flow.nodes.filter((node) => node.id != -1).map((node) => node.id)
+        onClick={async () => {
+          await unlockAll(
+            flow.nodes.filter((node) => node.id != -1).map((node) => node.id),
+            courses[appState.launchedCourse].firstchapter,
+            appState.launchedCourse,
+            appState.uid
           );
+          loadCourse(appState.launchedCourse);
         }}
       >
         unlockAll
       </Button>
       <Button
-        onClick={() => {
-          unlockAndCompleteAll(
-            flow.nodes.filter((node) => node.id != -1).map((node) => node.id)
+        onClick={async () => {
+          await unlockAndCompleteAll(
+            flow.nodes.filter((node) => node.id != -1).map((node) => node.id),
+            courses[appState.launchedCourse].firstchapter,
+            appState.launchedCourse,
+            appState.uid
           );
+          loadCourse(appState.launchedCourse);
         }}
       >
         CompleteAll
@@ -39,16 +62,31 @@ const AdminPanel = ({ flow }) => {
       <Button
         onClick={() => {
           load();
+          loadCourse(appState.launchedCourse);
         }}
       >
         load
       </Button>
+      <Input
+        id="standard-multiline-flexible"
+        height="100%"
+        disableUnderline
+        onChange={(e) => handleChange(e)}
+        value={inValue}
+        sx={{
+          display: "inline-block",
+          whiteSpace: "pre-wrap",
+          backgroundColor: "ButtonShadow",
+          width: "50px",
+        }}
+      />
       <Button
-        onClick={() => {
-          getMoney();
+        onClick={async () => {
+          await setMoney(appState.launchedCourse, appState.uid, inValue);
+          loadCourse(appState.launchedCourse);
         }}
       >
-        money
+        money2
       </Button>
     </>
   );

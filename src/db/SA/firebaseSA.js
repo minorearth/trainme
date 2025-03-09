@@ -10,55 +10,73 @@ const admin = "EoufdeogIZN2e02o7MulUGhnscR2";
 
 export const payChapter = async (data) => {
   const firestore = getFirestore();
-  const { pts, id, uid, lastunlocked } = decrypt2(data);
+  const { pts, id, uid, lastunlocked, launchedCourse } = decrypt2(data);
   const userMetaRef = firestore.collection("usermeta").doc(uid);
   userMetaRef.update({
-    rating: FieldValue.increment(pts),
-    paid: FieldValue.arrayUnion(id),
-    lastunlocked,
+    [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
+    [`courses.${launchedCourse}.lastunlocked`]: [lastunlocked],
+    [`courses.${launchedCourse}.paid`]: FieldValue.arrayUnion(id),
   });
 };
 
-export const resetUseMetaData = async () => {
+export const resetUseMetaData = async (lastunlocked, launchedCourse, uid) => {
   const firestore = getFirestore();
-  const userMetaRef = firestore.collection("usermeta").doc(admin);
+  const userMetaRef = firestore.collection("usermeta").doc(uid);
   userMetaRef.update({
-    completed: [],
-    unlocked: ["4680f00b-b586-413c-890a-9669b4b7b1c3"],
-    lastunlocked: ["4680f00b-b586-413c-890a-9669b4b7b1c3"],
-    rating: 0,
-    paid: [],
-    stat: {},
+    [`courses.${launchedCourse}`]: {
+      completed: [],
+      unlocked: [lastunlocked],
+      lastunlocked: [lastunlocked],
+      paid: [],
+      stat: {},
+      rating: 0,
+    },
   });
 };
 
-export const getMoney = async () => {
+export const getMoney = async (launchedCourse, uid) => {
   const firestore = getFirestore();
-  const userMetaRef = firestore.collection("usermeta").doc(admin);
+  const userMetaRef = firestore.collection("usermeta").doc(uid);
   userMetaRef.update({
-    rating: 100000,
+    [`courses.${launchedCourse}.rating`]: 5000,
+  });
+};
+export const setMoney = async (launchedCourse, uid, money) => {
+  const firestore = getFirestore();
+  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  userMetaRef.update({
+    [`courses.${launchedCourse}.rating`]: Number(money),
   });
 };
 
-export const unlockAndCompleteAll = async (unlocked) => {
+export const unlockAndCompleteAll = async (
+  unlocked,
+  lastunlocked,
+  launchedCourse,
+  uid
+) => {
   const firestore = getFirestore();
-  const userMetaRef = firestore.collection("usermeta").doc(admin);
+  const userMetaRef = firestore.collection("usermeta").doc(uid);
   userMetaRef.update({
-    completed: unlocked,
-    unlocked,
-    lastunlocked: ["4680f00b-b586-413c-890a-9669b4b7b1c3"],
-    paid: [],
+    [`courses.${launchedCourse}.completed`]: unlocked,
+    [`courses.${launchedCourse}.unlocked`]: unlocked,
+    [`courses.${launchedCourse}.lastunlocked`]: [lastunlocked],
+    [`courses.${launchedCourse}.paid`]: unlocked,
   });
 };
 
-export const unlockAll = async (unlocked) => {
+export const unlockAll = async (
+  unlocked,
+  lastunlocked,
+  launchedCourse,
+  uid
+) => {
   const firestore = getFirestore();
-  const userMetaRef = firestore.collection("usermeta").doc(admin);
+  const userMetaRef = firestore.collection("usermeta").doc(uid);
   userMetaRef.update({
-    completed: [],
-    unlocked,
-    lastunlocked: ["4680f00b-b586-413c-890a-9669b4b7b1c3"],
-    paid: [],
+    [`courses.${launchedCourse}.completed`]: [],
+    [`courses.${launchedCourse}.unlocked`]: unlocked,
+    [`courses.${launchedCourse}.lastunlocked`]: [lastunlocked],
   });
 };
 
@@ -86,7 +104,6 @@ export const setUseMetaData = async (data) => {
       [`courses.${launchedCourse}.lastunlocked`]: unlocked,
       [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]:
         FieldValue.increment(pts),
-      // [path2]: FieldValue.increment(pts),
     });
   } else {
     userMetaRef.update({
