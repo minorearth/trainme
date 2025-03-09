@@ -37,10 +37,23 @@ const useNavigator = () => {
     recapTasks: [],
     taskstage: "",
     pts: 0,
+    randomsaved: [],
   };
 
   const showtests = async (appStatePersisted, courseid) => {
-    const tasks = await getTests(appStatePersisted.chapter, courseid);
+    let tasks;
+    if (appStatePersisted.nodemode == "recap") {
+      tasks = await getRandomTasks({
+        chapter: appStatePersisted.chapter,
+        courseid,
+        appState: appStatePersisted,
+        level: appStatePersisted.level,
+        persistStateNoEffect,
+      });
+    } else {
+      tasks = await getTests(appStatePersisted.chapter, courseid);
+    }
+
     if (
       appStatePersisted.taskstage == "recap" ||
       appStatePersisted.taskstage == "accomplished_suspended"
@@ -175,26 +188,8 @@ const useNavigator = () => {
     repeat,
     overflow,
     appState,
-  }) => {
-    changeState({
-      chapter,
-      page: "testsStarted",
-      taskId: 0,
-      recapTasks: [],
-      taskstage: "WIP",
-      repeat,
-      overflow,
-      remainsum,
-    });
-    const tasks = await getRandomTasks(chapter, courseid, appState);
-    setTests(tasks);
-  };
-
-  const openTasks = async ({
-    chapter,
-    courseid,
-    repeat,
-    overflow,
+    nodemode,
+    level,
     remainsum,
   }) => {
     changeState({
@@ -205,7 +200,38 @@ const useNavigator = () => {
       taskstage: "WIP",
       repeat,
       overflow,
+      nodemode,
+      level,
       remainsum,
+    });
+    const tasks = await getRandomTasks({
+      chapter,
+      courseid,
+      appState,
+      level,
+      persistStateNoEffect,
+    });
+    setTests(tasks);
+  };
+
+  const openTasks = async ({
+    chapter,
+    courseid,
+    repeat,
+    overflow,
+    remainsum,
+    nodemode,
+  }) => {
+    changeState({
+      chapter,
+      page: "testsStarted",
+      taskId: 0,
+      recapTasks: [],
+      taskstage: "WIP",
+      repeat,
+      overflow,
+      remainsum,
+      nodemode,
     });
     const tasks = await getTests(chapter, courseid);
     setTests(tasks);
@@ -216,19 +242,35 @@ const useNavigator = () => {
     repeat,
     overflow,
     textbook,
-    appState,
     remainsum,
     courseid,
     nodemode,
+    level,
   }) => {
     if (textbook) {
-      openTextBook({ chapter, courseid, repeat, overflow, appState });
+      openTextBook({
+        chapter,
+        courseid,
+        repeat,
+        overflow,
+        appState,
+        nodemode: "textbook",
+      });
     }
     if (nodemode == "recap") {
-      openRecapTasks({ chapter, courseid, repeat, overflow, appState });
+      openRecapTasks({
+        chapter,
+        courseid,
+        repeat,
+        overflow,
+        appState,
+        nodemode,
+        remainsum,
+        level,
+      });
     }
     if (nodemode == "addhoc" || nodemode == "newtopic") {
-      openTasks({ chapter, courseid, repeat, overflow, remainsum });
+      openTasks({ chapter, courseid, repeat, overflow, remainsum, nodemode });
     }
   };
 
@@ -246,7 +288,13 @@ const useNavigator = () => {
   };
 
   const setTestAccomplished = () => {
-    changeState({ page: "flow", pts: 0, taskstage: "" });
+    changeState({
+      page: "flow",
+      pts: 0,
+      taskstage: "",
+      randomsaved: [],
+      chapter: "-1",
+    });
   };
 
   const persistStateNoEffect = (data) => {

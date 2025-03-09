@@ -7,6 +7,7 @@ import stn from "@/globals/settings";
 import cowntdownbutton from "@/store/cowntdownbutton";
 import progressCircle from "@/components/common/progress/progressStore";
 import { courses } from "@/globals/courses";
+import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
 
 const nodeAction = (data) => {
   const {
@@ -14,6 +15,7 @@ const nodeAction = (data) => {
     paid,
     completed,
     nodemode,
+    level,
     id,
     unlockpts,
     uid,
@@ -89,6 +91,7 @@ const nodeAction = (data) => {
       courseid,
       nodemode,
       textbook: false,
+      level,
     });
   }
   if (unlocked && paid && completed) {
@@ -100,7 +103,18 @@ const nodeAction = (data) => {
       courseid,
       nodemode,
       textbook: false,
+      level,
     });
+  }
+};
+
+const getRemainSum = ({ stat, node }) => {
+  if (!stat[node.id]?.sum) {
+    console.log(node.data.maxcoins);
+    return node.data.maxcoins;
+  } else {
+    console.log(node.data.maxcoins - stat[node.id].sum || 0);
+    return node.data.maxcoins - stat[node.id].sum || 0;
   }
 };
 
@@ -121,9 +135,7 @@ const fullFillProgess = (
       completed: completed.includes(node.id),
       paid: paid.includes(node.id) || !node.data.unlockpts,
       sum: stat[node.id]?.sum || 0,
-      remainsum: !stat[node.id]?.sum
-        ? node.data.maxcoins
-        : node.data.maxcoins - stat[node.id]?.sum || 0,
+      remainsum: getRemainSum({ stat, node }),
       overflow: stat[node.id]?.sum
         ? stat[node.id].sum >= node.data.maxcoins
         : false,
@@ -166,6 +178,27 @@ export const setFlowNodes = async ({
   });
 };
 
+export const getTestsByMode = async (chapter, courseid) => {
+  //local, do not remove
+  // const filteredTasks = testsall.filter((test) => test.chapterid == chapter);
+  const filteredTasks = await getDocDataFromCollectionByIdClient(
+    courses[courseid].taskcollection,
+    chapter
+  );
+
+  if (!filteredTasks.data) {
+    return [];
+  }
+  const res = stn.mode.ALL_RIGHT_CODE
+    ? filteredTasks.data.tasks.map((task) => ({
+        ...task,
+        defaultcode: task.rightcode,
+      }))
+    : filteredTasks.data.tasks;
+
+  return res;
+};
+
 export const getTests = async (chapter, courseid) => {
   //local, do not remove
   // const filteredTasks = testsall.filter((test) => test.chapterid == chapter);
@@ -203,28 +236,48 @@ export const getTextBook = async (chapter, appState, courseid) => {
   return unlockedTheory;
 };
 
-export const getRandomTasks = async (chapter, appState, courseid) => {
-  const filteredTasks = await getDocDataFromCollectionByIdClient(
+export const getRandomTasks = async ({
+  chapter,
+  appState,
+  courseid,
+  level,
+  persistStateNoEffect,
+}) => {
+  const allTasks = await getDocDataFromCollectionByIdClient(
     courses[courseid].taskcollection,
     "alltasks"
   );
-
-  if (!filteredTasks.data) {
+  if (!allTasks.data) {
     return [];
   }
+  let filteredTasks;
+  console.log("appState", appState);
+
+  if (appState.randomsaved.length != 0) {
+    filteredTasks = allTasks.data.tasks.filter((task) =>
+      appState.randomsaved.includes(task.taskuuid)
+    );
+  } else {
+    const scope = allTasks.data.tasks.filter(
+      (task) => task.level <= level && task.level >= level - 5
+    );
+    const numbers = getNeverRepeatIntegers(scope.length - 1, 5);
+    filteredTasks = scope.filter((task, id) => numbers.includes(id));
+    const tasksuuids = filteredTasks.map((task) => task.taskuuid);
+    persistStateNoEffect({ randomsaved: tasksuuids });
+  }
   const res = stn.mode.ALL_RIGHT_CODE
-    ? filteredTasks.data.tasks.map((task) => ({
+    ? filteredTasks.map((task) => ({
         ...task,
         defaultcode: task.rightcode,
       }))
-    : filteredTasks.data.tasks;
-
+    : filteredTasks;
   return res;
 };
 
 export const getTestsRecap = (chapter, recapTasks, tasks) => {
   const filteredTasks = tasks
-    .filter((test) => test.chapterid == chapter)
+    // .filter((test) => test.chapterid == chapter)
     .filter((test, id) => recapTasks.includes(id));
   return filteredTasks;
 };

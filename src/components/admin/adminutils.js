@@ -35,28 +35,29 @@ export const load = () => {
 
     // LoadTasks
     const idLevels = getChapteeLevels(a[id]);
-    const allTasks = d[id].map((task) => {
-      return { ...task, level: idLevels[task.chapterparentid] };
-    });
-    console.log("allTasks", allTasks);
+    const allTasks = d[id]
+      .filter((task) => task.tasktype == "task")
+      .map((task) => {
+        return { ...task, level: idLevels[task.chapterparentid] };
+      });
 
     setDocInCollectionClient(
       courses[v[id]].taskcollection,
-      { allTasks },
+      { tasks: allTasks },
       "alltasks"
     );
 
-    // let chapters = a[id].map((chapter) => chapter.id);
-    // chapters = [...chapters, courses[v[id]].textbookchapter];
-    // chapters.forEach((chapterid) => {
-    //   const tasks = d[id].filter((test) => test.chapterid == chapterid);
-    //   tasks.length != 0 &&
-    //     setDocInCollectionClient(
-    //       courses[v[id]].taskcollection,
-    //       { tasks },
-    //       chapterid
-    //     );
-    // });
-    //
+    let chapters = a[id].map((chapter) => chapter.id);
+    chapters = [...chapters, courses[v[id]].textbookchapter];
+    chapters.forEach((chapterid) => {
+      const tasks = d[id].filter((test) => test.chapterid == chapterid);
+      console.log("zu", tasks);
+      tasks.length != 0 &&
+        setDocInCollectionClient(
+          courses[v[id]].taskcollection,
+          { tasks },
+          chapterid
+        );
+    });
   });
 };
