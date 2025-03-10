@@ -53,7 +53,7 @@ const Navigator = observer(() => {
           <Progress />
           <SplashAction name={"ok"} />
           {appState.launchedCourse == "" && (
-            <Courses loadCourse={actions.loadCourse} />
+            <Courses showCourse={actions.showCourse} />
           )}
 
           {appState.page == "flow" &&

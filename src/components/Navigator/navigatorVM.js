@@ -264,6 +264,7 @@ export const getRandomTasks = async ({
     const numbers = getNeverRepeatIntegers(scope.length - 1, 5);
     filteredTasks = scope.filter((task, id) => numbers.includes(id));
     const tasksuuids = filteredTasks.map((task) => task.taskuuid);
+    console.log("tasksuuids", tasksuuids);
     persistStateNoEffect({ randomsaved: tasksuuids });
   }
   const res = stn.mode.ALL_RIGHT_CODE

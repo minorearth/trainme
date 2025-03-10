@@ -87,6 +87,14 @@ export const getUseMetaData = async (uid) => {
   return snapshot.data();
 };
 
+export const checkCoursePaid = async (courseid, uid) => {
+  const firestore = getFirestore();
+  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  const snapshot = await userMetaRef.get();
+  const profile = snapshot.data();
+  return profile.paidcourses.includes(courseid);
+};
+
 export const setUseMetaData = async (data) => {
   const firestore = getFirestore();
   const { uid, pts, lastcompleted, unlocked, launchedCourse } = decrypt2(data);

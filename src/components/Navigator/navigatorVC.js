@@ -13,7 +13,7 @@ import {
   getTextBook,
   getRandomTasks,
 } from "./navigatorVM";
-import { getUseMetaData } from "@/db/SA/firebaseSA";
+import { getUseMetaData, checkCoursePaid } from "@/db/SA/firebaseSA";
 import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
 import { setUseMetaData } from "@/db/SA/firebaseSA";
 import { getTargetsBySource } from "./utils";
@@ -68,12 +68,13 @@ const useNavigator = () => {
     } else if (appStatePersisted.taskstage == "textbook") {
       changeState(initialState);
     } else {
+      console.log("tasks", tasks);
       setTests(tasks);
     }
   };
 
   const loadCourseFlow = async (courseid, appStatePersisted) => {
-    // const courseid = id == "" ? stateUpdated.launchedCourse : id;
+    console.log("appStatePersisted", appStatePersisted);
     if (appStatePersisted.chapter != -1) {
       showtests(appStatePersisted, courseid);
     }
@@ -86,34 +87,57 @@ const useNavigator = () => {
     });
   };
 
-  const loadCourse = async (launchedCourse) => {
+  const loadCourse = async (launchedCourse, page) => {
     setFlow();
-    const currStatePersisted = loadStatePersisted();
-    const statePersisted = await refetchUserMetaAndPersist(
-      launchedCourse,
-      currStatePersisted
-    );
+    const statePersisted = await refetchUserMetaAndPersist(launchedCourse);
     await loadCourseFlow(launchedCourse, statePersisted);
-    changeState({ ...statePersisted, launchedCourse, page: "flow" });
+    changeState({
+      ...statePersisted,
+      launchedCourse,
+      page: page || "flow",
+    });
     setLoading(false);
     progressStore.setCloseProgress();
   };
 
-  const reloadCourse = async (currStatePersisted) => {
-    const statePersisted = await refetchUserMetaAndPersist(
-      currStatePersisted.launchedCourse,
-      currStatePersisted
-    );
-    await loadCourseFlow(statePersisted.launchedCourse, statePersisted);
-    changeState({ ...statePersisted });
+  const reloadCourse = async () => {
+    progressStore.setShowProgress(true, false, "progressdots", 2000);
+    const currStatePersisted = loadStatePersisted();
+    if (currStatePersisted?.launchedCourse) {
+      const coursePaid = await checkCoursePaid(
+        currStatePersisted.launchedCourse,
+        user.userid
+      );
+      coursePaid
+        ? loadCourse(currStatePersisted.launchedCourse, currStatePersisted.page)
+        : setCoursePage();
+    } else setCoursePage();
     setLoading(false);
     progressStore.setCloseProgress();
   };
 
-  const refetchUserMetaAndPersist = async (
-    launchedCourse,
-    currStatePersisted
-  ) => {
+  const showCourse = async (launchedCourse) => {
+    progressStore.setShowProgress(true, false, "progressdots", 2000);
+
+    const coursePaid = await checkCoursePaid(launchedCourse, user.userid);
+    if (!coursePaid) {
+      alertdialog.showDialog(
+        "Курс недоступен",
+        "Данный курс пока недоступен",
+        1,
+        () => {
+          progressStore.setCloseProgress();
+        }
+      );
+      setCoursePage();
+      return;
+    }
+    loadCourse(launchedCourse);
+  };
+
+  const refetchUserMetaAndPersist = async (launchedCourse) => {
+    const currStatePersisted = loadStatePersisted();
+
     const allUserMeta = await getUseMetaData(user.userid);
     const userProgress = allUserMeta.courses[launchedCourse];
 
@@ -132,14 +156,7 @@ const useNavigator = () => {
       e.clipboardData.setData("text/plain", "No Copying!");
       e.preventDefault();
     });
-    const currStatePersisted = loadStatePersisted();
-    if (currStatePersisted && currStatePersisted.launchedCourse) {
-      reloadCourse(currStatePersisted);
-    } else {
-      changeState(initialState);
-      setLoading(false);
-      progressStore.setCloseProgress();
-    }
+    reloadCourse();
   }, [user]);
 
   const changeState = (data) => {
@@ -283,6 +300,10 @@ const useNavigator = () => {
     changeState({ page: "congrat", pts });
   };
 
+  const setCoursePage = () => {
+    changeState(initialState);
+  };
+
   const setTestInterrupted = () => {
     changeState({ page: "flow", taskstage: "", chapter: "-1" });
   };
@@ -328,6 +349,7 @@ const useNavigator = () => {
       setTestsStartedPage,
       setCongratPage,
       runAccomplish,
+      showCourse,
       loadCourse,
     },
     appState,
