@@ -10,6 +10,7 @@ import {
   getAllDocs,
   deleteDocFromCollection,
   copyDoc,
+  updateUsersInChamp,
 } from "@/db/CA/dataModel";
 
 // import {
@@ -41,6 +42,10 @@ export const updateDocFieldsInCollectionByIdClient = async (
 
 export const setDocInCollectionClient = async (collectionName, data, id) => {
   await setDocInCollection(db, collectionName, data, id);
+};
+
+export const updateUsersInChampClient = async (collectionName, data, id) => {
+  await updateUsersInChamp(db, collectionName, data, id);
 };
 
 // export const increaseIndexCurrInCollectionClient = async (userId) => {

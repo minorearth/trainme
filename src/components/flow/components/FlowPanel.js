@@ -74,7 +74,7 @@ const FlowPanel = ({ appState, setTestsStartedPage, actions }) => {
           }}
         /> */}
 
-        <Fab size="small" color="black" aria-label="add">
+        {/* <Fab size="small" color="black" aria-label="add">
           <RiLogoutCircleRLine
             size={"40px"}
             onClick={async () => {
@@ -87,7 +87,21 @@ const FlowPanel = ({ appState, setTestsStartedPage, actions }) => {
               // router.push(`/login/`);
             }}
           />
-        </Fab>
+        </Fab> */}
+        <Animation
+          height={"60px"}
+          width={"60px"}
+          name={"home"}
+          onClick={async () => {
+            actions.changeState({
+              launchedCourse: "",
+              page: "courses",
+            });
+
+            // await signOutUserClient();
+            // router.push(`/login/`);
+          }}
+        />
       </Paper>
     </Panel>
   );

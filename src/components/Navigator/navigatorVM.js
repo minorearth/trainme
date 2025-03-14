@@ -25,6 +25,7 @@ const nodeAction = (data) => {
     setTestsStartedPage,
     loadCourse,
     courseid,
+    rating,
   } = data;
   if (!unlocked && !paid) {
     alertdialog.showDialog(
@@ -148,6 +149,7 @@ const fullFillProgess = (
           setTestsStartedPage,
           loadCourse,
           courseid,
+          rating,
         }),
     },
   }));

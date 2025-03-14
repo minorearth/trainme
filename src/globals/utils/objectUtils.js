@@ -6,10 +6,6 @@ export const ObjtoArr = (obj) => {
         return {
           name: obj[key].name,
           id: key,
-          path: obj[key].path,
-          type: obj[key].type,
-          datetime: datetime,
-          tasknumber: obj[key].tasknumber,
         };
       });
 };

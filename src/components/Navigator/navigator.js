@@ -18,6 +18,7 @@ import SplashAction from "@/components/common/splashAction/splashAction";
 import stn from "@/globals/settings";
 import usePyodide from "@/components/Navigator/usePyodide.js";
 import Courses from "../courses/courses";
+import Champ from "../champ/Champ";
 
 const Navigator = observer(() => {
   const [showSplashTimeout, setShowSplashTimeout] = useState(true);
@@ -53,8 +54,15 @@ const Navigator = observer(() => {
           <Progress />
           <SplashAction name={"ok"} />
           {appState.launchedCourse == "" && (
-            <Courses showCourse={actions.showCourse} />
+            <Courses
+              showCourse={actions.showCourse}
+              showChamp={() =>
+                actions.changeState({ page: "champ", launchedCourse: "champ" })
+              }
+            />
           )}
+
+          {appState.page == "champ" && <Champ />}
 
           {appState.page == "flow" &&
             !loading &&

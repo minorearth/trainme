@@ -152,10 +152,11 @@ const useNavigator = () => {
   };
 
   useEffect(() => {
-    document.addEventListener("copy", (e) => {
-      e.clipboardData.setData("text/plain", "No Copying!");
-      e.preventDefault();
-    });
+    //TODO: uncomment
+    // document.addEventListener("copy", (e) => {
+    //   e.clipboardData.setData("text/plain", "No Copying!");
+    //   e.preventDefault();
+    // });
     reloadCourse();
   }, [user]);
 

@@ -8,6 +8,8 @@ const stn = {
 
   collections: {
     SURVEY_RESULTS: "surveysresults",
+    CHAMPS: "champs",
+
     SURVEYS: "surveys",
     INDEX: "index",
     INDEX_CURR: "indexcurr",
