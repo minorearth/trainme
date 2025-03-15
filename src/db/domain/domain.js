@@ -11,6 +11,8 @@ import {
   deleteDocFromCollection,
   copyDoc,
   updateUsersInChamp,
+  updateChampStatus,
+  updatePoinsInChamp,
 } from "@/db/CA/dataModel";
 
 // import {
@@ -48,6 +50,13 @@ export const updateUsersInChampClient = async (collectionName, data, id) => {
   await updateUsersInChamp(db, collectionName, data, id);
 };
 
+export const updatePoinsInChampClient = async (collectionName, data, id) => {
+  await updatePoinsInChamp(db, collectionName, data, id);
+};
+
+export const updateChampStatusClient = async (collectionName, status, id) => {
+  await updateChampStatus(db, collectionName, status, id);
+};
 // export const increaseIndexCurrInCollectionClient = async (userId) => {
 //   return await increaseIndexCurrInCollection(db, userId);
 // };

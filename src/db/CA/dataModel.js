@@ -11,6 +11,7 @@ import {
   updateDoc,
   onSnapshot,
   arrayUnion,
+  increment,
 } from "firebase/firestore";
 
 export const updateDocFieldsInCollectionById = async (
@@ -32,12 +33,39 @@ export const setDocInCollection = async (db, collectionName, data, id) => {
   await setDoc(doc(db, collectionName, id), data);
 };
 
+// export const updateUsersInChamp = async (db, collectionName, data, id) => {
+//   // const docSnap = await getDoc(doc(db, collectionName, id));
+//   const ref = doc(db, collectionName, id);
+
+//   const feed = await updateDoc(ref, {
+//     users: arrayUnion(data),
+//   });
+// };
+
 export const updateUsersInChamp = async (db, collectionName, data, id) => {
   // const docSnap = await getDoc(doc(db, collectionName, id));
   const ref = doc(db, collectionName, id);
 
   const feed = await updateDoc(ref, {
-    users: arrayUnion(data),
+    [`users.${data.id}`]: { id: data.id, name: data.name, pts: 0 },
+  });
+};
+
+export const updatePoinsInChamp = async (db, collectionName, data, id) => {
+  // const docSnap = await getDoc(doc(db, collectionName, id));
+  const ref = doc(db, collectionName, id);
+
+  const feed = await updateDoc(ref, {
+    [`users.${data.id}.pts`]: increment(data.pts),
+  });
+};
+
+export const updateChampStatus = async (db, collectionName, status, id) => {
+  // const docSnap = await getDoc(doc(db, collectionName, id));
+  const ref = doc(db, collectionName, id);
+
+  const feed = await updateDoc(ref, {
+    status,
   });
 };
 

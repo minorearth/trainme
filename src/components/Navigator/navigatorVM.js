@@ -1,4 +1,7 @@
-import { getDocDataFromCollectionByIdClient } from "@/db/domain/domain";
+import {
+  getDocDataFromCollectionByIdClient,
+  updatePoinsInChampClient,
+} from "@/db/domain/domain";
 import alertdialog from "@/store/dialog";
 import { payChapter } from "@/db/SA/firebaseSA";
 import { encrypt2 } from "@/globals/utils/encryption";
@@ -8,6 +11,7 @@ import cowntdownbutton from "@/store/cowntdownbutton";
 import progressCircle from "@/components/common/progress/progressStore";
 import { courses } from "@/globals/courses";
 import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
+import { persistState, loadStatePersisted } from "@/db/localstorage";
 
 const nodeAction = (data) => {
   const {
@@ -92,6 +96,7 @@ const nodeAction = (data) => {
       courseid,
       nodemode,
       textbook: false,
+      champ: false,
       level,
     });
   }
@@ -104,6 +109,7 @@ const nodeAction = (data) => {
       courseid,
       nodemode,
       textbook: false,
+      champ: false,
       level,
     });
   }
@@ -238,37 +244,39 @@ export const getTextBook = async (chapter, appState, courseid) => {
   return unlockedTheory;
 };
 
-export const getRandomTasks = async ({
-  chapter,
-  appState,
+const getRandomTasks = (allTasks, levelStart, levelEnd) => {
+  const scope = allTasks.filter(
+    (task) => task.level <= levelEnd && task.level >= levelStart
+  );
+  const numbers = getNeverRepeatIntegers(scope.length - 1, 5);
+  const filteredTasks = scope.filter((task, id) => numbers.includes(id));
+  return filteredTasks;
+};
+
+export const getRandomTasksForRecap = async ({
   courseid,
-  level,
-  persistStateNoEffect,
+  levelStart,
+  levelEnd,
 }) => {
+  const statePersisted = loadStatePersisted();
+
   const allTasks = await getDocDataFromCollectionByIdClient(
     courses[courseid].taskcollection,
     "alltasks"
   );
-  if (!allTasks.data) {
-    return [];
-  }
-  let filteredTasks;
-  console.log("appState", appState);
 
-  if (appState.randomsaved.length != 0) {
+  let filteredTasks;
+
+  if (statePersisted.randomsaved.length != 0) {
     filteredTasks = allTasks.data.tasks.filter((task) =>
-      appState.randomsaved.includes(task.taskuuid)
+      statePersisted.randomsaved.includes(task.taskuuid)
     );
   } else {
-    const scope = allTasks.data.tasks.filter(
-      (task) => task.level <= level && task.level >= level - 5
-    );
-    const numbers = getNeverRepeatIntegers(scope.length - 1, 5);
-    filteredTasks = scope.filter((task, id) => numbers.includes(id));
+    filteredTasks = getRandomTasks(allTasks.data.tasks, levelStart, levelEnd);
     const tasksuuids = filteredTasks.map((task) => task.taskuuid);
-    console.log("tasksuuids", tasksuuids);
-    persistStateNoEffect({ randomsaved: tasksuuids });
+    persistState({ randomsaved: tasksuuids });
   }
+
   const res = stn.mode.ALL_RIGHT_CODE
     ? filteredTasks.map((task) => ({
         ...task,
@@ -278,9 +286,35 @@ export const getRandomTasks = async ({
   return res;
 };
 
+export const getRandomTasksForChamp = async ({ levelStart, levelEnd }) => {
+  const allTasks = await getDocDataFromCollectionByIdClient(
+    "tasks",
+    "alltasks"
+  );
+
+  const filteredTasks = getRandomTasks(
+    allTasks.data.tasks,
+    levelStart,
+    levelEnd
+  );
+
+  return filteredTasks;
+};
+
+export const getChampTasks = async ({ champid }) => {
+  const allTasks = await getDocDataFromCollectionByIdClient("champs", champid);
+  console.log("champid", allTasks);
+
+  return allTasks;
+};
+
 export const getTestsRecap = (chapter, recapTasks, tasks) => {
   const filteredTasks = tasks
     // .filter((test) => test.chapterid == chapter)
     .filter((test, id) => recapTasks.includes(id));
   return filteredTasks;
+};
+
+export const updateChampPoins = (pts, champid) => {
+  updatePoinsInChampClient("champs", { id: user.userid, pts }, champid);
 };

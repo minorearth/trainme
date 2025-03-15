@@ -38,7 +38,15 @@ const Congrat = ({ setTestAccomplished, appState, actions }) => {
         variant="outlined"
         aria-label="repeat"
         onClick={async () => {
-          await actions.loadCourse(appState.launchedCourse);
+          if (appState.nodemode != "champ") {
+            await actions.loadCourse(appState.launchedCourse);
+          } else {
+            actions.changeState({
+              launchedCourse: "",
+              page: "courses",
+            });
+          }
+
           setTestAccomplished(false);
         }}
         endIcon={<ReplayIcon />}

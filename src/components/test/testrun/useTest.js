@@ -145,7 +145,14 @@ const useTest = ({
     }
   };
 
-  const getEarned = (error, taskstage, repeat, overflow) => {
+  const getEarned = (
+    error,
+    taskstage,
+    repeat,
+    overflow,
+    nodemode,
+    courseid
+  ) => {
     let pts = getSense();
     if (overflow) {
       return pts;
@@ -162,6 +169,9 @@ const useTest = ({
     if (!error && taskstage == "recap" && repeat) {
       pts += 1;
     }
+    if (nodemode == "champ") {
+      actions.updateChampPoins(pts, courseid);
+    }
     persistStateNoEffect({ pts });
     return pts;
   };
@@ -176,7 +186,9 @@ const useTest = ({
       error,
       appState.taskstage,
       appState.repeat,
-      appState.overflow
+      appState.overflow,
+      appState.nodemode,
+      appState.chapter
     );
     switch (true) {
       case appState.taskId != tests.length - 1 && !error:

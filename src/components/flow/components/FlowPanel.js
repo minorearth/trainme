@@ -58,6 +58,7 @@ const FlowPanel = ({ appState, setTestsStartedPage, actions }) => {
               repeat: false,
               overflow: true,
               textbook: true,
+              champ: false,
               // appState,
               courseid: appState.launchedCourse,
             });

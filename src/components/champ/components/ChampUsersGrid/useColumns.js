@@ -8,9 +8,16 @@ export const useColumns = ({ actions, mode }) => {
       flex: 1,
       minwidth: 230,
     },
+    // {
+    //   field: "id",
+    //   headerName: "id",
+    //   flex: 1,
+    //   minwidth: 230,
+    // },
+
     {
-      field: "id",
-      headerName: "id",
+      field: "pts",
+      headerName: "pts",
       flex: 1,
       minwidth: 230,
     },

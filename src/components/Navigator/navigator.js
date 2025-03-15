@@ -62,7 +62,9 @@ const Navigator = observer(() => {
             />
           )}
 
-          {appState.page == "champ" && <Champ />}
+          {appState.page == "champ" && (
+            <Champ actions={actions} appState={appState} />
+          )}
 
           {appState.page == "flow" &&
             !loading &&

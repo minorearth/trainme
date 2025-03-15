@@ -7,7 +7,6 @@ import { observer } from "mobx-react-lite";
 
 const ChampUsers = observer(({ rows }) => {
   const { columns } = useColumns({});
-  console.log("rows", rows);
   return (
     <Box
       sx={{

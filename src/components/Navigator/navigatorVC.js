@@ -11,7 +11,10 @@ import {
   setFlowNodes,
   getTestsRecap,
   getTextBook,
-  getRandomTasks,
+  getRandomTasksForRecap,
+  getRandomTasksForChamp,
+  getChampTasks,
+  updateChampPoins,
 } from "./navigatorVM";
 import { getUseMetaData, checkCoursePaid } from "@/db/SA/firebaseSA";
 import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
@@ -43,12 +46,10 @@ const useNavigator = () => {
   const showtests = async (appStatePersisted, courseid) => {
     let tasks;
     if (appStatePersisted.nodemode == "recap") {
-      tasks = await getRandomTasks({
-        chapter: appStatePersisted.chapter,
+      tasks = await getRandomTasksForRecap({
         courseid,
-        appState: appStatePersisted,
-        level: appStatePersisted.level,
-        persistStateNoEffect,
+        levelStart: appStatePersisted.level - 5,
+        levelEnd: appStatePersisted.level,
       });
     } else {
       tasks = await getTests(appStatePersisted.chapter, courseid);
@@ -222,14 +223,40 @@ const useNavigator = () => {
       level,
       remainsum,
     });
-    const tasks = await getRandomTasks({
+    const tasks = await getRandomTasksForRecap({
       chapter,
       courseid,
-      appState,
-      level,
-      persistStateNoEffect,
+      levelStart: level - 5,
+      levelEnd: level,
     });
     setTests(tasks);
+  };
+
+  const openChampTasks = async ({
+    chapter,
+    courseid,
+    repeat,
+    overflow,
+    nodemode,
+    level,
+    remainsum,
+  }) => {
+    changeState({
+      chapter,
+      page: "testsStarted",
+      taskId: 0,
+      recapTasks: [],
+      taskstage: "WIP",
+      repeat,
+      overflow,
+      nodemode,
+      level,
+      remainsum,
+    });
+    const tasks = await getChampTasks({
+      champid: courseid,
+    });
+    setTests(tasks.data.tasks);
   };
 
   const openTasks = async ({
@@ -264,7 +291,18 @@ const useNavigator = () => {
     courseid,
     nodemode,
     level,
+    champ,
   }) => {
+    if (champ) {
+      openChampTasks({
+        chapter,
+        courseid,
+        repeat,
+        overflow,
+        appState,
+        nodemode: "champ",
+      });
+    }
     if (textbook) {
       openTextBook({
         chapter,
@@ -281,7 +319,6 @@ const useNavigator = () => {
         courseid,
         repeat,
         overflow,
-        appState,
         nodemode,
         remainsum,
         level,
@@ -326,17 +363,22 @@ const useNavigator = () => {
 
   const runAccomplish = async () => {
     const pts = Math.min(getSense(), appState.remainsum);
-    const unlocked = getTargetsBySource(appState.chapter, flow.edges);
 
-    await setUseMetaData(
-      encrypt2({
-        lastcompleted: appState.chapter,
-        unlocked,
-        pts,
-        uid: user.userid,
-        launchedCourse: appState.launchedCourse,
-      })
-    );
+    if (appState.nodemode != "champ") {
+      const unlocked = getTargetsBySource(appState.chapter, flow.edges);
+
+      await setUseMetaData(
+        encrypt2({
+          lastcompleted: appState.chapter,
+          unlocked,
+          pts,
+          uid: user.userid,
+          launchedCourse: appState.launchedCourse,
+        })
+      );
+    } else {
+    }
+
     setCongratPage(pts);
   };
 
@@ -352,6 +394,8 @@ const useNavigator = () => {
       runAccomplish,
       showCourse,
       loadCourse,
+      getRandomTasksForChamp,
+      updateChampPoins,
     },
     appState,
     loading,
