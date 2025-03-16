@@ -315,7 +315,6 @@ export const spreadNumbersOverNodesRandomly = (leafNum, total) => {
   return res;
 };
 
-
 //ex.  n-number of tasks to allocate, length-folders  num   n<length
 //n=4 length=7
 //res=[3,1,6,5]
@@ -331,7 +330,6 @@ export const getNeverRepeatIntegers = (length, n) => {
 export const randomNum = (length) => {
   return Math.floor(Math.random() * length);
 };
-
 
 //ex.
 //listToPickFrom=['a','b','c']
@@ -349,18 +347,27 @@ export const pickRandomItemsFromList = (numToPick, listToPickFrom) => {
   }
 };
 
-
 const pickRandomSingleFromList = (listToPickFrom) => {
-    const num = Math.floor(Math.random() * listToPickFrom.length);
-    return listToPickFrom[num];
-  };
+  const num = Math.floor(Math.random() * listToPickFrom.length);
+  return listToPickFrom[num];
+};
 
+export const getRandomWordNumberString = () => {
+  const word = pickRandomSingleFromList(words);
+  const num = randomNum(9999);
+  return `${word}${num}`;
+};
 
-  export const getRandomWordNumberString = () => {
-    const word= pickRandomSingleFromList(words)
-    const num= randomNum(9999)
-    return `${word}${num}`
+const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-  };
+export const generateString = (length) => {
+  let result = "";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
 
+  return result;
+};
 
+console.log(generateString(5));

@@ -24,7 +24,9 @@ export const Panel = ({ children, label }) => {
       }}
     >
       <FormLabel component="legend">{label}</FormLabel>
-      <FormGroup column>{children}</FormGroup>
+      <FormGroup sx={{ justifyContent: "center", alignItems: "center" }} column>
+        {children}
+      </FormGroup>
     </FormControl>
   );
 };

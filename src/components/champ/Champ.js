@@ -6,18 +6,23 @@ import { Button } from "@mui/material";
 import useChamps from "./champVC";
 import Input from "@mui/material/Input";
 import { useState } from "react";
+import { Panel } from "./components/Panel";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import RangeSlider from "./components/RangeSlider";
 
 const Champ = observer(({ actions, appState }) => {
   const {
-    rows,
-    setRowsx,
     createChamp,
     joinChamp,
-    changeChampid,
     chapmid,
     startChamp,
     changeUserName,
     userName,
+    chapmNumber,
+    changeChampNumber,
+    changeRange,
+    range,
   } = useChamps({ actions, appState });
 
   return (
@@ -27,51 +32,113 @@ const Champ = observer(({ actions, appState }) => {
         flex: 1,
         overflow: "auto",
         width: "100%",
-        flexDirection: "column",
+        flexDirection: "row",
+        height: "100vh",
       }}
     >
       <Box
         sx={{
           display: "flex",
-          flex: 1,
           overflow: "auto",
-          width: "100%",
-          flexDirection: "row",
+          width: "30%",
+          flexDirection: "column",
+          margin: "10px",
         }}
       >
-        <Button onClick={() => createChamp()}> Создать чамп</Button>
-        <Button onClick={() => joinChamp(chapmid)}> Присоединиться</Button>
-        <Button onClick={() => startChamp(chapmid)}>Начать</Button>
+        <Panel label={"Создать чемпионат"}>
+          <Typography gutterBottom>Сложность</Typography>
 
-        <Input
-          id="standard-multiline-flexible"
-          height="100%"
-          disableUnderline
-          onChange={(e) => changeChampid(e)}
-          value={chapmid}
-          sx={{
-            display: "inline-block",
-            whiteSpace: "pre-wrap",
-            backgroundColor: "ButtonShadow",
-            width: "70px",
-          }}
-        />
+          <RangeSlider changeRange={changeRange} range={range} />
+          <Box
+            sx={{
+              display: "flex",
+              // flex: 1,
+              overflow: "auto",
+              width: "70%",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <Button onClick={() => createChamp()} variant="outlined" fullWidth>
+              Создать чемпионат
+            </Button>
+            <Typography variant="h4" gutterBottom>
+              {chapmid}
+            </Typography>
 
-        <Input
-          id="standard-multiline-flexible"
-          height="100%"
-          disableUnderline
-          onChange={(e) => changeUserName(e)}
-          value={userName}
-          sx={{
-            display: "inline-block",
-            whiteSpace: "pre-wrap",
-            backgroundColor: "ButtonShadow",
-            width: "100px",
-          }}
-        />
+            <Button
+              onClick={() => startChamp(chapmid)}
+              variant="outlined"
+              fullWidth
+            >
+              Начать
+            </Button>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={() =>
+                window.open(
+                  `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard/${chapmid}`,
+                  "_blank"
+                )
+              }
+            >
+              Дэш
+            </Button>
+          </Box>
+        </Panel>
+        <Panel label={"Присоединиться"}>
+          <Box
+            sx={{
+              display: "flex",
+              // flex: 1,
+              overflow: "auto",
+              width: "70%",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "20px",
+              padding: "10px",
+            }}
+          >
+            <TextField
+              id="outlined-basic"
+              label="Введите имя"
+              defaultValue={"Рандомное имя"}
+              variant="outlined"
+              onChange={(e) => changeUserName(e)}
+              value={userName}
+              fullWidth
+            />
+            <TextField
+              id="outlined-basic"
+              label="Номер чемпионата"
+              variant="outlined"
+              onChange={(e) => changeChampNumber(e)}
+              value={chapmNumber}
+              fullWidth
+            />
+
+            <Button variant="outlined" onClick={() => joinChamp()}>
+              {" "}
+              Присоединиться
+            </Button>
+          </Box>
+        </Panel>
       </Box>
-      <ChampUsers rows={rows} />
+      <Box
+        sx={{
+          display: "flex",
+          // flex: 1,
+          overflow: "auto",
+          width: "70%",
+          flexDirection: "column",
+        }}
+      >
+        <ChampUsers chapmid={chapmNumber} />
+      </Box>
     </Box>
   );
 });

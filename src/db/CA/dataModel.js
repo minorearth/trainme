@@ -44,6 +44,7 @@ export const setDocInCollection = async (db, collectionName, data, id) => {
 
 export const updateUsersInChamp = async (db, collectionName, data, id) => {
   // const docSnap = await getDoc(doc(db, collectionName, id));
+  console.log("collectionName, id", data.id, collectionName, data, id);
   const ref = doc(db, collectionName, id);
 
   const feed = await updateDoc(ref, {
@@ -53,6 +54,7 @@ export const updateUsersInChamp = async (db, collectionName, data, id) => {
 
 export const updatePoinsInChamp = async (db, collectionName, data, id) => {
   // const docSnap = await getDoc(doc(db, collectionName, id));
+
   const ref = doc(db, collectionName, id);
 
   const feed = await updateDoc(ref, {
@@ -89,12 +91,14 @@ export const getDocFromCollectionByIdRealtime = async (
   id,
   refreshdata
 ) => {
+  console.log("ss", db, collectionName, id);
   const docRef = doc(db, collectionName, id);
   const unsubscribe = onSnapshot(docRef, (doc) => {
     refreshdata(doc.data());
   });
   const docSnap = await getDoc(docRef);
   const data = docSnap.data();
+  console.log("sds", data);
   return { data: { id: docSnap.id, ...data }, unsubscribe };
 };
 
