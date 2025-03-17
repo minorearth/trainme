@@ -57,9 +57,7 @@ const FlowPanel = ({ appState, setTestsStartedPage, actions }) => {
               chapter: "2e31a4ae-242d-4c55-b801-ef12ccc06013",
               repeat: false,
               overflow: true,
-              textbook: true,
-              champ: false,
-              // appState,
+              nodemode: "textbook",
               courseid: appState.launchedCourse,
             });
           }}

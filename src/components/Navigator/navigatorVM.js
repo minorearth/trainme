@@ -108,8 +108,6 @@ const nodeAction = (data) => {
       remainsum,
       courseid,
       nodemode,
-      textbook: false,
-      champ: false,
       level,
     });
   }
@@ -207,7 +205,7 @@ export const getTestsByMode = async (chapter, courseid) => {
   return res;
 };
 
-export const getTests = async (chapter, courseid) => {
+export const getAllTestsFromChapter = async (chapter, courseid) => {
   //local, do not remove
   // const filteredTasks = testsall.filter((test) => test.chapterid == chapter);
   const filteredTasks = await getDocDataFromCollectionByIdClient(
@@ -253,7 +251,7 @@ const getRandomTasks = (allTasks, levelStart, levelEnd) => {
   return filteredTasks;
 };
 
-export const getRandomTasksForRecap = async ({
+export const getRandomTasksForRepeat = async ({
   courseid,
   levelStart,
   levelEnd,

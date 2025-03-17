@@ -226,7 +226,7 @@ const TurboNode = memo(({ data }) => {
                   </span>
                 </div>
 
-                {data.unlockpts && !data.paid && data.nodemode != "recap" && (
+                {data.unlockpts && !data.paid && data.nodemode != "repeat" && (
                   <div className="cost">
                     <BiCoinStack />
                     <p>{data.unlockpts}</p>

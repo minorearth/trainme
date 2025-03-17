@@ -2,7 +2,7 @@
 import Box from "@mui/material/Box";
 import Flow from "../flow/flow";
 import { ReactFlowProvider } from "@xyflow/react";
-import Congrat from "@/components/test/congrat";
+import CongratPage from "@/components/test/congrat";
 import Start from "@/components/test/start";
 import Test from "@/components/test/testrun/test";
 import useNavigator from "./navigatorVC";
@@ -55,7 +55,7 @@ const Navigator = observer(() => {
           <SplashAction name={"ok"} />
           {appState.launchedCourse == "" && (
             <Courses
-              showCourse={actions.showCourse}
+              handleCourseClick={actions.handleCourseClick}
               showChamp={() =>
                 actions.changeState({ page: "champ", launchedCourse: "champ" })
               }
@@ -94,8 +94,8 @@ const Navigator = observer(() => {
           )}
 
           {appState.page == "congrat" && (
-            <Congrat
-              setTestAccomplished={actions.setTestAccomplished}
+            <CongratPage
+              setFlowPage={actions.setFlowPage}
               appState={appState}
               actions={actions}
             />

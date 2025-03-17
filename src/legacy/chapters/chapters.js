@@ -11,10 +11,6 @@ export default function Chapters({ setTestsStarted }) {
     setTestsStarted(chapter);
   };
 
-  useEffect(() => {
-    // setTests(getTests(chapter));
-  }, []);
-
   return (
     <Box
       sx={{

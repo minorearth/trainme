@@ -17,7 +17,7 @@ const useTest = ({
     changeState,
     persistStateNoEffect,
     setRunTestsPageRecap,
-    runAccomplish,
+    runAccomplishAndShowCongratPage,
   } = actions;
 
   const [currTask, setCurrTask] = useState({});
@@ -71,7 +71,7 @@ const useTest = ({
     switch (true) {
       case appState.taskId == tests.length - 1 &&
         appState.taskstage == "accomplished_suspended":
-        runAccomplish();
+        runAccomplishAndShowCongratPage();
         return;
       case appState.taskId == tests.length - 1 &&
         appState.taskstage == "recap_suspended":
@@ -135,7 +135,7 @@ const useTest = ({
       (appState.taskstage == "recap" ||
         appState.taskstage == "accomplished_suspended")
     ) {
-      runAccomplish();
+      runAccomplishAndShowCongratPage();
     }
     if (
       appState.recapTasks.length > 0 &&
@@ -197,10 +197,10 @@ const useTest = ({
         return;
       case appState.taskId == tests.length - 1 && !error:
         if (appState.taskstage == "recap") {
-          ok(runAccomplish);
+          ok(runAccomplishAndShowCongratPage);
         }
         if (appState.recapTasks.length == 0 && appState.taskstage == "WIP") {
-          ok(runAccomplish);
+          ok(runAccomplishAndShowCongratPage);
         }
         if (appState.recapTasks.length != 0 && appState.taskstage == "WIP") {
           ok(doRecap);

@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { loadStatePersisted } from "@/db/localstorage";
 
 let pts;
-const Congrat = ({ setTestAccomplished, appState, actions }) => {
+const CongratPage = ({ setFlowPage, appState, actions }) => {
   const [pts, setPts] = useState(10);
   useEffect(() => {
     const { pts } = loadStatePersisted();
@@ -38,16 +38,22 @@ const Congrat = ({ setTestAccomplished, appState, actions }) => {
         variant="outlined"
         aria-label="repeat"
         onClick={async () => {
-          if (appState.nodemode != "champ") {
+          if (
+            appState.nodemode == "addhoc" ||
+            appState.nodemode == "newtopic" ||
+            appState.nodemode == "repeat"
+          ) {
             await actions.loadCourse(appState.launchedCourse);
-          } else {
+          }
+
+          if (appState.nodemode == "champ") {
             actions.changeState({
               launchedCourse: "",
               page: "courses",
             });
           }
 
-          setTestAccomplished(false);
+          setFlowPage();
         }}
         endIcon={<ReplayIcon />}
       >
@@ -57,4 +63,4 @@ const Congrat = ({ setTestAccomplished, appState, actions }) => {
   );
 };
 
-export default Congrat;
+export default CongratPage;

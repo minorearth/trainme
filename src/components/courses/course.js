@@ -3,13 +3,13 @@ import styled from "styled-components";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from "@mui/icons-material/Lock";
 
-const Card = ({ title, text, showCourse, id, lock }) => {
+const Card = ({ title, text, handleCourseClick, id, lock }) => {
   return (
     <StyledWrapper>
       <div
         className="parent"
         onClick={() => {
-          showCourse(id);
+          handleCourseClick(id);
         }}
       >
         <div className="card">

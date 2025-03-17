@@ -101,7 +101,7 @@ const Navigation = observer(
         {stn.mode.DEV_MODE && (
           <Button
             onClick={() => {
-              actions.setTestInterrupted();
+              actions.setFlowPage();
             }}
             variant="outlined"
           >

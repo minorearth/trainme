@@ -7,11 +7,11 @@ import {
 } from "@/db/localstorage";
 import user from "@/store/user";
 import {
-  getTests,
+  getAllTestsFromChapter,
   setFlowNodes,
   getTestsRecap,
   getTextBook,
-  getRandomTasksForRecap,
+  getRandomTasksForRepeat,
   getRandomTasksForChamp,
   getChampTasks,
   updateChampPoins,
@@ -43,16 +43,39 @@ const useNavigator = () => {
     randomsaved: [],
   };
 
-  const showtests = async (appStatePersisted, courseid) => {
+  useEffect(() => {
+    //TODO: uncomment
+    // document.addEventListener("copy", (e) => {
+    //   e.clipboardData.setData("text/plain", "No Copying!");
+    //   e.preventDefault();
+    // });
+    loadPTrek();
+  }, [user]);
+
+  const setTestsInProgress = async (appStatePersisted) => {
     let tasks;
-    if (appStatePersisted.nodemode == "recap") {
-      tasks = await getRandomTasksForRecap({
-        courseid,
+    // if (appStatePersisted.chapter != -1) {
+    // const page = appStatePersisted.page;
+    // if (page != "testrun" && page != "congrat" && page != "testsStarted") {
+    //   return;
+    // }
+
+    if (appStatePersisted.nodemode == "repeat") {
+      tasks = await getRandomTasksForRepeat({
+        courseid: appStatePersisted.launchedCourse,
         levelStart: appStatePersisted.level - 5,
         levelEnd: appStatePersisted.level,
       });
-    } else {
-      tasks = await getTests(appStatePersisted.chapter, courseid);
+    }
+
+    if (
+      appStatePersisted.nodemode == "addhoc" ||
+      appStatePersisted.nodemode == "newtopic"
+    ) {
+      tasks = await getAllTestsFromChapter(
+        appStatePersisted.chapter,
+        appStatePersisted.launchedCourse
+      );
     }
 
     if (
@@ -66,19 +89,19 @@ const useNavigator = () => {
           tasks
         )
       );
-    } else if (appStatePersisted.taskstage == "textbook") {
+    }
+    if (appStatePersisted.taskstage == "textbook") {
       changeState(initialState);
-    } else {
-      console.log("tasks", tasks);
+    }
+    if (appStatePersisted.taskstage == "WIP") {
       setTests(tasks);
     }
   };
 
   const loadCourseFlow = async (courseid, appStatePersisted) => {
-    console.log("appStatePersisted", appStatePersisted);
-    if (appStatePersisted.chapter != -1) {
-      showtests(appStatePersisted, courseid);
-    }
+    // if (appStatePersisted.chapter != -1) {
+    //   setTestsInProgress(appStatePersisted, courseid);
+    // }
     setFlowNodes({
       courseid,
       progress: appStatePersisted.userProgress,
@@ -88,36 +111,75 @@ const useNavigator = () => {
     });
   };
 
-  const loadCourse = async (launchedCourse, page) => {
+  const loadCourse = async (launchedCourse) => {
     setFlow();
     const statePersisted = await refetchUserMetaAndPersist(launchedCourse);
     await loadCourseFlow(launchedCourse, statePersisted);
+
     changeState({
       ...statePersisted,
       launchedCourse,
-      page: page || "flow",
+      page: "flow",
     });
     setLoading(false);
     progressStore.setCloseProgress();
   };
 
-  const reloadCourse = async () => {
-    progressStore.setShowProgress(true, false, "progressdots", 2000);
+  const loadPTrek = async () => {
     const currStatePersisted = loadStatePersisted();
-    if (currStatePersisted?.launchedCourse) {
+    const page = currStatePersisted.page;
+    if (page == "flow") {
+      const statePersisted = await refetchUserMetaAndPersist(
+        currStatePersisted.launchedCourse
+      );
+
       const coursePaid = await checkCoursePaid(
-        currStatePersisted.launchedCourse,
+        statePersisted.launchedCourse,
         user.userid
       );
-      coursePaid
-        ? loadCourse(currStatePersisted.launchedCourse, currStatePersisted.page)
-        : setCoursePage();
-    } else setCoursePage();
+      if (coursePaid) {
+        loadCourseFlow(statePersisted.launchedCourse, statePersisted);
+        changeState({
+          ...statePersisted,
+          // launchedCourse,
+        });
+        // loadCourse(currStatePersisted.launchedCourse, currStatePersisted.page);
+      } else {
+        setCoursePage();
+      }
+    }
+
+    if (page == "testrun" || page == "congrat" || page == "testsStarted") {
+      setTestsInProgress(currStatePersisted);
+    }
+    changeState({
+      ...currStatePersisted,
+      // launchedCourse,
+    });
+
     setLoading(false);
     progressStore.setCloseProgress();
   };
 
-  const showCourse = async (launchedCourse) => {
+  // const reloadPyTrek = async () => {
+  //   progressStore.setShowProgress(true, false, "progressdots", 2000);
+  //   const currStatePersisted = loadStatePersisted();
+  //   if (currStatePersisted?.launchedCourse) {
+  //     const coursePaid = await checkCoursePaid(
+  //       currStatePersisted.launchedCourse,
+  //       user.userid
+  //     );
+  //     if (coursePaid && currStatePersisted.page == "flow") {
+  //       loadCourse(currStatePersisted.launchedCourse, currStatePersisted.page);
+  //     } else {
+  //       setCoursePage();
+  //     }
+  //   } else setCoursePage();
+  //   setLoading(false);
+  //   progressStore.setCloseProgress();
+  // };
+
+  const handleCourseClick = async (launchedCourse) => {
     progressStore.setShowProgress(true, false, "progressdots", 2000);
 
     const coursePaid = await checkCoursePaid(launchedCourse, user.userid);
@@ -130,7 +192,6 @@ const useNavigator = () => {
           progressStore.setCloseProgress();
         }
       );
-      setCoursePage();
       return;
     }
     loadCourse(launchedCourse);
@@ -151,15 +212,6 @@ const useNavigator = () => {
     const stateUpdated = updateStateLS(stateToUpdated);
     return stateUpdated;
   };
-
-  useEffect(() => {
-    //TODO: uncomment
-    // document.addEventListener("copy", (e) => {
-    //   e.clipboardData.setData("text/plain", "No Copying!");
-    //   e.preventDefault();
-    // });
-    reloadCourse();
-  }, [user]);
 
   const changeState = (data) => {
     setappState((state) => {
@@ -201,12 +253,11 @@ const useNavigator = () => {
     }
   };
 
-  const openRecapTasks = async ({
+  const openRandomTasksToRepeat = async ({
     chapter,
     courseid,
     repeat,
     overflow,
-    appState,
     nodemode,
     level,
     remainsum,
@@ -223,7 +274,7 @@ const useNavigator = () => {
       level,
       remainsum,
     });
-    const tasks = await getRandomTasksForRecap({
+    const tasks = await getRandomTasksForRepeat({
       chapter,
       courseid,
       levelStart: level - 5,
@@ -259,6 +310,18 @@ const useNavigator = () => {
     setTests(tasks.data.tasks);
   };
 
+  const runChamp = async (chapmid) => {
+    setTestsStartedPage({
+      // chapter: chapmid,
+      repeat: false,
+      campid: chapmid,
+      nodemode: "champ",
+      textbook: false,
+      champ: true,
+      // level,
+    });
+  };
+
   const openTasks = async ({
     chapter,
     courseid,
@@ -278,7 +341,7 @@ const useNavigator = () => {
       remainsum,
       nodemode,
     });
-    const tasks = await getTests(chapter, courseid);
+    const tasks = await getAllTestsFromChapter(chapter, courseid);
     setTests(tasks);
   };
 
@@ -286,35 +349,33 @@ const useNavigator = () => {
     chapter,
     repeat,
     overflow,
-    textbook,
     remainsum,
     courseid,
     nodemode,
     level,
-    champ,
   }) => {
-    if (champ) {
+    if (nodemode == "champ") {
       openChampTasks({
         chapter,
         courseid,
         repeat,
         overflow,
         appState,
-        nodemode: "champ",
+        nodemode,
       });
     }
-    if (textbook) {
+    if (nodemode == "textbook") {
       openTextBook({
         chapter,
         courseid,
         repeat,
         overflow,
         appState,
-        nodemode: "textbook",
+        nodemode,
       });
     }
-    if (nodemode == "recap") {
-      openRecapTasks({
+    if (nodemode == "repeat") {
+      openRandomTasksToRepeat({
         chapter,
         courseid,
         repeat,
@@ -342,13 +403,9 @@ const useNavigator = () => {
     changeState(initialState);
   };
 
-  const setTestInterrupted = () => {
-    changeState({ page: "flow", taskstage: "", chapter: "-1" });
-  };
-
-  const setTestAccomplished = () => {
+  const setFlowPage = () => {
+    loadCourse(appState.launchedCourse);
     changeState({
-      page: "flow",
       pts: 0,
       taskstage: "",
       randomsaved: [],
@@ -361,10 +418,14 @@ const useNavigator = () => {
     persistState({ ...state, ...data });
   };
 
-  const runAccomplish = async () => {
+  const runAccomplishAndShowCongratPage = async () => {
     const pts = Math.min(getSense(), appState.remainsum);
 
-    if (appState.nodemode != "champ") {
+    if (
+      appState.nodemode == "addhoc" ||
+      appState.nodemode == "newtopic" ||
+      appState.nodemode == "repeat"
+    ) {
       const unlocked = getTargetsBySource(appState.chapter, flow.edges);
 
       await setUseMetaData(
@@ -376,7 +437,9 @@ const useNavigator = () => {
           launchedCourse: appState.launchedCourse,
         })
       );
-    } else {
+    }
+
+    if (appState.nodemode == "champ") {
     }
 
     setCongratPage(pts);
@@ -387,15 +450,15 @@ const useNavigator = () => {
       changeState,
       persistStateNoEffect,
       setRunTestsPageRecap,
-      setTestAccomplished,
-      setTestInterrupted,
+      setFlowPage,
       setTestsStartedPage,
       setCongratPage,
-      runAccomplish,
-      showCourse,
+      runAccomplishAndShowCongratPage,
+      handleCourseClick,
       loadCourse,
       getRandomTasksForChamp,
       updateChampPoins,
+      runChamp,
     },
     appState,
     loading,

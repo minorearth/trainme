@@ -15,26 +15,19 @@ import {
 } from "@/db/localstorage";
 import user from "@/store/user";
 import { generateString } from "@/globals/utils/utilsRandom";
-import { ObjtoArr } from "@/globals/utils/objectUtils";
 import stn from "@/globals/settings";
 
 const useChamps = ({ actions, appState }) => {
-  const { getRandomTasksForChamp, setTestsStartedPage } = actions;
+  const { getRandomTasksForChamp, setTestsStartedPage, runChamp } = actions;
   const [connected, setConnected] = useState(false);
   const [chapmid, setChapmid] = useState("");
   const [chapmNumber, setChapmNumber] = useState("");
-
   const [userName, setUserName] = useState("Какой-то");
-
   const [range, setRange] = useState([1, 30]);
 
   const changeRange = (event, newValue) => {
     setRange(newValue);
   };
-
-  // const changeChampid = (e) => {
-  //   setChapmid(e.target.value);
-  // };
 
   const changeChampNumber = (e) => {
     setChapmNumber(e.target.value);
@@ -46,13 +39,11 @@ const useChamps = ({ actions, appState }) => {
 
   useEffect(() => {
     if (!connected) return;
-    console.log("chapmid", chapmNumber);
     getDocFromCollectionByIdRealtimeClient(
       stn.collections.CHAMPS,
       chapmNumber,
       (data) => {
         const statePersisted = loadStatePersisted();
-        console.log("data", data);
         if (data.status == "started" && statePersisted.page == "champ") {
           runChamp(chapmNumber);
         }
@@ -65,7 +56,6 @@ const useChamps = ({ actions, appState }) => {
     return () => {
       console.log("grid unmounted");
     };
-    // }, [surveyid, survey.showSurvey]);
   }, [connected]);
 
   const createChamp = async () => {
@@ -74,12 +64,8 @@ const useChamps = ({ actions, appState }) => {
       levelEnd: range[1],
     });
     const champid = generateString(7);
-    // actions.changeState({
-    //   creator: champid,
-    // });
     setChapmid(champid);
     setChapmNumber(champid);
-
     setDocInCollectionClient(
       stn.collections.CHAMPS,
       { tasks, users: [], status: "created" },
@@ -88,7 +74,6 @@ const useChamps = ({ actions, appState }) => {
   };
 
   const joinChamp = async () => {
-    console.log("chapmNumber", chapmNumber);
     await updateUsersInChampClient(
       stn.collections.CHAMPS,
       { id: user.userid, name: userName },
@@ -101,24 +86,9 @@ const useChamps = ({ actions, appState }) => {
     updateChampStatusClient(stn.collections.CHAMPS, "started", chapmid);
   };
 
-  const runChamp = async (chapmid) => {
-    setTestsStartedPage({
-      chapter: chapmid,
-      repeat: false,
-      // overflow,
-      // remainsum,
-      courseid: chapmid,
-      nodemode: "champ",
-      textbook: false,
-      champ: true,
-      // level,
-    });
-  };
-
   return {
     createChamp,
     joinChamp,
-    // changeChampid,
     startChamp,
     chapmid,
     changeUserName,
