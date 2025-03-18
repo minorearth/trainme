@@ -15,11 +15,11 @@ const Champ = observer(({ actions, appState }) => {
   const {
     createChamp,
     joinChamp,
-    chapmid,
+    champid,
     startChamp,
     changeUserName,
     userName,
-    chapmNumber,
+    champNumber,
     changeChampNumber,
     changeRange,
     range,
@@ -65,11 +65,11 @@ const Champ = observer(({ actions, appState }) => {
               Создать чемпионат
             </Button>
             <Typography variant="h4" gutterBottom>
-              {chapmid}
+              {champid}
             </Typography>
 
             <Button
-              onClick={() => startChamp(chapmid)}
+              onClick={() => startChamp(champid)}
               variant="outlined"
               fullWidth
             >
@@ -80,12 +80,19 @@ const Champ = observer(({ actions, appState }) => {
               fullWidth
               onClick={() =>
                 window.open(
-                  `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard/${chapmid}`,
+                  `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard/${champid}`,
                   "_blank"
                 )
               }
             >
               Дэш
+            </Button>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={() => actions.setCoursePage()}
+            >
+              Выйти
             </Button>
           </Box>
         </Panel>
@@ -117,7 +124,7 @@ const Champ = observer(({ actions, appState }) => {
               label="Номер чемпионата"
               variant="outlined"
               onChange={(e) => changeChampNumber(e)}
-              value={chapmNumber}
+              value={champNumber}
               fullWidth
             />
 
@@ -137,7 +144,7 @@ const Champ = observer(({ actions, appState }) => {
           flexDirection: "column",
         }}
       >
-        <ChampUsers chapmid={chapmNumber} />
+        <ChampUsers champid={champNumber} />
       </Box>
     </Box>
   );

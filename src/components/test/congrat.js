@@ -43,17 +43,17 @@ const CongratPage = ({ setFlowPage, appState, actions }) => {
             appState.nodemode == "newtopic" ||
             appState.nodemode == "repeat"
           ) {
-            await actions.loadCourse(appState.launchedCourse);
+            actions.setFlowPage();
+            // await actions.loadCourse(appState.launchedCourse);
           }
 
           if (appState.nodemode == "champ") {
-            actions.changeState({
-              launchedCourse: "",
+            actions.setState({
               page: "courses",
             });
           }
 
-          setFlowPage();
+          // setFlowPage();
         }}
         endIcon={<ReplayIcon />}
       >

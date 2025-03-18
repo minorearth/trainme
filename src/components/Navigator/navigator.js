@@ -45,22 +45,11 @@ const Navigator = observer(() => {
           {countdown.dialogState.visible && <Countdown />}
           <AlertDialog />
           {stn.mode.DEV_MODE && (
-            <AdminPanel
-              flow={flow}
-              appState={appState}
-              loadCourse={actions.loadCourse}
-            />
+            <AdminPanel flow={flow} appState={appState} actions={actions} />
           )}
           <Progress />
           <SplashAction name={"ok"} />
-          {appState.launchedCourse == "" && (
-            <Courses
-              handleCourseClick={actions.handleCourseClick}
-              showChamp={() =>
-                actions.changeState({ page: "champ", launchedCourse: "champ" })
-              }
-            />
-          )}
+          {appState.page == "courses" && <Courses actions={actions} />}
 
           {appState.page == "champ" && (
             <Champ actions={actions} appState={appState} />

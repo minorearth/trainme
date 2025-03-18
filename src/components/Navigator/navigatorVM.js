@@ -27,7 +27,7 @@ const nodeAction = (data) => {
     remainsum,
     edges,
     setTestsStartedPage,
-    loadCourse,
+    refetchUsermetaAndLoadCourse,
     courseid,
     rating,
   } = data;
@@ -70,7 +70,7 @@ const nodeAction = (data) => {
           })
         );
         data.paid = true;
-        await loadCourse();
+        await refetchUsermetaAndLoadCourse();
         progressCircle.setCloseProgress();
       },
       () => {}
@@ -128,7 +128,7 @@ const fullFillProgess = (
   chapterFlowNodes,
   edges,
   setTestsStartedPage,
-  loadCourse,
+  refetchUsermetaAndLoadCourse,
   courseid
 ) => {
   const { unlocked, completed, paid, rating, stat } = progress;
@@ -151,7 +151,7 @@ const fullFillProgess = (
           ...data,
           edges,
           setTestsStartedPage,
-          loadCourse,
+          refetchUsermetaAndLoadCourse,
           courseid,
           rating,
         }),
@@ -165,7 +165,7 @@ export const setFlowNodes = async ({
   progress,
   setFlow,
   setTestsStartedPage,
-  loadCourse,
+  refetchUsermetaAndLoadCourse,
 }) => {
   getDocDataFromCollectionByIdClient(
     "chapters",
@@ -177,7 +177,7 @@ export const setFlowNodes = async ({
       data.data.chapterFlowNodes,
       edges,
       setTestsStartedPage,
-      loadCourse,
+      refetchUsermetaAndLoadCourse,
       courseid
     );
     setFlow({ edges, nodes });
@@ -206,13 +206,10 @@ export const getTestsByMode = async (chapter, courseid) => {
 };
 
 export const getAllTestsFromChapter = async (chapter, courseid) => {
-  //local, do not remove
-  // const filteredTasks = testsall.filter((test) => test.chapterid == chapter);
   const filteredTasks = await getDocDataFromCollectionByIdClient(
     courses[courseid].taskcollection,
     chapter
   );
-
   if (!filteredTasks.data) {
     return [];
   }
@@ -234,11 +231,9 @@ export const getTextBook = async (chapter, appState, courseid) => {
   const unlockedTheory = filteredTasks.data.tasks.filter((item) =>
     appState.userProgress.completed.includes(item.chapterparentid)
   );
-
   if (!filteredTasks.data) {
     return [];
   }
-
   return unlockedTheory;
 };
 

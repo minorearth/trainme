@@ -14,7 +14,7 @@ export default function Page({ params }) {
     <>
       <ThemeProvider theme={customTheme}>
         <CssBaseline />
-        <ChampUsers chapmid={params.champ} />
+        <ChampUsers champid={params.champ} />
       </ThemeProvider>
     </>
   );

@@ -12,7 +12,7 @@ import { courses } from "@/globals/courses";
 import Input from "@mui/material/Input";
 import { useState } from "react";
 
-const AdminPanel = ({ flow, appState, loadCourse }) => {
+const AdminPanel = ({ flow, appState, actions }) => {
   const [inValue, setInValue] = useState(5000);
 
   const handleChange = (e) => {
@@ -28,7 +28,7 @@ const AdminPanel = ({ flow, appState, loadCourse }) => {
             appState.launchedCourse,
             appState.uid
           );
-          loadCourse(appState.launchedCourse);
+          actions.refetchUsermetaAndLoadCourse(appState.launchedCourse);
         }}
       >
         reset
@@ -41,7 +41,7 @@ const AdminPanel = ({ flow, appState, loadCourse }) => {
             appState.launchedCourse,
             appState.uid
           );
-          loadCourse(appState.launchedCourse);
+          actions.refetchUsermetaAndLoadCourse(appState.launchedCourse);
         }}
       >
         unlockAll
@@ -54,7 +54,7 @@ const AdminPanel = ({ flow, appState, loadCourse }) => {
             appState.launchedCourse,
             appState.uid
           );
-          loadCourse(appState.launchedCourse);
+          actions.refetchUsermetaAndLoadCourse(appState.launchedCourse);
         }}
       >
         CompleteAll
@@ -62,7 +62,7 @@ const AdminPanel = ({ flow, appState, loadCourse }) => {
       <Button
         onClick={() => {
           load();
-          loadCourse(appState.launchedCourse);
+          actions.refetchUsermetaAndLoadCourse(appState.launchedCourse);
         }}
       >
         load
@@ -83,10 +83,17 @@ const AdminPanel = ({ flow, appState, loadCourse }) => {
       <Button
         onClick={async () => {
           await setMoney(appState.launchedCourse, appState.uid, inValue);
-          loadCourse(appState.launchedCourse);
+          actions.refetchUsermetaAndLoadCourse(appState.launchedCourse);
         }}
       >
         money2
+      </Button>
+      <Button
+        onClick={() => {
+          actions.changeState({ taskId: 7 });
+        }}
+      >
+        lasttask
       </Button>
     </>
   );

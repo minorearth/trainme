@@ -6,14 +6,14 @@ import { ObjtoArr } from "@/globals/utils/objectUtils";
 import stn from "@/globals/settings";
 import useColumns from "./useColumns";
 
-const useDashboard = ({ chapmid }) => {
+const useDashboard = ({ champid }) => {
   const [rows, setRowsx] = useState([]);
 
   useEffect(() => {
-    if (!chapmid) return;
+    if (!champid) return;
     getDocFromCollectionByIdRealtimeClient(
       stn.collections.CHAMPS,
-      chapmid,
+      champid,
       (data) => {
         setRowsx(ObjtoArr(data?.users));
       }
@@ -27,7 +27,7 @@ const useDashboard = ({ chapmid }) => {
       console.log("grid unmounted");
     };
     // }, [surveyid, survey.showSurvey]);
-  }, [chapmid]);
+  }, [champid]);
 
   return {
     rows,

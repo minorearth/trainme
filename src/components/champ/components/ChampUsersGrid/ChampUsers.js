@@ -35,10 +35,10 @@ function CustomNoRowsOverlay() {
   );
 }
 
-const ChampUsers = observer(({ chapmid }) => {
+const ChampUsers = observer(({ champid }) => {
   const { columns } = useColumns({});
 
-  const { rows } = useDashboard({ chapmid });
+  const { rows } = useDashboard({ champid });
   return (
     <Box
       sx={{

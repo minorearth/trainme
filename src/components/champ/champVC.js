@@ -20,8 +20,8 @@ import stn from "@/globals/settings";
 const useChamps = ({ actions, appState }) => {
   const { getRandomTasksForChamp, setTestsStartedPage, runChamp } = actions;
   const [connected, setConnected] = useState(false);
-  const [chapmid, setChapmid] = useState("");
-  const [chapmNumber, setChapmNumber] = useState("");
+  const [champid, setChampid] = useState("");
+  const [champNumber, setChampNumber] = useState("");
   const [userName, setUserName] = useState("Какой-то");
   const [range, setRange] = useState([1, 30]);
 
@@ -30,7 +30,7 @@ const useChamps = ({ actions, appState }) => {
   };
 
   const changeChampNumber = (e) => {
-    setChapmNumber(e.target.value);
+    setChampNumber(e.target.value);
   };
 
   const changeUserName = (e) => {
@@ -41,11 +41,11 @@ const useChamps = ({ actions, appState }) => {
     if (!connected) return;
     getDocFromCollectionByIdRealtimeClient(
       stn.collections.CHAMPS,
-      chapmNumber,
+      champNumber,
       (data) => {
         const statePersisted = loadStatePersisted();
         if (data.status == "started" && statePersisted.page == "champ") {
-          runChamp(chapmNumber);
+          runChamp(champNumber);
         }
       }
     ).then((docData) => {
@@ -64,8 +64,8 @@ const useChamps = ({ actions, appState }) => {
       levelEnd: range[1],
     });
     const champid = generateString(7);
-    setChapmid(champid);
-    setChapmNumber(champid);
+    setChampid(champid);
+    setChampNumber(champid);
     setDocInCollectionClient(
       stn.collections.CHAMPS,
       { tasks, users: [], status: "created" },
@@ -77,23 +77,23 @@ const useChamps = ({ actions, appState }) => {
     await updateUsersInChampClient(
       stn.collections.CHAMPS,
       { id: user.userid, name: userName },
-      chapmNumber
+      champNumber
     );
     setConnected((state) => !state);
   };
 
-  const startChamp = async (chapmid) => {
-    updateChampStatusClient(stn.collections.CHAMPS, "started", chapmid);
+  const startChamp = async (champid) => {
+    updateChampStatusClient(stn.collections.CHAMPS, "started", champid);
   };
 
   return {
     createChamp,
     joinChamp,
     startChamp,
-    chapmid,
+    champid,
     changeUserName,
     userName,
-    chapmNumber,
+    champNumber,
     changeChampNumber,
     changeRange,
     range,

@@ -29,18 +29,18 @@ const useNavigator = () => {
   const userid = "1";
   const [loading, setLoading] = useState(true);
   const [tests, setTests] = useState([]);
-  const [appState, setappState] = useState({ launchedCourse: "" });
+  const [appState, setappState] = useState({});
   const [flow, setFlow] = useState();
 
   const initialState = {
-    launchedCourse: "",
+    // launchedCourse: "",
     page: "courses",
-    chapter: -1,
-    taskId: 0,
-    recapTasks: [],
-    taskstage: "",
-    pts: 0,
-    randomsaved: [],
+    // chapter: -1,
+    // taskId: 0,
+    // recapTasks: [],
+    // taskstage: "",
+    // pts: 0,
+    // randomsaved: [],
   };
 
   useEffect(() => {
@@ -54,11 +54,6 @@ const useNavigator = () => {
 
   const setTestsInProgress = async (appStatePersisted) => {
     let tasks;
-    // if (appStatePersisted.chapter != -1) {
-    // const page = appStatePersisted.page;
-    // if (page != "testrun" && page != "congrat" && page != "testsStarted") {
-    //   return;
-    // }
 
     if (appStatePersisted.nodemode == "repeat") {
       tasks = await getRandomTasksForRepeat({
@@ -99,19 +94,17 @@ const useNavigator = () => {
   };
 
   const loadCourseFlow = async (courseid, appStatePersisted) => {
-    // if (appStatePersisted.chapter != -1) {
-    //   setTestsInProgress(appStatePersisted, courseid);
-    // }
     setFlowNodes({
       courseid,
       progress: appStatePersisted.userProgress,
       setFlow,
       setTestsStartedPage,
-      loadCourse: () => loadCourse(courseid),
+      refetchUsermetaAndLoadCourse: () =>
+        refetchUsermetaAndLoadCourse(courseid),
     });
   };
 
-  const loadCourse = async (launchedCourse) => {
+  const refetchUsermetaAndLoadCourse = async (launchedCourse) => {
     setFlow();
     const statePersisted = await refetchUserMetaAndPersist(launchedCourse);
     await loadCourseFlow(launchedCourse, statePersisted);
@@ -127,12 +120,12 @@ const useNavigator = () => {
 
   const loadPTrek = async () => {
     const currStatePersisted = loadStatePersisted();
-    const page = currStatePersisted.page;
+    const page = currStatePersisted?.page || "courses";
+
     if (page == "flow") {
       const statePersisted = await refetchUserMetaAndPersist(
         currStatePersisted.launchedCourse
       );
-
       const coursePaid = await checkCoursePaid(
         statePersisted.launchedCourse,
         user.userid
@@ -141,9 +134,7 @@ const useNavigator = () => {
         loadCourseFlow(statePersisted.launchedCourse, statePersisted);
         changeState({
           ...statePersisted,
-          // launchedCourse,
         });
-        // loadCourse(currStatePersisted.launchedCourse, currStatePersisted.page);
       } else {
         setCoursePage();
       }
@@ -151,33 +142,21 @@ const useNavigator = () => {
 
     if (page == "testrun" || page == "congrat" || page == "testsStarted") {
       setTestsInProgress(currStatePersisted);
+      //to get edges on Accomplish
+      loadCourseFlow(currStatePersisted.launchedCourse, currStatePersisted);
+
+      changeState({
+        ...currStatePersisted,
+      });
     }
-    changeState({
-      ...currStatePersisted,
-      // launchedCourse,
-    });
+
+    if (!page || page == "courses" || page == "champ") {
+      resetStateToInitial();
+    }
 
     setLoading(false);
     progressStore.setCloseProgress();
   };
-
-  // const reloadPyTrek = async () => {
-  //   progressStore.setShowProgress(true, false, "progressdots", 2000);
-  //   const currStatePersisted = loadStatePersisted();
-  //   if (currStatePersisted?.launchedCourse) {
-  //     const coursePaid = await checkCoursePaid(
-  //       currStatePersisted.launchedCourse,
-  //       user.userid
-  //     );
-  //     if (coursePaid && currStatePersisted.page == "flow") {
-  //       loadCourse(currStatePersisted.launchedCourse, currStatePersisted.page);
-  //     } else {
-  //       setCoursePage();
-  //     }
-  //   } else setCoursePage();
-  //   setLoading(false);
-  //   progressStore.setCloseProgress();
-  // };
 
   const handleCourseClick = async (launchedCourse) => {
     progressStore.setShowProgress(true, false, "progressdots", 2000);
@@ -194,7 +173,7 @@ const useNavigator = () => {
       );
       return;
     }
-    loadCourse(launchedCourse);
+    refetchUsermetaAndLoadCourse(launchedCourse);
   };
 
   const refetchUserMetaAndPersist = async (launchedCourse) => {
@@ -204,13 +183,23 @@ const useNavigator = () => {
     const userProgress = allUserMeta.courses[launchedCourse];
 
     const stateToUpdated = {
-      ...initialState,
+      // ...initialState,
       ...currStatePersisted,
       userProgress,
       uid: user.userid,
     };
+    // const stateUpdated = updateStateLS(stateToUpdated);
+    persistState(stateToUpdated);
+    return stateToUpdated;
+  };
+
+  const resetStateToInitial = async () => {
+    const stateToUpdated = {
+      ...initialState,
+      uid: user.userid,
+    };
     const stateUpdated = updateStateLS(stateToUpdated);
-    return stateUpdated;
+    changeState({ ...stateUpdated });
   };
 
   const changeState = (data) => {
@@ -221,24 +210,19 @@ const useNavigator = () => {
     });
   };
 
-  const openTextBook = async ({
-    chapter,
-    courseid,
-    repeat,
-    overflow,
-    appState,
-  }) => {
+  const setState = (data) => {
+    persistState(data);
+    setappState({ ...data });
+  };
+
+  const openTextBook = async ({ chapter, courseid, appState }) => {
     const tasks = await getTextBook(chapter, appState, courseid);
     if (tasks.length) {
       changeState({
         chapter,
         page: "testsStarted",
-        pts: 0,
         taskId: 0,
-        recapTasks: [],
         taskstage: "textbook",
-        repeat,
-        overflow,
       });
       setTests(tasks);
     } else {
@@ -283,46 +267,33 @@ const useNavigator = () => {
     setTests(tasks);
   };
 
-  const openChampTasks = async ({
-    chapter,
-    courseid,
-    repeat,
-    overflow,
-    nodemode,
-    level,
-    remainsum,
-  }) => {
+  const openChampTasks = async ({ champid, nodemode }) => {
     changeState({
-      chapter,
+      champid,
       page: "testsStarted",
       taskId: 0,
       recapTasks: [],
       taskstage: "WIP",
-      repeat,
-      overflow,
       nodemode,
-      level,
-      remainsum,
     });
     const tasks = await getChampTasks({
-      champid: courseid,
+      champid,
     });
     setTests(tasks.data.tasks);
   };
 
-  const runChamp = async (chapmid) => {
+  const runChamp = async (champid) => {
     setTestsStartedPage({
-      // chapter: chapmid,
-      repeat: false,
-      campid: chapmid,
+      champid,
       nodemode: "champ",
-      textbook: false,
-      champ: true,
-      // level,
     });
   };
 
-  const openTasks = async ({
+  const showChampPage = () => {
+    changeState({ page: "champ" });
+  };
+
+  const openRegularTasks = async ({
     chapter,
     courseid,
     repeat,
@@ -346,20 +317,19 @@ const useNavigator = () => {
   };
 
   const setTestsStartedPage = async ({
+    courseid,
     chapter,
+    champid,
     repeat,
     overflow,
     remainsum,
-    courseid,
     nodemode,
     level,
   }) => {
     if (nodemode == "champ") {
       openChampTasks({
         chapter,
-        courseid,
-        repeat,
-        overflow,
+        champid,
         appState,
         nodemode,
       });
@@ -368,8 +338,6 @@ const useNavigator = () => {
       openTextBook({
         chapter,
         courseid,
-        repeat,
-        overflow,
         appState,
         nodemode,
       });
@@ -386,7 +354,14 @@ const useNavigator = () => {
       });
     }
     if (nodemode == "addhoc" || nodemode == "newtopic") {
-      openTasks({ chapter, courseid, repeat, overflow, remainsum, nodemode });
+      openRegularTasks({
+        chapter,
+        courseid,
+        repeat,
+        overflow,
+        remainsum,
+        nodemode,
+      });
     }
   };
 
@@ -400,17 +375,16 @@ const useNavigator = () => {
   };
 
   const setCoursePage = () => {
-    changeState(initialState);
+    setState(initialState);
   };
 
   const setFlowPage = () => {
-    loadCourse(appState.launchedCourse);
-    changeState({
-      pts: 0,
-      taskstage: "",
-      randomsaved: [],
-      chapter: "-1",
+    setState({
+      launchedCourse: appState.launchedCourse,
+      page: "flow",
+      userProgress: appState.userProgress,
     });
+    loadCourseFlow(appState.launchedCourse, appState);
   };
 
   const persistStateNoEffect = (data) => {
@@ -448,6 +422,7 @@ const useNavigator = () => {
   return {
     actions: {
       changeState,
+      setState,
       persistStateNoEffect,
       setRunTestsPageRecap,
       setFlowPage,
@@ -455,10 +430,12 @@ const useNavigator = () => {
       setCongratPage,
       runAccomplishAndShowCongratPage,
       handleCourseClick,
-      loadCourse,
+      refetchUsermetaAndLoadCourse,
       getRandomTasksForChamp,
       updateChampPoins,
       runChamp,
+      showChampPage,
+      setCoursePage,
     },
     appState,
     loading,
