@@ -60,12 +60,7 @@ const Navigator = observer(() => {
             !!flow &&
             appState.launchedCourse && (
               <ReactFlowProvider>
-                <Flow
-                  setTestsStartedPage={actions.setTestsStartedPage}
-                  appState={appState}
-                  actions={actions}
-                  flow={flow}
-                />
+                <Flow appState={appState} actions={actions} flow={flow} />
               </ReactFlowProvider>
             )}
 
@@ -83,11 +78,7 @@ const Navigator = observer(() => {
           )}
 
           {appState.page == "congrat" && (
-            <CongratPage
-              setFlowPage={actions.setFlowPage}
-              appState={appState}
-              actions={actions}
-            />
+            <CongratPage appState={appState} actions={actions} />
           )}
         </Box>
       )}

@@ -13,12 +13,8 @@ const useTest = ({
   editorRef,
   setEditorDisabled,
 }) => {
-  const {
-    changeState,
-    persistStateNoEffect,
-    setRunTestsPageRecap,
-    runAccomplishAndShowCongratPage,
-  } = actions;
+  const { changeState, updateLSState, setRecapTasks, openCongratPage } =
+    actions;
 
   const [currTask, setCurrTask] = useState({});
 
@@ -63,7 +59,7 @@ const useTest = ({
       "Повторение",
       "Попробуй еще раз решить ошибочные задачи",
       1,
-      () => setRunTestsPageRecap(appState.recapTasks)
+      () => setRecapTasks(appState.recapTasks)
     );
   };
 
@@ -71,7 +67,7 @@ const useTest = ({
     switch (true) {
       case appState.taskId == tests.length - 1 &&
         appState.taskstage == "accomplished_suspended":
-        runAccomplishAndShowCongratPage();
+        openCongratPage();
         return;
       case appState.taskId == tests.length - 1 &&
         appState.taskstage == "recap_suspended":
@@ -85,7 +81,7 @@ const useTest = ({
   const addErrorTaskToRecap = () => {
     const recapTasks = [...appState.recapTasks, appState.taskId];
     appState.recapTasks = recapTasks;
-    persistStateNoEffect({
+    updateLSState({
       recapTasks: recapTasks,
       taskId: appState.taskId + 1,
     });
@@ -93,7 +89,7 @@ const useTest = ({
 
   const errorOnLastRecapTask = () => {
     appState.taskstage = "accomplished_suspended";
-    persistStateNoEffect({
+    updateLSState({
       taskstage: "accomplished_suspended",
     });
   };
@@ -102,7 +98,7 @@ const useTest = ({
     appState.taskstage = "recap_suspended";
     const recapTasks = [...appState.recapTasks, appState.taskId];
     appState.recapTasks = recapTasks;
-    persistStateNoEffect({
+    updateLSState({
       taskstage: "recap_suspended",
       recapTasks,
     });
@@ -135,7 +131,7 @@ const useTest = ({
       (appState.taskstage == "recap" ||
         appState.taskstage == "accomplished_suspended")
     ) {
-      runAccomplishAndShowCongratPage();
+      openCongratPage();
     }
     if (
       appState.recapTasks.length > 0 &&
@@ -165,7 +161,7 @@ const useTest = ({
     if (!error && nodemode == "champ") {
       actions.updateChampPoins(pts, champid);
     }
-    persistStateNoEffect({ pts });
+    updateLSState({ pts });
     return pts;
   };
 
@@ -190,10 +186,10 @@ const useTest = ({
         return;
       case appState.taskId == tests.length - 1 && !error:
         if (appState.taskstage == "recap") {
-          ok(runAccomplishAndShowCongratPage);
+          ok(openCongratPage);
         }
         if (appState.recapTasks.length == 0 && appState.taskstage == "WIP") {
-          ok(runAccomplishAndShowCongratPage);
+          ok(openCongratPage);
         }
         if (appState.recapTasks.length != 0 && appState.taskstage == "WIP") {
           ok(doRecap);
@@ -212,7 +208,7 @@ const useTest = ({
           appState.taskstage == "recap" &&
           appState.taskId != tests.length - 1
         ) {
-          persistStateNoEffect({
+          updateLSState({
             taskId: appState.taskId + 1,
           });
         }

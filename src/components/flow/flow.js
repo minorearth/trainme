@@ -12,7 +12,7 @@ import "./styles.css";
 import FlowPanel from "./components/FlowPanel.js";
 import useFlow from "./useFlow";
 
-const Flow = ({ appState, flow, setTestsStartedPage, actions }) => {
+const Flow = ({ appState, flow, actions }) => {
   const theme = useTheme();
   const flowOptions = useFlow({ appState, flow });
 
@@ -35,11 +35,7 @@ const Flow = ({ appState, flow, setTestsStartedPage, actions }) => {
         minZoom={1}
         {...flowOptions}
       >
-        <FlowPanel
-          appState={appState}
-          setTestsStartedPage={setTestsStartedPage}
-          actions={actions}
-        />
+        <FlowPanel appState={appState} actions={actions} />
       </ReactFlow>
     </Box>
   );

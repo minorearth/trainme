@@ -10,7 +10,7 @@ import progressStore from "../common/progress/progressStore";
 import Paper from "@mui/material/Paper";
 
 const getIntro = (appState) => {
-  if (appState.taskstage == "textbook") {
+  if (appState.nodemode == "textbook") {
     return "Приветствуем вас в учебнике 📘 ! В учебнике доступна теория только по открытым темам";
   }
 

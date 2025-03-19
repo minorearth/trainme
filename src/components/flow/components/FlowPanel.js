@@ -17,7 +17,7 @@ import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import Fab from "@mui/material/Fab";
 import Animation from "@/components/common/animation/Animation";
 
-const FlowPanel = ({ appState, setTestsStartedPage, actions }) => {
+const FlowPanel = ({ appState, actions }) => {
   const theme = useTheme();
   const router = useRouter();
 
@@ -54,8 +54,7 @@ const FlowPanel = ({ appState, setTestsStartedPage, actions }) => {
           width={"60px"}
           name={"book"}
           onClick={async () => {
-            setTestsStartedPage({
-              chapter: "2e31a4ae-242d-4c55-b801-ef12ccc06013",
+            actions.openTestsStartedPage({
               nodemode: "textbook",
               courseid: appState.launchedCourse,
             });
@@ -91,7 +90,7 @@ const FlowPanel = ({ appState, setTestsStartedPage, actions }) => {
           width={"60px"}
           name={"home"}
           onClick={() => {
-            actions.setCoursePage();
+            actions.openAllCoursePage();
 
             // await signOutUserClient();
             // router.push(`/login/`);

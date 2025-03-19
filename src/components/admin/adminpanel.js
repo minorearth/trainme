@@ -28,7 +28,7 @@ const AdminPanel = ({ flow, appState, actions }) => {
             appState.launchedCourse,
             appState.uid
           );
-          actions.refetchUsermetaAndLoadCourse(appState.launchedCourse);
+          actions.openAndRefreshFlowPage(appState.launchedCourse);
         }}
       >
         reset
@@ -41,7 +41,7 @@ const AdminPanel = ({ flow, appState, actions }) => {
             appState.launchedCourse,
             appState.uid
           );
-          actions.refetchUsermetaAndLoadCourse(appState.launchedCourse);
+          actions.openAndRefreshFlowPage(appState.launchedCourse);
         }}
       >
         unlockAll
@@ -54,7 +54,7 @@ const AdminPanel = ({ flow, appState, actions }) => {
             appState.launchedCourse,
             appState.uid
           );
-          actions.refetchUsermetaAndLoadCourse(appState.launchedCourse);
+          actions.openAndRefreshFlowPage(appState.launchedCourse);
         }}
       >
         CompleteAll
@@ -62,7 +62,7 @@ const AdminPanel = ({ flow, appState, actions }) => {
       <Button
         onClick={() => {
           load();
-          actions.refetchUsermetaAndLoadCourse(appState.launchedCourse);
+          actions.openAndRefreshFlowPage(appState.launchedCourse);
         }}
       >
         load
@@ -83,7 +83,7 @@ const AdminPanel = ({ flow, appState, actions }) => {
       <Button
         onClick={async () => {
           await setMoney(appState.launchedCourse, appState.uid, inValue);
-          actions.refetchUsermetaAndLoadCourse(appState.launchedCourse);
+          actions.openAndRefreshFlowPage(appState.launchedCourse);
         }}
       >
         money2

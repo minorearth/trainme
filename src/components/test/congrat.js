@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { loadStatePersisted } from "@/db/localstorage";
 
 let pts;
-const CongratPage = ({ setFlowPage, appState, actions }) => {
+const CongratPage = ({ appState, actions }) => {
   const [pts, setPts] = useState(10);
   useEffect(() => {
     const { pts } = loadStatePersisted();
@@ -43,8 +43,8 @@ const CongratPage = ({ setFlowPage, appState, actions }) => {
             appState.nodemode == "newtopic" ||
             appState.nodemode == "repeat"
           ) {
-            actions.setFlowPage();
-            // await actions.loadCourse(appState.launchedCourse);
+            actions.openFlowPageAfterAccomplished();
+            // await actions.openAndRefreshFlowPage(appState.launchedCourse);
           }
 
           if (appState.nodemode == "champ") {

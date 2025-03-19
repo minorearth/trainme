@@ -18,7 +18,7 @@ import { generateString } from "@/globals/utils/utilsRandom";
 import stn from "@/globals/settings";
 
 const useChamps = ({ actions, appState }) => {
-  const { getRandomTasksForChamp, setTestsStartedPage, runChamp } = actions;
+  const { getRandomTasksForChamp, openTestsStartedPage, runChamp } = actions;
   const [connected, setConnected] = useState(false);
   const [champid, setChampid] = useState("");
   const [champNumber, setChampNumber] = useState("");

@@ -90,7 +90,7 @@ const Champ = observer(({ actions, appState }) => {
             <Button
               variant="outlined"
               fullWidth
-              onClick={() => actions.setCoursePage()}
+              onClick={() => actions.openAllCoursePage()}
             >
               Выйти
             </Button>

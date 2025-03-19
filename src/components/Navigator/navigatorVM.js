@@ -26,8 +26,8 @@ const nodeAction = (data) => {
     overflow,
     remainsum,
     edges,
-    setTestsStartedPage,
-    refetchUsermetaAndLoadCourse,
+    openTestsStartedPage,
+    openAndRefreshFlowPage,
     courseid,
     rating,
   } = data;
@@ -70,7 +70,7 @@ const nodeAction = (data) => {
           })
         );
         data.paid = true;
-        await refetchUsermetaAndLoadCourse();
+        await openAndRefreshFlowPage();
         progressCircle.setCloseProgress();
       },
       () => {}
@@ -88,7 +88,7 @@ const nodeAction = (data) => {
 
   if (unlocked && paid && !completed) {
     cowntdownbutton.hideButton();
-    setTestsStartedPage({
+    openTestsStartedPage({
       chapter: id,
       repeat: false,
       overflow,
@@ -101,7 +101,7 @@ const nodeAction = (data) => {
     });
   }
   if (unlocked && paid && completed) {
-    setTestsStartedPage({
+    openTestsStartedPage({
       chapter: id,
       repeat: true,
       overflow,
@@ -127,8 +127,8 @@ const fullFillProgess = (
   progress,
   chapterFlowNodes,
   edges,
-  setTestsStartedPage,
-  refetchUsermetaAndLoadCourse,
+  openTestsStartedPage,
+  openAndRefreshFlowPage,
   courseid
 ) => {
   const { unlocked, completed, paid, rating, stat } = progress;
@@ -150,8 +150,8 @@ const fullFillProgess = (
         nodeAction({
           ...data,
           edges,
-          setTestsStartedPage,
-          refetchUsermetaAndLoadCourse,
+          openTestsStartedPage,
+          openAndRefreshFlowPage,
           courseid,
           rating,
         }),
@@ -164,8 +164,8 @@ export const setFlowNodes = async ({
   courseid,
   progress,
   setFlow,
-  setTestsStartedPage,
-  refetchUsermetaAndLoadCourse,
+  openTestsStartedPage,
+  openAndRefreshFlowPage,
 }) => {
   getDocDataFromCollectionByIdClient(
     "chapters",
@@ -176,8 +176,8 @@ export const setFlowNodes = async ({
       progress,
       data.data.chapterFlowNodes,
       edges,
-      setTestsStartedPage,
-      refetchUsermetaAndLoadCourse,
+      openTestsStartedPage,
+      openAndRefreshFlowPage,
       courseid
     );
     setFlow({ edges, nodes });
@@ -185,8 +185,6 @@ export const setFlowNodes = async ({
 };
 
 export const getTestsByMode = async (chapter, courseid) => {
-  //local, do not remove
-  // const filteredTasks = testsall.filter((test) => test.chapterid == chapter);
   const filteredTasks = await getDocDataFromCollectionByIdClient(
     courses[courseid].taskcollection,
     chapter
@@ -223,10 +221,10 @@ export const getAllTestsFromChapter = async (chapter, courseid) => {
   return res;
 };
 
-export const getTextBook = async (chapter, appState, courseid) => {
+export const getTextBook = async (appState, courseid) => {
   const filteredTasks = await getDocDataFromCollectionByIdClient(
     courses[courseid].taskcollection,
-    chapter
+    courses[courseid].textbookchapter
   );
   const unlockedTheory = filteredTasks.data.tasks.filter((item) =>
     appState.userProgress.completed.includes(item.chapterparentid)
@@ -296,15 +294,11 @@ export const getRandomTasksForChamp = async ({ levelStart, levelEnd }) => {
 
 export const getChampTasks = async ({ champid }) => {
   const allTasks = await getDocDataFromCollectionByIdClient("champs", champid);
-  console.log("champid", allTasks);
-
   return allTasks;
 };
 
-export const getTestsRecap = (chapter, recapTasks, tasks) => {
-  const filteredTasks = tasks
-    // .filter((test) => test.chapterid == chapter)
-    .filter((test, id) => recapTasks.includes(id));
+export const getTestsRecap = (recapTasks, tasks) => {
+  const filteredTasks = tasks.filter((test, id) => recapTasks.includes(id));
   return filteredTasks;
 };
 

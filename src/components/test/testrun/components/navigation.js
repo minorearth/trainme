@@ -66,7 +66,7 @@ const Navigation = observer(
             Проверить!
           </Button>
         )}
-        {appState.taskstage == "textbook" && (
+        {appState.nodemode == "textbook" && (
           <Button
             onClick={() => {
               prevTaskNoPts();
@@ -101,7 +101,7 @@ const Navigation = observer(
         {stn.mode.DEV_MODE && (
           <Button
             onClick={() => {
-              actions.setFlowPage();
+              actions.interruptExamMode();
             }}
             variant="outlined"
           >
