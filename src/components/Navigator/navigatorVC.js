@@ -105,7 +105,6 @@ const useNavigator = () => {
     const stateToUpdate = {
       ...currStatePersisted,
       userProgress,
-      uid: user.userid,
     };
     // const stateUpdated = updateStateLS(stateToUpdated);
     persistState(stateToUpdate);
@@ -115,7 +114,6 @@ const useNavigator = () => {
   const resetStateToInitial = async () => {
     const stateToUpdated = {
       ...initialState,
-      uid: user.userid,
     };
     const stateUpdated = updateStateLS(stateToUpdated);
     changeState({ ...stateUpdated });
@@ -245,7 +243,7 @@ const useNavigator = () => {
         nodemode,
       });
     }
-    if (nodemode == "repeat") {
+    if (nodemode == "renewal") {
       setRandomTasksToRepeat({
         chapter,
         courseid,
@@ -274,7 +272,7 @@ const useNavigator = () => {
     if (
       appState.nodemode == "addhoc" ||
       appState.nodemode == "newtopic" ||
-      appState.nodemode == "repeat"
+      appState.nodemode == "renewal"
     ) {
       const unlocked = getTargetsBySource(appState.chapter, flow.edges);
 
@@ -307,7 +305,7 @@ const useNavigator = () => {
   const recoverTestsInProgress = async (appStatePersisted) => {
     let tasks;
 
-    if (appStatePersisted.nodemode == "repeat") {
+    if (appStatePersisted.nodemode == "renewal") {
       tasks = await getRandomTasksForRepeat({
         courseid: appStatePersisted.launchedCourse,
         levelStart: appStatePersisted.level - 5,

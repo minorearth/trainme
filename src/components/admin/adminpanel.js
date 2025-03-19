@@ -8,6 +8,7 @@ import {
   setMoney,
 } from "@/db/SA/firebaseSA";
 import { load } from "@/components/admin/adminutils";
+import user from "@/store/user";
 import { courses } from "@/globals/courses";
 import Input from "@mui/material/Input";
 import { useState } from "react";
@@ -26,7 +27,7 @@ const AdminPanel = ({ flow, appState, actions }) => {
           await resetUseMetaData(
             courses[appState.launchedCourse].firstchapter,
             appState.launchedCourse,
-            appState.uid
+            user.userid
           );
           actions.openAndRefreshFlowPage(appState.launchedCourse);
         }}
@@ -39,7 +40,7 @@ const AdminPanel = ({ flow, appState, actions }) => {
             flow.nodes.filter((node) => node.id != -1).map((node) => node.id),
             courses[appState.launchedCourse].firstchapter,
             appState.launchedCourse,
-            appState.uid
+            user.userid
           );
           actions.openAndRefreshFlowPage(appState.launchedCourse);
         }}
@@ -52,7 +53,7 @@ const AdminPanel = ({ flow, appState, actions }) => {
             flow.nodes.filter((node) => node.id != -1).map((node) => node.id),
             courses[appState.launchedCourse].firstchapter,
             appState.launchedCourse,
-            appState.uid
+            user.userid
           );
           actions.openAndRefreshFlowPage(appState.launchedCourse);
         }}
@@ -82,7 +83,7 @@ const AdminPanel = ({ flow, appState, actions }) => {
       />
       <Button
         onClick={async () => {
-          await setMoney(appState.launchedCourse, appState.uid, inValue);
+          await setMoney(appState.launchedCourse, user.userid, inValue);
           actions.openAndRefreshFlowPage(appState.launchedCourse);
         }}
       >

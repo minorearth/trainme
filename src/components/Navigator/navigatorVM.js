@@ -258,7 +258,7 @@ export const getRandomTasksForRepeat = async ({
 
   let filteredTasks;
 
-  if (statePersisted.randomsaved.length != 0) {
+  if (statePersisted.randomsaved && statePersisted.randomsaved?.length != 0) {
     filteredTasks = allTasks.data.tasks.filter((task) =>
       statePersisted.randomsaved.includes(task.taskuuid)
     );

@@ -146,20 +146,34 @@ const useTest = ({
     if (overflow) {
       return pts;
     }
-    if (!error && taskstage == "WIP" && !repeat) {
-      pts += 10;
-    }
-    if (!error && taskstage == "recap" && !repeat) {
-      pts += 2;
-    }
-    if (!error && taskstage == "WIP" && repeat) {
-      pts += 2;
-    }
-    if (!error && taskstage == "recap" && repeat) {
-      pts += 1;
-    }
-    if (!error && nodemode == "champ") {
-      actions.updateChampPoins(pts, champid);
+    if (!error) {
+      if (taskstage == "WIP" && !repeat && nodemode != "renewal") {
+        pts += 10;
+      }
+      if (taskstage == "WIP" && !repeat && nodemode == "renewal") {
+        pts += 2;
+      }
+      if (taskstage == "WIP" && repeat && nodemode != "renewal") {
+        pts += 2;
+      }
+      if (taskstage == "WIP" && repeat && nodemode == "renewal") {
+        pts += 1;
+      }
+
+      if (taskstage == "recap" && !repeat && nodemode != "renewal") {
+        pts += 2;
+      }
+
+      if (taskstage == "recap" && !repeat && nodemode == "renewal") {
+        pts += 1;
+      }
+
+      if (taskstage == "recap" && repeat) {
+        pts += 1;
+      }
+      if (nodemode == "champ") {
+        actions.updateChampPoins(pts, champid);
+      }
     }
     updateLSState({ pts });
     return pts;

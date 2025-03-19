@@ -18,8 +18,6 @@ import Fab from "@mui/material/Fab";
 import Animation from "@/components/common/animation/Animation";
 
 const FlowPanel = ({ appState, actions }) => {
-  const theme = useTheme();
-  const router = useRouter();
 
   return (
     <Panel position="top-left" style={{ width: "97%" }}>
@@ -61,30 +59,6 @@ const FlowPanel = ({ appState, actions }) => {
           }}
         />
 
-        {/* <Animation
-          height={"60px"}
-          width={"60px"}
-          name={"exit"}
-          onClick={async () => {
-            await signOutUserClient();
-            router.push(`/login/`);
-          }}
-        /> */}
-
-        {/* <Fab size="small" color="black" aria-label="add">
-          <RiLogoutCircleRLine
-            size={"40px"}
-            onClick={async () => {
-              actions.changeState({
-                launchedCourse: "",
-                page: "courses",
-              });
-
-              // await signOutUserClient();
-              // router.push(`/login/`);
-            }}
-          />
-        </Fab> */}
         <Animation
           height={"60px"}
           width={"60px"}

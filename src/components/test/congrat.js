@@ -41,7 +41,7 @@ const CongratPage = ({ appState, actions }) => {
           if (
             appState.nodemode == "addhoc" ||
             appState.nodemode == "newtopic" ||
-            appState.nodemode == "repeat"
+            appState.nodemode == "renewal"
           ) {
             actions.openFlowPageAfterAccomplished();
             // await actions.openAndRefreshFlowPage(appState.launchedCourse);

@@ -34,12 +34,11 @@ const Courses = ({ actions }) => {
     <Grid
       container
       spacing={2}
-      columns={{ sm: 1, lg: 4 }}
+      columns={{ sm: 1, md: 2, lg: 4 }}
       sx={{
         flexGrow: 1,
         justifyContent: "center",
         alignItems: "center",
-        alignContent: "center",
         height: "100%",
       }}
     >
