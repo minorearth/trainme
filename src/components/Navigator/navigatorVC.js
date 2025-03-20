@@ -287,7 +287,7 @@ const useNavigator = () => {
     changeState({ page: "congrat", pts });
   };
 
-  const doRecap = (recapTasksIds, tasks) => {
+  const openRecapTasksPage = (recapTasksIds, tasks) => {
     // const pts = getSense();
     // changeState({ taskstage: "recap", pts });
     // changeState({ taskstage: "recap"});
@@ -335,7 +335,7 @@ const useNavigator = () => {
     }
 
     if (appStatePersisted.taskstage == "recap_suspended") {
-      doRecap(appStatePersisted.recapTasksIds, tasks);
+      openRecapTasksPage(appStatePersisted.recapTasksIds, tasks);
     }
 
     if (appStatePersisted.taskstage == "accomplished_suspended") {
@@ -360,7 +360,7 @@ const useNavigator = () => {
   //       return;
   //     case appState.taskId == tests.length - 1 &&
   //       appState.taskstage == "recap_suspended":
-  //       doRecap();
+  //       openRecapTasksPage();
   //       return;
   //     default:
   //       return "";
@@ -445,22 +445,19 @@ const useNavigator = () => {
       changeState,
       setState,
       updateLSState,
-
       openFlowPageAfterAccomplished,
       openTestsStartedPage,
       openChampPage,
       openAllCoursePage,
       openCongratPage,
       interruptExamMode,
-
       openCourseFlowPageFromMain,
       getRandomTasksForChamp,
-
       updateChampPoins,
       runChamp,
       setRecapTasks,
       openAndRefreshFlowPage,
-      doRecap,
+      openRecapTasksPage,
     },
     appState,
     loading,

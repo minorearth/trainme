@@ -18,7 +18,7 @@ const useTest = ({
     updateLSState,
     setRecapTasks,
     openCongratPage,
-    doRecap,
+    openRecapTasksPage,
   } = actions;
 
   const [currTask, setCurrTask] = useState({});
@@ -28,7 +28,7 @@ const useTest = ({
   }, []);
 
   useEffect(() => {
-    appState.taskId != tests.length && setNextTask(appState.taskId);
+    appState.taskId != tests.length && openTask(appState.taskId);
   }, [appState.taskId]);
 
   const nextTaskOrCompleteTest = async ({ error, errorMsg }) => {
@@ -54,13 +54,13 @@ const useTest = ({
           ok(openCongratPage);
         }
         if (appState.recapTasksIds.length != 0 && appState.taskstage == "WIP") {
-          ok(doRecap);
+          ok(openRecapTasksPage);
         }
         return;
       case error:
         showRightCodeAfterError({ errorMsg });
         if (
-          appState.taskstage != "recap" &&
+          appState.taskstage == "WIP" &&
           appState.taskId != tests.length - 1
         ) {
           addErrorTaskToRecap();
@@ -75,7 +75,7 @@ const useTest = ({
           });
         }
         if (
-          appState.taskstage != "recap" &&
+          appState.taskstage == "WIP" &&
           appState.taskId == tests.length - 1
         ) {
           errorOnLastWIPTask();
@@ -201,20 +201,20 @@ const useTest = ({
     });
   };
 
-  const processSuspendedAfterError = async () => {
-    switch (true) {
-      case appState.taskId == tests.length - 1 &&
-        appState.taskstage == "accomplished_suspended":
-        openCongratPage();
-        return;
-      case appState.taskId == tests.length - 1 &&
-        appState.taskstage == "recap_suspended":
-        doRecap(appState.recapTasksIds, tests);
-        return;
-      default:
-        return "";
-    }
-  };
+  // const processSuspendedAfterError = async () => {
+  //   switch (true) {
+  //     case appState.taskId == tests.length - 1 &&
+  //       appState.taskstage == "accomplished_suspended":
+  //       openCongratPage();
+  //       return;
+  //     case appState.taskId == tests.length - 1 &&
+  //       appState.taskstage == "recap_suspended":
+  //       openRecapTasksPage(appState.recapTasksIds, tests);
+  //       return;
+  //     default:
+  //       return "";
+  //   }
+  // };
 
   const errorCountDownPressed = async () => {
     editorRef.current.getModel().setValue("");
@@ -224,19 +224,21 @@ const useTest = ({
       nextTaskNoPts();
       return;
     }
-    if (
-      appState.taskId == tests.length - 1 &&
-      (appState.taskstage == "recap" ||
-        appState.taskstage == "accomplished_suspended")
-    ) {
+    // if (
+    //   appState.taskId == tests.length - 1 &&
+    //   (appState.taskstage == "recap" ||
+    //     appState.taskstage == "accomplished_suspended")
+    // )
+    if (appState.taskstage == "accomplished_suspended") {
       openCongratPage();
     }
-    if (
-      //TODO:
-      appState.recapTasksIds.length > 0 &&
-      (appState.taskstage == "WIP" || appState.taskstage == "recap_suspended")
-    ) {
-      doRecap(appState.recapTasksIds, tests);
+    // if (
+    //   //TODO:
+    //   appState.recapTasksIds.length > 0 &&
+    //   (appState.taskstage == "WIP" || appState.taskstage == "recap_suspended")
+    // )
+    if (appState.taskstage == "recap_suspended") {
+      openRecapTasksPage(appState.recapTasksIds, tests);
     }
   };
 
@@ -247,7 +249,7 @@ const useTest = ({
     }));
   };
 
-  const setNextTask = (id) => {
+  const openTask = (id) => {
     const test = tests[id];
     setCurrTask({
       task: test.task,
