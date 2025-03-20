@@ -297,8 +297,8 @@ export const getChampTasks = async ({ champid }) => {
   return allTasks;
 };
 
-export const getTestsRecap = (recapTasks, tasks) => {
-  const filteredTasks = tasks.filter((test, id) => recapTasks.includes(id));
+export const getTestsRecap = (recapTasksIds, tasks) => {
+  const filteredTasks = tasks.filter((test, id) => recapTasksIds.includes(id));
   return filteredTasks;
 };
 

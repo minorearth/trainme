@@ -79,8 +79,8 @@ const Card = ({ title, text, openCourseFlowPageFromMain, id, lock }) => {
 
 const StyledWrapper = styled.div`
   .parent {
-    width: 390px;
-    height: 400px;
+    width: 340px;
+    height: 350px;
     perspective: 1000px;
     cursor: pointer;
   }

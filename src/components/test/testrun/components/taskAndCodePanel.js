@@ -20,7 +20,7 @@ const TaskAndCodePanel = (props) => {
     runPythonCode,
     nextTaskNoPts,
     prevTaskNoPts,
-    ErrorCountDownPressed,
+    errorCountDownPressed,
     refreshInput,
   } = props;
   return (
@@ -50,7 +50,7 @@ const TaskAndCodePanel = (props) => {
             actions={actions}
             appState={appState}
             pyodide={pyodide}
-            ErrorCountDownPressed={ErrorCountDownPressed}
+            errorCountDownPressed={errorCountDownPressed}
             currTask={currTask}
             runPythonCode={runPythonCode}
             nextTaskNoPts={nextTaskNoPts}

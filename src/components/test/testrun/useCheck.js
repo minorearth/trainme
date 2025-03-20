@@ -1,7 +1,7 @@
 import { runCheckers, getErrorMessage } from "./taskCheckersUtils";
 import local from "@/globals/local";
 
-const useCheck = ({ NextTaskOrCompleteTest, runPythonCode, setCode }) => {
+const useCheck = ({ nextTaskOrCompleteTest, runPythonCode, setCode }) => {
   const checkTask = async (code, test) => {
     if (!code) {
       return;
@@ -15,7 +15,7 @@ const useCheck = ({ NextTaskOrCompleteTest, runPythonCode, setCode }) => {
       forbiddenChecked
     );
     const isError = error != "";
-    NextTaskOrCompleteTest({
+    nextTaskOrCompleteTest({
       error: isError,
       errorMsg: error,
     });

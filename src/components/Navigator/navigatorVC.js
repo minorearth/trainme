@@ -23,6 +23,7 @@ import { getTargetsBySource } from "./utils";
 import progressStore from "../common/progress/progressStore";
 import { getSense } from "@/db/localstorage";
 import alertdialog from "@/store/dialog";
+import dialog from "@/store/dialog";
 
 const useNavigator = () => {
   const userid = "1";
@@ -32,14 +33,7 @@ const useNavigator = () => {
   const [flow, setFlow] = useState();
 
   const initialState = {
-    // launchedCourse: "",
     page: "courses",
-    // chapter: -1,
-    // taskId: 0,
-    // recapTasks: [],
-    // taskstage: "",
-    // pts: 0,
-    // randomsaved: [],
   };
 
   useEffect(() => {
@@ -55,7 +49,7 @@ const useNavigator = () => {
     const currStatePersisted = loadStatePersisted();
     const page = currStatePersisted?.page || "courses";
 
-    if (page == "flow") {
+    if (page == "flow" || page == "congrat") {
       const coursePaid = await checkCoursePaid(
         currStatePersisted.launchedCourse,
         user.userid
@@ -293,6 +287,19 @@ const useNavigator = () => {
     changeState({ page: "congrat", pts });
   };
 
+  const doRecap = (recapTasksIds, tasks) => {
+    // const pts = getSense();
+    // changeState({ taskstage: "recap", pts });
+    // changeState({ taskstage: "recap"});
+
+    dialog.showDialog(
+      "Повторение",
+      "Попробуй еще раз решить ошибочные задачи",
+      1,
+      () => setRecapTasks(recapTasksIds, tasks)
+    );
+  };
+
   const runChamp = async (champid) => {
     openTestsStartedPage({
       champid,
@@ -327,17 +334,17 @@ const useNavigator = () => {
       changeState(initialState);
     }
 
-    if (
-      appStatePersisted.taskstage == "recap" ||
-      appStatePersisted.taskstage == "accomplished_suspended"
-    ) {
-      setTests(
-        getTestsRecap(
-          appStatePersisted.chapter,
-          appStatePersisted.recapTasks,
-          tasks
-        )
-      );
+    if (appStatePersisted.taskstage == "recap_suspended") {
+      doRecap(appStatePersisted.recapTasksIds, tasks);
+    }
+
+    if (appStatePersisted.taskstage == "accomplished_suspended") {
+      openCongratPage();
+    }
+
+    if (appStatePersisted.taskstage == "recap") {
+      const recapTests = getTestsRecap(appStatePersisted.recapTasksIds, tasks);
+      setTests(recapTests);
     }
 
     if (appStatePersisted.taskstage == "WIP") {
@@ -345,9 +352,24 @@ const useNavigator = () => {
     }
   };
 
-  const setRecapTasks = (recapTasks) => {
+  // const processSuspendedAfterError = async () => {
+  //   switch (true) {
+  //     case appState.taskId == tests.length - 1 &&
+  //       appState.taskstage == "accomplished_suspended":
+  //       openCongratPage();
+  //       return;
+  //     case appState.taskId == tests.length - 1 &&
+  //       appState.taskstage == "recap_suspended":
+  //       doRecap();
+  //       return;
+  //     default:
+  //       return "";
+  //   }
+  // };
+
+  const setRecapTasks = (recapTasksIds, tasks) => {
     changeState({ taskstage: "recap", taskId: 0 });
-    setTests(getTestsRecap(recapTasks, tests));
+    setTests(getTestsRecap(recapTasksIds, tasks));
   };
 
   const setRegularTasks = async ({
@@ -362,7 +384,7 @@ const useNavigator = () => {
       chapter,
       page: "testsStarted",
       taskId: 0,
-      recapTasks: [],
+      recapTasksIds: [],
       taskstage: "WIP",
       repeat,
       overflow,
@@ -386,7 +408,7 @@ const useNavigator = () => {
       chapter,
       page: "testsStarted",
       taskId: 0,
-      recapTasks: [],
+      recapTasksIds: [],
       taskstage: "WIP",
       repeat,
       overflow,
@@ -408,7 +430,7 @@ const useNavigator = () => {
       champid,
       page: "testsStarted",
       taskId: 0,
-      recapTasks: [],
+      recapTasksIds: [],
       taskstage: "WIP",
       nodemode,
     });
@@ -438,6 +460,7 @@ const useNavigator = () => {
       runChamp,
       setRecapTasks,
       openAndRefreshFlowPage,
+      doRecap,
     },
     appState,
     loading,

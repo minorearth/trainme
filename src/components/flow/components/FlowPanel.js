@@ -6,19 +6,16 @@ import { Panel } from "@xyflow/react";
 import { Box } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { useRouter } from "next/navigation";
 import { useTheme } from "@mui/material/styles";
 
 import "@xyflow/react/dist/base.css";
 import { BiCoinStack } from "react-icons/bi";
 import { RiLogoutCircleRLine } from "react-icons/ri";
-import { signOutUserClient } from "@/db/domain/domain";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import Fab from "@mui/material/Fab";
 import Animation from "@/components/common/animation/Animation";
 
 const FlowPanel = ({ appState, actions }) => {
-
   return (
     <Panel position="top-left" style={{ width: "97%" }}>
       <Paper
@@ -65,9 +62,6 @@ const FlowPanel = ({ appState, actions }) => {
           name={"home"}
           onClick={() => {
             actions.openAllCoursePage();
-
-            // await signOutUserClient();
-            // router.push(`/login/`);
           }}
         />
       </Paper>

@@ -17,9 +17,10 @@ export const Panel = ({ children, label }) => {
         // border: "1px  #ddd",
         border: `1px solid  ${theme.palette.divider}`,
         borderRadius: "3px",
-        flex: 1,
+        // flex: 1,
         height: "100%",
         minHeight: "200px",
+
         "& .MuiFormGroup-root": { height: "100%" },
       }}
     >

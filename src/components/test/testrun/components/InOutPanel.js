@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import CachedIcon from "@mui/icons-material/Cached";
+import Box from "@mui/material/Box";
 
 const InOutPanel = (props) => {
   const { currTask, refreshInput } = props;
@@ -77,16 +78,25 @@ const InOutPanel = (props) => {
       </Grid>
       <Grid size={{ xs: 1, md: 1 }}>
         <Panel label={"Выходные данные"}>
-          <Typography
-            variant="body1"
-            gutterBottom
+          <Box
             sx={{
-              display: "inline-block",
-              whiteSpace: "pre-wrap",
+              height: "100%",
+              maxHeight: "200px",
+              overflow: "hidden",
+              overflowY: "auto",
             }}
           >
-            {currTask.output}
-          </Typography>
+            <Typography
+              variant="body1"
+              gutterBottom
+              sx={{
+                display: "inline-block",
+                whiteSpace: "pre-wrap",
+              }}
+            >
+              {currTask.output}
+            </Typography>
+          </Box>
         </Panel>
       </Grid>
       <Grid size={{ xs: 1, md: 1 }}>

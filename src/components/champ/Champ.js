@@ -46,9 +46,6 @@ const Champ = observer(({ actions, appState }) => {
         }}
       >
         <Panel label={"Создать чемпионат"}>
-          <Typography gutterBottom>Сложность</Typography>
-
-          <RangeSlider changeRange={changeRange} range={range} />
           <Box
             sx={{
               display: "flex",
@@ -61,12 +58,17 @@ const Champ = observer(({ actions, appState }) => {
               gap: "10px",
             }}
           >
+            <Typography gutterBottom>Сложность</Typography>
+
+            <RangeSlider changeRange={changeRange} range={range} />
             <Button onClick={() => createChamp()} variant="outlined" fullWidth>
               Создать чемпионат
             </Button>
-            <Typography variant="h4" gutterBottom>
-              {champid}
-            </Typography>
+            {champid && (
+              <Typography variant="h4" gutterBottom>
+                {champid}
+              </Typography>
+            )}
 
             <Button
               onClick={() => startChamp(champid)}

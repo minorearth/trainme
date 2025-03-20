@@ -15,7 +15,7 @@ const Navigation = observer(
     appState,
     pyodide,
     checkTask,
-    ErrorCountDownPressed,
+    errorCountDownPressed,
     currTask,
     runPythonCode,
     nextTaskNoPts,
@@ -91,7 +91,7 @@ const Navigation = observer(
         {cowntdownbutton.state.visible && (
           <CountdownButton
             onClick={() => {
-              ErrorCountDownPressed();
+              errorCountDownPressed();
               cowntdownbutton.hideButton();
             }}
             variant="outlined"
