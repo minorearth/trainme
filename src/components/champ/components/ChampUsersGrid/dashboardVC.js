@@ -8,6 +8,7 @@ import useColumns from "./useColumns";
 
 const useDashboard = ({ champid }) => {
   const [rows, setRowsx] = useState([]);
+  const [started, setStarted] = useState(false);
 
   useEffect(() => {
     if (!champid) return;
@@ -16,12 +17,14 @@ const useDashboard = ({ champid }) => {
       champid,
       (data) => {
         setRowsx(ObjtoArr(data?.users));
+        setStarted(data?.status == "started" ? true : false);
       }
     ).then((docData) => {
       setInterval(() => {
         docData.unsubscribe();
       }, 1000 * 60 * 30);
       setRowsx(ObjtoArr(docData?.data?.users));
+      setStarted(docData?.data?.status == "started" ? true : false);
     });
     return () => {
       console.log("grid unmounted");
@@ -32,6 +35,7 @@ const useDashboard = ({ champid }) => {
   return {
     rows,
     setRowsx,
+    started,
   };
 };
 

@@ -200,12 +200,16 @@ const useNavigator = () => {
   };
 
   const interruptExamMode = () => {
-    setState({
-      launchedCourse: appState.launchedCourse,
-      page: "flow",
-      userProgress: appState.userProgress,
-    });
-    loadFlowNodes(appState.launchedCourse, appState);
+    if (appState.nodemode != "champ") {
+      setState({
+        launchedCourse: appState.launchedCourse,
+        page: "flow",
+        userProgress: appState.userProgress,
+      });
+      loadFlowNodes(appState.launchedCourse, appState);
+    } else {
+      openAllCoursePage();
+    }
   };
 
   const openChampPage = () => {

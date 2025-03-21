@@ -10,6 +10,7 @@ import { Panel } from "./components/Panel";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import RangeSlider from "./components/RangeSlider";
+import SortableList from "@/components/champ/components/ChampUsersList/ChampUsersList";
 
 const Champ = observer(({ actions, appState }) => {
   const {
@@ -144,9 +145,11 @@ const Champ = observer(({ actions, appState }) => {
           overflow: "auto",
           width: "70%",
           flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <ChampUsers champid={champNumber} />
+        <SortableList champid={champNumber} />
+        {/* <ChampUsers champid={champNumber} /> */}
       </Box>
     </Box>
   );

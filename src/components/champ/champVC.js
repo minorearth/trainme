@@ -76,7 +76,7 @@ const useChamps = ({ actions, appState }) => {
   const joinChamp = async () => {
     await updateUsersInChampClient(
       stn.collections.CHAMPS,
-      { id: user.userid, name: userName },
+      { id: user.userid, name: userName, change: 0 },
       champNumber
     );
     setConnected((state) => !state);

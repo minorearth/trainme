@@ -48,7 +48,7 @@ export const updateUsersInChamp = async (db, collectionName, data, id) => {
   const ref = doc(db, collectionName, id);
 
   const feed = await updateDoc(ref, {
-    [`users.${data.id}`]: { id: data.id, name: data.name, pts: 0 },
+    [`users.${data.id}`]: { id: data.id, name: data.name, pts: 0, change: 0 },
   });
 };
 
@@ -98,7 +98,6 @@ export const getDocFromCollectionByIdRealtime = async (
   });
   const docSnap = await getDoc(docRef);
   const data = docSnap.data();
-  console.log("sds", data);
   return { data: { id: docSnap.id, ...data }, unsubscribe };
 };
 
