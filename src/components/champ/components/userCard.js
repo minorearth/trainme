@@ -9,6 +9,9 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Animation from "@/components/common/animation/Animation";
+import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
+import ArrowCircleDownOutlinedIcon from "@mui/icons-material/ArrowCircleDownOutlined";
+import { GoDash } from "react-icons/go";
 
 const UserCard = ({ name, pts, change }) => {
   return (
@@ -44,9 +47,49 @@ const UserCard = ({ name, pts, change }) => {
           gap: "10px",
         }}
       >
-        <Animation height={"25px"} width={"25px"} name={"coins"} />
-        <Typography variant="h6">{`${pts}`}</Typography>
-        <Typography variant="h6">{`${change}`}</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "end",
+            alignItems: "center",
+            gap: "5px",
+            marginRight: "40px",
+          }}
+        >
+          <Typography variant="h6">{`${pts}`}</Typography>
+
+          <Animation height={"25px"} width={"25px"} name={"coins"} />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "end",
+            alignItems: "center",
+            // gap: "10px",
+            width: "60px",
+          }}
+        >
+          {change > 0 ? (
+            <ArrowCircleUpOutlinedIcon sx={{ color: "green" }} />
+          ) : change < 0 ? (
+            <ArrowCircleDownOutlinedIcon sx={{ color: "red" }} />
+          ) : (
+            <GoDash />
+          )}
+          <Box
+            sx={{
+              width: "40px",
+              display: "flex",
+              justifyContent: "end",
+            }}
+          >
+            <Typography variant="h6">
+              {change > 0 ? `+${change}` : change < 0 ? change : ""}
+            </Typography>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );

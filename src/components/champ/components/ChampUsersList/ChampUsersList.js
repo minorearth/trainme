@@ -49,12 +49,15 @@ const SortableList = ({ champid }) => {
   const sortItems = () => {
     const sortedItems = [...rows].sort((a, b) => b.pts - a.pts);
 
-    const getItemOldPos = (uid, id) => {
-      if (!started) {
+    const getItemOldPos = (item, id) => {
+      console.log("ndn", item, items, id);
+      if (!started || item.pts == 0) {
         return 0;
       }
+      console.log("in");
       for (let i = 0; i < items.length; i++) {
-        if (items[i].id == uid) {
+        if (items[i].id == item.id) {
+          console.log("diff", i - id);
           return i - id == 0 ? items[i].change : i - id;
         }
       }
@@ -64,8 +67,7 @@ const SortableList = ({ champid }) => {
     setItems(
       sortedItems.map((item, id) => ({
         ...item,
-        pos: id,
-        change: item.pts != 0 ? getItemOldPos(item.id, id) : 0,
+        change: getItemOldPos(item, id),
       }))
     );
   };

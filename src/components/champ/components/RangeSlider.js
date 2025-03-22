@@ -8,7 +8,7 @@ function valuetext(value) {
 
 export default function RangeSlider({ range, changeRange }) {
   return (
-    <Box sx={{ width: 300 }}>
+    <Box sx={{ width: "100%", paddingLeft: "25px", paddingRight: "25px" }}>
       <Slider
         getAriaLabel={() => "Temperature range"}
         value={range}
