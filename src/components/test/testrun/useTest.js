@@ -4,7 +4,7 @@ import alertdialog from "@/store/dialog";
 import local from "@/globals/local";
 import cowntdownbutton from "@/store/cowntdownbutton";
 import splashCDStore from "@/components/common/splashAction/splashActionStore";
-import { getSense } from "@/db/localstorage";
+import { getSense, loadStatePersisted } from "@/db/localstorage";
 
 const useTest = ({
   appState,
@@ -14,7 +14,8 @@ const useTest = ({
   setEditorDisabled,
 }) => {
   const {
-    changeState,
+    updateState,
+    setState,
     updateLSState,
     setRecapTasks,
     openCongratPage,
@@ -31,7 +32,7 @@ const useTest = ({
     appState.taskId != tests.length && openTask(appState.taskId);
   }, [appState.taskId]);
 
-  const nextTaskOrCompleteTest = async ({ error, errorMsg }) => {
+  const nextTaskOrCompleteTest = async ({ error, errorMsg, code }) => {
     editorRef.current.getModel().setValue("");
     const pts = getEarned(
       error,
@@ -41,6 +42,7 @@ const useTest = ({
       appState.nodemode,
       appState.champid
     );
+    setTaskLog({ error, code });
     switch (true) {
       case appState.taskId != tests.length - 1 && !error:
         ok();
@@ -93,10 +95,53 @@ const useTest = ({
     }
   };
 
+  const setTaskLog = ({ code, error }) => {
+    const currStatePersisted = loadStatePersisted();
+    console.log("iserror", error);
+    const tasklog = !error ? { code } : { errorcode: code };
+    Object.keys(currStatePersisted.tasklog).includes(currTask.taskuuid)
+      ? updateLSState({
+          tasklog: {
+            ...currStatePersisted.tasklog,
+            [currTask.taskuuid]: {
+              ...currStatePersisted.tasklog[currTask.taskuuid],
+              ...tasklog,
+            },
+          },
+        })
+      : updateLSState({
+          tasklog: {
+            ...currStatePersisted.tasklog,
+            [currTask.taskuuid]: {
+              ...tasklog,
+            },
+          },
+        });
+  };
+
   const nextTask = ({ pts }) => {
-    changeState({
-      taskId: appState.taskId + 1,
-      pts,
+    const currStatePersisted = loadStatePersisted();
+
+    setState({ ...currStatePersisted, taskId: appState.taskId + 1 });
+
+    // updateState({
+    //   taskId: appState.taskId + 1,
+    //   pts,
+    // });
+  };
+
+  const nextTaskNoPts = () => {
+    const currStatePersisted = loadStatePersisted();
+    setState({ ...currStatePersisted, taskId: appState.taskId + 1 });
+
+    // updateState({
+    //   taskId: appState.taskId + 1,
+    // });
+  };
+
+  const prevTaskNoPts = () => {
+    updateState({
+      taskId: appState.taskId - 1,
     });
   };
 
@@ -189,18 +234,6 @@ const useTest = ({
     }));
   };
 
-  const nextTaskNoPts = () => {
-    changeState({
-      taskId: appState.taskId + 1,
-    });
-  };
-
-  const prevTaskNoPts = () => {
-    changeState({
-      taskId: appState.taskId - 1,
-    });
-  };
-
   // const processSuspendedAfterError = async () => {
   //   switch (true) {
   //     case appState.taskId == tests.length - 1 &&
@@ -252,22 +285,39 @@ const useTest = ({
   const openTask = (id) => {
     const test = tests[id];
     setCurrTask({
-      task: test.task,
-      tasktype: test.tasktype,
-      input: test.defaultinput.join("\n"),
-      code:
-        test.defaultcode +
+      task:
+        test.task +
         formatForbidden(
           test.restrictions.forbidden,
           test.restrictions.forbiddenRe,
           test.restrictions.maxlines,
           test.tasktype
         ),
+      tasktype: test.tasktype,
+      input: test.defaultinput.join("\n"),
+      code: test.defaultcode,
       expectedOutput: test.defaultoutput.join("\n"),
+      taskuuid: test.taskuuid,
 
       output: "",
       restrictErrors: "",
     });
+  };
+
+  const setRightCode = (id) => {
+    const test = tests[id];
+    setCurrTask((state) => ({
+      ...state,
+      code: test.rightcode,
+    }));
+  };
+
+  const setForbiddenCode = (id) => {
+    const test = tests[id];
+    setCurrTask((state) => ({
+      ...state,
+      code: test.forbiddencode,
+    }));
   };
 
   const refreshInput = () => {
@@ -280,13 +330,13 @@ const useTest = ({
   //UTILIIES
   const formatForbidden = (forbidden, forbiddenRe, maxlines, tasktype) => {
     let res = "";
-    res += `\n\n# Ограничения:\n# Максимальное количество строк кода: ${maxlines}`;
-
     if (tasktype != "task") {
       return "";
     }
+    res += `\n\n<b>Ограничения</b>:\nМаксимальное количество строк кода: ${maxlines}`;
+
     if (forbidden.length) {
-      res += `# Запрещенные приёмы: ${forbidden.join(", ")}\n`;
+      res += `\nЗапрещенные приёмы: ${forbidden.join(", ")}`;
     }
 
     return res;
@@ -302,6 +352,8 @@ const useTest = ({
     getSense,
     errorCountDownPressed,
     setCode,
+    setRightCode,
+    setForbiddenCode,
   };
 };
 

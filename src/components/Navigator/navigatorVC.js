@@ -4,6 +4,7 @@ import {
   persistState,
   loadStatePersisted,
   updateStateLS,
+  getSense,
 } from "@/db/localstorage";
 import user from "@/store/user";
 import {
@@ -21,7 +22,6 @@ import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
 import { setUseMetaData } from "@/db/SA/firebaseSA";
 import { getTargetsBySource } from "./utils";
 import progressStore from "../common/progress/progressStore";
-import { getSense } from "@/db/localstorage";
 import alertdialog from "@/store/dialog";
 import dialog from "@/store/dialog";
 
@@ -67,7 +67,7 @@ const useNavigator = () => {
       //to get edges on Accomplish
       loadFlowNodes(currStatePersisted.launchedCourse, currStatePersisted);
 
-      changeState({
+      updateState({
         ...currStatePersisted,
       });
     }
@@ -106,14 +106,11 @@ const useNavigator = () => {
   };
 
   const resetStateToInitial = async () => {
-    const stateToUpdated = {
-      ...initialState,
-    };
-    const stateUpdated = updateStateLS(stateToUpdated);
-    changeState({ ...stateUpdated });
+    const stateUpdated = updateStateLS(initialState);
+    updateState({ ...stateUpdated });
   };
 
-  const changeState = (data) => {
+  const updateState = (data) => {
     setappState((state) => {
       const newState = { ...state, ...data };
       persistState(newState);
@@ -128,6 +125,8 @@ const useNavigator = () => {
 
   const updateLSState = (data) => {
     const state = loadStatePersisted();
+    console.log("hh", { ...state, ...data });
+
     persistState({ ...state, ...data });
   };
 
@@ -177,7 +176,7 @@ const useNavigator = () => {
   const openTextBook = async ({ chapter, courseid, appState }) => {
     const tasks = await getTextBook(appState, courseid);
     if (tasks.length) {
-      changeState({
+      updateState({
         page: "testsStarted",
         taskId: 0,
         nodemode: "textbook",
@@ -213,7 +212,7 @@ const useNavigator = () => {
   };
 
   const openChampPage = () => {
-    changeState({ page: "champ" });
+    updateState({ page: "champ" });
   };
 
   const openTestsStartedPage = async ({
@@ -288,13 +287,13 @@ const useNavigator = () => {
     if (appState.nodemode == "champ") {
     }
 
-    changeState({ page: "congrat", pts });
+    updateState({ page: "congrat", pts });
   };
 
   const openRecapTasksPage = (recapTasksIds, tasks) => {
     // const pts = getSense();
-    // changeState({ taskstage: "recap", pts });
-    // changeState({ taskstage: "recap"});
+    // updateState({ taskstage: "recap", pts });
+    // updateState({ taskstage: "recap"});
 
     dialog.showDialog(
       "Повторение",
@@ -335,7 +334,7 @@ const useNavigator = () => {
     }
 
     if (appStatePersisted.nodemode == "textbook") {
-      changeState(initialState);
+      updateState(initialState);
     }
 
     if (appStatePersisted.taskstage == "recap_suspended") {
@@ -372,7 +371,7 @@ const useNavigator = () => {
   // };
 
   const setRecapTasks = (recapTasksIds, tasks) => {
-    changeState({ taskstage: "recap", taskId: 0 });
+    updateState({ taskstage: "recap", taskId: 0 });
     setTests(getTestsRecap(recapTasksIds, tasks));
   };
 
@@ -384,7 +383,7 @@ const useNavigator = () => {
     remainsum,
     nodemode,
   }) => {
-    changeState({
+    updateState({
       chapter,
       page: "testsStarted",
       taskId: 0,
@@ -408,7 +407,7 @@ const useNavigator = () => {
     level,
     remainsum,
   }) => {
-    changeState({
+    updateState({
       chapter,
       page: "testsStarted",
       taskId: 0,
@@ -430,7 +429,7 @@ const useNavigator = () => {
   };
 
   const setChampTasks = async ({ champid, nodemode }) => {
-    changeState({
+    updateState({
       champid,
       page: "testsStarted",
       taskId: 0,
@@ -446,7 +445,7 @@ const useNavigator = () => {
 
   return {
     actions: {
-      changeState,
+      updateState,
       setState,
       updateLSState,
       openFlowPageAfterAccomplished,

@@ -44,7 +44,7 @@ export default function Start({ actions, appState }) {
       <Button
         onClick={() => {
           progressStore.setShowProgress(true, false, "progressdots", 2000);
-          actions.changeState({ page: "testrun", pts: 0 });
+          actions.updateState({ page: "testrun", pts: 0, tasklog: {} });
         }}
         variant="outlined"
       >

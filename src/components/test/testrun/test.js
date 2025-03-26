@@ -62,6 +62,7 @@ const Test = observer((props) => {
           monacoRef={monacoRef}
           editorRef={editorRef}
           refreshInput={refreshInput}
+          setOutput={setOutput}
         />
         <InOutPanel currTask={currTask} refreshInput={refreshInput} />
       </Box>

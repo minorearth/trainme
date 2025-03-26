@@ -18,6 +18,7 @@ const useCheck = ({ nextTaskOrCompleteTest, runPythonCode, setCode }) => {
     nextTaskOrCompleteTest({
       error: isError,
       errorMsg: error,
+      code,
     });
     setCode("");
     return error != "";

@@ -91,7 +91,7 @@ const AdminPanel = ({ flow, appState, actions }) => {
       </Button>
       <Button
         onClick={() => {
-          actions.changeState({ taskId: 7 });
+          actions.updateState({ taskId: 7 });
         }}
       >
         lasttask

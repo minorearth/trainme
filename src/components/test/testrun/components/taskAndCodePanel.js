@@ -15,6 +15,8 @@ const TaskAndCodePanel = (props) => {
     monacoRef,
     editorRef,
     setCode,
+    setRightCode,
+    setForbiddenCode,
     mode,
     checkTask,
     runPythonCode,
@@ -22,16 +24,20 @@ const TaskAndCodePanel = (props) => {
     prevTaskNoPts,
     errorCountDownPressed,
     refreshInput,
+    setOutput,
   } = props;
   return (
     <Grid container spacing={2} columns={{ xs: 1, md: 3 }}>
       <Grid size={{ xs: 1, md: 1 }}>
         <Panel label={"Выполни задание"}>
+          {/* dangerouslySetInnerHTML={{ __html: "<p>Hi from inner HTML</p>" }}> */}
+
           <Typography
             variant="body1"
+            dangerouslySetInnerHTML={{ __html: `<p>${currTask.task}</p>` }}
             sx={{ display: "inline-block", whiteSpace: "pre-line" }}
           >
-            {currTask.task}
+            {/* {currTask.task} */}
           </Typography>
         </Panel>
       </Grid>
@@ -56,6 +62,9 @@ const TaskAndCodePanel = (props) => {
             nextTaskNoPts={nextTaskNoPts}
             prevTaskNoPts={prevTaskNoPts}
             refreshInput={refreshInput}
+            setRightCode={setRightCode}
+            setForbiddenCode={setForbiddenCode}
+            setOutput={setOutput}
           />
         </Panel>
       </Grid>

@@ -20,20 +20,20 @@ export default function usePythonRunner({ setOutput, pyodide }) {
       let output = [];
       const stdout = (msg) => {
         output.push(msg);
-        setOutput(output.join("\n"));
+        // setOutput(output.join("\n"));
       };
 
       const stdError = (msg) => {
         const error = msg.message.split("\n").slice(-2)[0];
         output.push(stn.errors.error5 + error);
-        setOutput(stn.errors.error5 + error);
+        // setOutput(stn.errors.error5 + error);
       };
       try {
         const stdInSplitted = stdIn.split("\n");
 
         pyodide.setStdin(new StdinHandler(stdInSplitted));
         pyodide.setStdout({ batched: stdout });
-        setOutput([]);
+        // setOutput([]);
         if (pyodide) {
           await pyodide.runPython(code);
           return output;

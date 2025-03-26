@@ -22,7 +22,7 @@ const checkLines = (code, maxlines) => {
 };
 
 const checkMustHave = (code, musthave, musthaveRe) => {
-  const codeLines = cleanUpCode(code).join();
+  const codeLines = cleanUpCode(code).join("\n");
 
   const musthaveCheck = musthave
     .map((item) => codeLines.includes(item))
@@ -37,7 +37,7 @@ const checkMustHave = (code, musthave, musthaveRe) => {
 };
 
 const checkForbidden = (code, musthave, musthaveRe) => {
-  const codeLines = cleanUpCode(code).join();
+  const codeLines = cleanUpCode(code).join("\n");
   const forbiddenCheck1 = musthave.map((item) => !codeLines.includes(item));
   const forbiddenCheck = forbiddenCheck1.every(Boolean);
 

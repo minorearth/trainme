@@ -21,6 +21,9 @@ const Navigation = observer(
     nextTaskNoPts,
     prevTaskNoPts,
     refreshInput,
+    setRightCode,
+    setForbiddenCode,
+    setOutput,
   }) => {
     const [executing, setExecuting] = useState(false);
 
@@ -39,7 +42,10 @@ const Navigation = observer(
           onClick={async (e) => {
             if (!pyodide || executing) return;
             setExecuting(true);
-            await runPythonCode(currTask.code, currTask.input);
+            // await runPythonCode(currTask.code, currTask.input);
+            const output = await runPythonCode(currTask.code, currTask.input);
+
+            setOutput(output);
             setExecuting(false);
           }}
           variant="outlined"
@@ -66,7 +72,7 @@ const Navigation = observer(
             Проверить!
           </Button>
         )}
-        {appState.nodemode == "textbook" && (
+        {(appState.nodemode == "textbook" || stn.mode.DEV_MODE) && (
           <Button
             onClick={() => {
               prevTaskNoPts();
@@ -106,6 +112,26 @@ const Navigation = observer(
             variant="outlined"
           >
             Выйти
+          </Button>
+        )}
+        {stn.mode.DEV_MODE && (
+          <Button
+            onClick={() => {
+              setRightCode(appState.taskId);
+            }}
+            variant="outlined"
+          >
+            RC
+          </Button>
+        )}
+        {stn.mode.DEV_MODE && (
+          <Button
+            onClick={() => {
+              setForbiddenCode(appState.taskId);
+            }}
+            variant="outlined"
+          >
+            FC
           </Button>
         )}
       </Box>
