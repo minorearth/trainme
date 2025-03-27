@@ -78,29 +78,10 @@ const Champ = observer(({ actions, appState }) => {
             >
               Начать
             </Button>
-            <Button
-              variant="outlined"
-              fullWidth
-              onClick={() =>
-                window.open(
-                  `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard/${champid}`,
-                  "_blank"
-                )
-              }
-            >
-              Дэш
-            </Button>
-            <Button
-              variant="outlined"
-              fullWidth
-              onClick={() => actions.openAllCoursePage()}
-            >
-              Выйти
-            </Button>
-          </Box>
-        </Panel>
-        <Panel label={"Присоединиться"}>
-          <Box
+            {/* </Box> */}
+            {/* </Panel> */}
+            {/* <Panel label={"Результаты"}> */}
+            {/* <Box
             sx={{
               display: "flex",
               // flex: 1,
@@ -112,7 +93,44 @@ const Champ = observer(({ actions, appState }) => {
               gap: "20px",
               padding: "10px",
             }}
-          >
+          > */}
+            {/* <TextField
+              id="outlined-basic"
+              label="Номер чемпионата"
+              variant="outlined"
+              onChange={(e) => changeChampNumber(e)}
+              value={champNumber}
+              fullWidth
+            /> */}
+
+            <Button
+              sx={{ marginBottom: "40px" }}
+              variant="outlined"
+              fullWidth
+              onClick={() =>
+                window.open(
+                  `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard/${champid}`,
+                  "_blank"
+                )
+              }
+            >
+              В новом окне
+            </Button>
+            {/* </Panel> */}
+            {/* <Panel label={"Присоединиться"}> */}
+            {/* <Box
+            sx={{
+              display: "flex",
+              // flex: 1,
+              overflow: "auto",
+              width: "70%",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "20px",
+              padding: "10px",
+            }}
+          > */}
             <TextField
               id="outlined-basic"
               label="Введите имя"
@@ -131,9 +149,16 @@ const Champ = observer(({ actions, appState }) => {
               fullWidth
             />
 
-            <Button variant="outlined" onClick={() => joinChamp()}>
+            <Button variant="outlined" onClick={() => joinChamp()} fullWidth>
               {" "}
               Присоединиться
+            </Button>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={() => actions.openAllCoursePage()}
+            >
+              Выйти
             </Button>
           </Box>
         </Panel>

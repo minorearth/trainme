@@ -4,7 +4,7 @@ import alertdialog from "@/store/dialog";
 import local from "@/globals/local";
 import cowntdownbutton from "@/store/cowntdownbutton";
 import splashCDStore from "@/components/common/splashAction/splashActionStore";
-import { getSense, loadStatePersisted } from "@/db/localstorage";
+import { getSense, getSCP } from "@/db/localstorage";
 
 const useTest = ({
   appState,
@@ -34,58 +34,48 @@ const useTest = ({
 
   const nextTaskOrCompleteTest = async ({ error, errorMsg, code }) => {
     editorRef.current.getModel().setValue("");
+    const CSP = getSCP();
+
     const pts = getEarned(
       error,
-      appState.taskstage,
-      appState.repeat,
-      appState.overflow,
-      appState.nodemode,
-      appState.champid
+      CSP.taskstage,
+      CSP.repeat,
+      CSP.overflow,
+      CSP.nodemode,
+      CSP.champid
     );
     setTaskLog({ error, code });
     switch (true) {
-      case appState.taskId != tests.length - 1 && !error:
+      case CSP.taskId != tests.length - 1 && !error:
         ok();
         nextTask({ pts });
         return;
-      case appState.taskId == tests.length - 1 && !error:
-        if (appState.taskstage == "recap") {
-          ok(openCongratPage);
+      case CSP.taskId == tests.length - 1 && !error:
+        if (CSP.taskstage == "recap") {
+          ok(() => openCongratPage({ appStatePersisted: CSP }));
         }
-        if (appState.recapTasksIds.length == 0 && appState.taskstage == "WIP") {
-          ok(openCongratPage);
+        if (CSP.recapTasksIds.length == 0 && CSP.taskstage == "WIP") {
+          ok(() => openCongratPage({ appStatePersisted: CSP }));
         }
-        if (appState.recapTasksIds.length != 0 && appState.taskstage == "WIP") {
-          ok(openRecapTasksPage);
+        if (CSP.recapTasksIds.length != 0 && CSP.taskstage == "WIP") {
+          ok(openRecapTasksPage(CSP.recapTasksIds, tests));
         }
         return;
       case error:
         showRightCodeAfterError({ errorMsg });
-        if (
-          appState.taskstage == "WIP" &&
-          appState.taskId != tests.length - 1
-        ) {
+        if (CSP.taskstage == "WIP" && CSP.taskId != tests.length - 1) {
           addErrorTaskToRecap();
         }
 
-        if (
-          appState.taskstage == "recap" &&
-          appState.taskId != tests.length - 1
-        ) {
+        if (CSP.taskstage == "recap" && CSP.taskId != tests.length - 1) {
           updateLSState({
-            taskId: appState.taskId + 1,
+            taskId: CSP.taskId + 1,
           });
         }
-        if (
-          appState.taskstage == "WIP" &&
-          appState.taskId == tests.length - 1
-        ) {
+        if (CSP.taskstage == "WIP" && CSP.taskId == tests.length - 1) {
           errorOnLastWIPTask();
         }
-        if (
-          appState.taskstage == "recap" &&
-          appState.taskId == tests.length - 1
-        ) {
+        if (CSP.taskstage == "recap" && CSP.taskId == tests.length - 1) {
           errorOnLastRecapTask();
         }
         return;
@@ -96,7 +86,7 @@ const useTest = ({
   };
 
   const setTaskLog = ({ code, error }) => {
-    const currStatePersisted = loadStatePersisted();
+    const currStatePersisted = getSCP();
     console.log("iserror", error);
     const tasklog = !error ? { code } : { errorcode: code };
     Object.keys(currStatePersisted.tasklog).includes(currTask.taskuuid)
@@ -120,7 +110,7 @@ const useTest = ({
   };
 
   const nextTask = ({ pts }) => {
-    const currStatePersisted = loadStatePersisted();
+    const currStatePersisted = getSCP();
 
     setState({ ...currStatePersisted, taskId: appState.taskId + 1 });
 
@@ -131,7 +121,7 @@ const useTest = ({
   };
 
   const nextTaskNoPts = () => {
-    const currStatePersisted = loadStatePersisted();
+    const currStatePersisted = getSCP();
     setState({ ...currStatePersisted, taskId: appState.taskId + 1 });
 
     // updateState({
@@ -234,22 +224,8 @@ const useTest = ({
     }));
   };
 
-  // const processSuspendedAfterError = async () => {
-  //   switch (true) {
-  //     case appState.taskId == tests.length - 1 &&
-  //       appState.taskstage == "accomplished_suspended":
-  //       openCongratPage();
-  //       return;
-  //     case appState.taskId == tests.length - 1 &&
-  //       appState.taskstage == "recap_suspended":
-  //       openRecapTasksPage(appState.recapTasksIds, tests);
-  //       return;
-  //     default:
-  //       return "";
-  //   }
-  // };
-
   const errorCountDownPressed = async () => {
+    console.log("sdds", tests);
     editorRef.current.getModel().setValue("");
     setEditorDisabled(false);
 
@@ -257,19 +233,9 @@ const useTest = ({
       nextTaskNoPts();
       return;
     }
-    // if (
-    //   appState.taskId == tests.length - 1 &&
-    //   (appState.taskstage == "recap" ||
-    //     appState.taskstage == "accomplished_suspended")
-    // )
     if (appState.taskstage == "accomplished_suspended") {
-      openCongratPage();
+      openCongratPage({ appStatePersisted: appState });
     }
-    // if (
-    //   //TODO:
-    //   appState.recapTasksIds.length > 0 &&
-    //   (appState.taskstage == "WIP" || appState.taskstage == "recap_suspended")
-    // )
     if (appState.taskstage == "recap_suspended") {
       openRecapTasksPage(appState.recapTasksIds, tests);
     }
@@ -283,6 +249,7 @@ const useTest = ({
   };
 
   const openTask = (id) => {
+    console.log("id", id, tests);
     const test = tests[id];
     setCurrTask({
       task:

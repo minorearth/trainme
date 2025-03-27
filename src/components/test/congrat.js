@@ -6,13 +6,13 @@ import ReplayIcon from "@mui/icons-material/Replay";
 import { useTheme } from "@mui/material/styles";
 import TextAnimated from "@/components/common/textAnimated/textAnimated";
 import { useEffect, useState } from "react";
-import { loadStatePersisted } from "@/db/localstorage";
+import { getSCP } from "@/db/localstorage";
 
 let pts;
 const CongratPage = ({ appState, actions }) => {
   const [pts, setPts] = useState(10);
   useEffect(() => {
-    const { pts } = loadStatePersisted();
+    const { pts } = getSCP();
     setPts(pts);
   }, []);
 
@@ -44,13 +44,13 @@ const CongratPage = ({ appState, actions }) => {
             appState.nodemode == "renewal"
           ) {
             actions.openFlowPageAfterAccomplished();
-            // await actions.openAndRefreshFlowPage(appState.launchedCourse);
           }
 
           if (appState.nodemode == "champ") {
-            actions.setState({
-              page: "courses",
-            });
+            actions.openSpecChampPage({ champid: appState.champid });
+            // actions.setState({
+            //   page: "courses",
+            // });
           }
 
           // setFlowPage();

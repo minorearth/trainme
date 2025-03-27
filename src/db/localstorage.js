@@ -21,7 +21,7 @@ export const updateStateLS = (data) => {
   }
 };
 
-export const persistState = (state) => {
+export const setSCP = (state) => {
   if (stn.mode.needCt) {
     localStorage.setItem("state", encrypt2(JSON.stringify(state)));
   } else {
@@ -30,11 +30,11 @@ export const persistState = (state) => {
 };
 
 export const getSense = () => {
-  const { pts } = loadStatePersisted();
+  const { pts } = getSCP();
   return !pts ? 0 : pts;
 };
 
-export const loadStatePersisted = () => {
+export const getSCP = () => {
   const state = localStorage.getItem("state");
   if (stn.mode.needCt) {
     return state != null ? JSON.parse(decrypt2(state)) : null;

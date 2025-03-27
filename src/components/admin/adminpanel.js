@@ -13,12 +13,18 @@ import { courses } from "@/globals/courses";
 import Input from "@mui/material/Input";
 import { useState } from "react";
 
-const AdminPanel = ({ flow, appState, actions }) => {
+const AdminPanel = ({ flow, appState, actions, tests }) => {
   const [inValue, setInValue] = useState(5000);
 
   const handleChange = (e) => {
     setInValue(e.target.value);
   };
+
+  // resetUseMetaData(
+  //   courses["6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0"].firstchapter,
+  //   "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0",
+  //   user.userid
+  // );
 
   return (
     <>
@@ -91,7 +97,7 @@ const AdminPanel = ({ flow, appState, actions }) => {
       </Button>
       <Button
         onClick={() => {
-          actions.updateState({ taskId: 7 });
+          actions.updateState({ taskId: tests.length - 1 });
         }}
       >
         lasttask

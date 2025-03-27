@@ -45,7 +45,12 @@ const Navigator = observer(() => {
           {countdown.dialogState.visible && <Countdown />}
           <AlertDialog />
           {stn.mode.DEV_MODE && (
-            <AdminPanel flow={flow} appState={appState} actions={actions} />
+            <AdminPanel
+              flow={flow}
+              appState={appState}
+              actions={actions}
+              tests={tests}
+            />
           )}
           <Progress />
           <SplashAction name={"ok"} />

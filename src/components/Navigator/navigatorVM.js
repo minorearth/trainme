@@ -11,7 +11,8 @@ import cowntdownbutton from "@/store/cowntdownbutton";
 import progressCircle from "@/components/common/progress/progressStore";
 import { courses } from "@/globals/courses";
 import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
-import { persistState, loadStatePersisted } from "@/db/localstorage";
+import { setSCP, getSCP } from "@/db/localstorage";
+import { getTargetsBySource } from "./utils";
 
 const nodeAction = (data) => {
   const {
@@ -30,6 +31,7 @@ const nodeAction = (data) => {
     openAndRefreshFlowPage,
     courseid,
     rating,
+    tobeunlocked,
   } = data;
   if (!unlocked && !paid) {
     alertdialog.showDialog(
@@ -70,7 +72,7 @@ const nodeAction = (data) => {
           })
         );
         data.paid = true;
-        await openAndRefreshFlowPage();
+        await openAndRefreshFlowPage(courseid);
         progressCircle.setCloseProgress();
       },
       () => {}
@@ -98,6 +100,7 @@ const nodeAction = (data) => {
       textbook: false,
       champ: false,
       level,
+      tobeunlocked,
     });
   }
   if (unlocked && paid && completed) {
@@ -109,6 +112,7 @@ const nodeAction = (data) => {
       courseid,
       nodemode,
       level,
+      tobeunlocked: [],
     });
   }
 };
@@ -129,6 +133,7 @@ const fullFillProgess = (
   openAndRefreshFlowPage,
   courseid
 ) => {
+  console.log("progress", progress);
   const { unlocked, completed, paid, rating, stat } = progress;
   const full = chapterFlowNodes.map((node) => ({
     ...node,
@@ -139,6 +144,7 @@ const fullFillProgess = (
       paid: paid.includes(node.id) || !node.data.unlockpts,
       sum: stat[node.id]?.sum || 0,
       remainsum: getRemainSum({ stat, node }),
+      tobeunlocked: getTargetsBySource(node.id, edges),
       overflow: stat[node.id]?.sum
         ? stat[node.id].sum >= node.data.maxcoins
         : false,
@@ -165,21 +171,22 @@ export const setFlowNodes = async ({
   openTestsStartedPage,
   openAndRefreshFlowPage,
 }) => {
-  getDocDataFromCollectionByIdClient(
+  const data = await getDocDataFromCollectionByIdClient(
     "chapters",
     courses[courseid].chaptersdoc
-  ).then((data) => {
-    const edges = data.data.chapterFlowEdges;
-    const nodes = fullFillProgess(
-      progress,
-      data.data.chapterFlowNodes,
-      edges,
-      openTestsStartedPage,
-      openAndRefreshFlowPage,
-      courseid
-    );
-    setFlow({ edges, nodes });
-  });
+  );
+  const edges = data.data.chapterFlowEdges;
+  const nodes = fullFillProgess(
+    progress,
+    data.data.chapterFlowNodes,
+    edges,
+    openTestsStartedPage,
+    openAndRefreshFlowPage,
+    courseid
+  );
+  const flow = { edges, nodes };
+  setFlow(flow);
+  return flow;
 };
 
 export const getTestsByMode = async (chapter, courseid) => {
@@ -219,13 +226,13 @@ export const getAllTestsFromChapter = async (chapter, courseid) => {
   return res;
 };
 
-export const getTextBook = async (appState, courseid) => {
+export const getTextBook = async (SCP, courseid) => {
   const filteredTasks = await getDocDataFromCollectionByIdClient(
     courses[courseid].taskcollection,
     courses[courseid].textbookchapter
   );
   const unlockedTheory = filteredTasks.data.tasks.filter((item) =>
-    appState.userProgress.completed.includes(item.chapterparentid)
+    SCP.userProgress.completed.includes(item.chapterparentid)
   );
   if (!filteredTasks.data) {
     return [];
@@ -247,7 +254,7 @@ export const getRandomTasksForRepeat = async ({
   levelStart,
   levelEnd,
 }) => {
-  const statePersisted = loadStatePersisted();
+  const statePersisted = getSCP();
 
   const allTasks = await getDocDataFromCollectionByIdClient(
     courses[courseid].taskcollection,
@@ -263,7 +270,7 @@ export const getRandomTasksForRepeat = async ({
   } else {
     filteredTasks = getRandomTasks(allTasks.data.tasks, levelStart, levelEnd);
     const tasksuuids = filteredTasks.map((task) => task.taskuuid);
-    persistState({ randomsaved: tasksuuids });
+    setSCP({ randomsaved: tasksuuids });
   }
 
   const res = stn.mode.ALL_RIGHT_CODE

@@ -105,6 +105,7 @@ export const setUseMetaData = async (data) => {
     userMetaRef.update({
       [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
       [`courses.${launchedCourse}.completed`]:
+        //TODO: lastcompleted is not needed?
         FieldValue.arrayUnion(lastcompleted),
       [`courses.${launchedCourse}.unlocked`]: FieldValue.arrayUnion(
         ...unlocked
@@ -115,11 +116,11 @@ export const setUseMetaData = async (data) => {
     });
   } else {
     userMetaRef.update({
-      [`courses.${launchedCourse}`]: {
-        rating: FieldValue.increment(pts),
-        completed: FieldValue.arrayUnion(lastcompleted),
-        [`stat.${lastcompleted}.sum`]: FieldValue.increment(pts),
-      },
+      [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
+      // [`courses.${launchedCourse}.completed`]:
+      //   FieldValue.arrayUnion(lastcompleted),
+      [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]:
+        FieldValue.increment(pts),
     });
   }
 };
