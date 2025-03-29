@@ -4,7 +4,7 @@ import { stn } from "@/constants";
 import { chapters } from "@/app/admin/adminUtils/tasksData";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { setSCP, getSCP } from "@/db/localstorage";
+import { setCSP, getCSP } from "@/db/localstorage";
 
 export default function Chapters({ setTestsStarted }) {
   const setChapterAndTestsStarted = (chapter) => {

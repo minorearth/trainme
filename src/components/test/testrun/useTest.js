@@ -4,7 +4,7 @@ import alertdialog from "@/store/dialog";
 import local from "@/globals/local";
 import cowntdownbutton from "@/store/cowntdownbutton";
 import splashCDStore from "@/components/common/splashAction/splashActionStore";
-import { getSense, getSCP } from "@/db/localstorage";
+import { getSense, getCSP, setCSP, updateSCP } from "@/db/localstorage";
 
 const useTest = ({
   appState,
@@ -14,19 +14,15 @@ const useTest = ({
   setEditorDisabled,
 }) => {
   const {
-    updateState,
-    setState,
-    updateLSState,
+    updateStateAndCSP,
+    setappState,
     setRecapTasks,
     openCongratPage,
     openRecapTasksPage,
+    setStateAndCSP,
   } = actions;
 
   const [currTask, setCurrTask] = useState({});
-
-  useEffect(() => {
-    // processSuspendedAfterError();
-  }, []);
 
   useEffect(() => {
     appState.taskId != tests.length && openTask(appState.taskId);
@@ -34,8 +30,8 @@ const useTest = ({
 
   const nextTaskOrCompleteTest = async ({ error, errorMsg, code }) => {
     editorRef.current.getModel().setValue("");
-    const CSP = getSCP();
-
+    setTaskLog({ error, code });
+    const CSP = getCSP();
     const pts = getEarned(
       error,
       CSP.taskstage,
@@ -44,31 +40,31 @@ const useTest = ({
       CSP.nodemode,
       CSP.champid
     );
-    setTaskLog({ error, code });
     switch (true) {
       case CSP.taskId != tests.length - 1 && !error:
         ok();
-        nextTask({ pts });
+        nextTask({ CSP });
         return;
       case CSP.taskId == tests.length - 1 && !error:
         if (CSP.taskstage == "recap") {
-          ok(() => openCongratPage({ appStatePersisted: CSP }));
+          ok(() => openCongratPage({ CSP }));
         }
         if (CSP.recapTasksIds.length == 0 && CSP.taskstage == "WIP") {
-          ok(() => openCongratPage({ appStatePersisted: CSP }));
+          ok(() => openCongratPage({ CSP }));
         }
         if (CSP.recapTasksIds.length != 0 && CSP.taskstage == "WIP") {
-          ok(openRecapTasksPage(CSP.recapTasksIds, tests));
+          console.log("тута2");
+          ok(() => openRecapTasksPage(CSP.recapTasksIds, tests));
         }
         return;
       case error:
         showRightCodeAfterError({ errorMsg });
         if (CSP.taskstage == "WIP" && CSP.taskId != tests.length - 1) {
-          addErrorTaskToRecap();
+          addErrorTaskToRecap({ CSP });
         }
 
         if (CSP.taskstage == "recap" && CSP.taskId != tests.length - 1) {
-          updateLSState({
+          updateSCP({
             taskId: CSP.taskId + 1,
           });
         }
@@ -86,22 +82,21 @@ const useTest = ({
   };
 
   const setTaskLog = ({ code, error }) => {
-    const currStatePersisted = getSCP();
-    console.log("iserror", error);
+    const CSP = getCSP();
     const tasklog = !error ? { code } : { errorcode: code };
-    Object.keys(currStatePersisted.tasklog).includes(currTask.taskuuid)
-      ? updateLSState({
+    Object.keys(CSP.tasklog).includes(currTask.taskuuid)
+      ? updateSCP({
           tasklog: {
-            ...currStatePersisted.tasklog,
+            ...CSP.tasklog,
             [currTask.taskuuid]: {
-              ...currStatePersisted.tasklog[currTask.taskuuid],
+              ...CSP.tasklog[currTask.taskuuid],
               ...tasklog,
             },
           },
         })
-      : updateLSState({
+      : updateSCP({
           tasklog: {
-            ...currStatePersisted.tasklog,
+            ...CSP.tasklog,
             [currTask.taskuuid]: {
               ...tasklog,
             },
@@ -109,36 +104,24 @@ const useTest = ({
         });
   };
 
-  const nextTask = ({ pts }) => {
-    const currStatePersisted = getSCP();
-
-    setState({ ...currStatePersisted, taskId: appState.taskId + 1 });
-
-    // updateState({
-    //   taskId: appState.taskId + 1,
-    //   pts,
-    // });
+  const nextTask = ({ CSP }) => {
+    setStateAndCSP({ ...CSP, taskId: CSP.taskId + 1 });
   };
 
-  const nextTaskNoPts = () => {
-    const currStatePersisted = getSCP();
-    setState({ ...currStatePersisted, taskId: appState.taskId + 1 });
-
-    // updateState({
-    //   taskId: appState.taskId + 1,
-    // });
+  const nextTaskNoPts = ({ CSP }) => {
+    setStateAndCSP({ ...CSP, taskId: CSP.taskId + 1 });
   };
 
   const prevTaskNoPts = () => {
-    updateState({
-      taskId: appState.taskId - 1,
-    });
+    const CSP = getCSP();
+    setStateAndCSP({ ...CSP, taskId: CSP.taskId - 1 });
   };
 
-  const addErrorTaskToRecap = () => {
-    const recapTasksIds = [...appState.recapTasksIds, appState.taskId];
-    appState.recapTasksIds = recapTasksIds;
-    updateLSState({
+  const addErrorTaskToRecap = ({ CSP }) => {
+    const recapTasksIds = [...CSP.recapTasksIds, appState.taskId];
+    // appState.recapTasksIds = recapTasksIds;
+    setCSP({
+      ...CSP,
       recapTasksIds,
       taskId: appState.taskId + 1,
     });
@@ -146,7 +129,7 @@ const useTest = ({
 
   const errorOnLastRecapTask = () => {
     appState.taskstage = "accomplished_suspended";
-    updateLSState({
+    updateSCP({
       taskstage: "accomplished_suspended",
     });
   };
@@ -155,7 +138,7 @@ const useTest = ({
     appState.taskstage = "recap_suspended";
     const recapTasksIds = [...appState.recapTasksIds, appState.taskId];
     appState.recapTasksIds = recapTasksIds;
-    updateLSState({
+    updateSCP({
       taskstage: "recap_suspended",
       recapTasksIds,
     });
@@ -213,7 +196,7 @@ const useTest = ({
         actions.updateChampPoins(pts, champid);
       }
     }
-    updateLSState({ pts });
+    updateSCP({ pts });
     return pts;
   };
 
@@ -225,19 +208,20 @@ const useTest = ({
   };
 
   const errorCountDownPressed = async () => {
-    console.log("sdds", tests);
     editorRef.current.getModel().setValue("");
     setEditorDisabled(false);
+    const CSP = getCSP();
 
-    if (appState.taskId != tests.length - 1) {
-      nextTaskNoPts();
+    if (CSP.taskId != tests.length - 1) {
+      setappState({ ...CSP });
+      // nextTaskNoPts({ CSP });
       return;
     }
-    if (appState.taskstage == "accomplished_suspended") {
-      openCongratPage({ appStatePersisted: appState });
+    if (CSP.taskstage == "accomplished_suspended") {
+      openCongratPage({ CSP });
     }
-    if (appState.taskstage == "recap_suspended") {
-      openRecapTasksPage(appState.recapTasksIds, tests);
+    if (CSP.taskstage == "recap_suspended") {
+      openRecapTasksPage(CSP.recapTasksIds, tests);
     }
   };
 

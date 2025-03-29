@@ -8,7 +8,7 @@ import {
   updateChampStatusClient,
 } from "@/db/domain/domain";
 
-import { setSCP, getSCP, updateStateLS } from "@/db/localstorage";
+import { setCSP, getCSP, updateCSP } from "@/db/localstorage";
 import user from "@/store/user";
 import { generateString } from "@/globals/utils/utilsRandom";
 import stn from "@/globals/settings";
@@ -34,8 +34,10 @@ const useChamps = ({ actions, appState }) => {
   };
 
   useEffect(() => {
+    console.log("user.name", user.name);
     appState.champid && setChampNumber(appState.champid);
     appState.champid && setChampid(appState.champid);
+    setUserName(user.name);
   }, []);
 
   useEffect(() => {
@@ -44,8 +46,8 @@ const useChamps = ({ actions, appState }) => {
       stn.collections.CHAMPS,
       champNumber,
       (data) => {
-        const statePersisted = getSCP();
-        if (data.status == "started" && statePersisted.page == "champ") {
+        const CSP = getCSP();
+        if (data.status == "started" && CSP.page == "champ") {
           runChamp(champNumber);
         }
       }

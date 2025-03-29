@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import cowntdownbutton from "@/store/cowntdownbutton";
 import Animation from "@/components/common/animation/Animation";
 import stn from "@/globals/settings";
+import { getCSP } from "@/db/localstorage";
 
 const Navigation = observer(
   ({
@@ -86,7 +87,8 @@ const Navigation = observer(
         {currTask.tasktype == "guide" && (
           <Button
             onClick={() => {
-              nextTaskNoPts();
+              const CSP = getCSP();
+              nextTaskNoPts({ CSP });
             }}
             variant="outlined"
             disabled={appState.taskId >= tests.length - 1}

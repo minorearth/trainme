@@ -59,10 +59,17 @@ const Champ = observer(({ actions, appState }) => {
               gap: "10px",
             }}
           >
-            <Typography gutterBottom>Сложность</Typography>
+            {!champid && <Typography gutterBottom>Сложность</Typography>}
+            {!champid && (
+              <RangeSlider changeRange={changeRange} range={range} />
+            )}
 
-            <RangeSlider changeRange={changeRange} range={range} />
-            <Button onClick={() => createChamp()} variant="outlined" fullWidth>
+            <Button
+              sx={{ marginBottom: "40px" }}
+              onClick={() => createChamp()}
+              variant="outlined"
+              fullWidth
+            >
               Создать чемпионат
             </Button>
             {champid && (
@@ -70,14 +77,15 @@ const Champ = observer(({ actions, appState }) => {
                 {champid}
               </Typography>
             )}
-
-            <Button
-              onClick={() => startChamp(champid)}
-              variant="outlined"
-              fullWidth
-            >
-              Начать
-            </Button>
+            {champid && (
+              <Button
+                onClick={() => startChamp(champid)}
+                variant="outlined"
+                fullWidth
+              >
+                Начать
+              </Button>
+            )}
             {/* </Box> */}
             {/* </Panel> */}
             {/* <Panel label={"Результаты"}> */}
@@ -102,20 +110,21 @@ const Champ = observer(({ actions, appState }) => {
               value={champNumber}
               fullWidth
             /> */}
-
-            <Button
-              sx={{ marginBottom: "40px" }}
-              variant="outlined"
-              fullWidth
-              onClick={() =>
-                window.open(
-                  `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard/${champid}`,
-                  "_blank"
-                )
-              }
-            >
-              В новом окне
-            </Button>
+            {champid && (
+              <Button
+                sx={{ marginBottom: "40px" }}
+                variant="outlined"
+                fullWidth
+                onClick={() =>
+                  window.open(
+                    `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard/${champid}`,
+                    "_blank"
+                  )
+                }
+              >
+                В новом окне
+              </Button>
+            )}
             {/* </Panel> */}
             {/* <Panel label={"Присоединиться"}> */}
             {/* <Box
@@ -149,10 +158,17 @@ const Champ = observer(({ actions, appState }) => {
               fullWidth
             />
 
-            <Button variant="outlined" onClick={() => joinChamp()} fullWidth>
+            <Button
+              sx={{ marginBottom: "40px" }}
+              disabled={!userName || !champNumber}
+              variant="outlined"
+              onClick={() => joinChamp()}
+              fullWidth
+            >
               {" "}
               Присоединиться
             </Button>
+
             <Button
               variant="outlined"
               fullWidth

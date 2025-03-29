@@ -1,6 +1,3 @@
-import { signInClient } from "@/db/domain/domain";
-import user from "@/store/user";
-import alertdialog from "@/store/dialog";
 import { logout } from "@/db/SA/session";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -10,12 +7,20 @@ import {
   checkSignInFields,
 } from "@/components/authcomps/authUtils";
 
-import { SignUpUserClient } from "@/db/domain/domain";
+import {
+  SignUpUserClient,
+  resetPswClient,
+  signInClient,
+} from "@/db/domain/domain";
+
+import alertdialog from "@/store/dialog";
+import user from "@/store/user";
 import dialog from "@/store/dialog";
 import authForm from "@/store/authentication";
 import local from "@/globals/local";
-import { resetPswClient } from "@/db/domain/domain";
 import progressStore from "../common/progress/progressStore";
+
+import { getUseMetaData } from "@/db/SA/firebaseSA";
 
 export const useAuth = () => {
   const router = useRouter();
@@ -26,7 +31,10 @@ export const useAuth = () => {
 
   const authNow = async (email, password) => {
     const uid = await signInClient(email, password);
-    user.setUserid(uid);
+    const allUserMeta = await getUseMetaData(uid);
+    //TODO:persist name
+    user.setUser({ id: uid, name: allUserMeta.name });
+    allUserMeta.name;
     if (uid == "notVerified") {
       alertdialog.showDialog(
         "email не верифицирован",

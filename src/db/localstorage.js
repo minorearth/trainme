@@ -6,22 +6,22 @@ export const getUserId = () => {
   return localStorage.getItem("userid");
 };
 
-export const updateStateLS = (data) => {
-  const state = localStorage.getItem("state");
-  if (stn.mode.needCt) {
-    const stateLS = state != null ? JSON.parse(decrypt2(state)) : {};
-    const newVal = { ...stateLS, ...data };
-    localStorage.setItem("state", encrypt2(JSON.stringify(newVal)));
-    return newVal;
-  } else {
-    const stateLS = state != null ? JSON.parse(state) : {};
-    const newVal = { ...stateLS, ...data };
-    localStorage.setItem("state", JSON.stringify(newVal));
-    return newVal;
-  }
-};
+// export const updateStateLS = (data) => {
+//   const state = localStorage.getItem("state");
+//   if (stn.mode.needCt) {
+//     const stateLS = state != null ? JSON.parse(decrypt2(state)) : {};
+//     const newVal = { ...stateLS, ...data };
+//     localStorage.setItem("state", encrypt2(JSON.stringify(newVal)));
+//     return newVal;
+//   } else {
+//     const stateLS = state != null ? JSON.parse(state) : {};
+//     const newVal = { ...stateLS, ...data };
+//     localStorage.setItem("state", JSON.stringify(newVal));
+//     return newVal;
+//   }
+// };
 
-export const setSCP = (state) => {
+export const setCSP = (state) => {
   if (stn.mode.needCt) {
     localStorage.setItem("state", encrypt2(JSON.stringify(state)));
   } else {
@@ -30,11 +30,11 @@ export const setSCP = (state) => {
 };
 
 export const getSense = () => {
-  const { pts } = getSCP();
+  const { pts } = getCSP();
   return !pts ? 0 : pts;
 };
 
-export const getSCP = () => {
+export const getCSP = () => {
   const state = localStorage.getItem("state");
   if (stn.mode.needCt) {
     return state != null ? JSON.parse(decrypt2(state)) : null;
@@ -46,6 +46,11 @@ export const getSCP = () => {
 export const loadSetupPersisted = () => {
   const state = localStorage.getItem("setup");
   return state != null ? JSON.parse(state) : null;
+};
+
+export const updateSCP = (data) => {
+  const CSP = getCSP();
+  setCSP({ ...CSP, ...data });
 };
 
 export const persistSetup = (state) => {

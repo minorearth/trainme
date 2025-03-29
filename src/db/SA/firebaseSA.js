@@ -95,9 +95,25 @@ export const checkCoursePaid = async (courseid, uid) => {
   return profile.paidcourses.includes(courseid);
 };
 
+const prepareTaskLog = (launchedCourse, lastcompleted, tasklog) => {
+  let res = {};
+  const dest = `courses.${launchedCourse}.stat.${lastcompleted}`;
+  Object.keys(tasklog).forEach(
+    (taskuuid) => (res[`${dest}.${taskuuid}`] = tasklog[taskuuid])
+  );
+  console.log("res", res);
+  return res;
+};
+
 export const setUseMetaData = async (data) => {
   const firestore = getFirestore();
-  const { uid, pts, lastcompleted, unlocked, launchedCourse } = decrypt2(data);
+  const { uid, pts, lastcompleted, unlocked, launchedCourse, tasklog } =
+    decrypt2(data);
+  const tasklogPrepared = prepareTaskLog(
+    launchedCourse,
+    lastcompleted,
+    tasklog
+  );
   const userMetaRef = firestore.collection("usermeta").doc(uid);
   // const path = `courses.${launchedCourse}`;
   // const path2 = `stat.${lastcompleted}.sum`;
@@ -113,6 +129,7 @@ export const setUseMetaData = async (data) => {
       [`courses.${launchedCourse}.lastunlocked`]: unlocked,
       [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]:
         FieldValue.increment(pts),
+      ...tasklogPrepared,
     });
   } else {
     userMetaRef.update({
@@ -121,37 +138,7 @@ export const setUseMetaData = async (data) => {
       //   FieldValue.arrayUnion(lastcompleted),
       [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]:
         FieldValue.increment(pts),
+      ...tasklogPrepared,
     });
   }
 };
-
-// export const setUseMetaData2 = async (data) => {
-//   const firestore = getFirestore();
-//   const userMetaRef = firestore.collection("usermeta").doc(uid);
-
-//   const { uid, pts, lastcompleted, unlocked, launchedCourse } = decrypt2(data);
-//   const currdata = await getUseMetaData(uid);
-//   const course = currdata.courses[launchedCourse];
-//   course.rating += pts;
-//   !course.completed.includes(lastcompleted) &&
-//     course.completed.push(lastcompleted);
-//   if (course.stat[lastcompleted]) {
-//     course.stat[lastcompleted].sum += pts;
-//   } else {
-//     course.stat[lastcompleted] = { sum: pts };
-//   }
-
-//   if (unlocked.length != 0) {
-//     !course.unlocked.includes(unlocked) && course.unlocked.push(...unlocked);
-//     course.lastunlocked = unlocked;
-//     userMetaRef.update({ ...currdata });
-//   } else {
-//     userMetaRef.update({
-//       [`courses.${launchedCourse}`]: {
-//         rating: FieldValue.increment(pts),
-//         completed: FieldValue.arrayUnion(lastcompleted),
-//         [`stat.${lastcompleted}.sum`]: FieldValue.increment(pts),
-//       },
-//     });
-//   }
-// };

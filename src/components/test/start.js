@@ -44,7 +44,8 @@ export default function Start({ actions, appState }) {
       <Button
         onClick={() => {
           progressStore.setShowProgress(true, false, "progressdots", 2000);
-          actions.updateState({ page: "testrun", pts: 0, tasklog: {} });
+          //checked updateStateAndCSP
+          actions.updateStateAndCSP({ page: "testrun" });
         }}
         variant="outlined"
       >

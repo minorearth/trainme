@@ -11,7 +11,7 @@ import cowntdownbutton from "@/store/cowntdownbutton";
 import progressCircle from "@/components/common/progress/progressStore";
 import { courses } from "@/globals/courses";
 import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
-import { setSCP, getSCP } from "@/db/localstorage";
+import { setCSP, getCSP } from "@/db/localstorage";
 import { getTargetsBySource } from "./utils";
 
 const nodeAction = (data) => {
@@ -97,8 +97,6 @@ const nodeAction = (data) => {
       remainsum,
       courseid,
       nodemode,
-      textbook: false,
-      champ: false,
       level,
       tobeunlocked,
     });
@@ -226,13 +224,13 @@ export const getAllTestsFromChapter = async (chapter, courseid) => {
   return res;
 };
 
-export const getTextBook = async (SCP, courseid) => {
+export const getTextBook = async (CSP, courseid) => {
   const filteredTasks = await getDocDataFromCollectionByIdClient(
     courses[courseid].taskcollection,
     courses[courseid].textbookchapter
   );
   const unlockedTheory = filteredTasks.data.tasks.filter((item) =>
-    SCP.userProgress.completed.includes(item.chapterparentid)
+    CSP.userProgress.completed.includes(item.chapterparentid)
   );
   if (!filteredTasks.data) {
     return [];
@@ -254,7 +252,7 @@ export const getRandomTasksForRepeat = async ({
   levelStart,
   levelEnd,
 }) => {
-  const statePersisted = getSCP();
+  const CSP = getCSP();
 
   const allTasks = await getDocDataFromCollectionByIdClient(
     courses[courseid].taskcollection,
@@ -263,14 +261,14 @@ export const getRandomTasksForRepeat = async ({
 
   let filteredTasks;
 
-  if (statePersisted.randomsaved && statePersisted.randomsaved?.length != 0) {
+  if (CSP.randomsaved && CSP.randomsaved?.length != 0) {
     filteredTasks = allTasks.data.tasks.filter((task) =>
-      statePersisted.randomsaved.includes(task.taskuuid)
+      CSP.randomsaved.includes(task.taskuuid)
     );
   } else {
     filteredTasks = getRandomTasks(allTasks.data.tasks, levelStart, levelEnd);
     const tasksuuids = filteredTasks.map((task) => task.taskuuid);
-    setSCP({ randomsaved: tasksuuids });
+    setCSP({ randomsaved: tasksuuids });
   }
 
   const res = stn.mode.ALL_RIGHT_CODE

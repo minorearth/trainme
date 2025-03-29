@@ -1,6 +1,6 @@
 import { stn } from "@/constants";
 import { useEffect, useState, useLayoutEffect, useRef } from "react";
-import { setSCP, getSCP, updateStateLS, getSense } from "@/db/localstorage";
+import { setCSP, getCSP, getSense } from "@/db/localstorage";
 import user from "@/store/user";
 import {
   getAllTestsFromChapter,
@@ -41,7 +41,8 @@ const useNavigator = () => {
   }, [user]);
 
   const loadPTrek = async () => {
-    const CSP = getSCP();
+    //TODO:load username
+    const CSP = getCSP();
     const page = CSP?.page || "courses";
     if (page == "flow" || page == "congrat") {
       const coursePaid = await checkCoursePaid(CSP.launchedCourse, user.userid);
@@ -53,7 +54,7 @@ const useNavigator = () => {
     }
     if (page == "testrun" || page == "testsStarted") {
       recoverTestsInProgress({ CSP });
-      setStateAndSCP({
+      setStateAndCSP({
         ...CSP,
       });
     }
@@ -64,10 +65,10 @@ const useNavigator = () => {
     progressStore.setCloseProgress();
   };
 
-  const loadFlowNodes = async (courseid, SCP) => {
+  const loadFlowNodes = async (courseid, CSP) => {
     const flow = await setFlowNodes({
       courseid,
-      progress: SCP.userProgress,
+      progress: CSP.userProgress,
       setFlow,
       openTestsStartedPage,
       openAndRefreshFlowPage: () => openAndRefreshFlowPage(courseid),
@@ -76,53 +77,45 @@ const useNavigator = () => {
   };
 
   //STATE MANAGEMENT
-  const refetchUserMetaAndPersist = async (launchedCourse) => {
-    const currStatePersisted = getSCP();
+  const fetchUserMetaAndPersist = async (launchedCourse) => {
+    const CSP = getCSP();
     const allUserMeta = await getUseMetaData(user.userid);
+    //TODO:keep only keys needed
     const userProgress = allUserMeta.courses[launchedCourse];
-    console.log("userProgress", allUserMeta, launchedCourse);
 
     const stateToUpdate = {
-      ...currStatePersisted,
+      ...CSP,
       userProgress,
     };
-    // const stateUpdated = updateStateLS(stateToUpdated);
-    setSCP(stateToUpdate);
+    setCSP(stateToUpdate);
     return stateToUpdate;
   };
 
   const resetStateToInitial = async () => {
-    const stateUpdated = updateStateLS(initialState);
-    setStateAndSCP({ ...stateUpdated });
+    setStateAndCSP(initialState);
   };
 
-  const updateState = (data) => {
+  const updateStateAndCSP = (data) => {
     setappState((state) => {
       const newState = { ...state, ...data };
-      setSCP(newState);
+      setCSP(newState);
       return newState;
     });
   };
 
-  const setStateAndSCP = (data) => {
-    setSCP(data);
-    setappState({ ...data });
-  };
-
-  const updateLSState = (data) => {
-    const state = getSCP();
-    setSCP({ ...state, ...data });
+  const setStateAndCSP = (data) => {
+    setCSP(data);
+    setappState(data);
   };
 
   //PAGES NAVIGATION
   const openAndRefreshFlowPage = async (launchedCourse) => {
     setFlow();
-    const SCP = await refetchUserMetaAndPersist(launchedCourse);
-    console.log("SCP", SCP);
-    await loadFlowNodes(launchedCourse, SCP);
+    const CSP = await fetchUserMetaAndPersist(launchedCourse);
+    await loadFlowNodes(launchedCourse, CSP);
 
-    setStateAndSCP({
-      ...SCP,
+    setStateAndCSP({
+      ...CSP,
       launchedCourse,
       page: "flow",
     });
@@ -149,23 +142,25 @@ const useNavigator = () => {
   };
 
   const openFlowPageAfterAccomplished = () => {
-    //Clean-up SCP
-    const SCP = getSCP();
-    setSCP({
-      launchedCourse: SCP.launchedCourse,
+    //Clean-up CSP
+    const CSP = getCSP();
+    setCSP({
+      launchedCourse: CSP.launchedCourse,
       page: "flow",
-      userProgress: SCP.userProgress,
+      userProgress: CSP.userProgress,
     });
-    openAndRefreshFlowPage(SCP.launchedCourse);
+    openAndRefreshFlowPage(CSP.launchedCourse);
   };
 
-  const openTextBook = async ({ courseid, SCP }) => {
-    const tasks = await getTextBook(SCP, courseid);
+  const openTextBook = async ({ courseid, CSP }) => {
+    const tasks = await getTextBook(CSP, courseid);
     if (tasks.length) {
-      updateState({
+      setStateAndCSP({
         page: "testsStarted",
         taskId: 0,
         nodemode: "textbook",
+        launchedCourse: CSP.launchedCourse,
+        userProgress: CSP.userProgress,
       });
       setTests(tasks);
     } else {
@@ -181,29 +176,29 @@ const useNavigator = () => {
   };
 
   const openAllCoursePage = () => {
-    setStateAndSCP(initialState);
+    setStateAndCSP(initialState);
   };
 
   const interruptExamMode = () => {
-    const SCP = getSCP();
-    if (SCP.nodemode != "champ") {
-      setStateAndSCP({
-        launchedCourse: SCP.launchedCourse,
+    const CSP = getCSP();
+    if (CSP.nodemode != "champ") {
+      setStateAndCSP({
+        launchedCourse: CSP.launchedCourse,
         page: "flow",
-        userProgress: SCP.userProgress,
+        userProgress: CSP.userProgress,
       });
-      loadFlowNodes(SCP.launchedCourse, SCP);
+      loadFlowNodes(CSP.launchedCourse, CSP);
     } else {
       openAllCoursePage();
     }
   };
 
   const openChampPage = () => {
-    updateState({ page: "champ" });
+    setStateAndCSP({ page: "champ" });
   };
 
   const openSpecChampPage = ({ champid }) => {
-    setStateAndSCP({ page: "champ", champid });
+    setStateAndCSP({ page: "champ", champid });
   };
 
   const openTestsStartedPage = async ({
@@ -217,7 +212,7 @@ const useNavigator = () => {
     level,
     tobeunlocked,
   }) => {
-    const SCP = getSCP();
+    const CSP = getCSP();
     if (nodemode == "champ") {
       setChampTasks({
         champid,
@@ -226,7 +221,7 @@ const useNavigator = () => {
     if (nodemode == "textbook") {
       openTextBook({
         courseid,
-        SCP,
+        CSP,
       });
     }
     if (nodemode == "renewal") {
@@ -254,51 +249,52 @@ const useNavigator = () => {
     }
   };
 
-  const openCongratPage = async ({ appStatePersisted }) => {
+  const openCongratPage = async ({ CSP }) => {
     let pts;
     if (
-      appStatePersisted.nodemode == "addhoc" ||
-      appStatePersisted.nodemode == "newtopic" ||
-      appStatePersisted.nodemode == "renewal"
+      CSP.nodemode == "addhoc" ||
+      CSP.nodemode == "newtopic" ||
+      CSP.nodemode == "renewal"
     ) {
-      pts = Math.min(getSense(), appStatePersisted.remainsum);
-      // console.log("pts", pts, appStatePersisted.remainsum);
+      pts = Math.min(getSense(), CSP.remainsum);
       // const unlocked = getTargetsBySource(
-      //   appStatePersisted.chapter,
+      //   CSP.chapter,
       //   flow.edges
       // );
 
-      console.log("meta", {
-        lastcompleted: appStatePersisted.chapter,
-        unlocked: appStatePersisted.tobeunlocked,
-        pts,
-        uid: user.userid,
-        launchedCourse: appStatePersisted.launchedCourse,
-      });
-
       await setUseMetaData(
         encrypt2({
-          lastcompleted: appStatePersisted.chapter,
-          unlocked: appStatePersisted.tobeunlocked,
+          lastcompleted: CSP.chapter,
+          unlocked: CSP.tobeunlocked,
           pts,
           uid: user.userid,
-          launchedCourse: appStatePersisted.launchedCourse,
+          tasklog: CSP.tasklog,
+          launchedCourse: CSP.launchedCourse,
         })
       );
+      setStateAndCSP({
+        page: "congrat",
+        pts,
+        launchedCourse: CSP.launchedCourse,
+        userProgress: CSP.userProgress,
+        nodemode: CSP.nodemode,
+      });
     }
 
-    if (appStatePersisted.nodemode == "champ") {
+    if (CSP.nodemode == "champ") {
       pts = getSense();
+      setStateAndCSP({
+        page: "congrat",
+        champid: CSP.champid,
+        pts,
+        // launchedCourse: CSP.launchedCourse,
+        userProgress: CSP.userProgress,
+        nodemode: CSP.nodemode,
+      });
     }
-
-    updateState({ page: "congrat", pts });
   };
 
   const openRecapTasksPage = (recapTasksIds, tasks) => {
-    // const pts = getSense();
-    // updateState({ taskstage: "recap", pts });
-    // updateState({ taskstage: "recap"});
-
     dialog.showDialog(
       "Повторение",
       "Попробуй еще раз решить ошибочные задачи",
@@ -332,7 +328,11 @@ const useNavigator = () => {
     }
 
     if (nodemode == "textbook") {
-      updateState(initialState);
+      //TODO: removee all updateStaates
+      openTextBook({
+        courseid: CSP.launchedCourse,
+        CSP,
+      });
     }
 
     if (taskstage == "recap_suspended") {
@@ -340,7 +340,7 @@ const useNavigator = () => {
     }
 
     if (taskstage == "accomplished_suspended") {
-      openCongratPage({ appStatePersisted: CSP });
+      openCongratPage({ CSP });
     }
 
     if (taskstage == "recap") {
@@ -354,8 +354,8 @@ const useNavigator = () => {
   };
 
   const setRecapTasks = (recapTasksIds, tasks) => {
-    updateState({ taskstage: "recap", taskId: 0 });
-    console.log("zu", recapTasksIds, tasks);
+    const CSP = getCSP();
+    setStateAndCSP({ ...CSP, taskstage: "recap", taskId: 0 });
     setTests(getTestsRecap(recapTasksIds, tasks));
   };
 
@@ -368,8 +368,7 @@ const useNavigator = () => {
     nodemode,
     tobeunlocked,
   }) => {
-    console.log("tobeunlocked", tobeunlocked);
-    updateState({
+    updateStateAndCSP({
       chapter,
       page: "testsStarted",
       taskId: 0,
@@ -380,6 +379,8 @@ const useNavigator = () => {
       remainsum,
       nodemode,
       tobeunlocked,
+      pts: 0,
+      tasklog: {},
     });
     const tasks = await getAllTestsFromChapter(chapter, courseid);
     setTests(tasks);
@@ -395,7 +396,7 @@ const useNavigator = () => {
     remainsum,
     tobeunlocked,
   }) => {
-    updateState({
+    updateStateAndCSP({
       chapter,
       page: "testsStarted",
       taskId: 0,
@@ -407,6 +408,8 @@ const useNavigator = () => {
       level,
       remainsum,
       tobeunlocked,
+      pts: 0,
+      tasklog: {},
     });
     const tasks = await getRandomTasksForRepeat({
       chapter,
@@ -417,8 +420,8 @@ const useNavigator = () => {
     setTests(tasks);
   };
 
-  const setChampTasks = async ({ champid, nodemode }) => {
-    updateState({
+  const setChampTasks = async ({ champid }) => {
+    updateStateAndCSP({
       champid,
       page: "testsStarted",
       taskId: 0,
@@ -434,23 +437,25 @@ const useNavigator = () => {
 
   return {
     actions: {
-      updateState,
-      setState: setStateAndSCP,
-      updateLSState,
+      updateStateAndCSP,
+      setStateAndCSP,
+      setappState,
+
       openFlowPageAfterAccomplished,
       openTestsStartedPage,
       openChampPage,
       openAllCoursePage,
       openCongratPage,
-      interruptExamMode,
+      openAndRefreshFlowPage,
+      openRecapTasksPage,
+      openSpecChampPage,
       openCourseFlowPageFromMain,
+
+      interruptExamMode,
       getRandomTasksForChamp,
       updateChampPoins,
       runChamp,
       setRecapTasks,
-      openAndRefreshFlowPage,
-      openRecapTasksPage,
-      openSpecChampPage,
     },
     appState,
     loading,
