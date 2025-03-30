@@ -21,7 +21,6 @@ import alertdialog from "@/store/dialog";
 import dialog from "@/store/dialog";
 
 const useNavigator = () => {
-  const userid = "1";
   const [loading, setLoading] = useState(true);
   const [tests, setTests] = useState([]);
   const [appState, setappState] = useState({});
@@ -436,7 +435,7 @@ const useNavigator = () => {
   };
 
   return {
-    actions: {
+    actionsNAV: {
       updateStateAndCSP,
       setStateAndCSP,
       setappState,
@@ -460,7 +459,6 @@ const useNavigator = () => {
     appState,
     loading,
     tests,
-    userid,
     flow,
   };
 };

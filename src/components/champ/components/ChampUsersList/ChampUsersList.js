@@ -50,14 +50,11 @@ const SortableList = ({ champid }) => {
     const sortedItems = [...rows].sort((a, b) => b.pts - a.pts);
 
     const getItemOldPos = (item, id) => {
-      console.log("ndn", item, items, id);
       if (!started || item.pts == 0) {
         return 0;
       }
-      console.log("in");
       for (let i = 0; i < items.length; i++) {
         if (items[i].id == item.id) {
-          console.log("diff", i - id);
           return i - id == 0 ? items[i].change : i - id;
         }
       }

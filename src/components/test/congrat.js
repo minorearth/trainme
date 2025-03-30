@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { getCSP } from "@/db/localstorage";
 
 let pts;
-const CongratPage = ({ appState, actions }) => {
+const CongratPage = ({ appState, actionsNAV }) => {
   const [pts, setPts] = useState(10);
   useEffect(() => {
     const { pts } = getCSP();
@@ -43,11 +43,11 @@ const CongratPage = ({ appState, actions }) => {
             appState.nodemode == "newtopic" ||
             appState.nodemode == "renewal"
           ) {
-            actions.openFlowPageAfterAccomplished();
+            actionsNAV.openFlowPageAfterAccomplished();
           }
 
           if (appState.nodemode == "champ") {
-            actions.openSpecChampPage({ champid: appState.champid });
+            actionsNAV.openSpecChampPage({ champid: appState.champid });
           }
 
           // setFlowPage();

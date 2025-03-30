@@ -51,7 +51,6 @@ export const load = () => {
     chapters = [...chapters, courses[v[id]].textbookchapter];
     chapters.forEach((chapterid) => {
       const tasks = d[id].filter((test) => test.chapterid == chapterid);
-      console.log("zu", tasks);
       tasks.length != 0 &&
         setDocInCollectionClient(
           courses[v[id]].taskcollection,

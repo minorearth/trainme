@@ -10,7 +10,6 @@ import SortableList from "@/components/champ/components/ChampUsersList/ChampUser
 
 export default function Page({ params }) {
   const { customTheme } = useCustomTheme();
-  console.log(params);
   return (
     <>
       <ThemeProvider theme={customTheme}>

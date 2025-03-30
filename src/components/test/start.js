@@ -25,7 +25,7 @@ const getIntro = (appState) => {
   }
 };
 
-export default function Start({ actions, appState }) {
+export default function Start({ actionsNAV, appState }) {
   const theme = useTheme();
 
   return (
@@ -45,7 +45,7 @@ export default function Start({ actions, appState }) {
         onClick={() => {
           progressStore.setShowProgress(true, false, "progressdots", 2000);
           //checked updateStateAndCSP
-          actions.updateStateAndCSP({ page: "testrun" });
+          actionsNAV.updateStateAndCSP({ page: "testrun" });
         }}
         variant="outlined"
       >

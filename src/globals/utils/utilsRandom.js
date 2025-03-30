@@ -369,5 +369,3 @@ export const generateString = (length) => {
 
   return result;
 };
-
-console.log(generateString(5));

@@ -15,7 +15,7 @@ import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import Fab from "@mui/material/Fab";
 import Animation from "@/components/common/animation/Animation";
 
-const FlowPanel = ({ appState, actions }) => {
+const FlowPanel = ({ appState, actionsNAV }) => {
   return (
     <Panel position="top-left" style={{ width: "97%" }}>
       <Paper
@@ -49,7 +49,7 @@ const FlowPanel = ({ appState, actions }) => {
           width={"60px"}
           name={"book"}
           onClick={async () => {
-            actions.openTestsStartedPage({
+            actionsNAV.openTestsStartedPage({
               nodemode: "textbook",
               courseid: appState.launchedCourse,
             });
@@ -61,7 +61,7 @@ const FlowPanel = ({ appState, actions }) => {
           width={"60px"}
           name={"home"}
           onClick={() => {
-            actions.openAllCoursePage();
+            actionsNAV.openAllCoursePage();
           }}
         />
       </Paper>

@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import dialog from "@/store/dialog";
 import alertdialog from "@/store/dialog";
 import local from "@/globals/local";
 import cowntdownbutton from "@/store/cowntdownbutton";
@@ -9,18 +8,12 @@ import { getSense, getCSP, setCSP, updateSCP } from "@/db/localstorage";
 const useTest = ({
   appState,
   tests,
-  actions,
+  actionsNAV,
   editorRef,
   setEditorDisabled,
 }) => {
-  const {
-    updateStateAndCSP,
-    setappState,
-    setRecapTasks,
-    openCongratPage,
-    openRecapTasksPage,
-    setStateAndCSP,
-  } = actions;
+  const { setappState, openCongratPage, openRecapTasksPage, setStateAndCSP } =
+    actionsNAV;
 
   const [currTask, setCurrTask] = useState({});
 
@@ -28,11 +21,11 @@ const useTest = ({
     appState.taskId != tests.length && openTask(appState.taskId);
   }, [appState.taskId]);
 
-  const nextTaskOrCompleteTest = async ({ error, errorMsg, code }) => {
+  const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
     editorRef.current.getModel().setValue("");
     setTaskLog({ error, code });
     const CSP = getCSP();
-    const pts = getEarned(
+    setEarned(
       error,
       CSP.taskstage,
       CSP.repeat,
@@ -53,7 +46,6 @@ const useTest = ({
           ok(() => openCongratPage({ CSP }));
         }
         if (CSP.recapTasksIds.length != 0 && CSP.taskstage == "WIP") {
-          console.log("тута2");
           ok(() => openRecapTasksPage(CSP.recapTasksIds, tests));
         }
         return;
@@ -108,9 +100,9 @@ const useTest = ({
     setStateAndCSP({ ...CSP, taskId: CSP.taskId + 1 });
   };
 
-  const nextTaskNoPts = ({ CSP }) => {
-    setStateAndCSP({ ...CSP, taskId: CSP.taskId + 1 });
-  };
+  // const nextTask = ({ CSP }) => {
+  //   setStateAndCSP({ ...CSP, taskId: CSP.taskId + 1 });
+  // };
 
   const prevTaskNoPts = () => {
     const CSP = getCSP();
@@ -162,7 +154,7 @@ const useTest = ({
     splashCDStore.setShow(false, "ok", 500, () => action());
   };
 
-  const getEarned = (error, taskstage, repeat, overflow, nodemode, champid) => {
+  const setEarned = (error, taskstage, repeat, overflow, nodemode, champid) => {
     let pts = getSense();
     if (overflow) {
       return pts;
@@ -193,7 +185,7 @@ const useTest = ({
         pts += 1;
       }
       if (nodemode == "champ") {
-        actions.updateChampPoins(pts, champid);
+        actionsNAV.updateChampPoins(pts, champid);
       }
     }
     updateSCP({ pts });
@@ -214,7 +206,7 @@ const useTest = ({
 
     if (CSP.taskId != tests.length - 1) {
       setappState({ ...CSP });
-      // nextTaskNoPts({ CSP });
+      // nextTask({ CSP });
       return;
     }
     if (CSP.taskstage == "accomplished_suspended") {
@@ -233,7 +225,6 @@ const useTest = ({
   };
 
   const openTask = (id) => {
-    console.log("id", id, tests);
     const test = tests[id];
     setCurrTask({
       task:
@@ -294,17 +285,19 @@ const useTest = ({
   };
 
   return {
-    nextTaskOrCompleteTest,
-    nextTaskNoPts,
-    prevTaskNoPts,
-    refreshInput,
+    actionsTsk: {
+      nextTaskOrCompleteTestRun,
+      nextTask,
+      prevTaskNoPts,
+      refreshInput,
+      setOutput,
+      getSense,
+      errorCountDownPressed,
+      setCode,
+      setRightCode,
+      setForbiddenCode,
+    },
     currTask,
-    setOutput,
-    getSense,
-    errorCountDownPressed,
-    setCode,
-    setRightCode,
-    setForbiddenCode,
   };
 };
 

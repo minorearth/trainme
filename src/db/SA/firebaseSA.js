@@ -101,7 +101,6 @@ const prepareTaskLog = (launchedCourse, lastcompleted, tasklog) => {
   Object.keys(tasklog).forEach(
     (taskuuid) => (res[`${dest}.${taskuuid}`] = tasklog[taskuuid])
   );
-  console.log("res", res);
   return res;
 };
 

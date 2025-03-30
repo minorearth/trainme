@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField";
 import RangeSlider from "./components/RangeSlider";
 import SortableList from "@/components/champ/components/ChampUsersList/ChampUsersList";
 
-const Champ = observer(({ actions, appState }) => {
+const Champ = observer(({ actionsNAV, appState }) => {
   const {
     createChamp,
     joinChamp,
@@ -24,7 +24,7 @@ const Champ = observer(({ actions, appState }) => {
     changeChampNumber,
     changeRange,
     range,
-  } = useChamps({ actions, appState });
+  } = useChamps({ actionsNAV, appState });
 
   return (
     <Box
@@ -172,7 +172,7 @@ const Champ = observer(({ actions, appState }) => {
             <Button
               variant="outlined"
               fullWidth
-              onClick={() => actions.openAllCoursePage()}
+              onClick={() => actionsNAV.openAllCoursePage()}
             >
               Выйти
             </Button>

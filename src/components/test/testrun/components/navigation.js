@@ -11,22 +11,26 @@ import { getCSP } from "@/db/localstorage";
 
 const Navigation = observer(
   ({
+    actionsTsk,
     tests,
-    actions,
+    actionsNAV,
     appState,
     pyodide,
     checkTask,
-    errorCountDownPressed,
     currTask,
     runPythonCode,
-    nextTaskNoPts,
-    prevTaskNoPts,
-    refreshInput,
-    setRightCode,
-    setForbiddenCode,
-    setOutput,
   }) => {
     const [executing, setExecuting] = useState(false);
+
+    const {
+      setRightCode,
+      setForbiddenCode,
+      nextTask,
+      prevTaskNoPts,
+      errorCountDownPressed,
+      refreshInput,
+      setOutput,
+    } = actionsTsk;
 
     return (
       <Box
@@ -88,7 +92,7 @@ const Navigation = observer(
           <Button
             onClick={() => {
               const CSP = getCSP();
-              nextTaskNoPts({ CSP });
+              nextTask({ CSP });
             }}
             variant="outlined"
             disabled={appState.taskId >= tests.length - 1}
@@ -109,7 +113,7 @@ const Navigation = observer(
         {stn.mode.DEV_MODE && (
           <Button
             onClick={() => {
-              actions.interruptExamMode();
+              actionsNAV.interruptExamMode();
             }}
             variant="outlined"
           >

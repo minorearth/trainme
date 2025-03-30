@@ -26,7 +26,6 @@ const nodeAction = (data) => {
     uid,
     overflow,
     remainsum,
-    edges,
     openTestsStartedPage,
     openAndRefreshFlowPage,
     courseid,
@@ -131,7 +130,6 @@ const fullFillProgess = (
   openAndRefreshFlowPage,
   courseid
 ) => {
-  console.log("progress", progress);
   const { unlocked, completed, paid, rating, stat } = progress;
   const full = chapterFlowNodes.map((node) => ({
     ...node,

@@ -51,11 +51,6 @@ const checkForbidden = (code, musthave, musthaveRe) => {
   return forbiddenCheck && forbiddenReCheck;
 };
 
-// const message = "[[].*for.*in.*]"; // Try edit me
-// s = 's="[i for i in range(10)]"';
-// const regex = new RegExp(message, "g");
-// console.log(s.match(regex));
-
 const checkCode = async (code, test, runPythonCode) => {
   const results = await Promise.all(
     test.inout.map(async (check) => {

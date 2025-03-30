@@ -8,30 +8,21 @@ import Navigation from "@/components/test/testrun/components/navigation";
 const TaskAndCodePanel = (props) => {
   const {
     tests,
-    actions,
+    actionsNAV,
+    actionsTsk,
     appState,
     pyodide,
     currTask,
     monacoRef,
     editorRef,
-    setCode,
-    setRightCode,
-    setForbiddenCode,
-    mode,
     checkTask,
     runPythonCode,
-    nextTaskNoPts,
-    prevTaskNoPts,
-    errorCountDownPressed,
-    refreshInput,
-    setOutput,
   } = props;
+  const { setCode } = actionsTsk;
   return (
     <Grid container spacing={2} columns={{ xs: 1, md: 3 }}>
       <Grid size={{ xs: 1, md: 1 }}>
         <Panel label={"Выполни задание"}>
-          {/* dangerouslySetInnerHTML={{ __html: "<p>Hi from inner HTML</p>" }}> */}
-
           <Typography
             variant="body1"
             dangerouslySetInnerHTML={{ __html: `<p>${currTask.task}</p>` }}
@@ -45,7 +36,6 @@ const TaskAndCodePanel = (props) => {
         <Panel label={"Редактор кода"}>
           <MonacoEd
             currTask={currTask}
-            mode={mode}
             setCode={setCode}
             monacoRef={monacoRef}
             editorRef={editorRef}
@@ -53,18 +43,12 @@ const TaskAndCodePanel = (props) => {
           <Navigation
             checkTask={checkTask}
             tests={tests}
-            actions={actions}
+            actionsNAV={actionsNAV}
+            actionsTsk={actionsTsk}
             appState={appState}
             pyodide={pyodide}
-            errorCountDownPressed={errorCountDownPressed}
             currTask={currTask}
             runPythonCode={runPythonCode}
-            nextTaskNoPts={nextTaskNoPts}
-            prevTaskNoPts={prevTaskNoPts}
-            refreshInput={refreshInput}
-            setRightCode={setRightCode}
-            setForbiddenCode={setForbiddenCode}
-            setOutput={setOutput}
           />
         </Panel>
       </Grid>

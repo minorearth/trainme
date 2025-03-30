@@ -14,7 +14,7 @@ import Input from "@mui/material/Input";
 import { useState } from "react";
 import { getCSP } from "@/db/localstorage";
 
-const AdminPanel = ({ flow, actions, tests }) => {
+const AdminPanel = ({ flow, actionsNAV, tests }) => {
   const [inValue, setInValue] = useState(5000);
 
   const handleChange = (e) => {
@@ -38,7 +38,7 @@ const AdminPanel = ({ flow, actions, tests }) => {
             CSP.launchedCourse,
             user.userid
           );
-          actions.openAndRefreshFlowPage(CSP.launchedCourse);
+          actionsNAV.openAndRefreshFlowPage(CSP.launchedCourse);
         }}
       >
         reset
@@ -52,7 +52,7 @@ const AdminPanel = ({ flow, actions, tests }) => {
             CSP.launchedCourse,
             user.userid
           );
-          actions.openAndRefreshFlowPage(CSP.launchedCourse);
+          actionsNAV.openAndRefreshFlowPage(CSP.launchedCourse);
         }}
       >
         unlockAll
@@ -66,7 +66,7 @@ const AdminPanel = ({ flow, actions, tests }) => {
             CSP.launchedCourse,
             user.userid
           );
-          actions.openAndRefreshFlowPage(CSP.launchedCourse);
+          actionsNAV.openAndRefreshFlowPage(CSP.launchedCourse);
         }}
       >
         CompleteAll
@@ -75,7 +75,7 @@ const AdminPanel = ({ flow, actions, tests }) => {
         onClick={() => {
           const CSP = getCSP();
           load();
-          actions.openAndRefreshFlowPage(CSP.launchedCourse);
+          actionsNAV.openAndRefreshFlowPage(CSP.launchedCourse);
         }}
       >
         load
@@ -97,7 +97,7 @@ const AdminPanel = ({ flow, actions, tests }) => {
         onClick={async () => {
           const CSP = getCSP();
           await setMoney(CSP.launchedCourse, user.userid, inValue);
-          actions.openAndRefreshFlowPage(CSP.launchedCourse);
+          actionsNAV.openAndRefreshFlowPage(CSP.launchedCourse);
         }}
       >
         money2
@@ -105,7 +105,7 @@ const AdminPanel = ({ flow, actions, tests }) => {
       <Button
         onClick={() => {
           const CSP = getCSP();
-          actions.setStateAndCSP({ ...CSP, taskId: tests.length - 1 });
+          actionsNAV.setStateAndCSP({ ...CSP, taskId: tests.length - 1 });
         }}
       >
         lasttask

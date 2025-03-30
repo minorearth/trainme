@@ -8,13 +8,13 @@ import {
   updateChampStatusClient,
 } from "@/db/domain/domain";
 
-import { setCSP, getCSP, updateCSP } from "@/db/localstorage";
+import { getCSP } from "@/db/localstorage";
 import user from "@/store/user";
 import { generateString } from "@/globals/utils/utilsRandom";
 import stn from "@/globals/settings";
 
-const useChamps = ({ actions, appState }) => {
-  const { getRandomTasksForChamp, openTestsStartedPage, runChamp } = actions;
+const useChamps = ({ actionsNAV, appState }) => {
+  const { getRandomTasksForChamp, runChamp } = actionsNAV;
   const [connected, setConnected] = useState(false);
   const [champid, setChampid] = useState("");
   const [champNumber, setChampNumber] = useState("");
@@ -34,7 +34,6 @@ const useChamps = ({ actions, appState }) => {
   };
 
   useEffect(() => {
-    console.log("user.name", user.name);
     appState.champid && setChampNumber(appState.champid);
     appState.champid && setChampid(appState.champid);
     setUserName(user.name);

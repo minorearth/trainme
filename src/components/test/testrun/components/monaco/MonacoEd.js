@@ -5,6 +5,7 @@ import { useTheme } from "@mui/material/styles";
 import Editor from "@monaco-editor/react";
 import { EditorOptions } from "@/components/test/testrun/components/monaco/MonacoEditorOptions";
 import useMonaco from "@/components/test/testrun/components/monaco/useMonaco";
+import { useColorScheme } from "@mui/material/styles";
 
 var startX, startY;
 
@@ -24,8 +25,9 @@ function touchmove(e) {
   document.querySelector("body").scrollBy(0, -deltaY / 100);
 }
 
-const MonacoEd = ({ currTask, setCode, mode, monacoRef, editorRef }) => {
+const MonacoEd = ({ currTask, setCode, monacoRef, editorRef }) => {
   const theme = useTheme();
+  const { mode } = useColorScheme();
   const { handleEditorDidMount } = useMonaco({ monacoRef, editorRef });
   // editorRef?.current
   //   ?.getContainerDomNode()

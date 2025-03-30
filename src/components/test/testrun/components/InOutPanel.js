@@ -9,8 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import CachedIcon from "@mui/icons-material/Cached";
 import Box from "@mui/material/Box";
 
-const InOutPanel = (props) => {
-  const { currTask, refreshInput } = props;
+const InOutPanel = ({ currTask, refreshInput }) => {
   const [inValue, setInValue] = useState(currTask.input);
 
   const handleChange = (e) => {

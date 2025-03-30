@@ -22,7 +22,7 @@ import Champ from "../champ/Champ";
 
 const Navigator = observer(() => {
   const [showSplashTimeout, setShowSplashTimeout] = useState(true);
-  const { actions, appState, loading, tests, userid, flow } = useNavigator();
+  const { actionsNAV, appState, loading, tests, flow } = useNavigator();
   const { pyodide2 } = usePyodide();
 
   return (
@@ -48,16 +48,16 @@ const Navigator = observer(() => {
             <AdminPanel
               flow={flow}
               appState={appState}
-              actions={actions}
+              actionsNAV={actionsNAV}
               tests={tests}
             />
           )}
           <Progress />
           <SplashAction name={"ok"} />
-          {appState.page == "courses" && <Courses actions={actions} />}
+          {appState.page == "courses" && <Courses actionsNAV={actionsNAV} />}
 
           {appState.page == "champ" && (
-            <Champ actions={actions} appState={appState} />
+            <Champ actionsNAV={actionsNAV} appState={appState} />
           )}
 
           {appState.page == "flow" &&
@@ -65,25 +65,25 @@ const Navigator = observer(() => {
             !!flow &&
             appState.launchedCourse && (
               <ReactFlowProvider>
-                <Flow appState={appState} actions={actions} flow={flow} />
+                <Flow appState={appState} actionsNAV={actionsNAV} flow={flow} />
               </ReactFlowProvider>
             )}
 
           {appState.page == "testsStarted" && !loading && (
-            <Start actions={actions} appState={appState} />
+            <Start actionsNAV={actionsNAV} appState={appState} />
           )}
 
           {appState.page == "testrun" && tests?.length != 0 && (
             <Test
               appState={appState}
               tests={tests}
-              actions={actions}
+              actionsNAV={actionsNAV}
               pyodide={pyodide2}
             />
           )}
 
           {appState.page == "congrat" && (
-            <CongratPage appState={appState} actions={actions} />
+            <CongratPage appState={appState} actionsNAV={actionsNAV} />
           )}
         </Box>
       )}

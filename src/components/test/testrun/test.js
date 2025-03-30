@@ -7,33 +7,32 @@ import useCheck from "./useCheck";
 import useTest from "./useTest";
 import { observer } from "mobx-react-lite";
 import progressStore from "@/components/common/progress/progressStore";
-import { useColorScheme } from "@mui/material/styles";
 import useMonaco from "./components/monaco/useMonaco";
 import InOutPanel from "@/components/test/testrun/components/InOutPanel";
 import TaskAndCodePanel from "@/components/test/testrun/components/taskAndCodePanel";
 import TopPanel from "@/components/test/testrun/components/TopPanel";
 
 const Test = observer((props) => {
-  const { pyodide } = props;
+  const { appState, tests, actionsNAV, pyodide } = props;
   const monacoRef = useRef(null);
   const editorRef = useRef(null);
   const theme = useTheme();
-  const { mode } = useColorScheme();
+
   const { setEditorDisabled } = useMonaco({ monacoRef, editorRef });
 
-  const testFeed = useTest({
-    ...props,
+  const { actionsTsk, currTask } = useTest({
+    appState,
+    tests,
+    actionsNAV,
     editorRef,
     setEditorDisabled: (disabled) => setEditorDisabled(disabled, editorRef),
   });
 
-  const { setOutput, currTask, refreshInput } = testFeed;
-  const { runPythonCode } = usePythonRunner({ setOutput, pyodide });
-  const { checkTask } = useCheck({ ...testFeed, runPythonCode });
-
-  if (!mode) {
-    return null;
-  }
+  const { runPythonCode } = usePythonRunner({
+    setOutput: actionsTsk.setOutput,
+    pyodide,
+  });
+  const { checkTask } = useCheck({ actionsTsk, runPythonCode });
 
   useEffect(() => {
     progressStore.setCloseProgress();
@@ -51,20 +50,24 @@ const Test = observer((props) => {
           padding: "6px",
         }}
       >
-        <TopPanel {...props} monacoRef={monacoRef} />
+        <TopPanel tests={tests} appState={appState} monacoRef={monacoRef} />
 
         <TaskAndCodePanel
-          {...testFeed}
-          {...props}
+          pyodide={pyodide}
+          actionsTsk={actionsTsk}
+          actionsNAV={actionsNAV}
+          currTask={currTask}
+          appState={appState}
+          tests={tests}
           checkTask={checkTask}
           runPythonCode={runPythonCode}
-          mode={mode}
           monacoRef={monacoRef}
           editorRef={editorRef}
-          refreshInput={refreshInput}
-          setOutput={setOutput}
         />
-        <InOutPanel currTask={currTask} refreshInput={refreshInput} />
+        <InOutPanel
+          currTask={currTask}
+          refreshInput={actionsTsk.refreshInput}
+        />
       </Box>
     )
   );

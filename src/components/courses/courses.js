@@ -5,32 +5,32 @@ import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import { Box } from "@mui/material";
 import LogoutBtn from "./LogoutBtn";
 
-const Courses = ({ actions }) => {
+const Courses = ({ actionsNAV }) => {
   const coursesData = [
     {
       title: "БАЗОВЫЙ КУРС",
       text: "Шаг за шаг с нуля познаем основы программирования на Python",
       id: "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0",
-      action: actions.openCourseFlowPageFromMain,
+      action: actionsNAV.openCourseFlowPageFromMain,
     },
 
     {
       title: "ПРОДВИНУТОЕ ПРОГРАММИРОВАНИЕ",
       text: "Постигааем продвинутые функции языка Python",
       id: "a3905595-437e-47f3-b749-28ea5362bd39",
-      action: actions.openCourseFlowPageFromMain,
+      action: actionsNAV.openCourseFlowPageFromMain,
     },
     {
       title: "ГОТОВИМСЯ К ЕГЭ",
       text: "Подготовка к решению задач ЕГЭ. Все типы задач. Разные способы решения - от Базового до Pro",
       id: "555",
-      action: actions.openCourseFlowPageFromMain,
+      action: actionsNAV.openCourseFlowPageFromMain,
     },
     {
       title: "Чемпионат",
       text: "Хакатон  по программированию на скорость",
       id: "777",
-      action: actions.openChampPage,
+      action: actionsNAV.openChampPage,
     },
   ];
   return (
