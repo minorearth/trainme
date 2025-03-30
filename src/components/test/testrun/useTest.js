@@ -24,15 +24,9 @@ const useTest = ({
   const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
     editorRef.current.getModel().setValue("");
     setTaskLog({ error, code });
+    setEarned(error);
     const CSP = getCSP();
-    setEarned(
-      error,
-      CSP.taskstage,
-      CSP.repeat,
-      CSP.overflow,
-      CSP.nodemode,
-      CSP.champid
-    );
+
     switch (true) {
       case CSP.taskId != tests.length - 1 && !error:
         ok();
@@ -154,7 +148,13 @@ const useTest = ({
     splashCDStore.setShow(false, "ok", 500, () => action());
   };
 
-  const setEarned = (error, taskstage, repeat, overflow, nodemode, champid) => {
+  const setEarned = (error) => {
+    const CSP = getCSP();
+    const taskstage = CSP.taskstage;
+    const repeat = CSP.repeat;
+    const overflow = CSP.overflow;
+    const nodemode = CSP.nodemode;
+    const champid = CSP.champid;
     let pts = getSense();
     if (overflow) {
       return pts;

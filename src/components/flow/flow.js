@@ -29,7 +29,7 @@ const Flow = ({ appState, flow, actionsNAV }) => {
         nodesDraggable={false}
         translateExtent={[
           [0, -250],
-          [1300, 7500],
+          [1300, 8500],
         ]}
         maxZoom={2}
         minZoom={1}
