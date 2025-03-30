@@ -23,9 +23,9 @@ const useTest = ({
 
   const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
     editorRef.current.getModel().setValue("");
-    setTaskLog({ error, code });
     setEarned(error);
     const CSP = getCSP();
+    CSP.nodemode != "champ" && setTaskLog({ error, code });
 
     switch (true) {
       case CSP.taskId != tests.length - 1 && !error:

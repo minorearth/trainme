@@ -36,11 +36,11 @@ export default function usePythonRunner({ setOutput, pyodide }) {
         // setOutput([]);
         if (pyodide) {
           await pyodide.runPython(code);
-          return output;
+          return { outputTxt: output.join("\n"), outputArr: output };
         }
       } catch (e) {
         stdError(e);
-        return output;
+        return { outputTxt: output.join("\n"), outputArr: output };
       } finally {
         // stdout("");
       }

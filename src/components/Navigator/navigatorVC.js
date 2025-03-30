@@ -316,14 +316,22 @@ const useNavigator = () => {
     const nodemode = CSP.nodemode;
     const taskstage = CSP.taskstage;
     if (nodemode == "renewal") {
-      tasks = await getRandomTasksForRepeat({
+      const { tasksFetched } = await getRandomTasksForRepeat({
         courseid: CSP.launchedCourse,
         levelStart: CSP.level - 5,
         levelEnd: CSP.level,
       });
+      tasks = tasksFetched;
     }
     if (nodemode == "addhoc" || nodemode == "newtopic") {
       tasks = await getAllTestsFromChapter(CSP.chapter, CSP.launchedCourse);
+    }
+
+    if (nodemode == "champ") {
+      const champTasks = await getChampTasks({
+        champid: CSP.champid,
+      });
+      tasks = champTasks.data.tasks;
     }
 
     if (nodemode == "textbook") {
@@ -395,6 +403,12 @@ const useNavigator = () => {
     remainsum,
     tobeunlocked,
   }) => {
+    const { tasksuuids, tasksFetched } = await getRandomTasksForRepeat({
+      chapter,
+      courseid,
+      levelStart: level - 5,
+      levelEnd: level,
+    });
     updateStateAndCSP({
       chapter,
       page: "testsStarted",
@@ -409,14 +423,10 @@ const useNavigator = () => {
       tobeunlocked,
       pts: 0,
       tasklog: {},
+      randomsaved: tasksuuids,
     });
-    const tasks = await getRandomTasksForRepeat({
-      chapter,
-      courseid,
-      levelStart: level - 5,
-      levelEnd: level,
-    });
-    setTests(tasks);
+
+    setTests(tasksFetched);
   };
 
   const setChampTasks = async ({ champid }) => {

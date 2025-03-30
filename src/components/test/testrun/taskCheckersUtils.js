@@ -54,8 +54,8 @@ const checkForbidden = (code, musthave, musthaveRe) => {
 const checkCode = async (code, test, runPythonCode) => {
   const results = await Promise.all(
     test.inout.map(async (check) => {
-      const output = await runPythonCode(code, check.inv.join("\n"));
-      return eqArrays(output, check.outv);
+      const { outputArr } = await runPythonCode(code, check.inv.join("\n"));
+      return eqArrays(outputArr, check.outv);
     })
   );
   return results.every(Boolean);
@@ -92,7 +92,7 @@ export const getErrorMessage = (
 
   let errorMsg = "";
   if (errorList.length != 0) {
-    errorList.push(`\nСмотри верный код в окне редактора`);
+    errorList.push(`\n\nСмотри верный код в окне редактора!`);
 
     errorMsg = intro + errorList.join("");
   }

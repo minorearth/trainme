@@ -48,9 +48,12 @@ const Navigation = observer(
             if (!pyodide || executing) return;
             setExecuting(true);
             // await runPythonCode(currTask.code, currTask.input);
-            const output = await runPythonCode(currTask.code, currTask.input);
+            const { outputTxt } = await runPythonCode(
+              currTask.code,
+              currTask.input
+            );
 
-            setOutput(output);
+            setOutput(outputTxt);
             setExecuting(false);
           }}
           variant="outlined"
