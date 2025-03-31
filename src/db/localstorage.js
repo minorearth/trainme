@@ -29,6 +29,10 @@ export const setCSP = (state) => {
   }
 };
 
+export const cleanUpCSP = (state) => {
+  localStorage.removeItem("state");
+};
+
 export const getSense = () => {
   const { pts } = getCSP();
   return !pts ? 0 : pts;

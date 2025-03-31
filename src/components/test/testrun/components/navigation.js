@@ -8,6 +8,7 @@ import cowntdownbutton from "@/store/cowntdownbutton";
 import Animation from "@/components/common/animation/Animation";
 import stn from "@/globals/settings";
 import { getCSP } from "@/db/localstorage";
+import alertdialog from "@/store/dialog";
 
 const Navigation = observer(
   ({
@@ -103,6 +104,17 @@ const Navigation = observer(
             Продолжить
           </Button>
         )}
+        {currTask.tasktype == "guide" && (
+          <Button
+            onClick={() => {
+              actionsNAV.interruptExamMode();
+            }}
+            variant="outlined"
+            disabled={appState.taskId >= tests.length - 1}
+          >
+            Выйти
+          </Button>
+        )}
         {cowntdownbutton.state.visible && (
           <CountdownButton
             onClick={() => {
@@ -113,16 +125,23 @@ const Navigation = observer(
           />
         )}
 
-        {stn.mode.DEV_MODE && (
-          <Button
-            onClick={() => {
-              actionsNAV.interruptExamMode();
-            }}
-            variant="outlined"
-          >
-            Выйти
-          </Button>
-        )}
+        <Button
+          onClick={() => {
+            alertdialog.showDialog(
+              "Завершить прохождение?",
+              "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n2 монеты за каждую задачу вместо 10 монет",
+              2,
+              () => {
+                const CSP = getCSP();
+                actionsNAV.openCongratPage({ CSP });
+              },
+              () => {}
+            );
+          }}
+          variant="outlined"
+        >
+          Завершить
+        </Button>
         {stn.mode.DEV_MODE && (
           <Button
             onClick={() => {

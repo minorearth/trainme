@@ -13,6 +13,8 @@ import {
   signInClient,
 } from "@/db/domain/domain";
 
+import { cleanUpCSP } from "@/db/localstorage";
+
 import alertdialog from "@/store/dialog";
 import user from "@/store/user";
 import dialog from "@/store/dialog";
@@ -32,18 +34,17 @@ export const useAuth = () => {
   const authNow = async (email, password) => {
     const uid = await signInClient(email, password);
     const allUserMeta = await getUseMetaData(uid);
-    //TODO:persist name
-    user.setUser({ id: uid, name: allUserMeta.name });
-    allUserMeta.name;
+
     if (uid == "notVerified") {
       alertdialog.showDialog(
         "email не верифицирован",
-        "Зайдите в почту и перейдите...",
+        "На ваш почтовый ящик выслано письмо, \nперейдите по ссылке в письме для смены пароля",
         1,
         () => {
           progressStore.setCloseProgress();
         }
       );
+
       return;
     }
 
@@ -58,6 +59,10 @@ export const useAuth = () => {
       );
       return;
     }
+    //TODO:persist name
+    console.log(allUserMeta);
+
+    user.setUser({ id: uid, name: allUserMeta.name });
     router.push(`/chapters`);
   };
 
@@ -93,6 +98,7 @@ export const useAuth = () => {
     const password = data.get("password");
     const isValid = validateSignInInputs(email, password);
     if (isValid) {
+      cleanUpCSP();
       await authNow(email, password);
     } else {
       progressStore.setCloseProgress();

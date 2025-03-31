@@ -12,7 +12,11 @@ import {
   getChampTasks,
   updateChampPoins,
 } from "./navigatorVM";
-import { getUseMetaData, checkCoursePaid } from "@/db/SA/firebaseSA";
+import {
+  getUseMetaData,
+  checkCoursePaid,
+  setUseMetaUnlockedAndCompleted,
+} from "@/db/SA/firebaseSA";
 import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
 import { setUseMetaData } from "@/db/SA/firebaseSA";
 import { getTargetsBySource } from "./utils";
@@ -375,6 +379,15 @@ const useNavigator = () => {
     nodemode,
     tobeunlocked,
   }) => {
+    setUseMetaUnlockedAndCompleted(
+      encrypt2({
+        lastcompleted: chapter,
+        unlocked: tobeunlocked,
+        uid: user.userid,
+        launchedCourse: courseid,
+      })
+    );
+
     updateStateAndCSP({
       chapter,
       page: "testsStarted",

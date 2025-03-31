@@ -114,8 +114,6 @@ export const setUseMetaData = async (data) => {
     tasklog
   );
   const userMetaRef = firestore.collection("usermeta").doc(uid);
-  // const path = `courses.${launchedCourse}`;
-  // const path2 = `stat.${lastcompleted}.sum`;
   if (unlocked.length != 0) {
     userMetaRef.update({
       [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
@@ -138,6 +136,22 @@ export const setUseMetaData = async (data) => {
       [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]:
         FieldValue.increment(pts),
       ...tasklogPrepared,
+    });
+  }
+};
+
+export const setUseMetaUnlockedAndCompleted = async (data) => {
+  const firestore = getFirestore();
+  const { uid, lastcompleted, unlocked, launchedCourse } = decrypt2(data);
+  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  if (unlocked.length != 0) {
+    userMetaRef.update({
+      [`courses.${launchedCourse}.completed`]:
+        FieldValue.arrayUnion(lastcompleted),
+      [`courses.${launchedCourse}.unlocked`]: FieldValue.arrayUnion(
+        ...unlocked
+      ),
+      [`courses.${launchedCourse}.lastunlocked`]: unlocked,
     });
   }
 };
