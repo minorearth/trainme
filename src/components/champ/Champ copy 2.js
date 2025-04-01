@@ -110,7 +110,7 @@ const Champ = observer(({ actionsNAV, appState }) => {
               value={champNumber}
               fullWidth
             /> */}
-            {champid && (
+            {/* {champid && (
               <Button
                 sx={{ marginBottom: "40px" }}
                 variant="outlined"
@@ -124,7 +124,7 @@ const Champ = observer(({ actionsNAV, appState }) => {
               >
                 В новом окне
               </Button>
-            )}
+            )} */}
             {/* </Panel> */}
             {/* <Panel label={"Присоединиться"}> */}
             {/* <Box

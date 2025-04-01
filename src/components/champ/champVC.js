@@ -85,6 +85,10 @@ const useChamps = ({ actionsNAV, appState }) => {
   };
 
   const startChamp = async (champid) => {
+    window.open(
+      `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard/${champid}`,
+      "_blank"
+    );
     updateChampStatusClient(stn.collections.CHAMPS, "started", champid);
   };
 

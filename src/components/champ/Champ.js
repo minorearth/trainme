@@ -173,7 +173,7 @@ const Champ = observer(({ actionsNAV, appState }) => {
             >
               Присоединиться
             </Button>
-            <Button
+            {/* <Button
               sx={{ marginBottom: "40px" }}
               variant="outlined"
               disabled={!champNumber}
@@ -186,7 +186,7 @@ const Champ = observer(({ actionsNAV, appState }) => {
               }
             >
               В новом окне
-            </Button>
+            </Button> */}
 
             <Button
               sx={{ width: "30%" }}
@@ -226,7 +226,7 @@ const Champ = observer(({ actionsNAV, appState }) => {
             >
               Присоединиться
             </Button>
-            <Button
+            {/* <Button
               sx={{ marginBottom: "40px" }}
               variant="outlined"
               fullWidth
@@ -239,7 +239,7 @@ const Champ = observer(({ actionsNAV, appState }) => {
               }
             >
               В новом окне
-            </Button>
+            </Button> */}
             <Button
               sx={{ width: "30%" }}
               onClick={() => {

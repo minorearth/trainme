@@ -33,6 +33,48 @@ const Navigation = observer(
       setOutput,
     } = actionsTsk;
 
+    const showMessageOnTestInterrupted = () => {
+      const CSP = getCSP();
+      const nodemode = CSP.nodemode;
+      let caption, text;
+      if (
+        nodemode == "renewal" ||
+        nodemode == "addhoc" ||
+        nodemode == "newtopic"
+      ) {
+        caption = "Завершение прохождения";
+      }
+
+      if ((nodemode == "newtopic" || nodemode == "addhoc") && !CSP.repeat) {
+        text =
+          "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n2 монеты за каждую задачу вместо 10 монет";
+      }
+
+      if (nodemode == "renewal" && !CSP.repeat) {
+        text =
+          "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n1 монету за каждую задачу вместо 2 монет";
+      }
+
+      if (CSP.repeat) {
+        text = "Завершить прохождение?";
+      }
+
+      if (nodemode == "champ") {
+        caption = "Завершить чемпионат";
+        text = "Завершить участие в чемпионате?";
+      }
+
+      alertdialog.showDialog(
+        caption,
+        text,
+        2,
+        () => {
+          actionsNAV.openCongratPage({ CSP });
+        },
+        () => {}
+      );
+    };
+
     return (
       <Box
         sx={{
@@ -104,7 +146,7 @@ const Navigation = observer(
             Продолжить
           </Button>
         )}
-        {currTask.tasktype == "guide" && (
+        {appState.nodemode == "textbook" && (
           <Button
             onClick={() => {
               actionsNAV.interruptExamMode();
@@ -125,23 +167,16 @@ const Navigation = observer(
           />
         )}
 
-        <Button
-          onClick={() => {
-            alertdialog.showDialog(
-              "Завершить прохождение?",
-              "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n2 монеты за каждую задачу вместо 10 монет",
-              2,
-              () => {
-                const CSP = getCSP();
-                actionsNAV.openCongratPage({ CSP });
-              },
-              () => {}
-            );
-          }}
-          variant="outlined"
-        >
-          Завершить
-        </Button>
+        {appState.nodemode != "textbook" && (
+          <Button
+            onClick={() => {
+              showMessageOnTestInterrupted();
+            }}
+            variant="outlined"
+          >
+            Завершить
+          </Button>
+        )}
         {stn.mode.DEV_MODE && (
           <Button
             onClick={() => {
