@@ -184,7 +184,7 @@ const useTest = ({
       if (taskstage == "recap" && repeat) {
         pts += 1;
       }
-      if (nodemode == "champ" && taskstage == "recap") {
+      if (nodemode == "champ" && taskstage != "recap") {
         actionsNAV.updateChampPoins(pts, champid);
       }
     }
