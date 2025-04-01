@@ -45,10 +45,13 @@ export const setDocInCollection = async (db, collectionName, data, id) => {
 export const updateUsersInChamp = async (db, collectionName, data, id) => {
   // const docSnap = await getDoc(doc(db, collectionName, id));
   const ref = doc(db, collectionName, id);
-
-  const feed = await updateDoc(ref, {
-    [`users.${data.id}`]: { id: data.id, name: data.name, pts: 0, change: 0 },
-  });
+  try {
+    const feed = await updateDoc(ref, {
+      [`users.${data.id}`]: { id: data.id, name: data.name, pts: 0, change: 0 },
+    });
+  } catch (e) {
+    return "error";
+  }
 };
 
 export const updatePoinsInChamp = async (db, collectionName, data, id) => {

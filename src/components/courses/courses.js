@@ -16,7 +16,7 @@ const Courses = ({ actionsNAV }) => {
 
     {
       title: "ПРОДВИНУТОЕ ПРОГРАММИРОВАНИЕ",
-      text: "Постигааем продвинутые функции языка Python",
+      text: "Постигаем продвинутые функции языка Python",
       id: "a3905595-437e-47f3-b749-28ea5362bd39",
       action: actionsNAV.openCourseFlowPageFromMain,
     },

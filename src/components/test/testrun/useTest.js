@@ -156,39 +156,40 @@ const useTest = ({
     const nodemode = CSP.nodemode;
     const champid = CSP.champid;
     let pts = getSense();
+    let income = 0;
     if (overflow) {
       return pts;
     }
     if (!error) {
       if (taskstage == "WIP" && !repeat && nodemode != "renewal") {
-        pts += 10;
+        income = 10;
       }
       if (taskstage == "WIP" && !repeat && nodemode == "renewal") {
-        pts += 2;
+        income = 2;
       }
       if (taskstage == "WIP" && repeat && nodemode != "renewal") {
-        pts += 2;
+        income = 2;
       }
       if (taskstage == "WIP" && repeat && nodemode == "renewal") {
-        pts += 1;
+        income = 1;
       }
 
       if (taskstage == "recap" && !repeat && nodemode != "renewal") {
-        pts += 2;
+        income = 2;
       }
 
       if (taskstage == "recap" && !repeat && nodemode == "renewal") {
-        pts += 1;
+        income = 1;
       }
 
       if (taskstage == "recap" && repeat) {
-        pts += 1;
+        income = 1;
       }
-      if (nodemode == "champ" && taskstage != "recap") {
-        actionsNAV.updateChampPoins(pts, champid);
+      if (nodemode == "champ") {
+        actionsNAV.updateChampPoins(income, champid);
       }
     }
-    updateSCP({ pts });
+    updateSCP({ pts: pts + income });
     return pts;
   };
 

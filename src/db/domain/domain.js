@@ -47,7 +47,7 @@ export const setDocInCollectionClient = async (collectionName, data, id) => {
 };
 
 export const updateUsersInChampClient = async (collectionName, data, id) => {
-  await updateUsersInChamp(db, collectionName, data, id);
+  return await updateUsersInChamp(db, collectionName, data, id);
 };
 
 export const updatePoinsInChampClient = async (collectionName, data, id) => {

@@ -12,6 +12,7 @@ import { getCSP } from "@/db/localstorage";
 import user from "@/store/user";
 import { generateString } from "@/globals/utils/utilsRandom";
 import stn from "@/globals/settings";
+import alertdialog from "@/store/dialog";
 
 const useChamps = ({ actionsNAV, appState }) => {
   const { getRandomTasksForChamp, runChamp } = actionsNAV;
@@ -76,12 +77,19 @@ const useChamps = ({ actionsNAV, appState }) => {
   };
 
   const joinChamp = async () => {
-    await updateUsersInChampClient(
+    const res = await updateUsersInChampClient(
       stn.collections.CHAMPS,
       { id: user.userid, name: userName, change: 0, pts: 0 },
       champNumber
     );
-    setConnected((state) => !state);
+    if (res == "error") {
+      alertdialog.showDialog(
+        "Нет такого чемпионата",
+        "Перепроверьте все еще раз",
+        1,
+        () => {}
+      );
+    } else setConnected((state) => !state);
   };
 
   const startChamp = async (champid) => {

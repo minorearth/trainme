@@ -130,7 +130,10 @@ const useNavigator = () => {
     progressStore.setShowProgress(true, false, "progressdots", 2000);
 
     const coursePaid = await checkCoursePaid(launchedCourse, user.userid);
-    if (!coursePaid) {
+    if (
+      !coursePaid ||
+      launchedCourse == "a3905595-437e-47f3-b749-28ea5362bd39"
+    ) {
       alertdialog.showDialog(
         "Курс недоступен",
         "Данный курс пока недоступен",
@@ -145,7 +148,6 @@ const useNavigator = () => {
   };
 
   const openFlowPageAfterAccomplished = () => {
-    //Clean-up CSP
     const CSP = getCSP();
     setCSP({
       launchedCourse: CSP.launchedCourse,

@@ -12,14 +12,12 @@ const ListItem = ({ key, name, pts, change }) => (
     style={{
       margin: "10px",
       padding: "10px",
-      // minWidth: "800px",
-      background: "#f0f0f0",
+      // background: "#f0f0f0",
       border: "1px solid #ccc",
       borderRadius: "5px",
     }}
   >
     <UserCard name={name} pts={pts} change={change} />
-    {/* {pts} */}
   </motion.div>
 );
 

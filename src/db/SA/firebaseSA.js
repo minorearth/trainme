@@ -153,5 +153,10 @@ export const setUseMetaUnlockedAndCompleted = async (data) => {
       ),
       [`courses.${launchedCourse}.lastunlocked`]: unlocked,
     });
+  } else {
+    userMetaRef.update({
+      [`courses.${launchedCourse}.completed`]:
+        FieldValue.arrayUnion(lastcompleted),
+    });
   }
 };
