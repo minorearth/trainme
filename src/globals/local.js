@@ -7,7 +7,7 @@ const local = {
     },
     text: {
       APP_NAME: "PyTrek",
-      APP_DESCRIPTION: "Быстрёнок-самый быстрый способ собрать фото и файлы",
+      APP_DESCRIPTION: "pyTrek-самый быстрый способ научиться программировать",
       DROP_UNITS: "байт",
       AUTH_REMEMBER: "Вспомнил!",
       AUTH_FORGOT: "Сбросить пароль",
