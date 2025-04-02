@@ -11,6 +11,7 @@ import {
   getRandomTasksForChamp,
   getChampTasks,
   updateChampPoins,
+  updateChampTaskLog,
 } from "./navigatorVM";
 import {
   getUseMetaData,
@@ -288,6 +289,7 @@ const useNavigator = () => {
 
     if (CSP.nodemode == "champ") {
       pts = getSense();
+      updateChampTaskLog(CSP.tasklog, CSP.champid);
       setStateAndCSP({
         page: "congrat",
         champid: CSP.champid,
@@ -452,6 +454,7 @@ const useNavigator = () => {
       recapTasksIds: [],
       taskstage: "WIP",
       nodemode: "champ",
+      tasklog: {},
     });
     const tasks = await getChampTasks({
       champid,
@@ -478,6 +481,7 @@ const useNavigator = () => {
       interruptExamMode,
       getRandomTasksForChamp,
       updateChampPoins,
+      updateChampTaskLog,
       runChamp,
       setRecapTasks,
     },

@@ -24,8 +24,11 @@ const useTest = ({
   const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
     editorRef.current.getModel().setValue("");
     setEarned(error);
+    //TODO:
+    setTaskLog({ error, code });
+
+    // CSP.nodemode != "champ" && setTaskLog({ error, code });
     const CSP = getCSP();
-    CSP.nodemode != "champ" && setTaskLog({ error, code });
 
     switch (true) {
       case CSP.taskId != tests.length - 1 && !error:
@@ -69,6 +72,7 @@ const useTest = ({
 
   const setTaskLog = ({ code, error }) => {
     const CSP = getCSP();
+
     const tasklog = !error ? { code } : { errorcode: code };
     Object.keys(CSP.tasklog).includes(currTask.taskuuid)
       ? updateSCP({

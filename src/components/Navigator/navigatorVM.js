@@ -1,6 +1,7 @@
 import {
   getDocDataFromCollectionByIdClient,
   updatePoinsInChampClient,
+  setTaskLogInChampClient,
 } from "@/db/domain/domain";
 import alertdialog from "@/store/dialog";
 import { payChapter } from "@/db/SA/firebaseSA";
@@ -308,4 +309,8 @@ export const getTestsRecap = (recapTasksIds, tasks) => {
 
 export const updateChampPoins = (pts, champid) => {
   updatePoinsInChampClient("champs", { id: user.userid, pts }, champid);
+};
+
+export const updateChampTaskLog = (tasklog, champid) => {
+  setTaskLogInChampClient("champs", { id: user.userid, tasklog }, champid);
 };

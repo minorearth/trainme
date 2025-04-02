@@ -13,6 +13,7 @@ import {
   updateUsersInChamp,
   updateChampStatus,
   updatePoinsInChamp,
+  setTaskLogInChamp,
 } from "@/db/CA/dataModel";
 
 // import {
@@ -52,6 +53,10 @@ export const updateUsersInChampClient = async (collectionName, data, id) => {
 
 export const updatePoinsInChampClient = async (collectionName, data, id) => {
   await updatePoinsInChamp(db, collectionName, data, id);
+};
+
+export const setTaskLogInChampClient = async (collectionName, data, id) => {
+  await setTaskLogInChamp(db, collectionName, data, id);
 };
 
 export const updateChampStatusClient = async (collectionName, status, id) => {

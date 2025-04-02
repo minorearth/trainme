@@ -64,6 +64,16 @@ export const updatePoinsInChamp = async (db, collectionName, data, id) => {
   });
 };
 
+export const setTaskLogInChamp = async (db, collectionName, data, id) => {
+  // const docSnap = await getDoc(doc(db, collectionName, id));
+
+  const ref = doc(db, collectionName, id);
+
+  const feed = await updateDoc(ref, {
+    [`users.${data.id}.tasklog`]: data.tasklog,
+  });
+};
+
 export const updateChampStatus = async (db, collectionName, status, id) => {
   // const docSnap = await getDoc(doc(db, collectionName, id));
   const ref = doc(db, collectionName, id);
