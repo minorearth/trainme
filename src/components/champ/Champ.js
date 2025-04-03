@@ -24,6 +24,8 @@ const Champ = observer(({ actionsNAV, appState }) => {
     champNumber,
     changeChampNumber,
     changeRange,
+    changeTaskCount,
+    taskCount,
     range,
   } = useChamps({ actionsNAV, appState });
   const [activeStep, setActiveStep] = useState(0);
@@ -141,7 +143,17 @@ const Champ = observer(({ actionsNAV, appState }) => {
               <RangeSlider changeRange={changeRange} range={range} />
             </>
 
+            <TextField
+              id="outlined-basic"
+              label="Количество задач"
+              variant="outlined"
+              onChange={(e) => changeTaskCount(e)}
+              value={taskCount}
+              width="30%"
+            />
+
             <Button
+              disabled={!taskCount}
               onClick={() => {
                 createChamp();
                 setActiveStep(2);
@@ -152,6 +164,7 @@ const Champ = observer(({ actionsNAV, appState }) => {
             >
               Создать чемпионат
             </Button>
+
             {champNumber && (
               <Typography variant="h4" gutterBottom>
                 {champid}

@@ -19,6 +19,7 @@ const useChamps = ({ actionsNAV, appState }) => {
   const [connected, setConnected] = useState(false);
   const [champid, setChampid] = useState("");
   const [champNumber, setChampNumber] = useState("");
+  const [taskCount, setTaskCount] = useState(5);
   const [userName, setUserName] = useState("Какой-то");
   const [range, setRange] = useState([1, 30]);
 
@@ -28,6 +29,14 @@ const useChamps = ({ actionsNAV, appState }) => {
 
   const changeChampNumber = (e) => {
     setChampNumber(e.target.value);
+  };
+
+  const changeTaskCount = (e) => {
+    e.target.value.match(/[^\d]/g) == null &&
+      Number(e.target.value) != 0 &&
+      setTaskCount(e.target.value);
+
+    e.target.value == "" && setTaskCount(e.target.value);
   };
 
   const changeUserName = (e) => {
@@ -65,6 +74,7 @@ const useChamps = ({ actionsNAV, appState }) => {
     const tasks = await getRandomTasksForChamp({
       levelStart: range[0],
       levelEnd: range[1],
+      taskCount,
     });
     const champid = generateString(7);
     setChampid(champid);
@@ -111,6 +121,8 @@ const useChamps = ({ actionsNAV, appState }) => {
     changeChampNumber,
     changeRange,
     range,
+    changeTaskCount,
+    taskCount,
   };
 };
 

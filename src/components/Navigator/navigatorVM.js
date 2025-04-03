@@ -36,8 +36,7 @@ const nodeAction = (data) => {
   if (!unlocked && !paid) {
     alertdialog.showDialog(
       "Заблокировано и не оплачено",
-      "Данный раздел пока заблокирован \
-      выполните задания предыдущего раздела, а потом оплатите",
+      "Данный раздел пока заблокирован. \nВыполните задания предыдущего раздела,\nа потом оплатите монетками",
       1,
       () => {}
     );
@@ -81,8 +80,7 @@ const nodeAction = (data) => {
   if (!unlocked && paid && !completed) {
     alertdialog.showDialog(
       "Заблокировано",
-      "Данный раздел пока заблокирован \
-      выполните задания предыдущего раздела",
+      "Данный раздел пока заблокирован. \nВыполните задания предыдущего раздела",
       1,
       () => {}
     );
@@ -237,11 +235,11 @@ export const getTextBook = async (CSP, courseid) => {
   return unlockedTheory;
 };
 
-const getRandomTasks = (allTasks, levelStart, levelEnd) => {
+const getRandomTasks = (allTasks, levelStart, levelEnd, num) => {
   const scope = allTasks.filter(
     (task) => task.level <= levelEnd && task.level >= levelStart
   );
-  const numbers = getNeverRepeatIntegers(scope.length - 1, 5);
+  const numbers = getNeverRepeatIntegers(scope.length - 1, num);
   const filteredTasks = scope.filter((task, id) => numbers.includes(id));
   return filteredTasks;
 };
@@ -267,7 +265,12 @@ export const getRandomTasksForRepeat = async ({
     );
     tasksuuids = CSP.randomsaved;
   } else {
-    filteredTasks = getRandomTasks(allTasks.data.tasks, levelStart, levelEnd);
+    filteredTasks = getRandomTasks(
+      allTasks.data.tasks,
+      levelStart,
+      levelEnd,
+      5
+    );
     tasksuuids = filteredTasks.map((task) => task.taskuuid);
   }
 
@@ -282,7 +285,11 @@ export const getRandomTasksForRepeat = async ({
   return res;
 };
 
-export const getRandomTasksForChamp = async ({ levelStart, levelEnd }) => {
+export const getRandomTasksForChamp = async ({
+  levelStart,
+  levelEnd,
+  taskCount,
+}) => {
   const allTasks = await getDocDataFromCollectionByIdClient(
     "tasks",
     "alltasks"
@@ -291,7 +298,8 @@ export const getRandomTasksForChamp = async ({ levelStart, levelEnd }) => {
   const filteredTasks = getRandomTasks(
     allTasks.data.tasks,
     levelStart,
-    levelEnd
+    levelEnd,
+    taskCount
   );
 
   return filteredTasks;

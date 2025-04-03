@@ -30,6 +30,8 @@ const CountdownButton = (props) => {
 
     return () => {
       clearInterval(interval);
+      setIsRunning(false);
+      countdownbutton.hideButton();
     };
   }, [isRunning]);
 
