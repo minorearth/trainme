@@ -186,21 +186,6 @@ const Champ = observer(({ actionsNAV, appState }) => {
             >
               Присоединиться
             </Button>
-            {/* <Button
-              sx={{ marginBottom: "40px" }}
-              variant="outlined"
-              disabled={!champNumber}
-              fullWidth
-              onClick={() =>
-                window.open(
-                  `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard/${champid}`,
-                  "_blank"
-                )
-              }
-            >
-              В новом окне
-            </Button> */}
-
             <Button
               sx={{ width: "30%" }}
               onClick={() => {
@@ -239,20 +224,6 @@ const Champ = observer(({ actionsNAV, appState }) => {
             >
               Присоединиться
             </Button>
-            {/* <Button
-              sx={{ marginBottom: "40px" }}
-              variant="outlined"
-              fullWidth
-              disabled={!champNumber}
-              onClick={() =>
-                window.open(
-                  `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard/${champid}`,
-                  "_blank"
-                )
-              }
-            >
-              В новом окне
-            </Button> */}
             <Button
               sx={{ width: "30%" }}
               onClick={() => {
@@ -283,6 +254,9 @@ const Champ = observer(({ actionsNAV, appState }) => {
             width: "70%",
             flexDirection: "column",
             alignItems: "center",
+            // border: "1px solid",
+            // borderRadius: "5px",
+            // margin: "20px",
           }}
         >
           <SortableList champid={champNumber} />
@@ -293,18 +267,3 @@ const Champ = observer(({ actionsNAV, appState }) => {
 });
 
 export default Champ;
-
-{
-  /* <Box
-sx={{
-  display: "flex",
-  // flex: 1,
-  overflow: "auto",
-  width: "70%",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  gap: "10px",
-}}
-> */
-}

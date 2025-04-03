@@ -71,6 +71,20 @@ const SortableList = ({ champid }) => {
     sortItems();
   }, [rows]);
 
+  if (!items.length)
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          flex: 1,
+        }}
+      >
+        Ожидаем участников...
+      </Box>
+    );
   return (
     <Box
       sx={{

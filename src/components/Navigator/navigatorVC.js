@@ -37,10 +37,10 @@ const useNavigator = () => {
 
   useEffect(() => {
     //TODO: uncomment
-    // document.addEventListener("copy", (e) => {
-    //   e.clipboardData.setData("text/plain", "No Copying!");
-    //   e.preventDefault();
-    // });
+    document.addEventListener("copy", (e) => {
+      e.clipboardData.setData("text/plain", "No Copying!");
+      e.preventDefault();
+    });
     loadPTrek();
   }, [user]);
 
