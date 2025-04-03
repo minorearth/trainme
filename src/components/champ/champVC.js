@@ -40,7 +40,10 @@ const useChamps = ({ actionsNAV, appState }) => {
   };
 
   const changeUserName = (e) => {
-    setUserName(e.target.value);
+    if (e.target.value) {
+      const a = e.target.value.match(/[А-яA-Za-z]+[А-яA-Za-z ]*/g);
+      a && setUserName(a[0]);
+    } else setUserName("");
   };
 
   useEffect(() => {
