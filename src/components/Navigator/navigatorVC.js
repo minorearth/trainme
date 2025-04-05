@@ -24,6 +24,7 @@ import { getTargetsBySource } from "./utils";
 import progressStore from "../common/progress/progressStore";
 import alertdialog from "@/store/dialog";
 import dialog from "@/store/dialog";
+import countdownbutton from "@/store/countdownbutton";
 
 const useNavigator = () => {
   const [loading, setLoading] = useState(true);
@@ -256,6 +257,7 @@ const useNavigator = () => {
   };
 
   const openCongratPage = async ({ CSP }) => {
+    countdownbutton.hideButton();
     let pts;
     if (
       CSP.nodemode == "addhoc" ||

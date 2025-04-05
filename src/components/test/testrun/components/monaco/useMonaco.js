@@ -13,6 +13,7 @@ const useMonaco = ({ editorRef, monacoRef }) => {
   }, []);
 
   const setEditorDisabled = (disabled, editorRef) => {
+    editorRef.current.updateOptions({ readOnly: disabled });
     // disabled
     //   ? editorRef.current.onKeyDown((event) => {
     //       event.preventDefault();

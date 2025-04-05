@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import alertdialog from "@/store/dialog";
 import local from "@/globals/local";
-import cowntdownbutton from "@/store/cowntdownbutton";
+import countdownbutton from "@/store/countdownbutton";
 import splashCDStore from "@/components/common/splashAction/splashActionStore";
 import { getSense, getCSP, setCSP, updateSCP } from "@/db/localstorage";
 
@@ -141,11 +141,25 @@ const useTest = ({
       1,
 
       () => {
-        setCode(tests[appState.taskId].rightcode);
+        updateCurrTask({
+          code: tests[appState.taskId].rightcode,
+          info: "Правильный код",
+        });
         setEditorDisabled(true);
-        cowntdownbutton.showButton();
+        countdownbutton.showButton();
       }
     );
+  };
+
+  const handleChangeContent = ({ value }) => {
+    const model = editorRef.current.getModel();
+    const lineCount = model.getLineCount();
+    lineCount > currTask.maxlines
+      ? updateCurrTask({
+          code: value ?? "",
+          maxlineserror: "Превышено максимальное количество строк",
+        })
+      : updateCurrTask({ code: value ?? "", maxlineserror: "" });
   };
 
   const ok = (action = () => {}) => {
@@ -197,21 +211,21 @@ const useTest = ({
     return pts;
   };
 
-  const setOutput = (output) => {
+  const updateCurrTask = (data) => {
     setCurrTask((state) => ({
       ...state,
-      output,
+      ...data,
     }));
   };
 
   const errorCountDownPressed = async () => {
     editorRef.current.getModel().setValue("");
+    updateCurrTask({ info: "" });
     setEditorDisabled(false);
     const CSP = getCSP();
 
     if (CSP.taskId != tests.length - 1) {
       setappState({ ...CSP });
-      // nextTask({ CSP });
       return;
     }
     if (CSP.taskstage == "accomplished_suspended") {
@@ -220,13 +234,6 @@ const useTest = ({
     if (CSP.taskstage == "recap_suspended") {
       openRecapTasksPage(CSP.recapTasksIds, tests);
     }
-  };
-
-  const setCode = (code) => {
-    setCurrTask((state) => ({
-      ...state,
-      code,
-    }));
   };
 
   const openTask = (id) => {
@@ -245,6 +252,7 @@ const useTest = ({
       code: test.defaultcode,
       expectedOutput: test.defaultoutput.join("\n"),
       taskuuid: test.taskuuid,
+      maxlines: test.restrictions.maxlines,
 
       output: "",
       restrictErrors: "",
@@ -295,12 +303,12 @@ const useTest = ({
       nextTask,
       prevTaskNoPts,
       refreshInput,
-      setOutput,
-      getSense,
+      updateCurrTask,
       errorCountDownPressed,
-      setCode,
+      updateCurrTask,
       setRightCode,
       setForbiddenCode,
+      handleChangeContent,
     },
     currTask,
   };

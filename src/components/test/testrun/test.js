@@ -20,7 +20,7 @@ const Test = observer((props) => {
 
   const { setEditorDisabled } = useMonaco({ monacoRef, editorRef });
 
-  const { actionsTsk, currTask } = useTest({
+  const { actionsTsk, currTask, monacoInfo } = useTest({
     appState,
     tests,
     actionsNAV,
@@ -29,7 +29,7 @@ const Test = observer((props) => {
   });
 
   const { runPythonCode } = usePythonRunner({
-    setOutput: actionsTsk.setOutput,
+    updateCurrTask: actionsTsk.updateCurrTask,
     pyodide,
   });
   const { checkTask } = useCheck({ actionsTsk, runPythonCode });
@@ -63,6 +63,7 @@ const Test = observer((props) => {
           runPythonCode={runPythonCode}
           monacoRef={monacoRef}
           editorRef={editorRef}
+          monacoInfo={monacoInfo}
         />
         <InOutPanel
           currTask={currTask}

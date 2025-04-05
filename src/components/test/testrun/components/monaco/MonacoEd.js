@@ -6,6 +6,8 @@ import Editor from "@monaco-editor/react";
 import { EditorOptions } from "@/components/test/testrun/components/monaco/MonacoEditorOptions";
 import useMonaco from "@/components/test/testrun/components/monaco/useMonaco";
 import { useColorScheme } from "@mui/material/styles";
+import { useEffect, useState } from "react";
+import Typography from "@mui/material/Typography";
 
 var startX, startY;
 
@@ -25,10 +27,20 @@ function touchmove(e) {
   document.querySelector("body").scrollBy(0, -deltaY / 100);
 }
 
-const MonacoEd = ({ currTask, setCode, monacoRef, editorRef }) => {
+const MonacoEd = ({
+  currTask,
+  monacoRef,
+  editorRef,
+  handleChangeContent,
+  monacoInfo,
+}) => {
   const theme = useTheme();
   const { mode } = useColorScheme();
-  const { handleEditorDidMount } = useMonaco({ monacoRef, editorRef });
+  const { handleEditorDidMount } = useMonaco({
+    monacoRef,
+    editorRef,
+  });
+
   // editorRef?.current
   //   ?.getContainerDomNode()
   //   .addEventListener("touchmove", (e) => touchmove(e));
@@ -49,22 +61,38 @@ const MonacoEd = ({ currTask, setCode, monacoRef, editorRef }) => {
   //   .addEventListener("touchend", (e) => touchend(e));
 
   return (
-    <Editor
-      height="50vh"
-      width="100%"
-      theme={"pk"}
-      options={EditorOptions}
-      language="python"
-      value={currTask?.code}
-      onChange={(value, e) => setCode(value ?? "")}
-      onMount={(editor, monaco) =>
-        handleEditorDidMount({
-          editor,
-          monaco,
-          darkmode: mode == "dark" ? true : false,
-        })
-      }
-    />
+    <>
+      {currTask.info && (
+        <Typography sx={{ textAlign: "center", color: "#618B4E" }}>
+          {currTask.info}
+        </Typography>
+      )}
+      {currTask.maxlineserror && (
+        <Typography sx={{ textAlign: "center", color: "#FF5549" }}>
+          {currTask.maxlineserror}
+        </Typography>
+      )}
+      <Editor
+        height="50vh"
+        width="100%"
+        theme={"pk"}
+        options={{ ...EditorOptions }}
+        language="python"
+        value={currTask?.code}
+        onChange={(value, e) =>
+          handleChangeContent({
+            value,
+          })
+        }
+        onMount={(editor, monaco) =>
+          handleEditorDidMount({
+            editor,
+            monaco,
+            darkmode: mode == "dark" ? true : false,
+          })
+        }
+      />
+    </>
   );
 };
 

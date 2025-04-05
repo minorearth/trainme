@@ -17,8 +17,9 @@ const TaskAndCodePanel = (props) => {
     editorRef,
     checkTask,
     runPythonCode,
+    monacoInfo,
   } = props;
-  const { setCode } = actionsTsk;
+  const { handleChangeContent } = actionsTsk;
   return (
     <Grid container spacing={2} columns={{ xs: 1, md: 3 }}>
       <Grid size={{ xs: 1, md: 1 }}>
@@ -36,9 +37,10 @@ const TaskAndCodePanel = (props) => {
         <Panel label={"Редактор кода"}>
           <MonacoEd
             currTask={currTask}
-            setCode={setCode}
             monacoRef={monacoRef}
             editorRef={editorRef}
+            handleChangeContent={handleChangeContent}
+            monacoInfo={monacoInfo}
           />
           <Navigation
             checkTask={checkTask}

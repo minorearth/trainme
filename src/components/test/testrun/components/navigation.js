@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CountdownButton from "@/components/common/countdown/CountdownButton";
 import { observer } from "mobx-react-lite";
-import cowntdownbutton from "@/store/cowntdownbutton";
+import countdownbutton from "@/store/countdownbutton";
 import Animation from "@/components/common/animation/Animation";
 import stn from "@/globals/settings";
 import { getCSP } from "@/db/localstorage";
@@ -30,7 +30,7 @@ const Navigation = observer(
       prevTaskNoPts,
       errorCountDownPressed,
       refreshInput,
-      setOutput,
+      updateCurrTask,
     } = actionsTsk;
 
     const showMessageOnTestInterrupted = () => {
@@ -86,30 +86,32 @@ const Navigation = observer(
           justifyContent: "space-around",
         }}
       >
-        <Button
-          onClick={async (e) => {
-            if (!pyodide || executing) return;
-            setExecuting(true);
-            // await runPythonCode(currTask.code, currTask.input);
-            const { outputTxt } = await runPythonCode(
-              currTask.code,
-              currTask.input
-            );
+        {!countdownbutton.state.visible && (
+          <Button
+            onClick={async (e) => {
+              if (!pyodide || executing) return;
+              setExecuting(true);
+              // await runPythonCode(currTask.code, currTask.input);
+              const { outputTxt } = await runPythonCode(
+                currTask.code,
+                currTask.input
+              );
 
-            setOutput(outputTxt);
-            setExecuting(false);
-          }}
-          variant="outlined"
-          disabled={!pyodide || executing}
-        >
-          {!pyodide
-            ? "Загружается..."
-            : executing
-            ? "Выполняется..."
-            : "Выполнить"}
-        </Button>
+              updateCurrTask({ output: outputTxt });
+              setExecuting(false);
+            }}
+            variant="outlined"
+            disabled={!pyodide || executing}
+          >
+            {!pyodide
+              ? "Загружается..."
+              : executing
+              ? "Выполняется..."
+              : "Выполнить"}
+          </Button>
+        )}
 
-        {!cowntdownbutton.state.visible && currTask.tasktype == "task" && (
+        {!countdownbutton.state.visible && currTask.tasktype == "task" && (
           <Button
             onClick={async (e) => {
               if (!pyodide || executing) return;
@@ -157,11 +159,11 @@ const Navigation = observer(
             Выйти
           </Button>
         )}
-        {cowntdownbutton.state.visible && (
+        {countdownbutton.state.visible && (
           <CountdownButton
             onClick={() => {
               errorCountDownPressed();
-              cowntdownbutton.hideButton();
+              countdownbutton.hideButton();
             }}
             variant="outlined"
           />

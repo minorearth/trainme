@@ -19,6 +19,7 @@ import stn from "@/globals/settings";
 import usePyodide from "@/components/Navigator/usePyodide.js";
 import Courses from "../courses/courses";
 import Champ from "../champ/Champ";
+import countdownbutton from "@/store/countdownbutton";
 
 const Navigator = observer(() => {
   const [showSplashTimeout, setShowSplashTimeout] = useState(true);
@@ -42,7 +43,7 @@ const Navigator = observer(() => {
             height: "100vh",
           }}
         >
-          {countdown.dialogState.visible && <Countdown />}
+          {/* {countdownbutton.state.visible && <Countdown />} */}
           <AlertDialog />
           {stn.mode.DEV_MODE && (
             <AdminPanel

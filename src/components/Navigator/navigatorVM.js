@@ -8,7 +8,7 @@ import { payChapter } from "@/db/SA/firebaseSA";
 import { encrypt2 } from "@/globals/utils/encryption";
 import user from "@/store/user";
 import stn from "@/globals/settings";
-import cowntdownbutton from "@/store/cowntdownbutton";
+import countdownbutton from "@/store/countdownbutton";
 import progressCircle from "@/components/common/progress/progressStore";
 import { courses } from "@/globals/courses";
 import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
@@ -44,7 +44,7 @@ const nodeAction = (data) => {
   if (unlocked && !paid && rating < unlockpts) {
     alertdialog.showDialog(
       "Не  оплачен",
-      "Данный раздел не оплачен. Не хватает средств",
+      "Данный раздел не оплачен. Не хватает монет",
       1,
       () => {}
     );
@@ -87,7 +87,7 @@ const nodeAction = (data) => {
   }
 
   if (unlocked && paid && !completed) {
-    cowntdownbutton.hideButton();
+    countdownbutton.hideButton();
     openTestsStartedPage({
       chapter: id,
       repeat: false,

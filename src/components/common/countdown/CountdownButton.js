@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
-import countdownbutton from "@/store/cowntdownbutton";
+import countdownbutton from "@/store/countdownbutton";
 import Button from "@mui/material/Button";
 
 const sec = 20 * 1000;
 const speed = 100;
 const CountdownButton = (props) => {
   const [isRunning, setIsRunning] = useState(true);
+  const { onClick } = props;
 
   const [value, setValue] = useState(sec);
   const valueRef = useRef({});
@@ -14,10 +15,9 @@ const CountdownButton = (props) => {
 
     if (isRunning) {
       interval = setInterval(() => {
-        if (valueRef.current == 0) {
+        if (valueRef.current <= 0) {
           setIsRunning(false);
-          document.getElementById("countdownbtn").click();
-          countdownbutton.hideButton();
+          onClick();
         } else
           setValue((prevState) => {
             valueRef.current = prevState;
@@ -30,8 +30,8 @@ const CountdownButton = (props) => {
 
     return () => {
       clearInterval(interval);
-      setIsRunning(false);
-      countdownbutton.hideButton();
+      // setIsRunning(false);
+      // countdownbutton.hideButton();
     };
   }, [isRunning]);
 

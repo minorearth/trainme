@@ -2,7 +2,7 @@ import { runCheckers, getErrorMessage } from "./taskCheckersUtils";
 import local from "@/globals/local";
 
 const useCheck = ({ actionsTsk, runPythonCode }) => {
-  const { nextTaskOrCompleteTestRun, setCode } = actionsTsk;
+  const { nextTaskOrCompleteTestRun, updateCurrTask } = actionsTsk;
   const checkTask = async (code, test) => {
     if (!code) {
       return;
@@ -21,7 +21,7 @@ const useCheck = ({ actionsTsk, runPythonCode }) => {
       errorMsg: error,
       code,
     });
-    setCode("");
+    updateCurrTask({ code: "" });
     return error != "";
   };
 
