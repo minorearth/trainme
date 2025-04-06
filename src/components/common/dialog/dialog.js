@@ -65,16 +65,16 @@ const AlertDialog = observer(() => {
         </Box>
       </DialogContent>
       <DialogActions>
-        {alertdialog.dialogState.type == 2 ||
-          (alertdialog.dialogState.type == 1 && (
-            <Button
-              onClick={() => {
-                alertdialog.okDialog();
-              }}
-            >
-              {local.ru.caption.ALERT_OK}
-            </Button>
-          ))}
+        {(alertdialog.dialogState.type == 2 ||
+          alertdialog.dialogState.type == 1) && (
+          <Button
+            onClick={() => {
+              alertdialog.okDialog();
+            }}
+          >
+            {local.ru.caption.ALERT_OK}
+          </Button>
+        )}
         {alertdialog.dialogState.type == 2 && (
           <Button onClick={() => alertdialog.cancelDialog()}>{"Отмена"}</Button>
         )}
