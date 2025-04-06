@@ -37,21 +37,7 @@ const CongratPage = ({ appState, actionsNAV }) => {
         sx={{ mt: 3, mb: 3 }}
         variant="outlined"
         aria-label="repeat"
-        onClick={async () => {
-          if (
-            appState.nodemode == "addhoc" ||
-            appState.nodemode == "newtopic" ||
-            appState.nodemode == "renewal"
-          ) {
-            actionsNAV.openFlowPageAfterAccomplished();
-          }
-
-          if (appState.nodemode == "champ") {
-            actionsNAV.openSpecChampPage({ champid: appState.champid });
-          }
-
-          // setFlowPage();
-        }}
+        onClick={() => actionsNAV.saveProgress()}
         endIcon={<ReplayIcon />}
       >
         {"Вернуться к курсу"}

@@ -18,6 +18,7 @@ import {
   checkCoursePaid,
   setUseMetaUnlockedAndCompleted,
 } from "@/db/SA/firebaseSA";
+import { updateDataWithRetry } from "@/db/networkstable";
 import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
 import { setUseMetaData } from "@/db/SA/firebaseSA";
 import { getTargetsBySource } from "./utils";
@@ -49,7 +50,7 @@ const useNavigator = () => {
     //TODO:load username
     const CSP = getCSP();
     const page = CSP?.page || "courses";
-    if (page == "flow" || page == "congrat") {
+    if (page == "flow") {
       const coursePaid = await checkCoursePaid(CSP.launchedCourse, user.userid);
       if (coursePaid) {
         openAndRefreshFlowPage(CSP.launchedCourse);
@@ -63,6 +64,12 @@ const useNavigator = () => {
         ...CSP,
       });
     }
+    if (page == "congrat") {
+      setStateAndCSP({
+        ...CSP,
+      });
+    }
+
     if (!page || page == "courses" || page == "champ") {
       resetStateToInitial();
     }
@@ -113,6 +120,45 @@ const useNavigator = () => {
     setappState(data);
   };
 
+  const saveProgress = async () => {
+    const CSP = getCSP();
+    if (
+      CSP.nodemode == "addhoc" ||
+      CSP.nodemode == "newtopic" ||
+      CSP.nodemode == "renewal"
+    ) {
+      try {
+        await updateDataWithRetry(async () => {
+          await setUseMetaData(
+            encrypt2({
+              lastcompleted: CSP.chapter,
+              unlocked: CSP.tobeunlocked,
+              pts: CSP.pts,
+              uid: user.userid,
+              tasklog: CSP.tasklog,
+              launchedCourse: CSP.launchedCourse,
+            })
+          );
+        });
+        alertdialog.hideDialog();
+        openFlowPageAfterAccomplished();
+      } catch (e) {
+        console.log(e);
+        alertdialog.showDialog(
+          "Сохранение данных",
+          ' "Что-то не так с интернетом...\nОбновите страницу и повторите попытку\nЧтобы сохранить набранные баллы нужен интернет"',
+          3,
+          () => {}
+        );
+      }
+    }
+
+    if (CSP.nodemode == "champ") {
+      updateChampTaskLog(CSP.tasklog, CSP.champid);
+      openSpecChampPage({ champid: CSP.champid });
+    }
+  };
+
   //PAGES NAVIGATION
   const openAndRefreshFlowPage = async (launchedCourse) => {
     setFlow();
@@ -151,6 +197,7 @@ const useNavigator = () => {
 
   const openFlowPageAfterAccomplished = () => {
     const CSP = getCSP();
+    console.log("executed");
     setCSP({
       launchedCourse: CSP.launchedCourse,
       page: "flow",
@@ -189,12 +236,13 @@ const useNavigator = () => {
   const interruptExamMode = () => {
     const CSP = getCSP();
     if (CSP.nodemode != "champ") {
-      setStateAndCSP({
-        launchedCourse: CSP.launchedCourse,
-        page: "flow",
-        userProgress: CSP.userProgress,
-      });
-      loadFlowNodes(CSP.launchedCourse, CSP);
+      openCongratPage({ CSP });
+      // setStateAndCSP({
+      //   launchedCourse: CSP.launchedCourse,
+      //   page: "flow",
+      //   userProgress: CSP.userProgress,
+      // });
+      // loadFlowNodes(CSP.launchedCourse, CSP);
     } else {
       openAllCoursePage();
     }
@@ -259,48 +307,19 @@ const useNavigator = () => {
   const openCongratPage = async ({ CSP }) => {
     countdownbutton.hideButton();
     let pts;
+    pts = getSense();
     if (
       CSP.nodemode == "addhoc" ||
       CSP.nodemode == "newtopic" ||
       CSP.nodemode == "renewal"
     ) {
       pts = Math.min(getSense(), CSP.remainsum);
-      // const unlocked = getTargetsBySource(
-      //   CSP.chapter,
-      //   flow.edges
-      // );
-
-      await setUseMetaData(
-        encrypt2({
-          lastcompleted: CSP.chapter,
-          unlocked: CSP.tobeunlocked,
-          pts,
-          uid: user.userid,
-          tasklog: CSP.tasklog,
-          launchedCourse: CSP.launchedCourse,
-        })
-      );
-      setStateAndCSP({
-        page: "congrat",
-        pts,
-        launchedCourse: CSP.launchedCourse,
-        userProgress: CSP.userProgress,
-        nodemode: CSP.nodemode,
-      });
     }
 
-    if (CSP.nodemode == "champ") {
-      pts = getSense();
-      updateChampTaskLog(CSP.tasklog, CSP.champid);
-      setStateAndCSP({
-        page: "congrat",
-        champid: CSP.champid,
-        pts,
-        // launchedCourse: CSP.launchedCourse,
-        userProgress: CSP.userProgress,
-        nodemode: CSP.nodemode,
-      });
-    }
+    updateStateAndCSP({
+      page: "congrat",
+      pts,
+    });
   };
 
   const openRecapTasksPage = (recapTasksIds, tasks) => {
@@ -479,7 +498,7 @@ const useNavigator = () => {
       openRecapTasksPage,
       openSpecChampPage,
       openCourseFlowPageFromMain,
-
+      saveProgress,
       interruptExamMode,
       getRandomTasksForChamp,
       updateChampPoins,
@@ -495,3 +514,45 @@ const useNavigator = () => {
 };
 
 export default useNavigator;
+
+// const openCongratPage = async ({ CSP }) => {
+//   countdownbutton.hideButton();
+//   let pts;
+//   if (
+//     CSP.nodemode == "addhoc" ||
+//     CSP.nodemode == "newtopic" ||
+//     CSP.nodemode == "renewal"
+//   ) {
+//     pts = Math.min(getSense(), CSP.remainsum);
+//     await setUseMetaData(
+//       encrypt2({
+//         lastcompleted: CSP.chapter,
+//         unlocked: CSP.tobeunlocked,
+//         pts,
+//         uid: user.userid,
+//         tasklog: CSP.tasklog,
+//         launchedCourse: CSP.launchedCourse,
+//       })
+//     );
+//     setStateAndCSP({
+//       page: "congrat",
+//       pts,
+//       launchedCourse: CSP.launchedCourse,
+//       userProgress: CSP.userProgress,
+//       nodemode: CSP.nodemode,
+//     });
+//   }
+
+//   if (CSP.nodemode == "champ") {
+//     pts = getSense();
+//     updateChampTaskLog(CSP.tasklog, CSP.champid);
+//     setStateAndCSP({
+//       page: "congrat",
+//       champid: CSP.champid,
+//       pts,
+//       // launchedCourse: CSP.launchedCourse,
+//       userProgress: CSP.userProgress,
+//       nodemode: CSP.nodemode,
+//     });
+//   }
+// };

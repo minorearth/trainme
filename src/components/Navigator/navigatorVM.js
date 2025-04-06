@@ -117,6 +117,7 @@ const getRemainSum = ({ stat, node }) => {
   if (!stat[node.id]?.sum) {
     return node.data.maxcoins;
   } else {
+    //TODO:
     return node.data.maxcoins - stat[node.id].sum || 0;
   }
 };

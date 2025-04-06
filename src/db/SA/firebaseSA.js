@@ -104,6 +104,24 @@ const prepareTaskLog = (launchedCourse, lastcompleted, tasklog) => {
   return res;
 };
 
+export const updateDataWithRetry = async (action, retries = 3) => {
+  // for (let attempt = 0; attempt < retries; attempt++) {
+  try {
+    await action();
+    console.log("Данные успешно обновлены");
+    return;
+  } catch (error) {
+    console.error("Ошибка при обновлении данных:", error);
+    if (error.code === "NETWORK_ERROR" || error.message.includes("network")) {
+      return "NETWORK_ERROR";
+    } else {
+      return "SOME_ERROR";
+      // throw error;
+    }
+  }
+  // }
+};
+
 export const setUseMetaData = async (data) => {
   const firestore = getFirestore();
   const { uid, pts, lastcompleted, unlocked, launchedCourse, tasklog } =
@@ -115,28 +133,33 @@ export const setUseMetaData = async (data) => {
   );
   const userMetaRef = firestore.collection("usermeta").doc(uid);
   if (unlocked.length != 0) {
-    userMetaRef.update({
-      [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
-      [`courses.${launchedCourse}.completed`]:
-        //TODO: lastcompleted is not needed?
-        FieldValue.arrayUnion(lastcompleted),
-      [`courses.${launchedCourse}.unlocked`]: FieldValue.arrayUnion(
-        ...unlocked
-      ),
-      [`courses.${launchedCourse}.lastunlocked`]: unlocked,
-      [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]:
-        FieldValue.increment(pts),
-      ...tasklogPrepared,
-    });
+    return updateDataWithRetry(
+      async () =>
+        await userMetaRef.update({
+          [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
+          [`courses.${launchedCourse}.completed`]:
+            //TODO: lastcompleted is not needed?
+            FieldValue.arrayUnion(lastcompleted),
+          [`courses.${launchedCourse}.unlocked`]: FieldValue.arrayUnion(
+            ...unlocked
+          ),
+          [`courses.${launchedCourse}.lastunlocked`]: unlocked,
+          [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]:
+            FieldValue.increment(pts),
+          ...tasklogPrepared,
+        })
+    );
   } else {
-    userMetaRef.update({
-      [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
-      // [`courses.${launchedCourse}.completed`]:
-      //   FieldValue.arrayUnion(lastcompleted),
-      [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]:
-        FieldValue.increment(pts),
-      ...tasklogPrepared,
-    });
+    return updateDataWithRetry(async () =>
+      userMetaRef.update({
+        [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
+        // [`courses.${launchedCourse}.completed`]:
+        //   FieldValue.arrayUnion(lastcompleted),
+        [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]:
+          FieldValue.increment(pts),
+        ...tasklogPrepared,
+      })
+    );
   }
 };
 

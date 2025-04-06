@@ -19,6 +19,10 @@ class alertdialog {
     this.dialogState.actionCancel();
   }
 
+  hideDialog() {
+    this.dialogState.visible = false;
+  }
+
   constructor() {
     makeAutoObservable(this);
   }

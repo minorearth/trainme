@@ -22,10 +22,7 @@ const AlertDialog = observer(() => {
     <Dialog
       open={alertdialog.dialogState.visible}
       onClose={() => alertdialog.okDialog()}
-      // component={Paper}
-      // fullWidth={true}
       maxWidth={"md"}
-      // minWidth={"xs"}
       sx={{
         "& .MuiPaper-root": {
           backgroundImage:
@@ -68,13 +65,16 @@ const AlertDialog = observer(() => {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={() => {
-            alertdialog.okDialog();
-          }}
-        >
-          {local.ru.caption.ALERT_OK}
-        </Button>
+        {alertdialog.dialogState.type == 2 ||
+          (alertdialog.dialogState.type == 1 && (
+            <Button
+              onClick={() => {
+                alertdialog.okDialog();
+              }}
+            >
+              {local.ru.caption.ALERT_OK}
+            </Button>
+          ))}
         {alertdialog.dialogState.type == 2 && (
           <Button onClick={() => alertdialog.cancelDialog()}>{"Отмена"}</Button>
         )}
