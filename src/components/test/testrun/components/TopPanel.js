@@ -5,7 +5,9 @@ import LinearProgressWithLabel from "@/components/test/testrun/components/Linear
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import Animation from "@/components/common/animation/Animation";
 import Typography from "@mui/material/Typography";
-const TopPanel = ({ tests, appState, monacoRef }) => {
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+
+const TopPanel = ({ tests, appState, monacoRef, openSupportPage }) => {
   const theme = useTheme();
 
   return (
@@ -28,6 +30,12 @@ const TopPanel = ({ tests, appState, monacoRef }) => {
       >
         {appState.pts}
       </Typography>
+      <SupportAgentIcon
+        sx={{ fontSize: "40px", marginLeft: "25px", marginRight: "15px" }}
+        onClick={() => {
+          openSupportPage();
+        }}
+      />
 
       <DLSwitch monacoRef={monacoRef} />
     </Box>

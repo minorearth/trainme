@@ -20,6 +20,7 @@ import usePyodide from "@/components/Navigator/usePyodide.js";
 import Courses from "../courses/courses";
 import Champ from "../champ/Champ";
 import countdownbutton from "@/store/countdownbutton";
+import FloatMenu from "./floatMenu.js";
 
 const Navigator = observer(() => {
   const [showSplashTimeout, setShowSplashTimeout] = useState(true);
@@ -43,6 +44,13 @@ const Navigator = observer(() => {
             height: "100vh",
           }}
         >
+          {(appState.page == "courses" || appState.page == "champ") && (
+            <FloatMenu
+              // state={{ qrVisible, noteVisible }}
+              page={appState.page}
+              actionsNAV={actionsNAV}
+            />
+          )}
           {/* {countdownbutton.state.visible && <Countdown />} */}
           <AlertDialog />
           {stn.mode.DEV_MODE && (

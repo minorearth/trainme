@@ -50,7 +50,12 @@ const Test = observer((props) => {
           padding: "6px",
         }}
       >
-        <TopPanel tests={tests} appState={appState} monacoRef={monacoRef} />
+        <TopPanel
+          tests={tests}
+          appState={appState}
+          monacoRef={monacoRef}
+          openSupportPage={actionsNAV.openSupportPage}
+        />
 
         <TaskAndCodePanel
           pyodide={pyodide}

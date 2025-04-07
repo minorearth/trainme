@@ -2,6 +2,9 @@ import { stn } from "@/constants";
 import { useEffect, useState, useLayoutEffect, useRef } from "react";
 import { setCSP, getCSP, getSense } from "@/db/localstorage";
 import user from "@/store/user";
+
+import { signOutUserClient } from "@/db/domain/domain";
+
 import {
   getAllTestsFromChapter,
   setFlowNodes,
@@ -26,12 +29,14 @@ import progressStore from "../common/progress/progressStore";
 import alertdialog from "@/store/dialog";
 import dialog from "@/store/dialog";
 import countdownbutton from "@/store/countdownbutton";
+import { useRouter } from "next/navigation";
 
 const useNavigator = () => {
   const [loading, setLoading] = useState(true);
   const [tests, setTests] = useState([]);
   const [appState, setappState] = useState({});
   const [flow, setFlow] = useState();
+  const router = useRouter();
 
   const initialState = {
     page: "courses",
@@ -338,6 +343,15 @@ const useNavigator = () => {
     });
   };
 
+  const openLoginPageSignOut = async () => {
+    await signOutUserClient();
+    router.push(`/login/`);
+  };
+
+  const openSupportPage = () => {
+    window.open("https://t.me/pyTrek", "_blank");
+  };
+
   //TASKS MANAGEMENT
 
   const recoverTestsInProgress = async ({ CSP }) => {
@@ -498,6 +512,8 @@ const useNavigator = () => {
       openRecapTasksPage,
       openSpecChampPage,
       openCourseFlowPageFromMain,
+      openLoginPageSignOut,
+      openSupportPage,
       saveProgress,
       interruptExamMode,
       getRandomTasksForChamp,

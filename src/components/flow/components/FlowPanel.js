@@ -14,6 +14,7 @@ import { RiLogoutCircleRLine } from "react-icons/ri";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import Fab from "@mui/material/Fab";
 import Animation from "@/components/common/animation/Animation";
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 
 const FlowPanel = ({ appState, actionsNAV }) => {
   return (
@@ -62,6 +63,12 @@ const FlowPanel = ({ appState, actionsNAV }) => {
           name={"home"}
           onClick={() => {
             actionsNAV.openAllCoursePage();
+          }}
+        />
+        <SupportAgentIcon
+          sx={{ fontSize: "60px" }}
+          onClick={() => {
+            actionsNAV.openSupportPage();
           }}
         />
       </Paper>
