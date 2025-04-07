@@ -236,14 +236,14 @@ const Champ = observer(({ actionsNAV, appState }) => {
             </Button>
           </Box>
         )}
-        <Button
+        {/* <Button
           sx={{ marginTop: "40px", width: "30%", alignSelf: "center" }}
           variant="outlined"
           fullWidth
           onClick={() => actionsNAV.openAllCoursePage()}
         >
           Выйти
-        </Button>
+        </Button> */}
       </Box>
       {champNumber && (
         <Box
