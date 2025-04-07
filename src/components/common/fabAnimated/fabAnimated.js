@@ -7,20 +7,15 @@ const FabAnimated = ({ action, icon, position, tooltip }) => {
   return (
     <Tooltip title={tooltip}>
       <Fab
-        sx={{ position: "absolute", ...position }}
+        sx={{
+          position: "absolute",
+          ...position,
+          boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.2)",
+          background:
+            "linear-gradient(135deg,rgb(18, 33, 130) 0%,rgb(255, 46, 112) 100%)",
+        }}
         color="primary"
         onClick={() => action()}
-        component={motion.div}
-        animate={{
-          scale: [1, 1.3, 1],
-        }}
-        transition={{
-          duration: 5,
-          ease: "easeInOut",
-          // times: [0, 0.2, 0.5, 0.8, 1],
-          repeat: Infinity,
-          repeatDelay: 0,
-        }}
       >
         <Icon2State visible={true} icon={icon} />
       </Fab>

@@ -42,7 +42,7 @@ const Navigation = observer(
         nodemode == "addhoc" ||
         nodemode == "newtopic"
       ) {
-        caption = "Завершение прохождения";
+        caption = "Завершить";
       }
 
       if ((nodemode == "newtopic" || nodemode == "addhoc") && !CSP.repeat) {

@@ -9,8 +9,6 @@ import useNavigator from "./navigatorVC";
 import Progress from "@/components/common/progress/progress";
 import AlertDialog from "@/components/common/dialog/dialog";
 import { observer } from "mobx-react-lite";
-import Countdown from "../common/countdown/CountdownCircle";
-import countdown from "@/store/cowntdown";
 import { useEffect, useRef, useState } from "react";
 import AdminPanel from "@/components/admin/adminpanel";
 import SplashTimeout from "@/components/common/splashTimeout/splashTimeout";
@@ -19,7 +17,6 @@ import stn from "@/globals/settings";
 import usePyodide from "@/components/Navigator/usePyodide.js";
 import Courses from "../courses/courses";
 import Champ from "../champ/Champ";
-import countdownbutton from "@/store/countdownbutton";
 import FloatMenu from "./floatMenu.js";
 
 const Navigator = observer(() => {

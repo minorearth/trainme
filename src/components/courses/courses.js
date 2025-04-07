@@ -38,9 +38,9 @@ const Courses = ({ actionsNAV }) => {
       {/* <Box sx={{ position: "absolute", right: "10px", top: "10px" }}>
         <DLSwitch />
       </Box> */}
-      <Box sx={{ position: "absolute", right: "20px", top: "20px" }}>
+      {/* <Box sx={{ position: "absolute", right: "20px", top: "20px" }}>
         <LogoutBtn />
-      </Box>
+      </Box> */}
       <Grid
         container
         spacing={2}
