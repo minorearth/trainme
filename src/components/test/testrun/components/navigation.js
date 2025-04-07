@@ -151,7 +151,7 @@ const Navigation = observer(
         {appState.nodemode == "textbook" && (
           <Button
             onClick={() => {
-              actionsNAV.interruptExamMode();
+              actionsNAV.openFlowPageAfterAccomplished();
             }}
             variant="outlined"
             disabled={appState.taskId >= tests.length - 1}

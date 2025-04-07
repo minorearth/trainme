@@ -15,6 +15,30 @@ import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import Fab from "@mui/material/Fab";
 import Animation from "@/components/common/animation/Animation";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
+import HomeIcon from "@mui/icons-material/Home";
+import IconButton from "@mui/material/IconButton";
+
+const IconButtonNoRipple = ({ children }) => {
+  return (
+    <IconButton
+      disableRipple
+      sx={{
+        color: "inherit",
+        "&:hover": {
+          // backgroundColor: "transparent",
+          opacity: 0.7,
+        },
+        "&:active": {
+          // backgroundColor: "transparent", // Убираем фон при нажатии
+          opacity: 0.9,
+        },
+      }}
+    >
+      {children}
+    </IconButton>
+  );
+};
 
 const FlowPanel = ({ appState, actionsNAV }) => {
   return (
@@ -28,23 +52,52 @@ const FlowPanel = ({ appState, actionsNAV }) => {
           flexDirection: "row",
           padding: "4px",
           justifyContent: "space-evenly",
+          alignItems: "center",
         }}
       >
-        <DLSwitch />
+        <IconButtonNoRipple>
+          <HomeIcon
+            sx={{ fontSize: "60px" }}
+            onClick={() => {
+              actionsNAV.openAllCoursePage();
+            }}
+          />
+        </IconButtonNoRipple>
+
+        {/* <Animation
+          height={"60px"}
+          width={"60px"}
+          name={"home"}
+          onClick={() => {
+            actionsNAV.openAllCoursePage();
+          }}
+        /> */}
 
         <Box
           sx={{
             display: "flex",
             flexDirection: "row",
-            padding: "4px",
+            // padding: "4px",
+            alignItems: "center",
           }}
         >
-          <BiCoinStack size={"40px"} />
-          <Typography variant="h4" gutterBottom>
-            {appState.userProgress.rating}
-          </Typography>
+          <BiCoinStack size={"60px"} />
+          <Typography variant="h4">{appState.userProgress.rating}</Typography>
         </Box>
-        <Animation
+
+        <IconButtonNoRipple>
+          <ImportContactsOutlinedIcon
+            sx={{ fontSize: "60px" }}
+            onClick={async () => {
+              actionsNAV.openTestsStartedPage({
+                nodemode: "textbook",
+                courseid: appState.launchedCourse,
+              });
+            }}
+          />
+        </IconButtonNoRipple>
+
+        {/* <Animation
           id="textbook"
           height={"60px"}
           width={"60px"}
@@ -55,22 +108,17 @@ const FlowPanel = ({ appState, actionsNAV }) => {
               courseid: appState.launchedCourse,
             });
           }}
-        />
+        /> */}
 
-        <Animation
-          height={"60px"}
-          width={"60px"}
-          name={"home"}
-          onClick={() => {
-            actionsNAV.openAllCoursePage();
-          }}
-        />
-        <SupportAgentIcon
-          sx={{ fontSize: "60px" }}
-          onClick={() => {
-            actionsNAV.openSupportPage();
-          }}
-        />
+        <IconButtonNoRipple>
+          <SupportAgentIcon
+            sx={{ fontSize: "60px" }}
+            onClick={() => {
+              actionsNAV.openSupportPage();
+            }}
+          />
+        </IconButtonNoRipple>
+        <DLSwitch />
       </Paper>
     </Panel>
   );

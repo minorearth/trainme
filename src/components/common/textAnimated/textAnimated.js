@@ -25,9 +25,7 @@ const TextAnimated = ({ text, tooltip }) => {
       }}
     >
       <Paper elevation={0} sx={{ padding: "3px" }}>
-        <Typography variant="body1" gutterBottom>
-          {text}
-        </Typography>
+        <Typography variant="body1">{text}</Typography>
       </Paper>{" "}
     </Box>
   );

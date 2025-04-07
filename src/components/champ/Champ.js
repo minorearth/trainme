@@ -139,7 +139,7 @@ const Champ = observer(({ actionsNAV, appState }) => {
             }}
           >
             <>
-              <Typography gutterBottom>Сложность</Typography>
+              <Typography>Сложность</Typography>
               <RangeSlider changeRange={changeRange} range={range} />
             </>
 

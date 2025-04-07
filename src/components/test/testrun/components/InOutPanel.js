@@ -87,7 +87,7 @@ const InOutPanel = ({ currTask, refreshInput }) => {
           >
             <Typography
               variant="body1"
-              gutterBottom
+              // gutterBottom
               sx={{
                 display: "inline-block",
                 whiteSpace: "pre-wrap",
@@ -102,7 +102,7 @@ const InOutPanel = ({ currTask, refreshInput }) => {
         <Panel label={"Ожидаемый результат"}>
           <Typography
             variant="body1"
-            gutterBottom
+            // gutterBottom
             sx={{ display: "inline-block", whiteSpace: "pre-wrap" }}
           >
             {currTask.expectedOutput}

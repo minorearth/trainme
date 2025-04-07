@@ -14,10 +14,13 @@ const FabAnimated = ({ action, icon, position, tooltip }) => {
           background:
             "linear-gradient(135deg,rgb(18, 33, 130) 0%,rgb(255, 46, 112) 100%)",
         }}
-        color="primary"
         onClick={() => action()}
       >
-        <Icon2State visible={true} icon={icon} />
+        <Icon2State
+          visible={true}
+          icon={icon}
+          sx={{ fontSize: "35px", color: "white" }}
+        />
       </Fab>
     </Tooltip>
   );
