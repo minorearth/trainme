@@ -349,7 +349,7 @@ const useNavigator = () => {
   };
 
   const openSupportPage = () => {
-    window.open("https://t.me/pyTrek", "_blank");
+    window.open("http://t.me/delta1298", "_blank");
   };
 
   //TASKS MANAGEMENT
