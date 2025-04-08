@@ -4,6 +4,40 @@ import Grid from "@mui/material/Grid2";
 import { Panel } from "@/components/common/formcontrol";
 import MonacoEd from "./monaco/MonacoEd";
 import Navigation from "@/components/test/testrun/components/navigation";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+  }
+
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    /* width: 500px; */
+    left: 5px;
+    white-space: nowrap;
+    max-width: 500px;
+    background-color: white;
+    color: black;
+    text-align: center;
+    border-radius: 3px;
+    border-color: black;
+    border-style: solid;
+    padding: 5px;
+
+    /* Position the tooltip */
+    position: absolute;
+    top: 20px;
+
+    z-index: 1;
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+`;
 
 const TaskAndCodePanel = (props) => {
   const {
@@ -24,13 +58,15 @@ const TaskAndCodePanel = (props) => {
     <Grid container spacing={2} columns={{ xs: 1, md: 3 }}>
       <Grid size={{ xs: 1, md: 1 }}>
         <Panel label={"Выполни задание"}>
-          <Typography
-            variant="body1"
-            dangerouslySetInnerHTML={{ __html: `<p>${currTask.task}</p>` }}
-            sx={{ display: "inline-block", whiteSpace: "pre-line" }}
-          >
-            {/* {currTask.task} */}
-          </Typography>
+          <Wrapper>
+            <Typography
+              variant="body1"
+              dangerouslySetInnerHTML={{ __html: `<p>${currTask.task}</p>` }}
+              sx={{ display: "inline-block", whiteSpace: "pre-line" }}
+            >
+              {/* {currTask.task} */}
+            </Typography>
+          </Wrapper>
         </Panel>
       </Grid>
       <Grid size={{ xs: 1, md: 2 }}>

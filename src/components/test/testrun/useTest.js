@@ -283,6 +283,28 @@ const useTest = ({
   };
 
   //UTILIIES
+  const getForbiddenSample = {
+    "f-строки": "Пример: f'Привет, {a}",
+    "индексы строк": "Пример: a=b[2]",
+    срезы: "Пример: a=b[1:5:-1]",
+    "списковые включения": "Пример: [i for i in range(a)]",
+    списки: "Пример, a.append(b), print(a[i])",
+    "тернарный оператор": "Пример: a if a>b else b",
+    "условный оператор in": "Пример: if a in b: print(a)",
+    "функция sum": "Пример: sum([1,2,3])",
+    "функция count": "Пример: a.count('A')",
+    "функция max": "Пример: max([1,2,3])",
+    "функция min": "Пример: min([1,2,3]",
+    "функция len": "Пример: len([1,2,3]),len('ABC')",
+    "функция map": "Пример: map(int, a)",
+    "функция list": "Пример: list('ABC')",
+    "функция join": "Пример: a=''.join(b)",
+    "функция split": "Пример: a=b.split()",
+    "функция find": "Пример: a=b.find('A')",
+    "функция rfind": "Пример: a=b.rfind('A')",
+    "функция replace": "Пример: a=a.replace('A','B')",
+  };
+
   const formatForbidden = (forbidden, forbiddenRe, maxlines, tasktype) => {
     let res = "";
     if (tasktype != "task") {
@@ -291,7 +313,17 @@ const useTest = ({
     res += `\n\n<b>Ограничения</b>:\nМаксимальное количество строк кода: ${maxlines}`;
 
     if (forbidden.length) {
-      res += `\nЗапрещенные приёмы: ${forbidden.join(", ")}`;
+      // res += `\nЗапрещенные приёмы: <div class="tooltip"><span class="tooltiptext">[i for i in range(a)]</span>${forbidden.join(
+      //   "</div>,<div class='tooltip'><span class='tooltiptext'>[i for i in range(a)]</span>"
+      // )}</div>`;
+      res += `\nЗапрещенные приёмы:`;
+      for (let i = 0; i < forbidden.length; i++) {
+        res += `<div class="tooltip">${
+          forbidden[i]
+        }, <span class="tooltiptext">${
+          getForbiddenSample[forbidden[i]]
+        }</span></div>`;
+      }
     }
 
     return res;
