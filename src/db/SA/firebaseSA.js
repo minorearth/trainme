@@ -105,24 +105,63 @@ const prepareTaskLog = (launchedCourse, lastcompleted, tasklog) => {
 };
 
 export const updateDataWithRetry = async (action, retries = 3) => {
-  // for (let attempt = 0; attempt < retries; attempt++) {
-  try {
-    await action();
-    console.log("Данные успешно обновлены");
-    return;
-  } catch (error) {
-    console.error("Ошибка при обновлении данных:", error);
-    if (error.code === "NETWORK_ERROR" || error.message.includes("network")) {
-      return "NETWORK_ERROR";
-    } else {
-      return "SOME_ERROR";
-      // throw error;
-    }
-  }
+  // try {
+  await action();
+  //   console.log("Данные успешно обновлены");
+  //   return;
+  // } catch (error) {
+  //   console.error("Ошибка при обновлении данных:", error);
+  //   if (error.code === "NETWORK_ERROR" || error.message.includes("network")) {
+  //     return "NETWORK_ERROR";
+  //   } else {
+  //     return "SOME_ERROR";
+  //     // throw error;
+  //   }
   // }
 };
 
 export const setUseMetaData = async (data) => {
+  const firestore = getFirestore();
+  const {
+    uid,
+    pts,
+    lastcompleted,
+    unlocked,
+    allunlocked,
+    launchedCourse,
+    tasklog,
+    sum,
+  } = decrypt2(data);
+  const tasklogPrepared = prepareTaskLog(
+    launchedCourse,
+    lastcompleted,
+    tasklog
+  );
+  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  if (unlocked.length != 0) {
+    return updateDataWithRetry(
+      async () =>
+        await userMetaRef.update({
+          [`courses.${launchedCourse}.rating`]: pts,
+          [`courses.${launchedCourse}.unlocked`]: allunlocked,
+          [`courses.${launchedCourse}.lastunlocked`]: unlocked,
+          [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
+          ...tasklogPrepared,
+        })
+    );
+  } else {
+    return updateDataWithRetry(async () =>
+      userMetaRef.update({
+        [`courses.${launchedCourse}.rating`]: pts,
+        [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
+        ...tasklogPrepared,
+      })
+    );
+  }
+};
+
+//legacy due to network cache
+export const setUseMetaDataIncrement = async (data) => {
   const firestore = getFirestore();
   const { uid, pts, lastcompleted, unlocked, launchedCourse, tasklog } =
     decrypt2(data);

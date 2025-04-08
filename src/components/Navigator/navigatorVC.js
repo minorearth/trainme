@@ -21,7 +21,7 @@ import {
   checkCoursePaid,
   setUseMetaUnlockedAndCompleted,
 } from "@/db/SA/firebaseSA";
-import { updateDataWithRetry } from "@/db/networkstable";
+import { updateDataWithRetry, updateDataWithTimeout } from "@/db/networkstable";
 import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
 import { setUseMetaData } from "@/db/SA/firebaseSA";
 import { getTargetsBySource } from "./utils";
@@ -93,12 +93,30 @@ const useNavigator = () => {
     return flow;
   };
 
+  const getUserDataNeeeded = (data) => {
+    const stat = Object.keys(data.stat).reduce(
+      (acc, chapterid) => ({
+        ...acc,
+        [chapterid]: {
+          sum: data.stat[chapterid].sum,
+        },
+      }),
+      {}
+    );
+    return {
+      ...data,
+      stat,
+    };
+  };
+
   //STATE MANAGEMENT
   const fetchUserMetaAndPersist = async (launchedCourse) => {
     const CSP = getCSP();
     const allUserMeta = await getUseMetaData(user.userid);
     //TODO:keep only keys needed
-    const userProgress = allUserMeta.courses[launchedCourse];
+    const userProgress = getUserDataNeeeded(
+      allUserMeta.courses[launchedCourse]
+    );
 
     const stateToUpdate = {
       ...CSP,
@@ -133,20 +151,27 @@ const useNavigator = () => {
       CSP.nodemode == "renewal"
     ) {
       try {
-        await updateDataWithRetry(async () => {
-          await setUseMetaData(
-            encrypt2({
-              lastcompleted: CSP.chapter,
-              unlocked: CSP.tobeunlocked,
-              pts: CSP.pts,
-              uid: user.userid,
-              tasklog: CSP.tasklog,
-              launchedCourse: CSP.launchedCourse,
-            })
-          );
-        });
+        // await updateDataWithRetry(async () => {
+        progressStore.setShowProgress(true);
+        // await updateDataWithTimeout(
+        //   async () =>
+        await setUseMetaData(
+          encrypt2({
+            lastcompleted: CSP.chapter,
+            unlocked: CSP.tobeunlocked,
+            allunlocked: [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],
+            pts: CSP.userProgress.rating + CSP.pts,
+            uid: user.userid,
+            tasklog: CSP.tasklog,
+            launchedCourse: CSP.launchedCourse,
+            sum: (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts,
+          })
+        );
+        // );
+        // });
         alertdialog.hideDialog();
         openFlowPageAfterAccomplished();
+        progressStore.setCloseProgress();
       } catch (e) {
         console.log(e);
         alertdialog.showDialog(
@@ -322,6 +347,7 @@ const useNavigator = () => {
     }
 
     updateStateAndCSP({
+      ...CSP,
       page: "congrat",
       pts,
     });
@@ -418,6 +444,7 @@ const useNavigator = () => {
     nodemode,
     tobeunlocked,
   }) => {
+    //TODO: proactively open chapters. Remade
     setUseMetaUnlockedAndCompleted(
       encrypt2({
         lastcompleted: chapter,
