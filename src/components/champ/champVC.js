@@ -6,6 +6,7 @@ import {
   setDocInCollectionClient,
   updateUsersInChampClient,
   updateChampStatusClient,
+  getDocDataFromCollectionByIdClient,
 } from "@/db/domain/domain";
 
 import { getCSP } from "@/db/localstorage";
@@ -15,10 +16,9 @@ import stn from "@/globals/settings";
 import alertdialog from "@/store/dialog";
 
 const useChamps = ({ actionsNAV, appState }) => {
-  const { getRandomTasksForChamp, runChamp } = actionsNAV;
-  const [connected, setConnected] = useState(false);
+  const [monitoringStarted, setMonitoringStarted] = useState(false);
   const [champid, setChampid] = useState("");
-  const [champNumber, setChampNumber] = useState("");
+  const [inputChampId, setInputChampd] = useState("");
   const [taskCount, setTaskCount] = useState(5);
   const [userName, setUserName] = useState("Какой-то");
   const [range, setRange] = useState([1, 30]);
@@ -27,8 +27,13 @@ const useChamps = ({ actionsNAV, appState }) => {
     setRange(newValue);
   };
 
-  const changeChampNumber = (e) => {
-    setChampNumber(e.target.value);
+  const disconnectChamp = () => {
+    setMonitoringStarted(false);
+  };
+
+  const changeInputChampId = (e) => {
+    setInputChampd(e.target.value);
+    setChampid(e.target.value);
   };
 
   const changeTaskCount = (e) => {
@@ -47,20 +52,38 @@ const useChamps = ({ actionsNAV, appState }) => {
   };
 
   useEffect(() => {
-    appState.champid && setChampNumber(appState.champid);
+    // appState.champid && setInputChampd(appState.champid);
     appState.champid && setChampid(appState.champid);
     setUserName(user.name);
   }, []);
 
   useEffect(() => {
-    if (!connected) return;
+    console.log("monitoringStarted", monitoringStarted);
+    if (!monitoringStarted) return;
     getDocFromCollectionByIdRealtimeClient(
       stn.collections.CHAMPS,
-      champNumber,
+      champid,
       (data) => {
         const CSP = getCSP();
         if (data.status == "started" && CSP.page == "champ") {
-          runChamp(champNumber);
+          // if (!data.users[user.userid]?.persstatus) {
+          //   return;
+          // }
+          if (data.users[user.userid].persstatus == "joined") {
+            actionsNAV.runChamp(champid);
+            updateUsersInChampClient(
+              stn.collections.CHAMPS,
+              {
+                id: user.userid,
+                name: userName,
+                change: 0,
+                pts: 0,
+                persstatus: "champwip",
+              },
+              champid
+            );
+            setMonitoringStarted(false);
+          }
         }
       }
     ).then((docData) => {
@@ -71,17 +94,16 @@ const useChamps = ({ actionsNAV, appState }) => {
     return () => {
       console.log("grid unmounted");
     };
-  }, [connected]);
+  }, [monitoringStarted]);
 
   const createChamp = async () => {
-    const tasks = await getRandomTasksForChamp({
+    const tasks = await actionsNAV.getRandomTasksForChamp({
       levelStart: range[0],
       levelEnd: range[1],
       taskCount,
     });
     const champid = generateString(7);
     setChampid(champid);
-    setChampNumber(champid);
     setDocInCollectionClient(
       stn.collections.CHAMPS,
       { tasks, users: [], status: "created" },
@@ -90,19 +112,69 @@ const useChamps = ({ actionsNAV, appState }) => {
   };
 
   const joinChamp = async () => {
-    const res = await updateUsersInChampClient(
-      stn.collections.CHAMPS,
-      { id: user.userid, name: userName, change: 0, pts: 0 },
-      champNumber
-    );
-    if (res == "error") {
+    try {
+      const champData = await getDocDataFromCollectionByIdClient(
+        stn.collections.CHAMPS,
+        champid
+      );
+      if (!champData.data.users[user.userid]?.persstatus) {
+        setMonitoringStarted(true);
+        const res = await updateUsersInChampClient(
+          stn.collections.CHAMPS,
+          {
+            id: user.userid,
+            name: userName,
+            change: 0,
+            pts: 0,
+            persstatus: "joined",
+          },
+          champid
+        );
+      }
+      if (champData.data.users[user.userid].persstatus == "champwip") {
+        alertdialog.showDialog(
+          "Ошибка",
+          "Ты вышел из чемпионата, обратно уже не зайти..",
+          1,
+          () => {}
+        );
+      }
+      if (champData.data.users[user.userid].persstatus == "champisover") {
+        alertdialog.showDialog(
+          "Ошибка",
+          "Ты уже поучаствовал в этом чемпионате",
+          1,
+          () => {}
+        );
+      }
+    } catch (e) {
       alertdialog.showDialog(
         "Нет такого чемпионата",
         "Перепроверьте все еще раз",
         1,
         () => {}
       );
-    } else setConnected((state) => !state);
+    }
+    // console.log("champData", champData);
+    // const res = await updateUsersInChampClient(
+    //   stn.collections.CHAMPS,
+    //   {
+    //     id: user.userid,
+    //     name: userName,
+    //     change: 0,
+    //     pts: 0,
+    //     persstatus: "joined",
+    //   },
+    //   champid
+    // );
+    // if (res == "error") {
+    //   // alertdialog.showDialog(
+    //   //   "Нет такого чемпионата",
+    //   //   "Перепроверьте все еще раз",
+    //   //   1,
+    //   //   () => {}
+    //   // );
+    // } else setMonitoringStarted((state) => !state);
   };
 
   const startChamp = async (champid) => {
@@ -120,12 +192,13 @@ const useChamps = ({ actionsNAV, appState }) => {
     champid,
     changeUserName,
     userName,
-    champNumber,
-    changeChampNumber,
+    inputChampId,
+    changeInputChampId,
     changeRange,
     range,
     changeTaskCount,
     taskCount,
+    disconnectChamp,
   };
 };
 

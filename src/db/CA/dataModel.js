@@ -33,21 +33,17 @@ export const setDocInCollection = async (db, collectionName, data, id) => {
   await setDoc(doc(db, collectionName, id), data);
 };
 
-// export const updateUsersInChamp = async (db, collectionName, data, id) => {
-//   // const docSnap = await getDoc(doc(db, collectionName, id));
-//   const ref = doc(db, collectionName, id);
-
-//   const feed = await updateDoc(ref, {
-//     users: arrayUnion(data),
-//   });
-// };
-
 export const updateUsersInChamp = async (db, collectionName, data, id) => {
-  // const docSnap = await getDoc(doc(db, collectionName, id));
   const ref = doc(db, collectionName, id);
   try {
     const feed = await updateDoc(ref, {
-      [`users.${data.id}`]: { id: data.id, name: data.name, pts: 0, change: 0 },
+      [`users.${data.id}`]: {
+        id: data.id,
+        name: data.name,
+        pts: 0,
+        change: 0,
+        persstatus: data.persstatus,
+      },
     });
   } catch (e) {
     return "error";
@@ -55,8 +51,6 @@ export const updateUsersInChamp = async (db, collectionName, data, id) => {
 };
 
 export const updatePoinsInChamp = async (db, collectionName, data, id) => {
-  // const docSnap = await getDoc(doc(db, collectionName, id));
-
   const ref = doc(db, collectionName, id);
 
   const feed = await updateDoc(ref, {
@@ -71,6 +65,7 @@ export const setTaskLogInChamp = async (db, collectionName, data, id) => {
 
   const feed = await updateDoc(ref, {
     [`users.${data.id}.tasklog`]: data.tasklog,
+    [`users.${data.id}.persstatus`]: "champisover",
   });
 };
 

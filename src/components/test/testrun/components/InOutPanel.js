@@ -30,16 +30,6 @@ const InOutPanel = ({ currTask, refreshInput }) => {
     >
       <Grid size={{ xs: 1, md: 1 }}>
         <Panel label={"Входные данные"}>
-          {/* <Typography
-            variant="body1"
-            gutterBottom
-            sx={{
-              display: "inline-block",
-              whiteSpace: "pre-wrap",
-            }}
-          >
-            {currTask.input}
-          </Typography> */}
           <IconButton
             aria-label="toggle password visibility"
             onClick={() => {
@@ -60,13 +50,11 @@ const InOutPanel = ({ currTask, refreshInput }) => {
           <Input
             id="standard-multiline-flexible"
             multiline
-            // rows={4}
             fullWidth
             height="100%"
             disableUnderline
             rows={7}
             onChange={(e) => handleChange(e)}
-            // variant="standard"
             value={inValue}
             sx={{
               display: "inline-block",
@@ -87,7 +75,6 @@ const InOutPanel = ({ currTask, refreshInput }) => {
           >
             <Typography
               variant="body1"
-              // gutterBottom
               sx={{
                 display: "inline-block",
                 whiteSpace: "pre-wrap",
@@ -102,7 +89,6 @@ const InOutPanel = ({ currTask, refreshInput }) => {
         <Panel label={"Ожидаемый результат"}>
           <Typography
             variant="body1"
-            // gutterBottom
             sx={{ display: "inline-block", whiteSpace: "pre-wrap" }}
           >
             {currTask.expectedOutput}

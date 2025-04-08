@@ -30,7 +30,7 @@ const IconButtonNoRipple = ({ children }) => {
           opacity: 0.7,
         },
         "&:active": {
-          // backgroundColor: "transparent", // Убираем фон при нажатии
+          // backgroundColor: "transparent",
           opacity: 0.9,
         },
       }}

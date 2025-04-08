@@ -21,15 +21,15 @@ const Champ = observer(({ actionsNAV, appState }) => {
     startChamp,
     changeUserName,
     userName,
-    champNumber,
-    changeChampNumber,
+    inputChampId,
+    changeInputChampId,
     changeRange,
     changeTaskCount,
     taskCount,
     range,
   } = useChamps({ actionsNAV, appState });
   const [activeStep, setActiveStep] = useState(0);
-  const [creator, setCreator] = useState();
+  const [createMode, setCreateMode] = useState();
 
   return (
     <Box
@@ -97,7 +97,7 @@ const Champ = observer(({ actionsNAV, appState }) => {
             <Button
               onClick={() => {
                 setActiveStep(2);
-                setCreator(true);
+                setCreateMode(true);
               }}
               variant="outlined"
               fullWidth
@@ -110,7 +110,7 @@ const Champ = observer(({ actionsNAV, appState }) => {
               variant="outlined"
               onClick={() => {
                 setActiveStep(2);
-                setCreator(false);
+                setCreateMode(false);
               }}
               fullWidth
             >
@@ -129,7 +129,7 @@ const Champ = observer(({ actionsNAV, appState }) => {
             </Button>
           </Box>
         )}
-        {activeStep === 2 && creator && (
+        {activeStep === 2 && createMode && (
           <Box
             sx={{
               display: "flex",
@@ -157,7 +157,7 @@ const Champ = observer(({ actionsNAV, appState }) => {
               onClick={() => {
                 createChamp();
                 setActiveStep(2);
-                setCreator(true);
+                setCreateMode(true);
               }}
               variant="outlined"
               fullWidth
@@ -165,13 +165,9 @@ const Champ = observer(({ actionsNAV, appState }) => {
               Создать чемпионат
             </Button>
 
-            {champNumber && (
-              <Typography variant="h4" gutterBottom>
-                {champid}
-              </Typography>
-            )}
+            {champid && <Typography variant="h4">{champid}</Typography>}
             <Button
-              disabled={!champNumber}
+              disabled={!champid}
               onClick={() => startChamp(champid)}
               variant="outlined"
               fullWidth
@@ -179,7 +175,7 @@ const Champ = observer(({ actionsNAV, appState }) => {
               Начать
             </Button>
             <Button
-              disabled={!champNumber}
+              disabled={!champid}
               variant="outlined"
               onClick={() => joinChamp()}
               fullWidth
@@ -198,7 +194,7 @@ const Champ = observer(({ actionsNAV, appState }) => {
             </Button>
           </Box>
         )}
-        {!creator && activeStep === 2 && (
+        {!createMode && activeStep === 2 && (
           <Box
             sx={{
               display: "flex",
@@ -211,13 +207,13 @@ const Champ = observer(({ actionsNAV, appState }) => {
               id="outlined-basic"
               label="Номер чемпионата"
               variant="outlined"
-              onChange={(e) => changeChampNumber(e)}
-              value={champNumber}
+              onChange={(e) => changeInputChampId(e)}
+              value={inputChampId}
               fullWidth
             />
 
             <Button
-              disabled={!champNumber}
+              disabled={!champid}
               variant="outlined"
               onClick={() => joinChamp()}
               fullWidth
@@ -236,30 +232,18 @@ const Champ = observer(({ actionsNAV, appState }) => {
             </Button>
           </Box>
         )}
-        {/* <Button
-          sx={{ marginTop: "40px", width: "30%", alignSelf: "center" }}
-          variant="outlined"
-          fullWidth
-          onClick={() => actionsNAV.openAllCoursePage()}
-        >
-          Выйти
-        </Button> */}
       </Box>
-      {champNumber && (
+      {champid && (
         <Box
           sx={{
             display: "flex",
-            // flex: 1,
             overflow: "auto",
             width: "70%",
             flexDirection: "column",
             alignItems: "center",
-            // border: "1px solid",
-            // borderRadius: "5px",
-            // margin: "20px",
           }}
         >
-          <SortableList champid={champNumber} />
+          <SortableList champid={champid} />
         </Box>
       )}
     </Box>
