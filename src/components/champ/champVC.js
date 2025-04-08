@@ -130,16 +130,16 @@ const useChamps = ({ actionsNAV, appState }) => {
           },
           champid
         );
-      }
-      if (champData.data.users[user.userid].persstatus == "champwip") {
+      } else if (champData.data.users[user.userid].persstatus == "champwip") {
         alertdialog.showDialog(
           "Ошибка",
           "Ты вышел из чемпионата, обратно уже не зайти..",
           1,
           () => {}
         );
-      }
-      if (champData.data.users[user.userid].persstatus == "champisover") {
+      } else if (
+        champData.data.users[user.userid].persstatus == "champisover"
+      ) {
         alertdialog.showDialog(
           "Ошибка",
           "Ты уже поучаствовал в этом чемпионате",
@@ -148,6 +148,7 @@ const useChamps = ({ actionsNAV, appState }) => {
         );
       }
     } catch (e) {
+      console.log(e);
       alertdialog.showDialog(
         "Нет такого чемпионата",
         "Перепроверьте все еще раз",
