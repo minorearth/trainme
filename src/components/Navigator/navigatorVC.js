@@ -297,6 +297,7 @@ const useNavigator = () => {
     level,
     tobeunlocked,
   }) => {
+    progressStore.setShowProgress(true);
     const CSP = getCSP();
     if (nodemode == "champ") {
       setChampTasks({
@@ -322,7 +323,7 @@ const useNavigator = () => {
       });
     }
     if (nodemode == "addhoc" || nodemode == "newtopic") {
-      setRegularTasks({
+      await setRegularTasks({
         chapter,
         courseid,
         repeat,
@@ -332,6 +333,7 @@ const useNavigator = () => {
         tobeunlocked,
       });
     }
+    progressStore.setCloseProgress();
   };
 
   const openCongratPage = async ({ CSP }) => {
@@ -445,7 +447,7 @@ const useNavigator = () => {
     tobeunlocked,
   }) => {
     //TODO: proactively open chapters. Remade
-    setUseMetaUnlockedAndCompleted(
+    await setUseMetaUnlockedAndCompleted(
       encrypt2({
         lastcompleted: chapter,
         unlocked: tobeunlocked,
