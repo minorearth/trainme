@@ -2,6 +2,7 @@ import { stn } from "@/constants";
 import { useEffect, useState, useLayoutEffect, useRef } from "react";
 import { setCSP, getCSP, getSense } from "@/db/localstorage";
 import user from "@/store/user";
+import tutorial from "@/components/tutorial/store";
 
 import { signOutUserClient } from "@/db/domain/domain";
 
@@ -355,6 +356,10 @@ const useNavigator = () => {
     });
   };
 
+  const openTutorial = () => {
+    tutorial.show();
+  };
+
   const openRecapTasksPage = (recapTasksIds, tasks) => {
     dialog.showDialog(
       "Повторение",
@@ -543,6 +548,7 @@ const useNavigator = () => {
       openCourseFlowPageFromMain,
       openLoginPageSignOut,
       openSupportPage,
+      openTutorial,
       saveProgress,
       interruptExamMode,
       getRandomTasksForChamp,

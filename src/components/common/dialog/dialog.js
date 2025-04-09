@@ -12,6 +12,7 @@ import local from "@/globals/local";
 import { Box } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import DialogWrapper from "./dialogWrapper";
 
 import { useTheme } from "@mui/material/styles";
 
@@ -19,33 +20,9 @@ const AlertDialog = observer(() => {
   const theme = useTheme();
 
   return (
-    <Dialog
-      open={alertdialog.dialogState.visible}
+    <DialogWrapper
       onClose={() => alertdialog.okDialog()}
-      maxWidth={"md"}
-      sx={{
-        "& .MuiPaper-root": {
-          backgroundImage:
-            "conic-gradient(  #e92a67,#a853ba,#2a8af6, #2a8af600,  #e92a67)",
-          padding: "3px",
-          // animation: "spinner 4s linear infinite",
-        },
-
-        "& @keyframes spinner": {
-          "100%": {
-            transform: "translate(-50%, -50%) rotate(-360deg)",
-          },
-        },
-        "& .MuiTypography-root": {
-          backgroundColor: theme.palette.background.default,
-        },
-        "& .MuiDialogContent-root": {
-          backgroundColor: theme.palette.background.default,
-        },
-        "& .MuiDialogActions-root": {
-          backgroundColor: theme.palette.background.default,
-        },
-      }}
+      open={alertdialog.dialogState.visible}
     >
       <DialogTitle>{alertdialog.dialogState.title}</DialogTitle>
       <DialogContent>
@@ -55,8 +32,11 @@ const AlertDialog = observer(() => {
             flexDirection: "column",
             m: "auto",
             width: "fit-content",
+            // display: "inline-block",
+            // whiteSpace: "pre-line",
           }}
         >
+          {/* {alertdialog.dialogState.text} */}
           <DialogContentText
             sx={{ display: "inline-block", whiteSpace: "pre-line" }}
           >
@@ -79,7 +59,7 @@ const AlertDialog = observer(() => {
           <Button onClick={() => alertdialog.cancelDialog()}>{"Отмена"}</Button>
         )}
       </DialogActions>
-    </Dialog>
+    </DialogWrapper>
   );
 });
 

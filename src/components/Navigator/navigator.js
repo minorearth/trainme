@@ -18,6 +18,7 @@ import usePyodide from "@/components/Navigator/usePyodide.js";
 import Courses from "../courses/courses";
 import Champ from "../champ/Champ";
 import FloatMenu from "./floatMenu.js";
+import Tutorial from "../tutorial/tutorial";
 
 const Navigator = observer(() => {
   const [showSplashTimeout, setShowSplashTimeout] = useState(true);
@@ -50,6 +51,8 @@ const Navigator = observer(() => {
           )}
           {/* {countdownbutton.state.visible && <Countdown />} */}
           <AlertDialog />
+          <Tutorial />
+
           {stn.mode.DEV_MODE && (
             <AdminPanel
               flow={flow}

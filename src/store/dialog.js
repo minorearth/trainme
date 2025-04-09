@@ -1,9 +1,17 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 class alertdialog {
-  dialogState = { visible: false, text: "", title: "" };
+  dialogState = { visible: false, text: "", title: "", maxwidth: "sm" };
 
-  showDialog(title, text, type, actionOk = () => {}, actionCancel = () => {}) {
+  showDialog(
+    title,
+    text,
+    type,
+    actionOk = () => {},
+    actionCancel = () => {},
+    maxwidth = "sm"
+  ) {
     this.dialogState.title = title;
+    this.dialogState.maxwidth = maxwidth;
     this.dialogState.text = text;
     this.dialogState.visible = true;
     this.dialogState.actionOk = actionOk;

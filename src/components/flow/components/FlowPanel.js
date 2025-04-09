@@ -18,6 +18,7 @@ import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
 import HomeIcon from "@mui/icons-material/Home";
 import IconButton from "@mui/material/IconButton";
+import LightbulbIcon from "@mui/icons-material/Lightbulb";
 
 const IconButtonNoRipple = ({ children }) => {
   return (
@@ -115,6 +116,14 @@ const FlowPanel = ({ appState, actionsNAV }) => {
             sx={{ fontSize: "60px" }}
             onClick={() => {
               actionsNAV.openSupportPage();
+            }}
+          />
+        </IconButtonNoRipple>
+        <IconButtonNoRipple>
+          <LightbulbIcon
+            sx={{ fontSize: "60px" }}
+            onClick={() => {
+              actionsNAV.openTutorial();
             }}
           />
         </IconButtonNoRipple>
