@@ -9,7 +9,8 @@ import DialogWrapper from "@/components/common/dialog/dialogWrapper";
 
 import { useTheme } from "@mui/material/styles";
 import tutorial from "./store";
-import { SvgIcon1 } from "./components/SvgIcon1";
+import SvgIcon2 from "./components/SvgIcon2";
+import SvgIcon3 from "./components/SvgIcon3";
 
 const Tutorial = observer(() => {
   const theme = useTheme();
@@ -31,17 +32,19 @@ const Tutorial = observer(() => {
           //   width: "fit-content",
           display: "inline-block",
           // whiteSpace: "pre-line",
+          overflow: "scroll",
         }}
       >
-        <Typography variant="h5" sx={{ textAlign: "center" }}>
+        {/* <Typography variant="h5" sx={{ textAlign: "center" }}>
           Приветствуем в туториале!
         </Typography>
         <Typography sx={{}}>
           Расскажем об основных фичах приложения. Курс состоит из тем.Для
           успешного решения задач необходимо изучить теорию. За решения задач
           начисляются монеты, которые используются для открытия некоторых тем.
-        </Typography>
-        <SvgIcon1 />
+        </Typography> */}
+        <SvgIcon3 />
+        <SvgIcon2 />
       </Box>
     </DialogWrapper>
   );
