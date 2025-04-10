@@ -9,8 +9,8 @@ import DialogWrapper from "@/components/common/dialog/dialogWrapper";
 
 import { useTheme } from "@mui/material/styles";
 import tutorial from "./store";
-import SvgIcon2 from "./components/SvgIcon2";
-import SvgIcon3 from "./components/SvgIcon3";
+import SvgIcon2 from "@/components/tutorial/components/svgIcon2";
+import SvgIcon3 from "@/components/tutorial/components/svgicon3";
 
 const Tutorial = observer(() => {
   const theme = useTheme();
