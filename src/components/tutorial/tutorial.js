@@ -9,8 +9,8 @@ import DialogWrapper from "@/components/common/dialog/dialogWrapper";
 
 import { useTheme } from "@mui/material/styles";
 import tutorial from "./store";
-import { SvgIcon2 } from "@/components/tutorial/components/svgIcon2.jsx";
-import { SvgIcon3 } from "@/components/tutorial/components/svgicon3.jsx";
+import { SvgIcon1 } from "./components/svg1";
+import { SvgIcon2 } from "./components/svg2";
 
 const Tutorial = observer(() => {
   const theme = useTheme();
@@ -44,8 +44,8 @@ const Tutorial = observer(() => {
           успешного решения задач необходимо изучить теорию. За решения задач
           начисляются монеты, которые используются для открытия некоторых тем.
         </Typography> */}
-        <SvgIcon3 />
         <SvgIcon2 />
+        <SvgIcon1 />
       </Box>
     </DialogWrapper>
   );
