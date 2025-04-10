@@ -43,6 +43,7 @@ export const updateUsersInChamp = async (db, collectionName, data, id) => {
         pts: 0,
         change: 0,
         persstatus: data.persstatus,
+        avatarid: data.avatarid,
       },
     });
   } catch (e) {

@@ -22,6 +22,7 @@ const useChamps = ({ actionsNAV, appState }) => {
   const [taskCount, setTaskCount] = useState(5);
   const [userName, setUserName] = useState("Какой-то");
   const [range, setRange] = useState([1, 30]);
+  const [avatarid, setAvatarid] = useState(0);
 
   const changeRange = (event, newValue) => {
     setRange(newValue);
@@ -127,6 +128,7 @@ const useChamps = ({ actionsNAV, appState }) => {
             change: 0,
             pts: 0,
             persstatus: "joined",
+            avatarid,
           },
           champid
         );
@@ -200,6 +202,8 @@ const useChamps = ({ actionsNAV, appState }) => {
     changeTaskCount,
     taskCount,
     disconnectChamp,
+    avatarid,
+    setAvatarid,
   };
 };
 

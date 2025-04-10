@@ -4,7 +4,7 @@ import UserCard from "@/components/champ/components/userCard";
 import useDashboard from "@/components/champ/components/ChampUsersGrid/dashboardVC";
 import Box from "@mui/material/Box";
 
-const ListItem = ({ key, name, pts, change }) => (
+const ListItem = ({ key, name, pts, change, avatarid }) => (
   <motion.div
     layout
     key={key}
@@ -17,7 +17,7 @@ const ListItem = ({ key, name, pts, change }) => (
       borderRadius: "5px",
     }}
   >
-    <UserCard name={name} pts={pts} change={change} />
+    <UserCard name={name} pts={pts} change={change} avatarid={avatarid} />
   </motion.div>
 );
 
@@ -106,6 +106,7 @@ const SortableList = ({ champid }) => {
             name={item.name}
             pts={item.pts}
             change={item.change}
+            avatarid={item.avatarid}
           />
         ))}
         {/* </motion.div> */}

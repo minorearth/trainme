@@ -1,0 +1,110 @@
+import * as React from "react";
+
+const SvgIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlSpace="preserve"
+    id="cat"
+    width="800"
+    height="800"
+    version="1.1"
+    viewBox="0 0 300 300"
+  >
+    <path
+      fill="#595959"
+      fillRule="evenodd"
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeMiterlimit="10"
+      strokeWidth="8"
+      d="M68 49.768c0-4.412 2.059-5.034 4.583-1.42L124 122H68zM236 49.768c0-4.412-2.059-5.034-4.583-1.42L180 122h56z"
+      clipRule="evenodd"
+    ></path>
+    <ellipse
+      cx="152"
+      cy="172"
+      fill="#777"
+      fillRule="evenodd"
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeMiterlimit="10"
+      strokeWidth="8"
+      clipRule="evenodd"
+      rx="112"
+      ry="90"
+    ></ellipse>
+    <path
+      fill="#595959"
+      fillRule="evenodd"
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeMiterlimit="10"
+      strokeWidth="8"
+      d="M151.762 215.055c-2.078 3.922-5.444 3.93-7.525 0l-7.385-13.951c-2.078-3.922-.225-7.104 4.151-7.104h13.995c4.37 0 6.232 3.174 4.151 7.104z"
+      clipRule="evenodd"
+    ></path>
+    <circle
+      cx="108"
+      cy="158"
+      r="16"
+      fill="#FFF"
+      fillRule="evenodd"
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeMiterlimit="10"
+      strokeWidth="8"
+      clipRule="evenodd"
+    ></circle>
+    <circle
+      cx="104"
+      cy="162"
+      r="8"
+      fillRule="evenodd"
+      clipRule="evenodd"
+    ></circle>
+    <circle
+      cx="196"
+      cy="158"
+      r="16"
+      fill="#FFF"
+      fillRule="evenodd"
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeMiterlimit="10"
+      strokeWidth="8"
+      clipRule="evenodd"
+    ></circle>
+    <circle
+      cx="192"
+      cy="162"
+      r="8"
+      fillRule="evenodd"
+      clipRule="evenodd"
+    ></circle>
+    <path
+      fill="none"
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeMiterlimit="10"
+      strokeWidth="8"
+      d="M148 218s-13 12-26 12-26-12-26-12M200 218s-13 12-26 12-26-12-26-12"
+    ></path>
+    <path
+      fill="#26BBEC"
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeMiterlimit="10"
+      strokeWidth="8"
+      d="m36 186 76 20M36 166l76 28M196 194l76-20M196 206l76-12"
+    ></path>
+  </svg>
+);
+
+export default SvgIcon;

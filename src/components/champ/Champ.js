@@ -12,6 +12,7 @@ import TextField from "@mui/material/TextField";
 import RangeSlider from "./components/RangeSlider";
 import SortableList from "@/components/champ/components/ChampUsersList/ChampUsersList";
 import StepByStep from "@/components/champ/components/Stepper";
+import AvatarSelector from "@/components/champ/components/avatar/avatar";
 
 const Champ = observer(({ actionsNAV, appState }) => {
   const {
@@ -27,6 +28,8 @@ const Champ = observer(({ actionsNAV, appState }) => {
     changeTaskCount,
     taskCount,
     range,
+    setAvatarid,
+    avatarid,
   } = useChamps({ actionsNAV, appState });
   const [activeStep, setActiveStep] = useState(0);
   const [createMode, setCreateMode] = useState();
@@ -71,6 +74,10 @@ const Champ = observer(({ actionsNAV, appState }) => {
               onChange={(e) => changeUserName(e)}
               value={userName}
               fullWidth
+            />
+            <AvatarSelector
+              currentIndex={avatarid}
+              setCurrentIndex={setAvatarid}
             />
             <Button
               sx={{ width: "30%" }}

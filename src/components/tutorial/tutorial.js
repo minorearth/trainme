@@ -34,6 +34,7 @@ const Tutorial = observer(() => {
           // whiteSpace: "pre-line",
           overflow: "scroll",
         }}
+        onClick={() => tutorial.hide()}
       >
         {/* <Typography variant="h5" sx={{ textAlign: "center" }}>
           Приветствуем в туториале!

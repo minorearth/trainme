@@ -12,8 +12,9 @@ import Animation from "@/components/common/animation/Animation";
 import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
 import ArrowCircleDownOutlinedIcon from "@mui/icons-material/ArrowCircleDownOutlined";
 import { GoDash } from "react-icons/go";
+import { avatars } from "@/components/champ/components/avatar/allavatars";
 
-const UserCard = ({ name, pts, change }) => {
+const UserCard = ({ name, pts, change, avatarid }) => {
   return (
     <Box
       sx={{
@@ -33,9 +34,21 @@ const UserCard = ({ name, pts, change }) => {
           gap: "10px",
         }}
       >
-        <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-          R
-        </Avatar>
+        {/* <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+          {avatars[avatarid]}
+        </Avatar> */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "60px",
+            height: "60px",
+          }}
+        >
+          {avatars[avatarid]}
+        </Box>
+
         <Typography variant="h6">{name}</Typography>
       </Box>
       <Box
