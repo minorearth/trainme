@@ -5,8 +5,8 @@ const SvgIcon = (props) => (
     xmlns="http://www.w3.org/2000/svg"
     xmlSpace="preserve"
     id="cat"
-    width="800"
-    height="800"
+    width="300"
+    height="300"
     version="1.1"
     viewBox="0 0 300 300"
   >
