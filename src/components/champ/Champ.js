@@ -30,6 +30,7 @@ const Champ = observer(({ actionsNAV, appState }) => {
     range,
     setAvatarid,
     avatarid,
+    setChampid,
   } = useChamps({ actionsNAV, appState });
   const [activeStep, setActiveStep] = useState(0);
   const [createMode, setCreateMode] = useState();
@@ -154,6 +155,12 @@ const Champ = observer(({ actionsNAV, appState }) => {
               id="outlined-basic"
               label="Количество задач"
               variant="outlined"
+              sx={{
+                "& .MuiInputBase-input": {
+                  textAlign: "center", // Центрируем текст
+                  fontSize: "24px", // Увеличиваем размер шрифта
+                },
+              }}
               onChange={(e) => changeTaskCount(e)}
               value={taskCount}
               width="30%"
@@ -184,7 +191,9 @@ const Champ = observer(({ actionsNAV, appState }) => {
             <Button
               disabled={!champid}
               variant="outlined"
-              onClick={() => joinChamp()}
+              onClick={() => {
+                joinChamp();
+              }}
               fullWidth
             >
               Присоединиться
@@ -220,7 +229,7 @@ const Champ = observer(({ actionsNAV, appState }) => {
             />
 
             <Button
-              disabled={!champid}
+              disabled={!inputChampId}
               variant="outlined"
               onClick={() => joinChamp()}
               fullWidth

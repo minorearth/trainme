@@ -38,18 +38,22 @@ const useChamps = ({ actionsNAV, appState }) => {
   };
 
   const changeTaskCount = (e) => {
-    e.target.value.match(/[^\d]/g) == null &&
-      Number(e.target.value) != 0 &&
-      setTaskCount(e.target.value);
+    // e.target.value.match(/[^\d]/g) == null &&
+    //   Number(e.target.value) != 0 &&
+    //   setTaskCount(e.target.value);
 
-    e.target.value == "" && setTaskCount(e.target.value);
+    // e.target.value == "" && setTaskCount(e.target.value);
+    /^\d{0,2}$/.test(e.target.value) && setTaskCount(e.target.value);
   };
 
   const changeUserName = (e) => {
-    if (e.target.value) {
-      const a = e.target.value.match(/[А-яA-Za-z]+[А-яA-Za-z ]*/g);
-      a && setUserName(a[0]);
-    } else setUserName("");
+    /^[А-яA-Za-z][А-яA-Za-z0-9 ]{0,25}$/.test(e.target.value) &&
+      setUserName(e.target.value);
+
+    // if (e.target.value) {
+    //   const a = e.target.value.match(/[А-яA-Za-z]+[А-яA-Za-z ]*/g);
+    //   a && setUserName(a[0]);
+    // } else setUserName("");
   };
 
   useEffect(() => {
@@ -118,7 +122,11 @@ const useChamps = ({ actionsNAV, appState }) => {
         stn.collections.CHAMPS,
         champid
       );
-      if (!champData.data.users[user.userid]?.persstatus) {
+      champData;
+      if (
+        !champData.data.users[user.userid]?.persstatus ||
+        champData.data.users[user.userid].persstatus == "joined"
+      ) {
         setMonitoringStarted(true);
         const res = await updateUsersInChampClient(
           stn.collections.CHAMPS,
@@ -204,6 +212,7 @@ const useChamps = ({ actionsNAV, appState }) => {
     disconnectChamp,
     avatarid,
     setAvatarid,
+    setChampid,
   };
 };
 

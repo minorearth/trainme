@@ -19,6 +19,7 @@ import Courses from "../courses/courses";
 import Champ from "../champ/Champ";
 import FloatMenu from "./floatMenu.js";
 import Tutorial from "../tutorial/tutorial";
+import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 
 const Navigator = observer(() => {
   const [showSplashTimeout, setShowSplashTimeout] = useState(true);
@@ -43,11 +44,16 @@ const Navigator = observer(() => {
           }}
         >
           {(appState.page == "courses" || appState.page == "champ") && (
-            <FloatMenu
-              // state={{ qrVisible, noteVisible }}
-              page={appState.page}
-              actionsNAV={actionsNAV}
-            />
+            <>
+              <FloatMenu
+                // state={{ qrVisible, noteVisible }}
+                page={appState.page}
+                actionsNAV={actionsNAV}
+              />
+              <DLSwitch
+                sx={{ position: "absolute", top: "40px", left: "60px" }}
+              />
+            </>
           )}
           {/* {countdownbutton.state.visible && <Countdown />} */}
           <AlertDialog />

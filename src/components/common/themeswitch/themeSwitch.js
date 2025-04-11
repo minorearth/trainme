@@ -60,7 +60,8 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function DLSwitch({ monacoRef }) {
+export default function DLSwitch({ monacoRef, sx = {} }) {
+  console.log(sx);
   const { mode, setMode } = useColorScheme();
 
   if (!mode) {
@@ -78,7 +79,7 @@ export default function DLSwitch({ monacoRef }) {
     <MaterialUISwitch
       checked={mode == "dark" ? true : false}
       onChange={handleChange}
-      sx={{ m: 1, marginLeft: "0px" }}
+      sx={{ ...sx, m: 1, marginLeft: "0px" }}
     />
   );
 }

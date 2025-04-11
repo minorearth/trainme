@@ -49,7 +49,7 @@ export default function Start({ actionsNAV, appState }) {
         }}
         variant="outlined"
       >
-        {appState.repeat ? "Повторяем урок" : "Начать урок"}
+        {appState.repeat ? "Повторяем урок" : "Начать"}
       </Button>
       <Typography
         variant="body1"
