@@ -20,6 +20,8 @@ import Champ from "../champ/Champ";
 import FloatMenu from "./floatMenu.js";
 import Tutorial from "../tutorial/tutorial";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
+import CountdownCircle from "@/components/common/countdown/CountdownCircle/CountdownCircle";
+import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
 
 const Navigator = observer(() => {
   const [showSplashTimeout, setShowSplashTimeout] = useState(true);
@@ -58,6 +60,7 @@ const Navigator = observer(() => {
           {/* {countdownbutton.state.visible && <Countdown />} */}
           <AlertDialog />
           <Tutorial />
+          {countdowncircle.state.visible && <CountdownCircle />}
 
           {stn.mode.DEV_MODE && (
             <AdminPanel

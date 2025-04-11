@@ -14,6 +14,7 @@ import user from "@/store/user";
 import { generateString } from "@/globals/utils/utilsRandom";
 import stn from "@/globals/settings";
 import alertdialog from "@/store/dialog";
+import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
 
 const useChamps = ({ actionsNAV, appState }) => {
   const [monitoringStarted, setMonitoringStarted] = useState(false);
@@ -75,19 +76,21 @@ const useChamps = ({ actionsNAV, appState }) => {
           //   return;
           // }
           if (data.users[user.userid].persstatus == "joined") {
-            actionsNAV.runChamp(champid);
-            updateUsersInChampClient(
-              stn.collections.CHAMPS,
-              {
-                id: user.userid,
-                name: userName,
-                change: 0,
-                pts: 0,
-                persstatus: "champwip",
-              },
-              champid
-            );
-            setMonitoringStarted(false);
+            countdowncircle.show(() => {
+              actionsNAV.runChamp(champid);
+              updateUsersInChampClient(
+                stn.collections.CHAMPS,
+                {
+                  id: user.userid,
+                  name: userName,
+                  change: 0,
+                  pts: 0,
+                  persstatus: "champwip",
+                },
+                champid
+              );
+              setMonitoringStarted(false);
+            });
           }
         }
       }

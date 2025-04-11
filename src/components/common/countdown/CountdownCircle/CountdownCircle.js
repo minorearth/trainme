@@ -2,37 +2,33 @@ import React, { useEffect, useState, useRef } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import countdown from "@/store/cowntdown";
+import { observer } from "mobx-react-lite";
+import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
 
-const sec = 15 * 1000;
-const speed = 100;
-const Countdown = () => {
-  const [isRunning, setIsRunning] = useState(true);
-
+const sec = 5 * 1000;
+const speed = 5;
+const CountdownCircle = observer(() => {
   const [value, setValue] = useState(sec);
   const valueRef = useRef({});
   useEffect(() => {
-    let interval = null;
-
-    if (isRunning) {
-      interval = setInterval(() => {
-        if (valueRef.current == 0) {
-          setIsRunning(false);
-          countdown.closeDialog();
-        } else
-          setValue((prevState) => {
-            valueRef.current = prevState;
-            return prevState - sec / speed;
-          });
-      }, sec / speed);
-    } else {
-      clearInterval(interval);
+    if (!countdowncircle.state.visible) {
+      return;
     }
+
+    const interval = setInterval(() => {
+      if (valueRef.current == 0) {
+        countdowncircle.close();
+      } else
+        setValue((prevState) => {
+          valueRef.current = prevState - sec / speed;
+          return prevState - sec / speed;
+        });
+    }, sec / speed);
 
     return () => {
       clearInterval(interval);
     };
-  }, [isRunning]);
+  }, [countdowncircle.state.visible]);
 
   return (
     // <Backdrop
@@ -42,8 +38,9 @@ const Countdown = () => {
     <Box
       sx={{
         position: "absolute",
-        right: "40px",
-        top: "20px",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
       }}
     >
       <React.Fragment>
@@ -63,7 +60,7 @@ const Countdown = () => {
           value={Number((value / sec) * 100)}
           color="inherit"
           variant="determinate"
-          size="80px"
+          size="200px"
         />
       </React.Fragment>
 
@@ -81,7 +78,7 @@ const Countdown = () => {
         }}
       >
         <Typography
-          variant="h4"
+          variant="h2"
           component="div"
           sx={{
             color: "yellow",
@@ -95,9 +92,9 @@ const Countdown = () => {
     </Box>
     // </Backdrop>
   );
-};
+});
 
-export default Countdown;
+export default CountdownCircle;
 
 // {
 //   /* <Button
