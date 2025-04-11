@@ -1,7 +1,7 @@
 "use client";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid2";
-import { Panel } from "@/components/common/formcontrol";
+import { Panel } from "@/components/common/panel";
 import Input from "@mui/material/Input";
 import { useState, useEffect } from "react";
 import { Button } from "@mui/material";

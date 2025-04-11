@@ -31,10 +31,6 @@ const CountdownCircle = observer(() => {
   }, [countdowncircle.state.visible]);
 
   return (
-    // <Backdrop
-    //   sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
-    //   open={open}
-    // >
     <Box
       sx={{
         position: "absolute",
@@ -90,19 +86,7 @@ const CountdownCircle = observer(() => {
         </Typography>
       </Box>
     </Box>
-    // </Backdrop>
   );
 });
 
 export default CountdownCircle;
-
-// {
-//   /* <Button
-//         variant="outlined"
-//         onClick={() => {
-//           setIsRunning(true);
-//         }}
-//       >
-//         Start
-//       </Button> */
-// }

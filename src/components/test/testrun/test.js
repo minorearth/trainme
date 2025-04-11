@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import useCheck from "./useCheck";
 import useTest from "./useTest";
 import { observer } from "mobx-react-lite";
-import progressStore from "@/components/common/progress/progressStore";
+import progressStore from "@/components/common/splash/progressdots/store";
 import useMonaco from "./components/monaco/useMonaco";
 import InOutPanel from "@/components/test/testrun/components/InOutPanel";
 import TaskAndCodePanel from "@/components/test/testrun/components/taskAndCodePanel";
@@ -54,7 +54,7 @@ const Test = observer((props) => {
           tests={tests}
           appState={appState}
           monacoRef={monacoRef}
-          openSupportPage={actionsNAV.openSupportPage}
+          actionsNAV={actionsNAV}
         />
 
         <TaskAndCodePanel

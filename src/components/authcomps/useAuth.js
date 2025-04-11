@@ -15,12 +15,12 @@ import {
 
 import { cleanUpCSP } from "@/db/localstorage";
 
-import alertdialog from "@/store/dialog";
+import alertdialog from "@/components/common/dialog/store";
 import user from "@/store/user";
-import dialog from "@/store/dialog";
-import authForm from "@/store/authentication";
+import dialog from "@/components/common/dialog/store";
+import authForm from "@/components/authcomps/store";
 import local from "@/globals/local";
-import progressStore from "../common/progress/progressStore";
+import progressStore from "../common/splash/progressdots/store";
 
 import { getUseMetaData } from "@/db/SA/firebaseSA";
 

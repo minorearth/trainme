@@ -19,27 +19,7 @@ import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlin
 import HomeIcon from "@mui/icons-material/Home";
 import IconButton from "@mui/material/IconButton";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
-
-const IconButtonNoRipple = ({ children }) => {
-  return (
-    <IconButton
-      disableRipple
-      sx={{
-        color: "inherit",
-        "&:hover": {
-          // backgroundColor: "transparent",
-          opacity: 0.7,
-        },
-        "&:active": {
-          // backgroundColor: "transparent",
-          opacity: 0.9,
-        },
-      }}
-    >
-      {children}
-    </IconButton>
-  );
-};
+import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButtonNoRipple";
 
 const FlowPanel = ({ appState, actionsNAV }) => {
   return (

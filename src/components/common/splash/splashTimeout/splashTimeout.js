@@ -3,7 +3,7 @@ import React from "react";
 import { Box } from "@mui/material";
 import { useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
-import Animation from "../animation/Animation";
+import Animation from "../../animation/Animation";
 import Loader from "../CSSSplash";
 
 const SplashTimeout = ({ action, duration, appState }) => {

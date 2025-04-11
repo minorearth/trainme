@@ -2,6 +2,7 @@ import Fab from "@mui/material/Fab";
 import { motion } from "framer-motion";
 import Icon2State from "./icon";
 import { Tooltip } from "@mui/material";
+import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButtonNoRipple";
 
 const FabAnimated = ({ action, icon, position, tooltip }) => {
   return (
@@ -16,11 +17,13 @@ const FabAnimated = ({ action, icon, position, tooltip }) => {
         }}
         onClick={() => action()}
       >
-        <Icon2State
-          visible={true}
-          icon={icon}
-          sx={{ fontSize: "35px", color: "white" }}
-        />
+        <IconButtonNoRipple>
+          <Icon2State
+            visible={true}
+            icon={icon}
+            sx={{ fontSize: "35px", color: "white" }}
+          />
+        </IconButtonNoRipple>
       </Fab>
     </Tooltip>
   );

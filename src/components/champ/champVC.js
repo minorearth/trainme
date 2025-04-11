@@ -13,7 +13,7 @@ import { getCSP } from "@/db/localstorage";
 import user from "@/store/user";
 import { generateString } from "@/globals/utils/utilsRandom";
 import stn from "@/globals/settings";
-import alertdialog from "@/store/dialog";
+import alertdialog from "@/components/common/dialog/store";
 import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
 
 const useChamps = ({ actionsNAV, appState }) => {

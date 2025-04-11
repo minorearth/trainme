@@ -1,4 +1,4 @@
-import alertdialog from "@/store/dialog";
+import alertdialog from "@/components/common/dialog/store";
 
 export const updateDataWithTimeout = async (action, timeout = 2000) => {
   return Promise.race([

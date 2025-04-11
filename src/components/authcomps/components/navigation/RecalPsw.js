@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography";
 import LinkStyled from "@/components/authcomps/components/navigation/link";
-import authForm from "@/store/authentication";
+import authForm from "@/components/authcomps/store";
 import local from "@/globals/local";
 
 export const RecallPsw = () => {

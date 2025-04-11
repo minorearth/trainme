@@ -6,8 +6,10 @@ import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import Animation from "@/components/common/animation/Animation";
 import Typography from "@mui/material/Typography";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButtonNoRipple";
+import LightbulbIcon from "@mui/icons-material/Lightbulb";
 
-const TopPanel = ({ tests, appState, monacoRef, openSupportPage }) => {
+const TopPanel = ({ tests, appState, monacoRef, actionsNAV }) => {
   const theme = useTheme();
 
   return (
@@ -30,12 +32,23 @@ const TopPanel = ({ tests, appState, monacoRef, openSupportPage }) => {
       >
         {appState.pts}
       </Typography>
-      <SupportAgentIcon
-        sx={{ fontSize: "40px", marginLeft: "25px", marginRight: "15px" }}
-        onClick={() => {
-          openSupportPage();
-        }}
-      />
+
+      <IconButtonNoRipple>
+        <LightbulbIcon
+          sx={{ fontSize: "40px", marginLeft: "25px", marginRight: "15px" }}
+          onClick={() => {
+            actionsNAV.openTutorial();
+          }}
+        />
+      </IconButtonNoRipple>
+      <IconButtonNoRipple>
+        <SupportAgentIcon
+          sx={{ fontSize: "40px", marginRight: "15px" }}
+          onClick={() => {
+            actionsNAV.openSupportPage();
+          }}
+        />
+      </IconButtonNoRipple>
 
       <DLSwitch monacoRef={monacoRef} />
     </Box>

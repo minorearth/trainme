@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import alertdialog from "@/store/dialog";
+import alertdialog from "@/components/common/dialog/store";
 import local from "@/globals/local";
-import countdownbutton from "@/store/countdownbutton";
-import splashCDStore from "@/components/common/splashAction/splashActionStore";
+import countdownbutton from "@/components/common/countdown/CountdownButton/store";
+import splashCDStore from "@/components/common/splash/splashAction/store";
 import { getSense, getCSP, setCSP, updateSCP } from "@/db/localstorage";
 
 const useTest = ({

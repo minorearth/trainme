@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import { observer } from "mobx-react-lite";
 import local from "@/globals/local";
 import { useState } from "react";
-import authForm from "@/store/authentication";
+import authForm from "@/components/authcomps/store";
 import { useTheme } from "@mui/material/styles";
 import { Box, Button } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";

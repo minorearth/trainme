@@ -1,7 +1,7 @@
 "use client";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid2";
-import { Panel } from "@/components/common/formcontrol";
+import { Panel } from "@/components/common/panel";
 import MonacoEd from "./monaco/MonacoEd";
 import Navigation from "@/components/test/testrun/components/navigation";
 import styled from "styled-components";

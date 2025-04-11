@@ -15,7 +15,7 @@ import "./styles.css";
 import TurboNode from "./components/TurboNode.js";
 import TurboEdge from "./components/TurboEdge.js";
 import AnimNode from "./components/AnimNode";
-import alertdialog from "@/store/dialog";
+import alertdialog from "@/components/common/dialog/store";
 
 const nodeTypes = {
   turbo: TurboNode,

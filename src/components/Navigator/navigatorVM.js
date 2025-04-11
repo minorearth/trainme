@@ -3,13 +3,13 @@ import {
   updatePoinsInChampClient,
   setTaskLogInChampClient,
 } from "@/db/domain/domain";
-import alertdialog from "@/store/dialog";
+import alertdialog from "@/components/common/dialog/store";
 import { payChapter } from "@/db/SA/firebaseSA";
 import { encrypt2 } from "@/globals/utils/encryption";
 import user from "@/store/user";
 import stn from "@/globals/settings";
-import countdownbutton from "@/store/countdownbutton";
-import progressCircle from "@/components/common/progress/progressStore";
+import countdownbutton from "@/components/common/countdown/CountdownButton/store";
+import progressCircle from "@/components/common/splash/progressdots/store";
 import { courses } from "@/globals/courses";
 import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
 import { setCSP, getCSP } from "@/db/localstorage";

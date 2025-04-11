@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
 import { observer } from "mobx-react-lite";
 import AlertDialog from "@/components/common/dialog/dialog";
-import Snack from "@/components/common/snackbar";
 import local from "@/globals/local";
 import AuthField from "@/components/authcomps/components/authField";
 import { useAuth } from "@/components/authcomps/useAuth";
@@ -31,7 +30,6 @@ const SignIn = observer(() => {
         }}
       >
         <AlertDialog />
-        <Snack />
         <FormControl>
           <AuthField type={"email"} />
           <AuthField type={"password"} />

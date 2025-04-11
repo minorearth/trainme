@@ -10,9 +10,6 @@ const BOTTOM = 16;
 import { motion } from "framer-motion";
 import Box from "@mui/material/Box";
 
-import IconButton from "@mui/material/IconButton";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-
 const FloatMenu = ({ page, actionsNAV }) => {
   return (
     <Box

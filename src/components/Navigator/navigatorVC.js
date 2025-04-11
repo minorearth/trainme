@@ -26,10 +26,10 @@ import { updateDataWithRetry, updateDataWithTimeout } from "@/db/networkstable";
 import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
 import { setUseMetaData } from "@/db/SA/firebaseSA";
 import { getTargetsBySource } from "./utils";
-import progressStore from "../common/progress/progressStore";
-import alertdialog from "@/store/dialog";
-import dialog from "@/store/dialog";
-import countdownbutton from "@/store/countdownbutton";
+import progressStore from "../common/splash/progressdots/store";
+import alertdialog from "@/components/common/dialog/store";
+import dialog from "@/components/common/dialog/store";
+import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import { useRouter } from "next/navigation";
 
 const useNavigator = () => {

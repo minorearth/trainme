@@ -3,10 +3,10 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import { useEffect, useState, useRef } from "react";
 import { observer } from "mobx-react-lite";
-import splashCDStore from "./splashActionStore";
+import splashCDStore from "./store";
 import dynamic from "next/dynamic";
 import { reaction, action } from "mobx";
-import { getLottie } from "../animation/getLottie";
+import { getLottie } from "../../animation/getLottie";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
