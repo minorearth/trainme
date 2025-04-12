@@ -142,6 +142,7 @@ const useNavigator = () => {
   const setStateAndCSP = (data) => {
     setCSP(data);
     setappState(data);
+    console.log("tttt", data);
   };
 
   const saveProgress = async () => {

@@ -223,16 +223,19 @@ const useTest = ({
     updateCurrTask({ info: "" });
     setEditorDisabled(false);
     const CSP = getCSP();
+    // if (CSP.taskId != tests.length - 1) {
 
-    if (CSP.taskId != tests.length - 1) {
-      setappState({ ...CSP });
-      return;
-    }
     if (CSP.taskstage == "accomplished_suspended") {
       openCongratPage({ CSP });
+      return;
     }
     if (CSP.taskstage == "recap_suspended") {
       openRecapTasksPage(CSP.recapTasksIds, tests);
+      return;
+    }
+    if (CSP.taskId != tests.length) {
+      setappState({ ...CSP });
+      return;
     }
   };
 
