@@ -154,7 +154,7 @@ const useTest = ({
   const handleChangeContent = ({ value }) => {
     const model = editorRef.current.getModel();
     const lineCount = model.getLineCount();
-    lineCount > currTask.maxlines
+    lineCount > currTask.maxlines && currTask.tasktype != "guide"
       ? updateCurrTask({
           code: value ?? "",
           maxlineserror: "Превышено максимальное количество строк",
