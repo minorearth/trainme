@@ -12,6 +12,7 @@ export const EditorOptions = {
   fontSize: 16,
   formatOnPaste: true,
   formatOnType: true,
+  // lineNumbers: "off",
   lineHeight: 1.5,
   renderLineHighlight: "none",
   renderIndentGuides: false,

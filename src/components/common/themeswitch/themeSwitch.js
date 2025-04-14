@@ -71,8 +71,8 @@ export default function DLSwitch({ monacoRef, sx = {} }) {
   const handleChange = (event) => {
     setMode(event.target.checked ? "dark" : "light");
     event.target.checked
-      ? monacoRef?.current.editor.setTheme("pk")
-      : monacoRef?.current.editor.setTheme("vs");
+      ? monacoRef?.current.editor.setTheme("dark")
+      : monacoRef?.current.editor.setTheme("light");
   };
 
   return (

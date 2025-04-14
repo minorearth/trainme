@@ -25,7 +25,7 @@ export const Panel = ({ children, label }) => {
       }}
     >
       <FormLabel component="legend">{label}</FormLabel>
-      <FormGroup column>{children}</FormGroup>
+      <FormGroup>{children}</FormGroup>
     </FormControl>
   );
 };

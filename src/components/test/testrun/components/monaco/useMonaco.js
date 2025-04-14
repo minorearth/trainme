@@ -2,9 +2,35 @@ import { useRef } from "react";
 import { useTheme } from "@mui/material/styles";
 import { useCallback } from "react";
 import { Background } from "@xyflow/react";
+import { useEffect, useState } from "react";
+import "./custom.css";
 
-const useMonaco = ({ editorRef, monacoRef }) => {
+const useMonaco = ({ editorRef, monacoRef, currTask }) => {
   const theme = useTheme();
+  const [value, setValue] = useState("");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    console.log("currTask", currTask, editorRef.current);
+    if (!mounted || !currTask) {
+      return;
+    }
+    setValue(currTask.code);
+
+    currTask.tasktype == "guide"
+      ? editorRef.current.updateOptions({ lineNumbers: "off" })
+      : editorRef.current.updateOptions({ lineNumbers: "on" });
+  }, [currTask, mounted]);
+
+  useEffect(() => {
+    // const items = document.querySelectorAll(".mtk7");
+    // items.forEach((item) => {
+    //   // if (item.textContent.includes(searchString)) {
+    //   item.classList.add("markdown2");
+    //   item.parentElement.parentElement.classList.add("markdown");
+    //   // }
+    // });
+  }, [value]);
 
   // const editorDisabled = useRef({ disabled: false });
   const zu = useCallback((event) => {
@@ -35,9 +61,14 @@ const useMonaco = ({ editorRef, monacoRef }) => {
   function handleEditorDidMount({ editor, monaco, darkmode }) {
     monacoRef.current = monaco;
     editorRef.current = editor;
-    monaco.editor.defineTheme("pk", {
+    setMounted(true);
+    monaco.editor.defineTheme("dark", {
       base: "vs-dark",
       inherit: true,
+      // https://github.com/microsoft/vscode/blob/main/src/vs/editor/standalone/common/themes.ts
+      // rules: [
+      //   { token: "comment", foreground: "008800", background: "#FFFF00" }, // Задаем цвет текста и фона для комментариев
+      // ],
       rules: [
         {
           token: "identifier",
@@ -51,22 +82,44 @@ const useMonaco = ({ editorRef, monacoRef }) => {
           token: "type",
           foreground: "1AAFB0",
         },
-        {
-          token: "comment",
-          fontStyle: "bold",
-          // fontStyle: "italic bold",
-        },
+        // {
+        //   token: "string",
+        //   foreground: "ffa500",
+        //   // fontStyle: "italic underline",
+        // },
+
+        // { token: "comment", foreground: "008800", background: "FFFF00" }, // Задаем цвет текста и фона для комментариев
+
+        // {
+        //   token: "comment",
+        //   fontStyle: "bold",
+        //   foreground: "FFFFFF",
+        //   // fontStyle: "italic bold",
+        // },
       ],
       colors: {
         "editor.background": "#121212",
       },
     });
+    monaco.editor.defineTheme("light", {
+      base: "vs",
+      inherit: true,
+      // rules: [
+      //   { token: "comment", foreground: "008800", background: "#FFFF00" }, // Задаем цвет текста и фона для комментариев
+      // ],
+      rules: [
+        // {
+        //   token: "comment",
+        //   fontStyle: "bold",
+        //   foreground: "000000",
+        //   // fontStyle: "italic bold",
+        // },
+      ],
+      colors: {
+        "editor.background": "#FFFFFF",
+      },
+    });
     setTheme(darkmode);
-    // editor.onKeyDown((event) => {
-    //   if (editorDisabled.current.disabled) {
-    //     event.preventDefault();
-    //   }
-    // });
     document.addEventListener(
       "paste",
       (event) => {
@@ -78,10 +131,22 @@ const useMonaco = ({ editorRef, monacoRef }) => {
     );
   }
 
+  // function handleContentChange({ editor, monaco, darkmode }) {
+  //   const items = document.querySelectorAll(".mtk7");
+  //   console.log("items", items);
+
+  //   items.forEach((item) => {
+  //     // if (item.textContent.includes(searchString)) {
+  //     item.classList.add("markdown2");
+  //     item.parentElement.parentElement.classList.add("markdown");
+  //     // }
+  //   });
+  // }
+
   function setTheme(darkmode) {
     darkmode
-      ? monacoRef.current.editor.setTheme("pk")
-      : monacoRef.current.editor.setTheme("vs");
+      ? monacoRef.current.editor.setTheme("dark")
+      : monacoRef.current.editor.setTheme("light");
   }
 
   return {
@@ -89,6 +154,7 @@ const useMonaco = ({ editorRef, monacoRef }) => {
     handleEditorDidMount,
     editorRef,
     monacoRef,
+    value,
   };
 };
 

@@ -25,7 +25,7 @@ const InOutPanel = ({ currTask, refreshInput }) => {
     <Grid
       container
       spacing={2}
-      columns={{ xs: 1, sm: 3 }}
+      columns={{ xs: 1, sm: currTask.tasktype == "guide" ? 2 : 3 }}
       sx={{ marginTop: "10px", flexGrow: 1 }}
     >
       <Grid size={{ xs: 1, md: 1 }}>
@@ -85,16 +85,18 @@ const InOutPanel = ({ currTask, refreshInput }) => {
           </Box>
         </Panel>
       </Grid>
-      <Grid size={{ xs: 1, md: 1 }}>
-        <Panel label={"Ожидаемый результат"}>
-          <Typography
-            variant="body1"
-            sx={{ display: "inline-block", whiteSpace: "pre-wrap" }}
-          >
-            {currTask.expectedOutput}
-          </Typography>
-        </Panel>
-      </Grid>
+      {currTask.tasktype != "guide" && (
+        <Grid size={{ xs: 1, md: 1 }}>
+          <Panel label={"Ожидаемый результат"}>
+            <Typography
+              variant="body1"
+              sx={{ display: "inline-block", whiteSpace: "pre-wrap" }}
+            >
+              {currTask.expectedOutput}
+            </Typography>
+          </Panel>
+        </Grid>
+      )}
     </Grid>
   );
 };

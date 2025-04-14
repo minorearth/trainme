@@ -8,6 +8,39 @@ import useMonaco from "@/components/test/testrun/components/monaco/useMonaco";
 import { useColorScheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
+import "./MonacoEditor.css";
+import "./custom.css";
+
+// import styled from "styled-components";
+
+// const StyledEditor = styled.div(({ theme }) => ({
+//   ".monaco-editor .view-line:has(.mtk7):not(:has(.mtk1)):not(:has(.mtk8))": {
+//     backgroundColor: "white",
+//     borderLeft: "20px",
+//     borderLeftStyle: "solid",
+//     borderColor: "blueviolet",
+//   },
+
+//   ".monaco-editor .mtk7": {
+//     color: theme == "dark" ? "white" : "inherit",
+//   },
+
+//   ".monaco-editor .view-line:has(.mtk8):not(:has(.mtk4)):not(:has(.mtk9)):not(:has(.mtk6))":
+//     {
+//       backgroundColor: "#121212",
+//       borderLeft: "20px",
+//       borderLeftStyle: "solid",
+//       borderColor: "blueviolet",
+//     },
+
+//   // ".monaco-editor .mtk7": {
+//   //   color: theme == "dark" ? "white" : "black",
+//   // },
+
+//   ".monaco-editor .mtk8": {
+//     color: theme != "dark" ? "white" : "inherit",
+//   },
+// }));
 
 var startX, startY;
 
@@ -36,9 +69,10 @@ const MonacoEd = ({
 }) => {
   const theme = useTheme();
   const { mode } = useColorScheme();
-  const { handleEditorDidMount } = useMonaco({
+  const { handleEditorDidMount, value } = useMonaco({
     monacoRef,
     editorRef,
+    currTask,
   });
 
   // editorRef?.current
@@ -72,13 +106,14 @@ const MonacoEd = ({
           {currTask.maxlineserror}
         </Typography>
       )}
+      {/* <StyledEditor> */}
       <Editor
         height="50vh"
         width="100%"
-        theme={"pk"}
+        theme={"dark"}
         options={{ ...EditorOptions }}
         language="python"
-        value={currTask?.code}
+        value={value}
         onChange={(value, e) =>
           handleChangeContent({
             value,
@@ -91,7 +126,11 @@ const MonacoEd = ({
             darkmode: mode == "dark" ? true : false,
           })
         }
+        onValidate={() => {
+          console.log("validate");
+        }}
       />
+      {/* </StyledEditor> */}
     </>
   );
 };

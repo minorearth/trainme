@@ -55,22 +55,29 @@ const TaskAndCodePanel = (props) => {
   } = props;
   const { handleChangeContent } = actionsTsk;
   return (
-    <Grid container spacing={2} columns={{ xs: 1, md: 3 }}>
-      <Grid size={{ xs: 1, md: 1 }}>
-        <Panel label={"Выполни задание"}>
-          <Wrapper>
-            <Typography
-              variant="body1"
-              dangerouslySetInnerHTML={{ __html: `<p>${currTask.task}</p>` }}
-              sx={{ display: "inline-block", whiteSpace: "pre-line" }}
-            >
-              {/* {currTask.task} */}
-            </Typography>
-          </Wrapper>
-        </Panel>
-      </Grid>
+    <Grid
+      container
+      spacing={2}
+      columns={{ xs: 1, md: currTask.tasktype == "guide" ? 1 : 3 }}
+    >
+      {currTask.tasktype != "guide" && (
+        <Grid size={{ xs: 1, md: 1 }}>
+          <Panel label={"Выполни задание"}>
+            <Wrapper>
+              <Typography
+                variant="body1"
+                dangerouslySetInnerHTML={{ __html: `<p>${currTask.task}</p>` }}
+                sx={{ display: "inline-block", whiteSpace: "pre-line" }}
+              >
+                {/* {currTask.task} */}
+              </Typography>
+            </Wrapper>
+          </Panel>
+        </Grid>
+      )}
       <Grid size={{ xs: 1, md: 2 }}>
         <Panel label={"Редактор кода"}>
+          {/* <EdtorNoTask code={"print(a)"} /> */}
           <MonacoEd
             currTask={currTask}
             monacoRef={monacoRef}

@@ -4,44 +4,26 @@
 import { useTheme } from "@mui/material/styles";
 import Editor from "@monaco-editor/react";
 import { EditorOptions } from "@/components/test/testrun/components/monaco/MonacoEditorOptions";
-import useMonaco from "@/components/test/testrun/components/monaco/useMonaco";
+import useEdtornoTask from "@/components/test/testrun/components/GoodBook/useEdtornoTask";
 import { useColorScheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 
-const GoodBook = ({
-  currTask,
-  monacoRef,
-  editorRef,
-  handleChangeContent,
-  monacoInfo,
-}) => {
-  const theme = useTheme();
+const EdtorNoTask = ({ code }) => {
   const { mode } = useColorScheme();
-  const { handleEditorDidMount } = useMonaco({
-    monacoRef,
-    editorRef,
+  const { handleEditorDidMount, handleChangeContent, value } = useEdtornoTask({
+    code,
   });
-
+  useEdtornoTask;
   return (
     <>
-      {currTask.info && (
-        <Typography sx={{ textAlign: "center", color: "#618B4E" }}>
-          {currTask.info}
-        </Typography>
-      )}
-      {currTask.maxlineserror && (
-        <Typography sx={{ textAlign: "center", color: "#FF5549" }}>
-          {currTask.maxlineserror}
-        </Typography>
-      )}
       <Editor
         height="50vh"
         width="100%"
-        theme={"pk"}
+        theme={"dark"}
         options={{ ...EditorOptions }}
         language="python"
-        value={currTask?.code}
+        value={value}
         onChange={(value, e) =>
           handleChangeContent({
             value,
@@ -59,4 +41,4 @@ const GoodBook = ({
   );
 };
 
-export default GoodBook;
+export default EdtorNoTask;

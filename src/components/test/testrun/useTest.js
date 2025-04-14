@@ -4,6 +4,7 @@ import local from "@/globals/local";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import splashCDStore from "@/components/common/splash/splashAction/store";
 import { getSense, getCSP, setCSP, updateSCP } from "@/db/localstorage";
+import "./custom.css";
 
 const useTest = ({
   appState,
@@ -18,11 +19,12 @@ const useTest = ({
   const [currTask, setCurrTask] = useState({});
 
   useEffect(() => {
-    appState.taskId != tests.length && openTask(appState.taskId);
+    appState.taskId != tests.length && openTask(appState.taskId, editorRef);
+    // editorRef?.current?.getModel().setValue(currTask?.code);
   }, [appState.taskId]);
 
   const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
-    editorRef.current.getModel().setValue("");
+    // editorRef.current.getModel().setValue("");
     setEarned(error);
     //TODO:
     setTaskLog({ error, code });
@@ -152,6 +154,16 @@ const useTest = ({
   };
 
   const handleChangeContent = ({ value }) => {
+    // const items = document.querySelectorAll(".mtk7");
+    // console.log("items2", items);
+
+    // items.forEach((item) => {
+    //   // if (item.textContent.includes(searchString)) {
+    //   item.classList.add("markdown2");
+    //   item.parentElement.parentElement.classList.add("markdown");
+    //   // }
+    // });
+
     const model = editorRef.current.getModel();
     const lineCount = model.getLineCount();
     lineCount > currTask.maxlines && currTask.tasktype != "guide"
@@ -219,7 +231,7 @@ const useTest = ({
   };
 
   const errorCountDownPressed = async () => {
-    editorRef.current.getModel().setValue("");
+    // editorRef.current.getModel().setValue("");
     updateCurrTask({ info: "" });
     setEditorDisabled(false);
     const CSP = getCSP();
@@ -239,8 +251,9 @@ const useTest = ({
     }
   };
 
-  const openTask = (id) => {
+  const openTask = (id, editorRef) => {
     const test = tests[id];
+
     setCurrTask({
       task:
         test.task +

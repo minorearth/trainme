@@ -9,6 +9,13 @@ const FabAnimated = ({ action, icon, position, tooltip }) => {
     <Tooltip title={tooltip}>
       <Fab
         sx={{
+          color: "inherit",
+          "&:hover": {
+            opacity: 0.7,
+          },
+          "&:active": {
+            opacity: 0.9,
+          },
           position: "absolute",
           ...position,
           boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.2)",
@@ -17,13 +24,11 @@ const FabAnimated = ({ action, icon, position, tooltip }) => {
         }}
         onClick={() => action()}
       >
-        <IconButtonNoRipple>
-          <Icon2State
-            visible={true}
-            icon={icon}
-            sx={{ fontSize: "35px", color: "white" }}
-          />
-        </IconButtonNoRipple>
+        <Icon2State
+          visible={true}
+          icon={icon}
+          sx={{ fontSize: "35px", color: "white" }}
+        />
       </Fab>
     </Tooltip>
   );

@@ -4,6 +4,7 @@ import Avatar2 from "./avatars/avatar2";
 import Avatar3 from "./avatars/avatar3";
 import Avatar4 from "./avatars/avatar4";
 import Avatar5 from "./avatars/avatar5";
+import Avatar6 from "./avatars/avatar6";
 
 // https://www.svgrepo.com/svg/454517/animal-dog-domestic-3
 
@@ -14,4 +15,5 @@ export const avatars = [
   <Avatar3 key={"3"} />,
   <Avatar4 key={"4"} />,
   <Avatar5 key={"5"} />,
+  <Avatar6 key={"6"} />,
 ];
