@@ -147,7 +147,9 @@ export const setUseMetaData = async (data) => {
     launchedCourse,
     tasklog,
     sum,
-  } = decrypt2(data);
+  } = data;
+
+  // = decrypt2(data);
   try {
     const tasklogPrepared = prepareTaskLog(
       launchedCourse,
@@ -168,7 +170,7 @@ export const setUseMetaData = async (data) => {
           [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
           // ...tasklogPrepared,
         }),
-        5000
+        50000
       );
 
       return "ok";

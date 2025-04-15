@@ -169,7 +169,9 @@ const useNavigator = () => {
           (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts
         );
         const b = await setUseMetaData(
-          encrypt2({
+          // encrypt2(
+
+          {
             lastcompleted: CSP.chapter,
             unlocked: CSP.tobeunlocked,
             allunlocked: [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],
@@ -178,7 +180,8 @@ const useNavigator = () => {
             tasklog: CSP.tasklog,
             launchedCourse: CSP.launchedCourse,
             sum: (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts,
-          })
+          }
+          // )
         );
         console.log("fuckin error", b);
         // );
