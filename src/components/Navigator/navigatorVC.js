@@ -158,6 +158,16 @@ const useNavigator = () => {
         progressStore.setShowProgress(true);
         // await updateDataWithTimeout(
         //   async () =>
+        console.log(
+          CSP.chapter,
+          CSP.tobeunlocked,
+          [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],
+          CSP.userProgress.rating + CSP.pts,
+          user.userid,
+          CSP.tasklog,
+          CSP.launchedCourse,
+          (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts
+        );
         const b = await setUseMetaData(
           encrypt2({
             lastcompleted: CSP.chapter,
