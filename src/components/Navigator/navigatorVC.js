@@ -187,7 +187,7 @@ const useNavigator = () => {
         // );
         // });
         alertdialog.hideDialog();
-        // openFlowPageAfterAccomplished();
+        openFlowPageAfterAccomplished();
         progressStore.setCloseProgress();
       } catch (e) {
         console.log(e);
