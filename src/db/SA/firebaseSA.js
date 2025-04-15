@@ -124,6 +124,18 @@ export const updateDataWithRetry = async (action, retries = 3) => {
   // }
 };
 
+function firestoreWithTimeout(promise, timeout) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) =>
+      setTimeout(
+        () => reject(new Error("Запрос превысил время ожидания")),
+        timeout
+      )
+    ),
+  ]);
+}
+
 export const setUseMetaData = async (data) => {
   const firestore = getFirestore();
   const {
@@ -148,24 +160,31 @@ export const setUseMetaData = async (data) => {
   const userMetaRef = firestore.collection("usermeta").doc(uid);
   if (unlocked.length != 0) {
     try {
-      await userMetaRef.update({
-        [`courses.${launchedCourse}.rating`]: pts,
-        [`courses.${launchedCourse}.unlocked`]: allunlocked,
-        [`courses.${launchedCourse}.lastunlocked`]: unlocked,
-        [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
-        // ...tasklogPrepared,
-      });
+      await firestoreWithTimeout(
+        userMetaRef.update({
+          [`courses.${launchedCourse}.rating`]: pts,
+          [`courses.${launchedCourse}.unlocked`]: allunlocked,
+          [`courses.${launchedCourse}.lastunlocked`]: unlocked,
+          [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
+          // ...tasklogPrepared,
+        }),
+        5000
+      );
+
       return "ok";
     } catch (error) {
       return error.message;
     }
   } else {
     try {
-      await userMetaRef.update({
-        [`courses.${launchedCourse}.rating`]: pts,
-        [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
-        // ...tasklogPrepared,
-      });
+      await firestoreWithTimeout(
+        userMetaRef.update({
+          [`courses.${launchedCourse}.rating`]: pts,
+          [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
+          // ...tasklogPrepared,
+        }),
+        5000
+      );
       return "ok2";
     } catch (error) {
       return error.message;
