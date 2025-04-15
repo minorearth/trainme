@@ -157,7 +157,7 @@ export const setUseMetaData = async (data) => {
     }
   } else {
     try {
-      userMetaRef.update({
+      await userMetaRef.update({
         [`courses.${launchedCourse}.rating`]: pts,
         [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
         ...tasklogPrepared,
