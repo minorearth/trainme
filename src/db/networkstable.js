@@ -19,14 +19,11 @@ const showNetworkMessage = (message) => {
 export const updateDataWithRetry = async (action, retries = 5) => {
   for (let attempt = 0; attempt < retries; attempt++) {
     try {
-      console.log("я здесь");
       await updateDataWithTimeout(() => action());
-      console.log("и я здесь");
 
       // alertdialog.cancelDialog();
       return;
     } catch (error) {
-      console.log("hello3");
       // if (0 < attempt) {
       showNetworkMessage(
         `Попытка ${
@@ -43,6 +40,5 @@ export const updateDataWithRetry = async (action, retries = 5) => {
       // }
     }
   }
-  console.log("я тут");
   throw error;
 };

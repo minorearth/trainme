@@ -142,11 +142,12 @@ const useNavigator = () => {
   const setStateAndCSP = (data) => {
     setCSP(data);
     setappState(data);
-    console.log("tttt", data);
   };
 
   const saveProgress = async () => {
     const CSP = getCSP();
+    console.log("z nen");
+
     if (
       CSP.nodemode == "addhoc" ||
       CSP.nodemode == "newtopic" ||
@@ -230,7 +231,6 @@ const useNavigator = () => {
 
   const openFlowPageAfterAccomplished = () => {
     const CSP = getCSP();
-    console.log("executed");
     setCSP({
       launchedCourse: CSP.launchedCourse,
       page: "flow",

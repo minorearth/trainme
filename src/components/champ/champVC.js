@@ -64,7 +64,6 @@ const useChamps = ({ actionsNAV, appState }) => {
   }, []);
 
   useEffect(() => {
-    console.log("monitoringStarted", monitoringStarted);
     if (!monitoringStarted) return;
     getDocFromCollectionByIdRealtimeClient(
       stn.collections.CHAMPS,
@@ -161,7 +160,6 @@ const useChamps = ({ actionsNAV, appState }) => {
         );
       }
     } catch (e) {
-      console.log(e);
       alertdialog.showDialog(
         "Нет такого чемпионата",
         "Перепроверьте все еще раз",
@@ -169,7 +167,6 @@ const useChamps = ({ actionsNAV, appState }) => {
         () => {}
       );
     }
-    // console.log("champData", champData);
     // const res = await updateUsersInChampClient(
     //   stn.collections.CHAMPS,
     //   {

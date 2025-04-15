@@ -155,7 +155,6 @@ const useTest = ({
 
   const handleChangeContent = ({ value }) => {
     const items = document.querySelectorAll(".mtk5");
-    console.log("items", items);
 
     // items.forEach((item) => {
     //   // if (item.textContent.includes(searchString)) {

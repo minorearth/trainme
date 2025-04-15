@@ -60,8 +60,6 @@ export const useAuth = () => {
       return;
     }
     //TODO:persist name
-    console.log(allUserMeta);
-
     user.setUser({ id: uid, name: allUserMeta.name });
     router.push(`/chapters`);
   };

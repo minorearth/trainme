@@ -11,7 +11,6 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    console.log("currTask", currTask, editorRef.current);
     if (!mounted || !currTask) {
       return;
     }
@@ -97,7 +96,6 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
 
   // function handleContentChange({ editor, monaco, darkmode }) {
   //   const items = document.querySelectorAll(".mtk7");
-  //   console.log("items", items);
 
   //   items.forEach((item) => {
   //     // if (item.textContent.includes(searchString)) {

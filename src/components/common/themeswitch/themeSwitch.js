@@ -61,7 +61,6 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function DLSwitch({ monacoRef, sx = {} }) {
-  console.log(sx);
   const { mode, setMode } = useColorScheme();
 
   if (!mode) {
