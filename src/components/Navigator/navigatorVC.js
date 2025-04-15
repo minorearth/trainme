@@ -31,6 +31,7 @@ import alertdialog from "@/components/common/dialog/store";
 import dialog from "@/components/common/dialog/store";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import { useRouter } from "next/navigation";
+import { set } from "mobx";
 
 const useNavigator = () => {
   const [loading, setLoading] = useState(true);
@@ -187,7 +188,8 @@ const useNavigator = () => {
         // );
         // });
         alertdialog.hideDialog();
-        openFlowPageAfterAccomplished();
+        setTimeout(() => openFlowPageAfterAccomplished(), 5000);
+
         progressStore.setCloseProgress();
       } catch (e) {
         console.log(e);
