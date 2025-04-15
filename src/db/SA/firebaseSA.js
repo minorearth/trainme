@@ -136,11 +136,15 @@ export const setUseMetaData = async (data) => {
     tasklog,
     sum,
   } = decrypt2(data);
-  const tasklogPrepared = prepareTaskLog(
-    launchedCourse,
-    lastcompleted,
-    tasklog
-  );
+  try {
+    const tasklogPrepared = prepareTaskLog(
+      launchedCourse,
+      lastcompleted,
+      tasklog
+    );
+  } catch (e) {
+    return "error";
+  }
   const userMetaRef = firestore.collection("usermeta").doc(uid);
   if (unlocked.length != 0) {
     try {
@@ -149,7 +153,7 @@ export const setUseMetaData = async (data) => {
         [`courses.${launchedCourse}.unlocked`]: allunlocked,
         [`courses.${launchedCourse}.lastunlocked`]: unlocked,
         [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
-        ...tasklogPrepared,
+        // ...tasklogPrepared,
       });
       return "ok";
     } catch (error) {
