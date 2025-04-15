@@ -154,8 +154,8 @@ const useTest = ({
   };
 
   const handleChangeContent = ({ value }) => {
-    // const items = document.querySelectorAll(".mtk7");
-    // console.log("items2", items);
+    const items = document.querySelectorAll(".mtk5");
+    console.log("items", items);
 
     // items.forEach((item) => {
     //   // if (item.textContent.includes(searchString)) {

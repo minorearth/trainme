@@ -157,7 +157,7 @@ const useNavigator = () => {
         progressStore.setShowProgress(true);
         // await updateDataWithTimeout(
         //   async () =>
-        await setUseMetaData(
+        const b = await setUseMetaData(
           encrypt2({
             lastcompleted: CSP.chapter,
             unlocked: CSP.tobeunlocked,
@@ -169,6 +169,7 @@ const useNavigator = () => {
             sum: (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts,
           })
         );
+        console.log("fuckin error", b);
         // );
         // });
         alertdialog.hideDialog();

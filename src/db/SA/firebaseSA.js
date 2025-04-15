@@ -105,8 +105,12 @@ const prepareTaskLog = (launchedCourse, lastcompleted, tasklog) => {
 };
 
 export const updateDataWithRetry = async (action, retries = 3) => {
-  // try {
-  await action();
+  try {
+    await action();
+    return "ok";
+  } catch (error) {
+    return error.message;
+  }
   //   console.log("Данные успешно обновлены");
   //   return;
   // } catch (error) {
@@ -139,24 +143,29 @@ export const setUseMetaData = async (data) => {
   );
   const userMetaRef = firestore.collection("usermeta").doc(uid);
   if (unlocked.length != 0) {
-    return updateDataWithRetry(
-      async () =>
-        await userMetaRef.update({
-          [`courses.${launchedCourse}.rating`]: pts,
-          [`courses.${launchedCourse}.unlocked`]: allunlocked,
-          [`courses.${launchedCourse}.lastunlocked`]: unlocked,
-          [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
-          ...tasklogPrepared,
-        })
-    );
+    try {
+      await userMetaRef.update({
+        [`courses.${launchedCourse}.rating`]: pts,
+        [`courses.${launchedCourse}.unlocked`]: allunlocked,
+        [`courses.${launchedCourse}.lastunlocked`]: unlocked,
+        [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
+        ...tasklogPrepared,
+      });
+      return "ok";
+    } catch (error) {
+      return error.message;
+    }
   } else {
-    return updateDataWithRetry(async () =>
+    try {
       userMetaRef.update({
         [`courses.${launchedCourse}.rating`]: pts,
         [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
         ...tasklogPrepared,
-      })
-    );
+      });
+      return "ok2";
+    } catch (error) {
+      return error.message;
+    }
   }
 };
 

@@ -15,22 +15,13 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
     if (!mounted || !currTask) {
       return;
     }
+
     setValue(currTask.code);
 
     currTask.tasktype == "guide"
       ? editorRef.current.updateOptions({ lineNumbers: "off" })
       : editorRef.current.updateOptions({ lineNumbers: "on" });
   }, [currTask, mounted]);
-
-  useEffect(() => {
-    // const items = document.querySelectorAll(".mtk7");
-    // items.forEach((item) => {
-    //   // if (item.textContent.includes(searchString)) {
-    //   item.classList.add("markdown2");
-    //   item.parentElement.parentElement.classList.add("markdown");
-    //   // }
-    // });
-  }, [value]);
 
   // const editorDisabled = useRef({ disabled: false });
   const zu = useCallback((event) => {
@@ -66,9 +57,6 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
       base: "vs-dark",
       inherit: true,
       // https://github.com/microsoft/vscode/blob/main/src/vs/editor/standalone/common/themes.ts
-      // rules: [
-      //   { token: "comment", foreground: "008800", background: "#FFFF00" }, // Задаем цвет текста и фона для комментариев
-      // ],
       rules: [
         {
           token: "identifier",
@@ -82,20 +70,6 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
           token: "type",
           foreground: "1AAFB0",
         },
-        // {
-        //   token: "string",
-        //   foreground: "ffa500",
-        //   // fontStyle: "italic underline",
-        // },
-
-        // { token: "comment", foreground: "008800", background: "FFFF00" }, // Задаем цвет текста и фона для комментариев
-
-        // {
-        //   token: "comment",
-        //   fontStyle: "bold",
-        //   foreground: "FFFFFF",
-        //   // fontStyle: "italic bold",
-        // },
       ],
       colors: {
         "editor.background": "#121212",
@@ -104,17 +78,7 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
     monaco.editor.defineTheme("light", {
       base: "vs",
       inherit: true,
-      // rules: [
-      //   { token: "comment", foreground: "008800", background: "#FFFF00" }, // Задаем цвет текста и фона для комментариев
-      // ],
-      rules: [
-        // {
-        //   token: "comment",
-        //   fontStyle: "bold",
-        //   foreground: "000000",
-        //   // fontStyle: "italic bold",
-        // },
-      ],
+      rules: [],
       colors: {
         "editor.background": "#FFFFFF",
       },
@@ -124,8 +88,8 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
       "paste",
       (event) => {
         // TODO: uncomment
-        // event.preventDefault();
-        // event.stopPropagation();
+        event.preventDefault();
+        event.stopPropagation();
       },
       true
     );
