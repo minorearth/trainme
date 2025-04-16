@@ -33,6 +33,38 @@ import countdownbutton from "@/components/common/countdown/CountdownButton/store
 import { useRouter } from "next/navigation";
 import { set } from "mobx";
 
+const zu = async (data) => {
+  // try {
+  //   const response = await fetch("/api"); // Вызов вашего API
+  //   if (!response.ok) {
+  //     throw new Error("Network response was not ok");
+  //   }
+  //   const result = await response.json();
+  //   console.log(result);
+  // } catch (error) {
+  //   console.log(error);
+  // }
+
+  try {
+    const response = await fetch("/api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const result = await response.json();
+    console.log(result.message);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 const useNavigator = () => {
   const [loading, setLoading] = useState(true);
   const [tests, setTests] = useState([]);
@@ -159,36 +191,51 @@ const useNavigator = () => {
         progressStore.setShowProgress(true);
         // await updateDataWithTimeout(
         //   async () =>
-        console.log(
-          CSP.chapter,
-          CSP.tobeunlocked,
-          [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],
-          CSP.userProgress.rating + CSP.pts,
-          user.userid,
-          CSP.tasklog,
-          CSP.launchedCourse,
-          (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts
-        );
-        const b = await setUseMetaData(
-          // encrypt2(
+        // console.log(
+        //   CSP.chapter,
+        //   CSP.tobeunlocked,
+        //   [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],
+        //   CSP.userProgress.rating + CSP.pts,
+        //   user.userid,
+        //   CSP.tasklog,
+        //   CSP.launchedCourse,
+        //   (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts
+        // );
+        await zu({
+          lastcompleted: CSP.chapter,
+          unlocked: CSP.tobeunlocked,
+          allunlocked: [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],
+          pts: CSP.userProgress.rating + CSP.pts,
+          uid: user.userid,
+          tasklog: CSP.tasklog,
+          launchedCourse: CSP.launchedCourse,
+          sum: (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts,
+        });
 
-          {
-            lastcompleted: CSP.chapter,
-            unlocked: CSP.tobeunlocked,
-            allunlocked: [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],
-            pts: CSP.userProgress.rating + CSP.pts,
-            uid: user.userid,
-            tasklog: CSP.tasklog,
-            launchedCourse: CSP.launchedCourse,
-            sum: (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts,
-          }
-          // )
-        );
-        console.log("fuckin error", b);
+        // {
+
+        //   }
+
+        // const b = await setUseMetaData(
+        //   // encrypt2(
+
+        //   {
+        //     lastcompleted: CSP.chapter,
+        //     unlocked: CSP.tobeunlocked,
+        //     allunlocked: [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],
+        //     pts: CSP.userProgress.rating + CSP.pts,
+        //     uid: user.userid,
+        //     tasklog: CSP.tasklog,
+        //     launchedCourse: CSP.launchedCourse,
+        //     sum: (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts,
+        //   }
+        //   // )
+        // );
+        // console.log("fuckin error", b);
         // );
         // });
         alertdialog.hideDialog();
-        setTimeout(() => openFlowPageAfterAccomplished(), 5000);
+        openFlowPageAfterAccomplished();
 
         progressStore.setCloseProgress();
       } catch (e) {
