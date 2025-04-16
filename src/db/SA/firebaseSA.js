@@ -188,8 +188,8 @@ export const setUseMetaData = async (data) => {
         5000
       );
       return "ok2";
-    } catch (error) {
-      return error.message;
+    } catch (e) {
+      return "fuckng error";
     }
   }
 };
