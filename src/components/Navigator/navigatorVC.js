@@ -32,38 +32,7 @@ import dialog from "@/components/common/dialog/store";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import { useRouter } from "next/navigation";
 import { set } from "mobx";
-
-const zu = async (data) => {
-  // try {
-  //   const response = await fetch("/api"); // Вызов вашего API
-  //   if (!response.ok) {
-  //     throw new Error("Network response was not ok");
-  //   }
-  //   const result = await response.json();
-  //   console.log(result);
-  // } catch (error) {
-  //   console.log(error);
-  // }
-
-  try {
-    const response = await fetch("/api", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    const result = await response.json();
-    console.log(result.message);
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
+import { setUseMetaDataFetch, getUseMetaDataFetch } from "@/db/APIcalls/calls";
 
 const useNavigator = () => {
   const [loading, setLoading] = useState(true);
@@ -146,7 +115,8 @@ const useNavigator = () => {
   //STATE MANAGEMENT
   const fetchUserMetaAndPersist = async (launchedCourse) => {
     const CSP = getCSP();
-    const allUserMeta = await getUseMetaData(user.userid);
+    const allUserMeta = await getUseMetaDataFetch({ uid: user.userid });
+    console.log("allUserMeta", allUserMeta);
     //TODO:keep only keys needed
     const userProgress = getUserDataNeeeded(
       allUserMeta.courses[launchedCourse]
@@ -201,7 +171,7 @@ const useNavigator = () => {
         //   CSP.launchedCourse,
         //   (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts
         // );
-        await zu({
+        await setUseMetaDataFetch({
           lastcompleted: CSP.chapter,
           unlocked: CSP.tobeunlocked,
           allunlocked: [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],

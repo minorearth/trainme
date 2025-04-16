@@ -21,6 +21,7 @@ import dialog from "@/components/common/dialog/store";
 import authForm from "@/components/authcomps/store";
 import local from "@/globals/local";
 import progressStore from "../common/splash/progressdots/store";
+import { getUseMetaDataFetch } from "@/db/APIcalls/calls";
 
 import { getUseMetaData } from "@/db/SA/firebaseSA";
 
@@ -33,7 +34,7 @@ export const useAuth = () => {
 
   const authNow = async (email, password) => {
     const uid = await signInClient(email, password);
-    const allUserMeta = await getUseMetaData(uid);
+    const allUserMeta = await getUseMetaDataFetch({ uid });
 
     if (uid == "notVerified") {
       alertdialog.showDialog(

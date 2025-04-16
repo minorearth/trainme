@@ -6,12 +6,6 @@ export const revalidate = 0; //revalidate api every 0 second
 // import { createIndexAPI } from "./domain";
 import { setUseMetaData } from "@/db/SA/firebaseSA";
 
-export async function GET() {
-  // await createIndexAPI();
-  const res = { job: "done" };
-  return NextResponse.json(res);
-}
-
 export async function POST(request) {
   try {
     const data = await request.json();

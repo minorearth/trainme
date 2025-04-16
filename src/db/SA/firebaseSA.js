@@ -80,7 +80,7 @@ export const unlockAll = async (
   });
 };
 
-export const getUseMetaData = async (uid) => {
+export const getUseMetaData = async ({ uid }) => {
   const firestore = getFirestore();
   const userMetaRef = firestore.collection("usermeta").doc(uid);
   const snapshot = await userMetaRef.get();
