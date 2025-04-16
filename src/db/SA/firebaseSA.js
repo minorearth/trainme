@@ -148,6 +148,7 @@ export const setUseMetaData = async (data) => {
     tasklog,
     sum,
   } = data;
+  console.log("here");
 
   // = decrypt2(data);
   // try {
@@ -160,6 +161,7 @@ export const setUseMetaData = async (data) => {
   //   return "error";
   // }
   const userMetaRef = firestore.collection("usermeta").doc(uid);
+  console.log("here2");
   if (unlocked.length != 0) {
     try {
       // await firestoreWithTimeout(
@@ -178,7 +180,9 @@ export const setUseMetaData = async (data) => {
       return error.message;
     }
   } else {
+    console.log("here4");
     try {
+      console.log("here5");
       // await firestoreWithTimeout(
       await userMetaRef.update({
         [`courses.${launchedCourse}.rating`]: pts,
@@ -189,6 +193,7 @@ export const setUseMetaData = async (data) => {
       // );
       return "ok2";
     } catch (e) {
+      console.log("here6");
       return "fuckng error";
     }
   }
