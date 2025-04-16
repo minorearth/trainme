@@ -19,11 +19,14 @@ export async function createFirebaseAdminApp(params) {
     privateKey,
   });
 
-  return admin.initializeApp({
+  admin.initializeApp({
     credential: cert,
     projectId: params.projectId,
     storageBucket: params.storageBucket,
   });
+
+  const firestore = admin.firestore();
+  firestore.settings({ timeout: 10000 });
 }
 
 export async function initAdmin() {
