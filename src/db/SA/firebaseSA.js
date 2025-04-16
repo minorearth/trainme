@@ -150,28 +150,28 @@ export const setUseMetaData = async (data) => {
   } = data;
 
   // = decrypt2(data);
-  try {
-    const tasklogPrepared = prepareTaskLog(
-      launchedCourse,
-      lastcompleted,
-      tasklog
-    );
-  } catch (e) {
-    return "error";
-  }
+  // try {
+  //   const tasklogPrepared = prepareTaskLog(
+  //     launchedCourse,
+  //     lastcompleted,
+  //     tasklog
+  //   );
+  // } catch (e) {
+  //   return "error";
+  // }
   const userMetaRef = firestore.collection("usermeta").doc(uid);
   if (unlocked.length != 0) {
     try {
-      await firestoreWithTimeout(
-        userMetaRef.update({
-          [`courses.${launchedCourse}.rating`]: pts,
-          [`courses.${launchedCourse}.unlocked`]: allunlocked,
-          [`courses.${launchedCourse}.lastunlocked`]: unlocked,
-          [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
-          // ...tasklogPrepared,
-        }),
-        50000
-      );
+      // await firestoreWithTimeout(
+      await userMetaRef.update({
+        [`courses.${launchedCourse}.rating`]: pts,
+        [`courses.${launchedCourse}.unlocked`]: allunlocked,
+        [`courses.${launchedCourse}.lastunlocked`]: unlocked,
+        [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
+        // ...tasklogPrepared,
+      });
+      //   50000
+      // );
 
       return "ok";
     } catch (error) {
@@ -179,14 +179,14 @@ export const setUseMetaData = async (data) => {
     }
   } else {
     try {
-      await firestoreWithTimeout(
-        userMetaRef.update({
-          [`courses.${launchedCourse}.rating`]: pts,
-          [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
-          // ...tasklogPrepared,
-        }),
-        5000
-      );
+      // await firestoreWithTimeout(
+      await userMetaRef.update({
+        [`courses.${launchedCourse}.rating`]: pts,
+        [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
+        // ...tasklogPrepared,
+      });
+      //   5000
+      // );
       return "ok2";
     } catch (e) {
       return "fuckng error";

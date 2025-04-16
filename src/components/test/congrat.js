@@ -37,7 +37,10 @@ const CongratPage = ({ appState, actionsNAV }) => {
         sx={{ mt: 3, mb: 3 }}
         variant="outlined"
         aria-label="repeat"
-        onClick={async () => await actionsNAV.saveProgress()}
+        onClick={async () => {
+          await actionsNAV.saveProgress();
+          await actionsNAV.saveProgress();
+        }}
         endIcon={<ReplayIcon />}
       >
         {"Вернуться к курсу"}
