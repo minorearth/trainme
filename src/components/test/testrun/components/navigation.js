@@ -20,6 +20,7 @@ const Navigation = observer(
     checkTask,
     currTask,
     runPythonCode,
+    editorRef,
   }) => {
     const [executing, setExecuting] = useState(false);
 
@@ -49,7 +50,6 @@ const Navigation = observer(
             onClick={async (e) => {
               if (!pyodide || executing) return;
               setExecuting(true);
-              // await runPythonCode(currTask.code, currTask.input);
               const { outputTxt } = await runPythonCode(
                 currTask.code,
                 currTask.input
@@ -75,6 +75,7 @@ const Navigation = observer(
               if (!pyodide || executing) return;
               refreshInput();
               checkTask(currTask.code, tests[appState.taskId], tests.length);
+              editorRef.current.setValue("");
             }}
             disabled={!pyodide || executing}
             variant="outlined"
@@ -86,6 +87,7 @@ const Navigation = observer(
         {(appState.nodemode == "textbook" || stn.mode.DEV_MODE) && (
           <Button
             onClick={() => {
+              editorRef.current.setValue("");
               prevTaskNoPts();
             }}
             variant="outlined"
@@ -97,6 +99,7 @@ const Navigation = observer(
         {currTask.tasktype == "guide" && (
           <Button
             onClick={() => {
+              editorRef.current.setValue("");
               const CSP = getCSP();
               nextTask({ CSP });
             }}
@@ -110,6 +113,7 @@ const Navigation = observer(
         {countdownbutton.state.visible && (
           <CountdownButton
             onClick={() => {
+              editorRef.current.setValue("");
               errorCountDownPressed();
               countdownbutton.hideButton();
             }}

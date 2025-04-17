@@ -14,55 +14,26 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
     if (!mounted || !currTask) {
       return;
     }
-
     setValue(currTask.code);
-
-    // currTask.tasktype == "guide"
-    //   ? editorRef.current.updateOptions({ lineNumbers: "off" })
-    //   : editorRef.current.updateOptions({ lineNumbers: "on" });
   }, [currTask, mounted]);
 
   useEffect(() => {
-    console.log("sdsds");
-    console.log(editorRef.current);
     if (!editorRef.current) {
       return;
     }
+
     currTask.tasktype == "guide"
       ? editorRef.current.updateOptions({ lineNumbers: "off" })
       : editorRef.current.updateOptions({ lineNumbers: "on" });
   }, [mounted, currTask?.taskuuid]);
 
-  // const editorDisabled = useRef({ disabled: false });
-  const zu = useCallback((event) => {
-    event.preventDefault();
-    event.stopPropagation();
-  }, []);
-
   const setEditorDisabled = (disabled, editorRef) => {
     editorRef.current.updateOptions({ readOnly: disabled });
-    // disabled
-    //   ? editorRef.current.onKeyDown((event) => {
-    //       event.preventDefault();
-    //       event.stopPropagation();
-    //     })
-    //   : editorRef.current.onKeyDown();
-    // if (disabled) {
-    //   editorRef.current.getContainerDomNode().addEventListener("keydown", zu);
-    //   editorRef.current
-    //     .getContainerDomNode()
-    //     .addEventListener("selectionchange", zu2);
-    // } else {
-    //   editorRef.current
-    //     .getContainerDomNode()
-    //     .removeEventListener("keydown", zu);
-    // }
   };
 
   function handleEditorDidMount({ editor, monaco, darkmode }) {
     monacoRef.current = monaco;
     editorRef.current = editor;
-    console.log("rerendered");
     setMounted((state) => !state);
     monaco.editor.defineTheme("dark", {
       base: "vs-dark",
@@ -106,17 +77,6 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
     );
   }
 
-  // function handleContentChange({ editor, monaco, darkmode }) {
-  //   const items = document.querySelectorAll(".mtk7");
-
-  //   items.forEach((item) => {
-  //     // if (item.textContent.includes(searchString)) {
-  //     item.classList.add("markdown2");
-  //     item.parentElement.parentElement.classList.add("markdown");
-  //     // }
-  //   });
-  // }
-
   function setTheme(darkmode) {
     darkmode
       ? monacoRef.current.editor.setTheme("dark")
@@ -133,3 +93,56 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
 };
 
 export default useMonaco;
+
+// const undo = () => {
+//   if (historyRef.current.length > 1) {
+//     redoHistoryRef.current.push(
+//       historyRef.current[historyRef.current.length - 1]
+//     );
+//     historyRef.current.pop();
+//     const previousValue = historyRef.current[historyRef.current.length - 1];
+//     editorRef.current.setValue(previousValue);
+//   }
+// };
+
+// const redo = () => {
+//   if (redoHistoryRef.current.length > 0) {
+//     const redoValue = redoHistoryRef.current.pop();
+//     historyRef.current.push(redoValue);
+//     editorRef.current.setValue(redoValue);
+//   }
+// };
+
+// disabled
+//   ? editorRef.current.onKeyDown((event) => {
+//       event.preventDefault();
+//       event.stopPropagation();
+//     })
+//   : editorRef.current.onKeyDown();
+// if (disabled) {
+//   editorRef.current.getContainerDomNode().addEventListener("keydown", zu);
+//   editorRef.current
+//     .getContainerDomNode()
+//     .addEventListener("selectionchange", zu2);
+// } else {
+//   editorRef.current
+//     .getContainerDomNode()
+//     .removeEventListener("keydown", zu);
+// }
+
+// function handleContentChange({ editor, monaco, darkmode }) {
+//   const items = document.querySelectorAll(".mtk7");
+
+//   items.forEach((item) => {
+//     // if (item.textContent.includes(searchString)) {
+//     item.classList.add("markdown2");
+//     item.parentElement.parentElement.classList.add("markdown");
+//     // }
+//   });
+// }
+
+// const editorDisabled = useRef({ disabled: false });
+// const zu = useCallback((event) => {
+//   event.preventDefault();
+//   event.stopPropagation();
+// }, []);

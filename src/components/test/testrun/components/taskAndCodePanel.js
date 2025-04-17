@@ -87,6 +87,7 @@ const TaskAndCodePanel = (props) => {
           />
           <Navigation
             checkTask={checkTask}
+            editorRef={editorRef}
             tests={tests}
             actionsNAV={actionsNAV}
             actionsTsk={actionsTsk}

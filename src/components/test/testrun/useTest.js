@@ -154,15 +154,6 @@ const useTest = ({
   };
 
   const handleChangeContent = ({ value }) => {
-    const items = document.querySelectorAll(".mtk5");
-
-    // items.forEach((item) => {
-    //   // if (item.textContent.includes(searchString)) {
-    //   item.classList.add("markdown2");
-    //   item.parentElement.parentElement.classList.add("markdown");
-    //   // }
-    // });
-
     const model = editorRef.current.getModel();
     const lineCount = model.getLineCount();
     lineCount > currTask.maxlines && currTask.tasktype != "guide"

@@ -10,6 +10,92 @@ import { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 import "./MonacoEditor.css";
 import "./custom.css";
+import { Button } from "@mui/material";
+
+var startX, startY;
+
+function touchstart(e) {
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
+}
+
+function touchend(e) {
+  startX = 0;
+  startY = 0;
+}
+
+function touchmove(e) {
+  var deltaX = e.touches[0].clientX - startX,
+    deltaY = e.touches[0].clientY - startY;
+  document.querySelector("body").scrollBy(0, -deltaY / 100);
+}
+
+const MonacoEd = ({
+  currTask,
+  monacoRef,
+  editorRef,
+  handleChangeContent,
+  monacoInfo,
+}) => {
+  const theme = useTheme();
+  const { mode } = useColorScheme();
+  const { handleEditorDidMount, value, undo, redo } = useMonaco({
+    monacoRef,
+    editorRef,
+    currTask,
+  });
+
+  useEffect(() => {
+    // console.log("Рендеринг завершен");
+    // const items = document.querySelectorAll(".mtk20");
+    // console.log(items);
+    // items.forEach((item) => {
+    //   item.classList.add("markdown2");
+    //   item.parentElement.parentElement.classList.add("markdown");
+    //   // }
+    // });
+  }, []);
+
+  return (
+    <>
+      {currTask.info && (
+        <Typography sx={{ textAlign: "center", color: "#618B4E" }}>
+          {currTask.info}
+        </Typography>
+      )}
+      {currTask.maxlineserror && (
+        <Typography sx={{ textAlign: "center", color: "#FF5549" }}>
+          {currTask.maxlineserror}
+        </Typography>
+      )}
+      {/* <Button onClick={() => undo()}>undo</Button>
+      <Button onClick={() => redo()}>redo</Button> */}
+
+      <Editor
+        height="50vh"
+        width="100%"
+        theme={"dark"}
+        options={{ ...EditorOptions }}
+        language="python"
+        value={value}
+        onChange={(value, e) =>
+          handleChangeContent({
+            value,
+          })
+        }
+        onMount={(editor, monaco) =>
+          handleEditorDidMount({
+            editor,
+            monaco,
+            darkmode: mode == "dark" ? true : false,
+          })
+        }
+      />
+    </>
+  );
+};
+
+export default MonacoEd;
 
 // import styled from "styled-components";
 
@@ -42,105 +128,21 @@ import "./custom.css";
 //   },
 // }));
 
-var startX, startY;
-
-function touchstart(e) {
-  startX = e.touches[0].clientX;
-  startY = e.touches[0].clientY;
-}
-
-function touchend(e) {
-  startX = 0;
-  startY = 0;
-}
-
-function touchmove(e) {
-  var deltaX = e.touches[0].clientX - startX,
-    deltaY = e.touches[0].clientY - startY;
-  document.querySelector("body").scrollBy(0, -deltaY / 100);
-}
-
-const MonacoEd = ({
-  currTask,
-  monacoRef,
-  editorRef,
-  handleChangeContent,
-  monacoInfo,
-}) => {
-  const theme = useTheme();
-  const { mode } = useColorScheme();
-  const { handleEditorDidMount, value } = useMonaco({
-    monacoRef,
-    editorRef,
-    currTask,
-  });
-
-  useEffect(() => {
-    // console.log("Рендеринг завершен");
-    // const items = document.querySelectorAll(".mtk20");
-    // console.log(items);
-    // items.forEach((item) => {
-    //   item.classList.add("markdown2");
-    //   item.parentElement.parentElement.classList.add("markdown");
-    //   // }
-    // });
-  }, []);
-
-  // editorRef?.current
-  //   ?.getContainerDomNode()
-  //   .addEventListener("touchmove", (e) => touchmove(e));
-  // editorRef?.current
-  //   ?.getContainerDomNode()
-  //   .addEventListener("touchstart", (e) => touchstart(e));
-  // editorRef?.current
-  //   ?.getContainerDomNode()
-  //   .addEventListener("touchend", (e) => touchend(e));
-  // document
-  //   .querySelector("body")
-  //   .addEventListener("touchmove", (e) => touchmove(e));
-  // document
-  //   .querySelector("body")
-  //   .addEventListener("touchstart", (e) => touchstart(e));
-  // document
-  //   .querySelector("body")
-  //   .addEventListener("touchend", (e) => touchend(e));
-
-  return (
-    <>
-      {currTask.info && (
-        <Typography sx={{ textAlign: "center", color: "#618B4E" }}>
-          {currTask.info}
-        </Typography>
-      )}
-      {currTask.maxlineserror && (
-        <Typography sx={{ textAlign: "center", color: "#FF5549" }}>
-          {currTask.maxlineserror}
-        </Typography>
-      )}
-      {/* <StyledEditor> */}
-      <Editor
-        height="50vh"
-        width="100%"
-        theme={"dark"}
-        options={{ ...EditorOptions }}
-        language="python"
-        value={value}
-        onChange={(value, e) =>
-          handleChangeContent({
-            value,
-          })
-        }
-        onMount={(editor, monaco) =>
-          handleEditorDidMount({
-            editor,
-            monaco,
-            darkmode: mode == "dark" ? true : false,
-          })
-        }
-      />
-      {/* </StyledEditor> */}
-    </>
-  );
-};
-
-export default MonacoEd;
+// editorRef?.current
+//   ?.getContainerDomNode()
+//   .addEventListener("touchmove", (e) => touchmove(e));
+// editorRef?.current
+//   ?.getContainerDomNode()
+//   .addEventListener("touchstart", (e) => touchstart(e));
+// editorRef?.current
+//   ?.getContainerDomNode()
+//   .addEventListener("touchend", (e) => touchend(e));
+// document
+//   .querySelector("body")
+//   .addEventListener("touchmove", (e) => touchmove(e));
+// document
+//   .querySelector("body")
+//   .addEventListener("touchstart", (e) => touchstart(e));
+// document
+//   .querySelector("body")
+//   .addEventListener("touchend", (e) => touchend(e));
