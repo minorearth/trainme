@@ -33,48 +33,6 @@ const Navigation = observer(
       updateCurrTask,
     } = actionsTsk;
 
-    const showMessageOnTestInterrupted = () => {
-      const CSP = getCSP();
-      const nodemode = CSP.nodemode;
-      let caption, text;
-      if (
-        nodemode == "renewal" ||
-        nodemode == "addhoc" ||
-        nodemode == "newtopic"
-      ) {
-        caption = "Завершить";
-      }
-
-      if ((nodemode == "newtopic" || nodemode == "addhoc") && !CSP.repeat) {
-        text =
-          "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n2 монеты за каждую задачу вместо 10 монет";
-      }
-
-      if (nodemode == "renewal" && !CSP.repeat) {
-        text =
-          "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n1 монету за каждую задачу вместо 2 монет";
-      }
-
-      if (CSP.repeat) {
-        text = "Завершить прохождение?";
-      }
-
-      if (nodemode == "champ") {
-        caption = "Завершить чемпионат";
-        text = "Завершить участие в чемпионате?";
-      }
-
-      alertdialog.showDialog(
-        caption,
-        text,
-        2,
-        () => {
-          actionsNAV.openCongratPage({ CSP });
-        },
-        () => {}
-      );
-    };
-
     return (
       <Box
         sx={{
@@ -148,17 +106,7 @@ const Navigation = observer(
             Продолжить
           </Button>
         )}
-        {appState.nodemode == "textbook" && (
-          <Button
-            onClick={() => {
-              actionsNAV.openFlowPageAfterAccomplished();
-            }}
-            variant="outlined"
-            disabled={appState.taskId >= tests.length - 1}
-          >
-            Выйти
-          </Button>
-        )}
+
         {countdownbutton.state.visible && (
           <CountdownButton
             onClick={() => {
@@ -169,16 +117,18 @@ const Navigation = observer(
           />
         )}
 
-        {appState.nodemode != "textbook" && (
-          <Button
-            onClick={() => {
-              showMessageOnTestInterrupted();
-            }}
-            variant="outlined"
-          >
-            Завершить
-          </Button>
-        )}
+        {/* <Button
+          onClick={() => {
+            appState.nodemode != "textbook" &&
+              actionsNAV.openCongratPageInterrupted();
+            appState.nodemode == "textbook" &&
+              actionsNAV.openFlowPageAfterAccomplished();
+          }}
+          variant="outlined"
+        >
+          Выйти
+        </Button> */}
+
         {stn.mode.DEV_MODE && (
           <Button
             onClick={() => {

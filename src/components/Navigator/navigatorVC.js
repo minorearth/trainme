@@ -381,6 +381,48 @@ const useNavigator = () => {
     });
   };
 
+  const openCongratPageInterrupted = () => {
+    const CSP = getCSP();
+    const nodemode = CSP.nodemode;
+    let caption, text;
+    if (
+      nodemode == "renewal" ||
+      nodemode == "addhoc" ||
+      nodemode == "newtopic"
+    ) {
+      caption = "Завершить";
+    }
+
+    if ((nodemode == "newtopic" || nodemode == "addhoc") && !CSP.repeat) {
+      text =
+        "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n2 монеты за каждую задачу вместо 10 монет";
+    }
+
+    if (nodemode == "renewal" && !CSP.repeat) {
+      text =
+        "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n1 монету за каждую задачу вместо 2 монет";
+    }
+
+    if (CSP.repeat) {
+      text = "Завершить прохождение?";
+    }
+
+    if (nodemode == "champ") {
+      caption = "Завершить чемпионат";
+      text = "Завершить участие в чемпионате?";
+    }
+
+    alertdialog.showDialog(
+      caption,
+      text,
+      2,
+      () => {
+        openCongratPage({ CSP });
+      },
+      () => {}
+    );
+  };
+
   const openTutorial = () => {
     tutorial.show();
   };
@@ -581,6 +623,7 @@ const useNavigator = () => {
       openChampPage,
       openAllCoursePage,
       openCongratPage,
+      openCongratPageInterrupted,
       openAndRefreshFlowPage,
       openRecapTasksPage,
       openSpecChampPage,

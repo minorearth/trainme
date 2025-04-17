@@ -75,6 +75,17 @@ const MonacoEd = ({
     currTask,
   });
 
+  useEffect(() => {
+    // console.log("Рендеринг завершен");
+    // const items = document.querySelectorAll(".mtk20");
+    // console.log(items);
+    // items.forEach((item) => {
+    //   item.classList.add("markdown2");
+    //   item.parentElement.parentElement.classList.add("markdown");
+    //   // }
+    // });
+  }, []);
+
   // editorRef?.current
   //   ?.getContainerDomNode()
   //   .addEventListener("touchmove", (e) => touchmove(e));
@@ -126,9 +137,6 @@ const MonacoEd = ({
             darkmode: mode == "dark" ? true : false,
           })
         }
-        onValidate={() => {
-          console.log("validate");
-        }}
       />
       {/* </StyledEditor> */}
     </>

@@ -8,6 +8,8 @@ import Typography from "@mui/material/Typography";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButtonNoRipple";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
+import { Tooltip } from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
 
 const TopPanel = ({ tests, appState, monacoRef, actionsNAV }) => {
   const theme = useTheme();
@@ -34,20 +36,39 @@ const TopPanel = ({ tests, appState, monacoRef, actionsNAV }) => {
       </Typography>
 
       <IconButtonNoRipple>
-        <LightbulbIcon
-          sx={{ fontSize: "40px", marginLeft: "25px", marginRight: "15px" }}
-          onClick={() => {
-            actionsNAV.openTutorial();
-          }}
-        />
+        <Tooltip title={"Как проходить курс"}>
+          <LightbulbIcon
+            sx={{ fontSize: "40px", marginLeft: "25px", marginRight: "15px" }}
+            onClick={() => {
+              actionsNAV.openTutorial();
+            }}
+          />
+        </Tooltip>
       </IconButtonNoRipple>
+
       <IconButtonNoRipple>
-        <SupportAgentIcon
-          sx={{ fontSize: "40px", marginRight: "15px" }}
-          onClick={() => {
-            actionsNAV.openSupportPage();
-          }}
-        />
+        <Tooltip title={"Задать вопрос"}>
+          <SupportAgentIcon
+            sx={{ fontSize: "40px", marginRight: "15px" }}
+            onClick={() => {
+              actionsNAV.openSupportPage();
+            }}
+          />
+        </Tooltip>
+      </IconButtonNoRipple>
+
+      <IconButtonNoRipple>
+        <Tooltip title={"Заверить прохождение"}>
+          <HomeIcon
+            sx={{ fontSize: "40px", marginRight: "15px" }}
+            onClick={() => {
+              appState.nodemode != "textbook" &&
+                actionsNAV.openCongratPageInterrupted();
+              appState.nodemode == "textbook" &&
+                actionsNAV.openFlowPageAfterAccomplished();
+            }}
+          />
+        </Tooltip>
       </IconButtonNoRipple>
 
       <DLSwitch monacoRef={monacoRef} />

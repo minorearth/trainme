@@ -53,25 +53,6 @@ const FloatMenu = ({ page, actionsNAV }) => {
           position={{ top: TOP, right: RIGHT + 2 * stn.ui.FLOAT_BTN_PADDING }}
         />
       )}
-
-      {/* {mode != "search" && state.qrVisible && (
-        <FabAnimated
-          tooltip={local.ru.tooltip.FAB_COPY_TO_CLIPBOARD}
-          icon="copyClipboard"
-          visible={true}
-          action={actions.copyCB}
-          position={{ top: TOP, right: RIGHT + stn.ui.FLOAT_BTN_PADDING }}
-        />
-      )}
-      {mode != "search" && state.qrVisible && (
-        <FabAnimated
-          tooltip={local.ru.tooltip.FAB_PREVIEW_DROP_FORM}
-          icon="openDropWindow"
-          visible={true}
-          action={actions.openDropWindow}
-          position={{ top: TOP, right: RIGHT + 2 * stn.ui.FLOAT_BTN_PADDING }}
-        />
-      )} */}
     </Box>
   );
 };

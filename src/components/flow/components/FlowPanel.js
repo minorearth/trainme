@@ -6,21 +6,18 @@ import { Panel } from "@xyflow/react";
 import { Box } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { useTheme } from "@mui/material/styles";
 
 import "@xyflow/react/dist/base.css";
 import { BiCoinStack } from "react-icons/bi";
-import { RiLogoutCircleRLine } from "react-icons/ri";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
-import Fab from "@mui/material/Fab";
-import Animation from "@/components/common/animation/Animation";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
 import HomeIcon from "@mui/icons-material/Home";
-import IconButton from "@mui/material/IconButton";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButtonNoRipple";
+import { Tooltip } from "@mui/material";
 
+const ICON_SIZE = "60px";
 const FlowPanel = ({ appState, actionsNAV }) => {
   return (
     <Panel position="top-left" style={{ width: "97%" }}>
@@ -37,22 +34,15 @@ const FlowPanel = ({ appState, actionsNAV }) => {
         }}
       >
         <IconButtonNoRipple>
-          <HomeIcon
-            sx={{ fontSize: "60px" }}
-            onClick={() => {
-              actionsNAV.openAllCoursePage();
-            }}
-          />
+          <Tooltip title={"Вернуться на главную"}>
+            <HomeIcon
+              sx={{ fontSize: ICON_SIZE }}
+              onClick={() => {
+                actionsNAV.openAllCoursePage();
+              }}
+            />
+          </Tooltip>
         </IconButtonNoRipple>
-
-        {/* <Animation
-          height={"60px"}
-          width={"60px"}
-          name={"home"}
-          onClick={() => {
-            actionsNAV.openAllCoursePage();
-          }}
-        /> */}
 
         <Box
           sx={{
@@ -62,23 +52,65 @@ const FlowPanel = ({ appState, actionsNAV }) => {
             alignItems: "center",
           }}
         >
-          <BiCoinStack size={"60px"} />
+          <BiCoinStack size={ICON_SIZE} />
           <Typography variant="h4">{appState.userProgress.rating}</Typography>
         </Box>
 
         <IconButtonNoRipple>
-          <ImportContactsOutlinedIcon
-            sx={{ fontSize: "60px" }}
-            onClick={async () => {
-              actionsNAV.openTestsStartedPage({
-                nodemode: "textbook",
-                courseid: appState.launchedCourse,
-              });
-            }}
-          />
+          <Tooltip title={"Учебник"}>
+            <ImportContactsOutlinedIcon
+              sx={{ fontSize: ICON_SIZE }}
+              onClick={async () => {
+                actionsNAV.openTestsStartedPage({
+                  nodemode: "textbook",
+                  courseid: appState.launchedCourse,
+                });
+              }}
+            />
+          </Tooltip>
         </IconButtonNoRipple>
 
-        {/* <Animation
+        <IconButtonNoRipple>
+          <Tooltip title={"Поддержка"}>
+            <SupportAgentIcon
+              sx={{ fontSize: ICON_SIZE }}
+              onClick={() => {
+                actionsNAV.openSupportPage();
+              }}
+            />
+          </Tooltip>
+        </IconButtonNoRipple>
+        <IconButtonNoRipple>
+          <Tooltip title={"Как проходить курс"}>
+            <LightbulbIcon
+              sx={{ fontSize: ICON_SIZE }}
+              onClick={() => {
+                actionsNAV.openTutorial();
+              }}
+            />
+          </Tooltip>
+        </IconButtonNoRipple>
+        <DLSwitch />
+      </Paper>
+    </Panel>
+  );
+};
+
+export default FlowPanel;
+
+{
+  /* <Animation
+          height={"60px"}
+          width={"60px"}
+          name={"home"}
+          onClick={() => {
+            actionsNAV.openAllCoursePage();
+          }}
+        /> */
+}
+
+{
+  /* <Animation
           id="textbook"
           height={"60px"}
           width={"60px"}
@@ -89,28 +121,5 @@ const FlowPanel = ({ appState, actionsNAV }) => {
               courseid: appState.launchedCourse,
             });
           }}
-        /> */}
-
-        <IconButtonNoRipple>
-          <SupportAgentIcon
-            sx={{ fontSize: "60px" }}
-            onClick={() => {
-              actionsNAV.openSupportPage();
-            }}
-          />
-        </IconButtonNoRipple>
-        <IconButtonNoRipple>
-          <LightbulbIcon
-            sx={{ fontSize: "60px" }}
-            onClick={() => {
-              actionsNAV.openTutorial();
-            }}
-          />
-        </IconButtonNoRipple>
-        <DLSwitch />
-      </Paper>
-    </Panel>
-  );
-};
-
-export default FlowPanel;
+        /> */
+}

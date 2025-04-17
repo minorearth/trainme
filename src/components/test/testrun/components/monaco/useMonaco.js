@@ -17,10 +17,21 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
 
     setValue(currTask.code);
 
+    // currTask.tasktype == "guide"
+    //   ? editorRef.current.updateOptions({ lineNumbers: "off" })
+    //   : editorRef.current.updateOptions({ lineNumbers: "on" });
+  }, [currTask, mounted]);
+
+  useEffect(() => {
+    console.log("sdsds");
+    console.log(editorRef.current);
+    if (!editorRef.current) {
+      return;
+    }
     currTask.tasktype == "guide"
       ? editorRef.current.updateOptions({ lineNumbers: "off" })
       : editorRef.current.updateOptions({ lineNumbers: "on" });
-  }, [currTask, mounted]);
+  }, [mounted, currTask?.taskuuid]);
 
   // const editorDisabled = useRef({ disabled: false });
   const zu = useCallback((event) => {
@@ -51,7 +62,8 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
   function handleEditorDidMount({ editor, monaco, darkmode }) {
     monacoRef.current = monaco;
     editorRef.current = editor;
-    setMounted(true);
+    console.log("rerendered");
+    setMounted((state) => !state);
     monaco.editor.defineTheme("dark", {
       base: "vs-dark",
       inherit: true,
