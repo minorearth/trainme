@@ -8,17 +8,7 @@ await initAdmin();
 
 const admin = "EoufdeogIZN2e02o7MulUGhnscR2";
 
-export const payChapter = async (data) => {
-  const firestore = getFirestore();
-  const { pts, id, uid, lastunlocked, launchedCourse } = decrypt2(data);
-  const userMetaRef = firestore.collection("usermeta").doc(uid);
-  userMetaRef.update({
-    [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
-    [`courses.${launchedCourse}.lastunlocked`]: [lastunlocked],
-    [`courses.${launchedCourse}.paid`]: FieldValue.arrayUnion(id),
-  });
-};
-
+//ADMIN ACTIONS
 export const resetUseMetaData = async (lastunlocked, launchedCourse, uid) => {
   const firestore = getFirestore();
   const userMetaRef = firestore.collection("usermeta").doc(uid);
@@ -33,7 +23,6 @@ export const resetUseMetaData = async (lastunlocked, launchedCourse, uid) => {
     },
   });
 };
-
 export const getMoney = async (launchedCourse, uid) => {
   const firestore = getFirestore();
   const userMetaRef = firestore.collection("usermeta").doc(uid);
@@ -48,7 +37,6 @@ export const setMoney = async (launchedCourse, uid, money) => {
     [`courses.${launchedCourse}.rating`]: Number(money),
   });
 };
-
 export const unlockAndCompleteAll = async (
   unlocked,
   lastunlocked,
@@ -64,7 +52,6 @@ export const unlockAndCompleteAll = async (
     [`courses.${launchedCourse}.paid`]: unlocked,
   });
 };
-
 export const unlockAll = async (
   unlocked,
   lastunlocked,
@@ -77,6 +64,18 @@ export const unlockAll = async (
     [`courses.${launchedCourse}.completed`]: [],
     [`courses.${launchedCourse}.unlocked`]: unlocked,
     [`courses.${launchedCourse}.lastunlocked`]: [lastunlocked],
+  });
+};
+
+//USER ACTIONS
+export const payChapter = async (data) => {
+  const firestore = getFirestore();
+  const { pts, id, uid, lastunlocked, launchedCourse } = decrypt2(data);
+  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  userMetaRef.update({
+    [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
+    [`courses.${launchedCourse}.lastunlocked`]: [lastunlocked],
+    [`courses.${launchedCourse}.paid`]: FieldValue.arrayUnion(id),
   });
 };
 
@@ -104,38 +103,6 @@ const prepareTaskLog = (launchedCourse, lastcompleted, tasklog) => {
   return res;
 };
 
-export const updateDataWithRetry = async (action, retries = 3) => {
-  try {
-    await action();
-    return "ok";
-  } catch (error) {
-    return error.message;
-  }
-  //   console.log("Данные успешно обновлены");
-  //   return;
-  // } catch (error) {
-  //   console.error("Ошибка при обновлении данных:", error);
-  //   if (error.code === "NETWORK_ERROR" || error.message.includes("network")) {
-  //     return "NETWORK_ERROR";
-  //   } else {
-  //     return "SOME_ERROR";
-  //     // throw error;
-  //   }
-  // }
-};
-
-function firestoreWithTimeout(promise, timeout) {
-  return Promise.race([
-    promise,
-    new Promise((_, reject) =>
-      setTimeout(
-        () => reject(new Error("Запрос превысил время ожидания")),
-        timeout
-      )
-    ),
-  ]);
-}
-
 export const setUseMetaData = async (data) => {
   const firestore = getFirestore();
   const {
@@ -148,7 +115,6 @@ export const setUseMetaData = async (data) => {
     tasklog,
     sum,
   } = data;
-  console.log("here");
 
   // = decrypt2(data);
   // try {
@@ -161,10 +127,8 @@ export const setUseMetaData = async (data) => {
   //   return "error";
   // }
   const userMetaRef = firestore.collection("usermeta").doc(uid);
-  console.log("here2");
   if (unlocked.length != 0) {
     try {
-      // await firestoreWithTimeout(
       await userMetaRef.update({
         [`courses.${launchedCourse}.rating`]: pts,
         [`courses.${launchedCourse}.unlocked`]: allunlocked,
@@ -172,28 +136,20 @@ export const setUseMetaData = async (data) => {
         [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
         // ...tasklogPrepared,
       });
-      //   50000
-      // );
 
       return "ok";
     } catch (error) {
       return error.message;
     }
   } else {
-    console.log("here4");
     try {
-      console.log("here5");
-      // await firestoreWithTimeout(
       await userMetaRef.update({
         [`courses.${launchedCourse}.rating`]: pts,
         [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
         // ...tasklogPrepared,
       });
-      //   5000
-      // );
       return "ok2";
     } catch (e) {
-      console.log("here6");
       return "fuckng error";
     }
   }
@@ -211,33 +167,28 @@ export const setUseMetaDataIncrement = async (data) => {
   );
   const userMetaRef = firestore.collection("usermeta").doc(uid);
   if (unlocked.length != 0) {
-    return updateDataWithRetry(
-      async () =>
-        await userMetaRef.update({
-          [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
-          [`courses.${launchedCourse}.completed`]:
-            //TODO: lastcompleted is not needed?
-            FieldValue.arrayUnion(lastcompleted),
-          [`courses.${launchedCourse}.unlocked`]: FieldValue.arrayUnion(
-            ...unlocked
-          ),
-          [`courses.${launchedCourse}.lastunlocked`]: unlocked,
-          [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]:
-            FieldValue.increment(pts),
-          ...tasklogPrepared,
-        })
-    );
+    await userMetaRef.update({
+      [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
+      [`courses.${launchedCourse}.completed`]:
+        //TODO: lastcompleted is not needed?
+        FieldValue.arrayUnion(lastcompleted),
+      [`courses.${launchedCourse}.unlocked`]: FieldValue.arrayUnion(
+        ...unlocked
+      ),
+      [`courses.${launchedCourse}.lastunlocked`]: unlocked,
+      [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]:
+        FieldValue.increment(pts),
+      ...tasklogPrepared,
+    });
   } else {
-    return updateDataWithRetry(async () =>
-      userMetaRef.update({
-        [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
-        // [`courses.${launchedCourse}.completed`]:
-        //   FieldValue.arrayUnion(lastcompleted),
-        [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]:
-          FieldValue.increment(pts),
-        ...tasklogPrepared,
-      })
-    );
+    userMetaRef.update({
+      [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
+      // [`courses.${launchedCourse}.completed`]:
+      //   FieldValue.arrayUnion(lastcompleted),
+      [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]:
+        FieldValue.increment(pts),
+      ...tasklogPrepared,
+    });
   }
 };
 

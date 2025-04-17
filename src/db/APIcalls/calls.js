@@ -1,4 +1,4 @@
-export const setUseMetaDataFetch = async (data) => {
+export const setDataFetch = async (data) => {
   try {
     const response = await fetch("/api/setmeta", {
       method: "POST",
@@ -12,14 +12,13 @@ export const setUseMetaDataFetch = async (data) => {
       throw new Error("Network response was not ok");
     }
 
-    const result = await response.json();
-    console.log(result.message);
+    await response.json();
   } catch (error) {
     console.error("Error:", error);
   }
 };
 
-export const getUseMetaDataFetch = async (data) => {
+export const getDataFetch = async (data) => {
   try {
     const response = await fetch("/api/getmeta", {
       method: "POST",

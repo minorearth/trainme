@@ -22,7 +22,6 @@ import {
   checkCoursePaid,
   setUseMetaUnlockedAndCompleted,
 } from "@/db/SA/firebaseSA";
-import { updateDataWithRetry, updateDataWithTimeout } from "@/db/networkstable";
 import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
 import { setUseMetaData } from "@/db/SA/firebaseSA";
 import { getTargetsBySource } from "./utils";
@@ -32,7 +31,7 @@ import dialog from "@/components/common/dialog/store";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import { useRouter } from "next/navigation";
 import { set } from "mobx";
-import { setUseMetaDataFetch, getUseMetaDataFetch } from "@/db/APIcalls/calls";
+import { setDataFetch, getDataFetch } from "@/db/APIcalls/calls";
 
 const useNavigator = () => {
   const [loading, setLoading] = useState(true);
@@ -115,7 +114,10 @@ const useNavigator = () => {
   //STATE MANAGEMENT
   const fetchUserMetaAndPersist = async (launchedCourse) => {
     const CSP = getCSP();
-    const allUserMeta = await getUseMetaDataFetch({ uid: user.userid });
+    const allUserMeta = await getDataFetch({
+      data: { uid: user.userid },
+      type: "usermetadata",
+    });
     console.log("allUserMeta", allUserMeta);
     //TODO:keep only keys needed
     const userProgress = getUserDataNeeeded(
@@ -149,46 +151,29 @@ const useNavigator = () => {
 
   const saveProgress = async () => {
     const CSP = getCSP();
-    console.log("z nen");
-
     if (
       CSP.nodemode == "addhoc" ||
       CSP.nodemode == "newtopic" ||
       CSP.nodemode == "renewal"
     ) {
       try {
-        // await updateDataWithRetry(async () => {
         progressStore.setShowProgress(true);
-        // await updateDataWithTimeout(
-        //   async () =>
-        // console.log(
-        //   CSP.chapter,
-        //   CSP.tobeunlocked,
-        //   [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],
-        //   CSP.userProgress.rating + CSP.pts,
-        //   user.userid,
-        //   CSP.tasklog,
-        //   CSP.launchedCourse,
-        //   (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts
-        // );
-        await setUseMetaDataFetch({
-          lastcompleted: CSP.chapter,
-          unlocked: CSP.tobeunlocked,
-          allunlocked: [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],
-          pts: CSP.userProgress.rating + CSP.pts,
-          uid: user.userid,
-          tasklog: CSP.tasklog,
-          launchedCourse: CSP.launchedCourse,
-          sum: (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts,
+        await setDataFetch({
+          type: "usermetadata",
+          data: {
+            lastcompleted: CSP.chapter,
+            unlocked: CSP.tobeunlocked,
+            allunlocked: [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],
+            pts: CSP.userProgress.rating + CSP.pts,
+            uid: user.userid,
+            tasklog: CSP.tasklog,
+            launchedCourse: CSP.launchedCourse,
+            sum: (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts,
+          },
         });
-
-        // {
-
-        //   }
 
         // const b = await setUseMetaData(
         //   // encrypt2(
-
         //   {
         //     lastcompleted: CSP.chapter,
         //     unlocked: CSP.tobeunlocked,
@@ -206,7 +191,6 @@ const useNavigator = () => {
         // });
         alertdialog.hideDialog();
         openFlowPageAfterAccomplished();
-
         progressStore.setCloseProgress();
       } catch (e) {
         console.log(e);
@@ -486,14 +470,15 @@ const useNavigator = () => {
     tobeunlocked,
   }) => {
     //TODO: proactively open chapters. Remade
-    await setUseMetaUnlockedAndCompleted(
-      encrypt2({
+    await setDataFetch({
+      type: "unlockandcomplete",
+      data: encrypt2({
         lastcompleted: chapter,
         unlocked: tobeunlocked,
         uid: user.userid,
         launchedCourse: courseid,
-      })
-    );
+      }),
+    });
 
     updateStateAndCSP({
       chapter,
@@ -523,30 +508,43 @@ const useNavigator = () => {
     remainsum,
     tobeunlocked,
   }) => {
-    const { tasksuuids, tasksFetched } = await getRandomTasksForRepeat({
-      chapter,
-      courseid,
-      levelStart: level - 5,
-      levelEnd: level,
-    });
-    updateStateAndCSP({
-      chapter,
-      page: "testsStarted",
-      taskId: 0,
-      recapTasksIds: [],
-      taskstage: "WIP",
-      repeat,
-      overflow,
-      nodemode,
-      level,
-      remainsum,
-      tobeunlocked,
-      pts: 0,
-      tasklog: {},
-      randomsaved: tasksuuids,
-    });
+    try {
+      const { tasksuuids, tasksFetched } = await getRandomTasksForRepeat({
+        chapter,
+        courseid,
+        levelStart: level - 5,
+        levelEnd: level,
+      });
+      //TODO: proactively open chapters. Remade
+      await setUseMetaUnlockedAndCompleted(
+        encrypt2({
+          lastcompleted: chapter,
+          unlocked: tobeunlocked,
+          uid: user.userid,
+          launchedCourse: courseid,
+        })
+      );
+      updateStateAndCSP({
+        chapter,
+        page: "testsStarted",
+        taskId: 0,
+        recapTasksIds: [],
+        taskstage: "WIP",
+        repeat,
+        overflow,
+        nodemode,
+        level,
+        remainsum,
+        tobeunlocked,
+        pts: 0,
+        tasklog: {},
+        randomsaved: tasksuuids,
+      });
 
-    setTests(tasksFetched);
+      setTests(tasksFetched);
+    } catch (e) {
+      console.error("some error");
+    }
   };
 
   const setChampTasks = async ({ champid }) => {

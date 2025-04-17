@@ -237,6 +237,7 @@ export const getTextBook = async (CSP, courseid) => {
 };
 
 const getRandomTasks = (allTasks, levelStart, levelEnd, num) => {
+  console.log("leeveel", levelStart, levelEnd);
   const scope = allTasks.filter(
     (task) => task.level <= levelEnd && task.level >= levelStart
   );

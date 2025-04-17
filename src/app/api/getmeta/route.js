@@ -15,9 +15,12 @@ import { getUseMetaData } from "@/db/SA/firebaseSA";
 
 export async function POST(request) {
   try {
-    const data = await request.json();
-    console.log("Received data:", data);
-    const res = await getUseMetaData(data);
+    const reqData = await request.json();
+    const { type, data } = reqData;
+    let res;
+    if (type == "usermetadata") {
+      res = await getUseMetaData(data);
+    }
 
     return NextResponse.json(res);
   } catch (error) {
