@@ -6,8 +6,6 @@ import { encrypt2, decrypt2 } from "./encryption";
 
 await initAdmin();
 
-const admin = "EoufdeogIZN2e02o7MulUGhnscR2";
-
 //ADMIN ACTIONS
 export const resetUseMetaData = async (lastunlocked, launchedCourse, uid) => {
   const firestore = getFirestore();
@@ -68,6 +66,8 @@ export const unlockAll = async (
 };
 
 //USER ACTIONS
+
+// TODO:remade
 export const payChapter = async (data) => {
   const firestore = getFirestore();
   const { pts, id, uid, lastunlocked, launchedCourse } = decrypt2(data);
@@ -86,21 +86,14 @@ export const getUseMetaData = async ({ uid }) => {
   return snapshot.data();
 };
 
-export const checkCoursePaid = async (courseid, uid) => {
+export const checkCoursePaid = async (data) => {
   const firestore = getFirestore();
+  const { courseid, uid } = data;
+  console.log(courseid, uid, data);
   const userMetaRef = firestore.collection("usermeta").doc(uid);
   const snapshot = await userMetaRef.get();
   const profile = snapshot.data();
   return profile.paidcourses.includes(courseid);
-};
-
-const prepareTaskLog = (launchedCourse, lastcompleted, tasklog) => {
-  let res = {};
-  const dest = `courses.${launchedCourse}.stat.${lastcompleted}`;
-  Object.keys(tasklog).forEach(
-    (taskuuid) => (res[`${dest}.${taskuuid}`] = tasklog[taskuuid])
-  );
-  return res;
 };
 
 export const setUseMetaData = async (data) => {
@@ -155,7 +148,39 @@ export const setUseMetaData = async (data) => {
   }
 };
 
-//legacy due to network cache
+// TODO:remade
+export const setUseMetaUnlockedAndCompleted = async (data) => {
+  const firestore = getFirestore();
+  const { uid, lastcompleted, unlocked, launchedCourse } = decrypt2(data);
+  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  if (unlocked.length != 0) {
+    userMetaRef.update({
+      [`courses.${launchedCourse}.completed`]:
+        FieldValue.arrayUnion(lastcompleted),
+      [`courses.${launchedCourse}.unlocked`]: FieldValue.arrayUnion(
+        ...unlocked
+      ),
+      [`courses.${launchedCourse}.lastunlocked`]: unlocked,
+    });
+  } else {
+    userMetaRef.update({
+      [`courses.${launchedCourse}.completed`]:
+        FieldValue.arrayUnion(lastcompleted),
+    });
+  }
+};
+
+//UTILITIES
+const prepareTaskLog = (launchedCourse, lastcompleted, tasklog) => {
+  let res = {};
+  const dest = `courses.${launchedCourse}.stat.${lastcompleted}`;
+  Object.keys(tasklog).forEach(
+    (taskuuid) => (res[`${dest}.${taskuuid}`] = tasklog[taskuuid])
+  );
+  return res;
+};
+
+//LEGACY due to network cache
 export const setUseMetaDataIncrement = async (data) => {
   const firestore = getFirestore();
   const { uid, pts, lastcompleted, unlocked, launchedCourse, tasklog } =
@@ -188,27 +213,6 @@ export const setUseMetaDataIncrement = async (data) => {
       [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]:
         FieldValue.increment(pts),
       ...tasklogPrepared,
-    });
-  }
-};
-
-export const setUseMetaUnlockedAndCompleted = async (data) => {
-  const firestore = getFirestore();
-  const { uid, lastcompleted, unlocked, launchedCourse } = decrypt2(data);
-  const userMetaRef = firestore.collection("usermeta").doc(uid);
-  if (unlocked.length != 0) {
-    userMetaRef.update({
-      [`courses.${launchedCourse}.completed`]:
-        FieldValue.arrayUnion(lastcompleted),
-      [`courses.${launchedCourse}.unlocked`]: FieldValue.arrayUnion(
-        ...unlocked
-      ),
-      [`courses.${launchedCourse}.lastunlocked`]: unlocked,
-    });
-  } else {
-    userMetaRef.update({
-      [`courses.${launchedCourse}.completed`]:
-        FieldValue.arrayUnion(lastcompleted),
     });
   }
 };

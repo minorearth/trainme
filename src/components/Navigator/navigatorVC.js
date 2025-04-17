@@ -58,7 +58,10 @@ const useNavigator = () => {
     const CSP = getCSP();
     const page = CSP?.page || "courses";
     if (page == "flow") {
-      const coursePaid = await checkCoursePaid(CSP.launchedCourse, user.userid);
+      const coursePaid = await getDataFetch({
+        type: "checkcoursepaid",
+        data: { courseid: CSP.launchedCourse, uid: user.userid },
+      });
       if (coursePaid) {
         openAndRefreshFlowPage(CSP.launchedCourse);
       } else {
@@ -116,7 +119,7 @@ const useNavigator = () => {
     const CSP = getCSP();
     const allUserMeta = await getDataFetch({
       data: { uid: user.userid },
-      type: "usermetadata",
+      type: "getusermetadata",
     });
     console.log("allUserMeta", allUserMeta);
     //TODO:keep only keys needed
@@ -159,7 +162,7 @@ const useNavigator = () => {
       try {
         progressStore.setShowProgress(true);
         await setDataFetch({
-          type: "usermetadata",
+          type: "setusermetadata",
           data: {
             lastcompleted: CSP.chapter,
             unlocked: CSP.tobeunlocked,
@@ -227,7 +230,11 @@ const useNavigator = () => {
   const openCourseFlowPageFromMain = async (launchedCourse) => {
     progressStore.setShowProgress(true, false, "progressdots", 2000);
 
-    const coursePaid = await checkCoursePaid(launchedCourse, user.userid);
+    const coursePaid = await getDataFetch({
+      type: "checkcoursepaid",
+      data: { courseid: launchedCourse, uid: user.userid },
+    });
+
     if (
       !coursePaid ||
       launchedCourse == "a3905595-437e-47f3-b749-28ea5362bd39"

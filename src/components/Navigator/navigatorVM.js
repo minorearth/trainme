@@ -14,6 +14,7 @@ import { courses } from "@/globals/courses";
 import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
 import { setCSP, getCSP } from "@/db/localstorage";
 import { getTargetsBySource } from "./utils";
+import { getDataFetch, setDataFetch } from "@/db/APIcalls/calls";
 
 const nodeAction = (data) => {
   const {
@@ -61,15 +62,16 @@ const nodeAction = (data) => {
       2,
       async () => {
         progressCircle.setShowProgress(true);
-        await payChapter(
-          encrypt2({
+        await setDataFetch({
+          type: "paychapter",
+          data: encrypt2({
             pts: -unlockpts,
             id,
             uid,
             lastunlocked: id,
             launchedCourse: courseid,
-          })
-        );
+          }),
+        });
         data.paid = true;
         await openAndRefreshFlowPage(courseid);
         progressCircle.setCloseProgress();

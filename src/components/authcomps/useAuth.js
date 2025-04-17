@@ -36,7 +36,7 @@ export const useAuth = () => {
     const uid = await signInClient(email, password);
     const allUserMeta = await getDataFetch({
       data: { uid },
-      type: "usermetadata",
+      type: "getusermetadata",
     });
 
     if (uid == "notVerified") {
