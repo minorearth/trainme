@@ -14,6 +14,8 @@ export const Panel = ({ children, label }) => {
         width: "100%",
         // marginBottom: "10px",
         padding: "10px",
+        paddingLeft: "20px",
+        paddingRight: "40px",
         // border: "1px  #ddd",
         border: `1px solid  ${theme.palette.divider}`,
         borderRadius: "3px",

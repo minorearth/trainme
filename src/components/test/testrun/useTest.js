@@ -266,19 +266,25 @@ const useTest = ({
   };
 
   const setRightCode = (id) => {
-    const test = tests[id];
-    setCurrTask((state) => ({
-      ...state,
-      code: test.rightcode,
-    }));
+    editorRef.current.setValue(tests[appState.taskId].rightcode);
+
+    //controlled version  do not remove
+    // const test = tests[id];
+    // setCurrTask((state) => ({
+    //   ...state,
+    //   code: test.rightcode,
+    // }));
   };
 
   const setForbiddenCode = (id) => {
-    const test = tests[id];
-    setCurrTask((state) => ({
-      ...state,
-      code: test.forbiddencode,
-    }));
+    editorRef.current.setValue(tests[appState.taskId].forbiddencode);
+    //controlled version  do not remove
+
+    // const test = tests[id];
+    // setCurrTask((state) => ({
+    //   ...state,
+    //   code: test.forbiddencode,
+    // }));
   };
 
   const refreshInput = () => {
@@ -286,6 +292,12 @@ const useTest = ({
     const input = test.defaultinput.join("\n");
     currTask.input = input;
     setCurrTask((state) => ({ ...state, input }));
+  };
+
+  const refreshEditor = () => {
+    // both are worked
+    editorRef.current.setValue(tests[appState.taskId].defaultcode);
+    // editorRef.current.getModel().setValue(tests[appState.taskId].defaultcode);
   };
 
   //UTILIIES
@@ -341,6 +353,7 @@ const useTest = ({
       nextTask,
       prevTaskNoPts,
       refreshInput,
+      refreshEditor,
       updateCurrTask,
       errorCountDownPressed,
       updateCurrTask,

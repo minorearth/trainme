@@ -53,7 +53,7 @@ const TaskAndCodePanel = (props) => {
     runPythonCode,
     monacoInfo,
   } = props;
-  const { handleChangeContent } = actionsTsk;
+  const { handleChangeContent, refreshEditor } = actionsTsk;
   return (
     <Grid
       container
@@ -84,6 +84,7 @@ const TaskAndCodePanel = (props) => {
             editorRef={editorRef}
             handleChangeContent={handleChangeContent}
             monacoInfo={monacoInfo}
+            refreshEditor={refreshEditor}
           />
           <Navigation
             checkTask={checkTask}

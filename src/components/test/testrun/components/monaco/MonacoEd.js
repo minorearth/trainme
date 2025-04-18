@@ -11,6 +11,8 @@ import Typography from "@mui/material/Typography";
 import "./MonacoEditor.css";
 import "./custom.css";
 import { Button } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import CachedIcon from "@mui/icons-material/Cached";
 
 var startX, startY;
 
@@ -36,6 +38,7 @@ const MonacoEd = ({
   editorRef,
   handleChangeContent,
   monacoInfo,
+  refreshEditor,
 }) => {
   const theme = useTheme();
   const { mode } = useColorScheme();
@@ -68,6 +71,22 @@ const MonacoEd = ({
           {currTask.maxlineserror}
         </Typography>
       )}
+      <IconButton
+        aria-label="toggle password visibility"
+        onClick={() => {
+          refreshEditor();
+        }}
+        sx={{
+          position: "absolute",
+          right: "10px",
+          top: "-5px",
+          zIndex: 100,
+        }}
+        edge="end"
+        size="small"
+      >
+        <CachedIcon />
+      </IconButton>
       {/* <Button onClick={() => undo()}>undo</Button>
       <Button onClick={() => redo()}>redo</Button> */}
 
@@ -77,7 +96,7 @@ const MonacoEd = ({
         theme={"dark"}
         options={{ ...EditorOptions }}
         language="python"
-        value={value}
+        // value={value}
         onChange={(value, e) =>
           handleChangeContent({
             value,

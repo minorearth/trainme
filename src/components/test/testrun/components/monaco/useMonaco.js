@@ -14,13 +14,15 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
     if (!mounted || !currTask) {
       return;
     }
-    setValue(currTask.code);
+    // setValue(currTask.code);
   }, [currTask, mounted]);
 
   useEffect(() => {
+    console.log("sdds");
     if (!editorRef.current) {
       return;
     }
+    editorRef.current.getModel().setValue(currTask.code);
 
     currTask.tasktype == "guide"
       ? editorRef.current.updateOptions({ lineNumbers: "off" })
@@ -75,6 +77,32 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
       },
       true
     );
+
+    const handleTouchMove = (event) => {
+      const model = editor.getModel();
+      if (!model) return;
+      const scrollTop = editor.getScrollTop();
+      const scrollHeight = editor.getScrollHeight();
+      const lastLineHeight = editor.getOption(
+        monaco.editor.EditorOption.lineHeight
+      );
+      const deltaY =
+        event.touches[0].clientY -
+        (editor.getDomNode().getBoundingClientRect().top + scrollTop);
+      if (scrollTop + deltaY >= scrollHeight - lastLineHeight) {
+        event.preventDefault();
+        window.scrollBy(0, deltaY);
+      } else {
+        event.preventDefault();
+      }
+    };
+
+    const editorElement = editor.getDomNode();
+    if (editorElement) {
+      editorElement.addEventListener("touchmove", handleTouchMove, {
+        passive: false,
+      });
+    }
   }
 
   function setTheme(darkmode) {

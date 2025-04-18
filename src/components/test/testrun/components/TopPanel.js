@@ -10,69 +10,105 @@ import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButto
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import { Tooltip } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
+import Grid from "@mui/material/Grid2";
 
 const TopPanel = ({ tests, appState, monacoRef, actionsNAV }) => {
   const theme = useTheme();
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-      }}
+    <Grid
+      container
+      spacing={0}
+      columns={{ xs: 1, sm: 6, md: 10 }}
+      sx={{ marginTop: "10px", flexGrow: 1 }}
     >
-      <Animation height={"80px"} width={"80px"} name={"sheep"} />
-      <LinearProgressWithLabel
-        value={((appState.taskId + 1) / tests.length) * 100}
-        label={`${appState.taskId + 1}\\${tests.length}`}
-      />
-      <Animation height={"50px"} width={"50px"} name={"coins"} />
-      <Typography
-        variant="body2"
-        sx={{ color: "text.secondary", fontSize: 22 }}
-      >
-        {appState.pts}
-      </Typography>
-
-      <IconButtonNoRipple>
-        <Tooltip title={"Как проходить курс"}>
-          <LightbulbIcon
-            sx={{ fontSize: "40px", marginLeft: "25px", marginRight: "15px" }}
-            onClick={() => {
-              actionsNAV.openTutorial();
-            }}
+      <Grid size={{ xs: 1, sm: 3, md: 7 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Animation height={"80px"} width={"80px"} name={"sheep"} />
+          <LinearProgressWithLabel
+            value={((appState.taskId + 1) / tests.length) * 100}
+            label={`${appState.taskId + 1}\\${tests.length}`}
           />
-        </Tooltip>
-      </IconButtonNoRipple>
+        </Box>
+      </Grid>
+      <Grid size={{ xs: 1, sm: 3, md: 3 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Animation height={"50px"} width={"50px"} name={"coins"} />
+          <Typography
+            variant="body2"
+            sx={{ color: "text.secondary", fontSize: 22 }}
+          >
+            {appState.pts}
+          </Typography>
 
-      <IconButtonNoRipple>
-        <Tooltip title={"Задать вопрос"}>
-          <SupportAgentIcon
-            sx={{ fontSize: "40px", marginRight: "15px" }}
-            onClick={() => {
-              actionsNAV.openSupportPage();
-            }}
-          />
-        </Tooltip>
-      </IconButtonNoRipple>
+          <IconButtonNoRipple>
+            <Tooltip title={"Как проходить курс"}>
+              <LightbulbIcon
+                sx={{
+                  fontSize: "40px",
+                  marginLeft: "25px",
+                  marginRight: "15px",
+                }}
+                onClick={() => {
+                  actionsNAV.openTutorial();
+                }}
+              />
+            </Tooltip>
+          </IconButtonNoRipple>
 
-      <IconButtonNoRipple>
-        <Tooltip title={"Заверить прохождение"}>
-          <HomeIcon
-            sx={{ fontSize: "40px", marginRight: "15px" }}
-            onClick={() => {
-              appState.nodemode != "textbook" &&
-                actionsNAV.openCongratPageInterrupted();
-              appState.nodemode == "textbook" &&
-                actionsNAV.openFlowPageAfterAccomplished();
-            }}
-          />
-        </Tooltip>
-      </IconButtonNoRipple>
+          <IconButtonNoRipple>
+            <Tooltip title={"Задать вопрос"}>
+              <SupportAgentIcon
+                sx={{ fontSize: "40px", marginRight: "15px" }}
+                onClick={() => {
+                  actionsNAV.openSupportPage();
+                }}
+              />
+            </Tooltip>
+          </IconButtonNoRipple>
 
-      <DLSwitch monacoRef={monacoRef} />
-    </Box>
+          <IconButtonNoRipple>
+            <Tooltip title={"Заверить прохождение"}>
+              <HomeIcon
+                sx={{ fontSize: "40px", marginRight: "15px" }}
+                onClick={() => {
+                  appState.nodemode != "textbook" &&
+                    actionsNAV.openCongratPageInterrupted();
+                  appState.nodemode == "textbook" &&
+                    actionsNAV.openFlowPageAfterAccomplished();
+                }}
+              />
+            </Tooltip>
+          </IconButtonNoRipple>
+
+          <DLSwitch monacoRef={monacoRef} />
+        </Box>
+      </Grid>
+    </Grid>
+
+    // <Box
+    //   sx={{
+    //     display: "flex",
+    //     flexDirection: "row",
+    //     alignItems: "center",
+    //   }}
+    // >
+
+    // </Box>
   );
 };
 
