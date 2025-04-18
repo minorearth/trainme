@@ -143,15 +143,42 @@ const useTest = ({
       1,
 
       () => {
+        editorRef.current.setValue(
+          `${tests[appState.taskId].rightcode} \n\nТвой код:\n\n${
+            currTask.code
+          }`
+        );
+
         updateCurrTask({
-          code: tests[appState.taskId].rightcode,
           info: "Правильный код",
+          editordisabled: true,
         });
         setEditorDisabled(true);
         countdownbutton.showButton();
       }
     );
   };
+
+  // const showRightCodeAfterError = ({ errorMsg }) => {
+  //   alertdialog.showDialog(
+  //     local.ru.msg.alert.PSW_TEST_ERROR,
+  //     errorMsg,
+  //     1,
+
+  //     () => {
+  //       editorRef.current.setValue(tests[appState.taskId].rightcode);
+
+  //       updateCurrTask({
+  //         code: `${tests[appState.taskId].rightcode} \n\n Твой код:\n\n${
+  //           currTask.code
+  //         }`,
+  //         info: "Правильный код",
+  //       });
+  //       setEditorDisabled(true);
+  //       countdownbutton.showButton();
+  //     }
+  //   );
+  // };
 
   const handleChangeContent = ({ value }) => {
     const model = editorRef.current.getModel();
@@ -222,7 +249,7 @@ const useTest = ({
 
   const errorCountDownPressed = async () => {
     // editorRef.current.getModel().setValue("");
-    updateCurrTask({ info: "" });
+    updateCurrTask({ info: "", editordisabled: false });
     setEditorDisabled(false);
     const CSP = getCSP();
     // if (CSP.taskId != tests.length - 1) {

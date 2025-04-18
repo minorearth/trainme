@@ -66,7 +66,7 @@ const MonacoEd = ({
           {currTask.info}
         </Typography>
       )}
-      {currTask.maxlineserror && (
+      {currTask.maxlineserror && !currTask.editordisabled && (
         <Typography sx={{ textAlign: "center", color: "#FF5549" }}>
           {currTask.maxlineserror}
         </Typography>
