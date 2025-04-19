@@ -1,4 +1,5 @@
-.monaco-editor .view-line:has(.mtk5):not(:has(.mtk1)):not(:has(.mtk8)) {
+.monaco-editor
+  .view-line:has(.mtk5):not(:has(.mtk1)):not(:has(.mtk8)):not(:has(.mtk9)) {
   background-color: #242323;
   border-left: 10px;
   border-left-style: solid;
@@ -7,7 +8,7 @@
 }
 
 .monaco-editor
-  .view-line:has(.mtk5):not(:has(.mtk1)):not(:has(.mtk8))
+  .view-line:has(.mtk5):not(:has(.mtk1)):not(:has(.mtk8)):not(:has(.mtk9))
   > :first-child
   * {
   color: white;
