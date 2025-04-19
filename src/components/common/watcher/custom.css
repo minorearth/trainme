@@ -1,4 +1,4 @@
-/* .markdown {
+.markdown {
   background-color: white;
   border-left: 20px;
   border-left-style: solid;
@@ -6,5 +6,5 @@
 }
 
 .markdown2 {
-  color: #121212;
-} */
+  color: red !important;
+}

@@ -9,7 +9,6 @@ import { useColorScheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import Typography from "@mui/material/Typography";
 import "./MonacoEditor.css";
-import "./custom.css";
 import { Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import CachedIcon from "@mui/icons-material/Cached";

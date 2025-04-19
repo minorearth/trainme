@@ -22,6 +22,7 @@ import Tutorial from "../tutorial/tutorial";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import CountdownCircle from "@/components/common/countdown/CountdownCircle/CountdownCircle";
 import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
+import { Watcher } from "@/components/common/watcher/watcher";
 
 const Navigator = observer(() => {
   const [showSplashTimeout, setShowSplashTimeout] = useState(true);
@@ -37,6 +38,7 @@ const Navigator = observer(() => {
           appState={appState}
         />
       )}
+      <Watcher />
       {!loading && pyodide2 && !showSplashTimeout && (
         <Box
           id="human"

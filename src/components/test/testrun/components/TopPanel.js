@@ -94,7 +94,7 @@ const TopPanel = ({ tests, appState, monacoRef, actionsNAV }) => {
               />
             </Tooltip>
           </IconButtonNoRipple>
-
+          {/* TODO:  */}
           <DLSwitch monacoRef={monacoRef} />
         </Box>
       </Grid>

@@ -3,7 +3,6 @@ import { useTheme } from "@mui/material/styles";
 import { useCallback } from "react";
 import { Background } from "@xyflow/react";
 import { useEffect, useState } from "react";
-import "./custom.css";
 
 const useMonaco = ({ editorRef, monacoRef, currTask }) => {
   const theme = useTheme();
