@@ -14,6 +14,9 @@ export const EditorOptions = {
   formatOnType: true,
   // lineNumbers: "off",
   lineHeight: 1.5,
+  lineNumbersMinChars: 0,
+  folding: false,
+
   renderLineHighlight: "none",
   renderIndentGuides: false,
   overviewRulerLanes: 0,
