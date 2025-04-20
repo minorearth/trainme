@@ -22,7 +22,7 @@ const TopPanel = ({ tests, appState, monacoRef, actionsNAV }) => {
       columns={{ xs: 1, sm: 6, md: 10 }}
       sx={{ marginTop: "10px", flexGrow: 1 }}
     >
-      <Grid size={{ xs: 1, sm: 3, md: 7 }}>
+      <Grid size={{ xs: 1, sm: 3, md: 7 }} order={{ xs: 2, sm: 1, md: 1 }}>
         <Box
           sx={{
             display: "flex",
@@ -38,7 +38,7 @@ const TopPanel = ({ tests, appState, monacoRef, actionsNAV }) => {
           />
         </Box>
       </Grid>
-      <Grid size={{ xs: 1, sm: 3, md: 3 }}>
+      <Grid size={{ xs: 1, sm: 3, md: 3 }} order={{ xs: 1, sm: 2, md: 2 }}>
         <Box
           sx={{
             display: "flex",
