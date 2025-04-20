@@ -153,6 +153,7 @@ const useTest = ({
           info: "Изучи правильный код",
           editordisabled: true,
         });
+        editorRef.current.updateOptions({ lineNumbers: "off" });
         setEditorDisabled(true);
         countdownbutton.showButton();
       }
@@ -250,6 +251,7 @@ const useTest = ({
   const errorCountDownPressed = async () => {
     // editorRef.current.getModel().setValue("");
     updateCurrTask({ info: "", editordisabled: false });
+    editorRef.current.updateOptions({ lineNumbers: "on" });
     setEditorDisabled(false);
     const CSP = getCSP();
     // if (CSP.taskId != tests.length - 1) {

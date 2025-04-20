@@ -17,7 +17,6 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
   }, [currTask, mounted]);
 
   useEffect(() => {
-    console.log("sdds");
     if (!editorRef.current) {
       return;
     }
