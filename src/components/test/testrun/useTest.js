@@ -144,13 +144,13 @@ const useTest = ({
 
       () => {
         editorRef.current.setValue(
-          `${tests[appState.taskId].rightcode} \n\nТвой код:\n\n${
-            currTask.code
-          }`
+          `'''\n  Правильный код:\n'''\n\n${
+            tests[appState.taskId].rightcode
+          } \n\n'''\n  Твой код:\n'''\n\n${currTask.code}`
         );
 
         updateCurrTask({
-          info: "Правильный код",
+          info: "Изучи правильный код",
           editordisabled: true,
         });
         setEditorDisabled(true);
