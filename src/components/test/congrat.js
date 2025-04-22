@@ -43,7 +43,7 @@ const CongratPage = ({ appState, actionsNAV }) => {
         }}
         endIcon={<ReplayIcon />}
       >
-        {"Вернуться к курсу"}
+        {"Сохранить и завершить"}
       </Button>
     </Box>
   );
