@@ -70,7 +70,7 @@ const FlowPanel = ({ appState, actionsNAV }) => {
           </Tooltip>
         </IconButtonNoRipple>
 
-        <IconButtonNoRipple>
+        {/* <IconButtonNoRipple>
           <Tooltip title={"Поддержка"}>
             <SupportAgentIcon
               sx={{ fontSize: ICON_SIZE }}
@@ -79,7 +79,7 @@ const FlowPanel = ({ appState, actionsNAV }) => {
               }}
             />
           </Tooltip>
-        </IconButtonNoRipple>
+        </IconButtonNoRipple> */}
         <IconButtonNoRipple>
           <Tooltip title={"Как проходить курс"}>
             <LightbulbIcon

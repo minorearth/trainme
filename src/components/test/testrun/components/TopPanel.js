@@ -70,7 +70,7 @@ const TopPanel = ({ tests, appState, monacoRef, actionsNAV }) => {
             </Tooltip>
           </IconButtonNoRipple>
 
-          <IconButtonNoRipple>
+          {/* <IconButtonNoRipple>
             <Tooltip title={"Задать вопрос"}>
               <SupportAgentIcon
                 sx={{ fontSize: "40px", marginRight: "15px" }}
@@ -79,7 +79,7 @@ const TopPanel = ({ tests, appState, monacoRef, actionsNAV }) => {
                 }}
               />
             </Tooltip>
-          </IconButtonNoRipple>
+          </IconButtonNoRipple> */}
 
           <IconButtonNoRipple>
             <Tooltip title={"Заверить прохождение"}>

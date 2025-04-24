@@ -38,19 +38,19 @@ const FloatMenu = ({ page, actionsNAV }) => {
         action={async () => await actionsNAV.openLoginPageSignOut()}
         position={{ top: TOP, right: RIGHT }}
       />
-      <FabAnimated
+      {/* <FabAnimated
         tooltip={"Поддержка"}
         icon="support"
         action={() => actionsNAV.openSupportPage()}
         position={{ top: TOP, right: RIGHT + stn.ui.FLOAT_BTN_PADDING }}
-      />
+      /> */}
 
       {page == "champ" && (
         <FabAnimated
           tooltip={"На главную"}
           icon="home"
           action={() => actionsNAV.openAllCoursePage()}
-          position={{ top: TOP, right: RIGHT + 2 * stn.ui.FLOAT_BTN_PADDING }}
+          position={{ top: TOP, right: RIGHT + stn.ui.FLOAT_BTN_PADDING }}
         />
       )}
     </Box>
