@@ -21,7 +21,7 @@ const useChamps = ({ actionsNAV, appState }) => {
   const [champid, setChampid] = useState("");
   const [inputChampId, setInputChampd] = useState("");
   const [taskCount, setTaskCount] = useState(5);
-  const [userName, setUserName] = useState("Какой-то");
+  const [userName, setUserName] = useState("Кто-то");
   const [range, setRange] = useState([1, 30]);
   const [avatarid, setAvatarid] = useState(0);
 
@@ -109,13 +109,22 @@ const useChamps = ({ actionsNAV, appState }) => {
       levelEnd: range[1],
       taskCount,
     });
-    const champid = generateString(7);
-    setChampid(champid);
-    setDocInCollectionClient(
-      stn.collections.CHAMPS,
-      { tasks, users: [], status: "created" },
-      champid
-    );
+    if (tasks.status == "error") {
+      alertdialog.showDialog(
+        "Ошибка",
+        `По выбранной сложности недостаточно задач. Доступное количество задач: ${tasks.data}. Измените уровень сложности.`,
+        1,
+        () => {}
+      );
+    } else {
+      const champid = generateString(7);
+      setChampid(champid);
+      setDocInCollectionClient(
+        stn.collections.CHAMPS,
+        { tasks: tasks.data, users: [], status: "created" },
+        champid
+      );
+    }
   };
 
   const joinChamp = async () => {

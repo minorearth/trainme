@@ -48,9 +48,7 @@ const MonacoEd = ({
   });
 
   useEffect(() => {
-    // console.log("Рендеринг завершен");
     // const items = document.querySelectorAll(".mtk20");
-    // console.log(items);
     // items.forEach((item) => {
     //   item.classList.add("markdown2");
     //   item.parentElement.parentElement.classList.add("markdown");

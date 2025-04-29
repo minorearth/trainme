@@ -77,6 +77,7 @@ export const payChapter = async (data) => {
     [`courses.${launchedCourse}.lastunlocked`]: [lastunlocked],
     [`courses.${launchedCourse}.paid`]: FieldValue.arrayUnion(id),
   });
+  return "ok";
 };
 
 export const getUseMetaData = async ({ uid }) => {
@@ -89,7 +90,6 @@ export const getUseMetaData = async ({ uid }) => {
 export const checkCoursePaid = async (data) => {
   const firestore = getFirestore();
   const { courseid, uid } = data;
-  console.log(courseid, uid, data);
   const userMetaRef = firestore.collection("usermeta").doc(uid);
   const snapshot = await userMetaRef.get();
   const profile = snapshot.data();
@@ -132,7 +132,7 @@ export const setUseMetaData = async (data) => {
 
       return "ok";
     } catch (error) {
-      return error.message;
+      return "error";
     }
   } else {
     try {
@@ -168,6 +168,7 @@ export const setUseMetaUnlockedAndCompleted = async (data) => {
         FieldValue.arrayUnion(lastcompleted),
     });
   }
+  return "ok";
 };
 
 //UTILITIES

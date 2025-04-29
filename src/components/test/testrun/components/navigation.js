@@ -121,18 +121,6 @@ const Navigation = observer(
           />
         )}
 
-        {/* <Button
-          onClick={() => {
-            appState.nodemode != "textbook" &&
-              actionsNAV.openCongratPageInterrupted();
-            appState.nodemode == "textbook" &&
-              actionsNAV.openFlowPageAfterAccomplished();
-          }}
-          variant="outlined"
-        >
-          Выйти
-        </Button> */}
-
         {stn.mode.DEV_MODE && (
           <Button
             onClick={() => {

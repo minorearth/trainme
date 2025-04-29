@@ -7,12 +7,11 @@ export const setDataFetch = async (data) => {
       },
       body: JSON.stringify(data),
     });
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    await response.json();
+    const result = await response.json();
+    // if (result.res == "error") {
+    //   // throw new Error("Network response was not ok");
+    // }
+    return result.res;
   } catch (error) {
     console.error("Error:", error);
   }

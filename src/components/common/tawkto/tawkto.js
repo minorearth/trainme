@@ -16,7 +16,6 @@ const TawkToChat = () => {
     //     const inputField = document.querySelector(".tawk-chatinput-editor"); // Попробуйте найти поле ввода
 
     //     if (inputField) {
-    //       console.log("found");
     //       inputField.firstChild.lastChild.textContent =
     //         "Ваш предзаполненный текст сообщения"; // Устанавливаем предзаполненный текст
     //       clearInterval(intervalId); // Очищаем интервал после нахождения поля ввода

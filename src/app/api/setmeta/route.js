@@ -14,18 +14,19 @@ export async function POST(request) {
   try {
     const reqData = await request.json();
     const { type, data } = reqData;
+    let res = "error";
     if (type == "setusermetadata") {
-      await setUseMetaData(data);
+      res = await setUseMetaData(data);
     }
     if (type == "unlockandcomplete") {
-      await setUseMetaUnlockedAndCompleted(data);
+      res = await setUseMetaUnlockedAndCompleted(data);
     }
 
     if (type == "paychapter") {
-      await payChapter(data);
+      res = await payChapter(data);
     }
 
-    return NextResponse.json({ message: "Data received successfully" });
+    return NextResponse.json({ res });
   } catch (error) {
     console.error("Error processing request:", error);
     return NextResponse.json(

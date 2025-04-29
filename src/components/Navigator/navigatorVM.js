@@ -3,6 +3,7 @@ import {
   updatePoinsInChampClient,
   setTaskLogInChampClient,
 } from "@/db/domain/domain";
+
 import alertdialog from "@/components/common/dialog/store";
 import { payChapter } from "@/db/SA/firebaseSA";
 import { encrypt2 } from "@/globals/utils/encryption";
@@ -239,13 +240,15 @@ export const getTextBook = async (CSP, courseid) => {
 };
 
 const getRandomTasks = (allTasks, levelStart, levelEnd, num) => {
-  console.log("leeveel", levelStart, levelEnd);
   const scope = allTasks.filter(
     (task) => task.level <= levelEnd && task.level >= levelStart
   );
+  if (scope.length < num) {
+    return { status: "error", data: scope.length };
+  }
   const numbers = getNeverRepeatIntegers(scope.length - 1, num);
   const filteredTasks = scope.filter((task, id) => numbers.includes(id));
-  return filteredTasks;
+  return { status: "ok", data: filteredTasks };
 };
 
 export const getRandomTasksForRepeat = async ({
@@ -275,10 +278,11 @@ export const getRandomTasksForRepeat = async ({
       levelEnd,
       5
     );
-    tasksuuids = filteredTasks.map((task) => task.taskuuid);
+
+    tasksuuids = filteredTasks.data.map((task) => task.taskuuid);
   }
 
-  const res = { tasksuuids, tasksFetched: filteredTasks };
+  const res = { tasksuuids, tasksFetched: filteredTasks.data };
 
   // const res = stn.mode.ALL_RIGHT_CODE
   //   ? filteredTasks.map((task) => ({

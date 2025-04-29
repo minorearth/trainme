@@ -20,7 +20,6 @@ export const Watcher = () => {
               node.textContent.includes("'''")
             ) {
               node.firstChild.firstChild.style.display = "none";
-              // console.log(node.firstChild.firstChild.style.color);
               // isDarkMode
               //   ? (node.firstChild.firstChild.style.color = "#242323")
               //   : (node.firstChild.firstChild.style.color = "#CADCEE");

@@ -63,7 +63,7 @@ const useNavigator = () => {
         data: { courseid: CSP.launchedCourse, uid: user.userid },
       });
       if (coursePaid) {
-        openAndRefreshFlowPage(CSP.launchedCourse);
+        await openAndRefreshFlowPage(CSP.launchedCourse);
       } else {
         openAllCoursePage();
       }
@@ -93,7 +93,8 @@ const useNavigator = () => {
       progress: CSP.userProgress,
       setFlow,
       openTestsStartedPage,
-      openAndRefreshFlowPage: () => openAndRefreshFlowPage(courseid),
+      openAndRefreshFlowPage: async () =>
+        await openAndRefreshFlowPage(courseid),
     });
     return flow;
   };
@@ -121,7 +122,6 @@ const useNavigator = () => {
       data: { uid: user.userid },
       type: "getusermetadata",
     });
-    console.log("allUserMeta", allUserMeta);
     //TODO:keep only keys needed
     const userProgress = getUserDataNeeeded(
       allUserMeta.courses[launchedCourse]
@@ -161,7 +161,7 @@ const useNavigator = () => {
     ) {
       try {
         progressStore.setShowProgress(true);
-        await setDataFetch({
+        const res = await setDataFetch({
           type: "setusermetadata",
           data: {
             lastcompleted: CSP.chapter,
@@ -174,34 +174,22 @@ const useNavigator = () => {
             sum: (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts,
           },
         });
+        if (res == "error") {
+          throw new Error("Это искусственная ошибка");
+        }
 
-        // const b = await setUseMetaData(
-        //   // encrypt2(
-        //   {
-        //     lastcompleted: CSP.chapter,
-        //     unlocked: CSP.tobeunlocked,
-        //     allunlocked: [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],
-        //     pts: CSP.userProgress.rating + CSP.pts,
-        //     uid: user.userid,
-        //     tasklog: CSP.tasklog,
-        //     launchedCourse: CSP.launchedCourse,
-        //     sum: (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts,
-        //   }
-        //   // )
-        // );
-        // console.log("fuckin error", b);
-        // );
-        // });
-        alertdialog.hideDialog();
+        // alertdialog.hideDialog();
         openFlowPageAfterAccomplished();
         progressStore.setCloseProgress();
       } catch (e) {
         console.log(e);
         alertdialog.showDialog(
           "Сохранение данных",
-          ' "Что-то не так с интернетом...\nОбновите страницу и повторите попытку\nЧтобы сохранить набранные баллы нужен интернет"',
-          3,
-          () => {}
+          ' "Что-то пошло не так, повторите попытку...',
+          1,
+          () => {
+            progressStore.setCloseProgress();
+          }
         );
       }
     }
@@ -224,12 +212,10 @@ const useNavigator = () => {
       page: "flow",
     });
     setLoading(false);
-    progressStore.setCloseProgress();
   };
 
   const openCourseFlowPageFromMain = async (launchedCourse) => {
     progressStore.setShowProgress(true, false, "progressdots", 2000);
-
     const coursePaid = await getDataFetch({
       type: "checkcoursepaid",
       data: { courseid: launchedCourse, uid: user.userid },
@@ -249,17 +235,18 @@ const useNavigator = () => {
       );
       return;
     }
-    openAndRefreshFlowPage(launchedCourse);
+    await openAndRefreshFlowPage(launchedCourse);
+    progressStore.setCloseProgress();
   };
 
-  const openFlowPageAfterAccomplished = () => {
+  const openFlowPageAfterAccomplished = async () => {
     const CSP = getCSP();
     setCSP({
       launchedCourse: CSP.launchedCourse,
       page: "flow",
       userProgress: CSP.userProgress,
     });
-    openAndRefreshFlowPage(CSP.launchedCourse);
+    await openAndRefreshFlowPage(CSP.launchedCourse);
   };
 
   const openTextBook = async ({ courseid, CSP }) => {
@@ -325,6 +312,7 @@ const useNavigator = () => {
   }) => {
     progressStore.setShowProgress(true);
     const CSP = getCSP();
+    console.log(nodemode);
     if (nodemode == "champ") {
       setChampTasks({
         champid,
@@ -564,6 +552,8 @@ const useNavigator = () => {
         levelStart: level - 5,
         levelEnd: level,
       });
+      console.log(tasksFetched);
+
       //TODO: proactively open chapters. Remade
       await setUseMetaUnlockedAndCompleted(
         encrypt2({

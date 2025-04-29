@@ -18,14 +18,13 @@ const runCodeNoGLobals = async (pyodide, code) => {
   // https://github.com/pyodide/pyodide/issues/703
   const dict = pyodide.globals.get("dict");
   const globals = dict();
-  await pyodide.runPythonAsync(code, { globals, locals: globals });
+  await pyodide.runPython(code, { globals, locals: globals });
   globals.destroy();
   dict.destroy();
 };
 
 export default function usePythonRunner({ updateCurrTask, pyodide }) {
   const runPythonCode = async (code, stdIn) => {
-    console.log("code", code);
     if (pyodide) {
       let output = [];
       const stdout = (msg) => {
@@ -38,7 +37,6 @@ export default function usePythonRunner({ updateCurrTask, pyodide }) {
       };
       try {
         const stdInSplitted = stdIn.split("\n");
-
         pyodide.setStdin(new StdinHandler(stdInSplitted));
         pyodide.setStdout({ batched: stdout });
         if (pyodide) {
