@@ -141,9 +141,9 @@ export const setUseMetaData = async (data) => {
         [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
         // ...tasklogPrepared,
       });
-      return "ok2";
+      return "ok";
     } catch (e) {
-      return "fuckng error";
+      return "error";
     }
   }
 };
