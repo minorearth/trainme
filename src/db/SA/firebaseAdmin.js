@@ -1,5 +1,5 @@
 // import "server-only";
-"use server";
+// "use server";
 
 import admin from "firebase-admin";
 
@@ -24,10 +24,7 @@ export async function createFirebaseAdminApp(params) {
     projectId: params.projectId,
     storageBucket: params.storageBucket,
   });
-
-  const firestore = admin.firestore();
   firestore.settings({ timeout: 10000 });
-  return firestore;
 }
 
 export async function initAdmin() {
@@ -37,7 +34,9 @@ export async function initAdmin() {
     storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
     privateKey: process.env.FIREBASE_PRIVATE_KEY,
   };
-  return createFirebaseAdminApp(params);
+  await createFirebaseAdminApp(params);
+  const firestore = admin.firestore();
+  return firestore;
 }
 
 const db = await initAdmin();

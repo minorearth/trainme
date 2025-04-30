@@ -82,8 +82,8 @@ export const payChapter = async (data) => {
 };
 
 export const getUseMetaData = async ({ uid }) => {
-  const firestore = getFirestore();
-  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  // const firestore = getFirestore();
+  const userMetaRef = db.collection("usermeta").doc(uid);
   const snapshot = await userMetaRef.get();
   return snapshot.data();
 };
