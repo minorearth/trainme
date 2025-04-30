@@ -9,8 +9,7 @@ import { db } from "./firebaseAdmin";
 
 //ADMIN ACTIONS
 export const resetUseMetaData = async (lastunlocked, launchedCourse, uid) => {
-  const firestore = getFirestore();
-  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
     [`courses.${launchedCourse}`]: {
       completed: [],
@@ -23,15 +22,13 @@ export const resetUseMetaData = async (lastunlocked, launchedCourse, uid) => {
   });
 };
 export const getMoney = async (launchedCourse, uid) => {
-  const firestore = getFirestore();
-  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
     [`courses.${launchedCourse}.rating`]: 5000,
   });
 };
 export const setMoney = async (launchedCourse, uid, money) => {
-  const firestore = getFirestore();
-  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
     [`courses.${launchedCourse}.rating`]: Number(money),
   });
@@ -42,8 +39,7 @@ export const unlockAndCompleteAll = async (
   launchedCourse,
   uid
 ) => {
-  const firestore = getFirestore();
-  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
     [`courses.${launchedCourse}.completed`]: unlocked,
     [`courses.${launchedCourse}.unlocked`]: unlocked,
@@ -57,8 +53,7 @@ export const unlockAll = async (
   launchedCourse,
   uid
 ) => {
-  const firestore = getFirestore();
-  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
     [`courses.${launchedCourse}.completed`]: [],
     [`courses.${launchedCourse}.unlocked`]: unlocked,
@@ -70,9 +65,8 @@ export const unlockAll = async (
 
 // TODO:remade
 export const payChapter = async (data) => {
-  const firestore = getFirestore();
   const { pts, id, uid, lastunlocked, launchedCourse } = decrypt2(data);
-  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
     [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
     [`courses.${launchedCourse}.lastunlocked`]: [lastunlocked],
@@ -82,23 +76,20 @@ export const payChapter = async (data) => {
 };
 
 export const getUseMetaData = async ({ uid }) => {
-  // const firestore = getFirestore();
   const userMetaRef = db.collection("usermeta").doc(uid);
   const snapshot = await userMetaRef.get();
   return snapshot.data();
 };
 
 export const checkCoursePaid = async (data) => {
-  const firestore = getFirestore();
   const { courseid, uid } = data;
-  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  const userMetaRef = db.collection("usermeta").doc(uid);
   const snapshot = await userMetaRef.get();
   const profile = snapshot.data();
   return profile.paidcourses.includes(courseid);
 };
 
 export const setUseMetaData = async (data) => {
-  // const firestore = getFirestore();
   const {
     uid,
     pts,
@@ -151,9 +142,8 @@ export const setUseMetaData = async (data) => {
 
 // TODO:remade
 export const setUseMetaUnlockedAndCompleted = async (data) => {
-  const firestore = getFirestore();
   const { uid, lastcompleted, unlocked, launchedCourse } = decrypt2(data);
-  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  const userMetaRef = db.collection("usermeta").doc(uid);
   if (unlocked.length != 0) {
     userMetaRef.update({
       [`courses.${launchedCourse}.completed`]:
@@ -184,7 +174,6 @@ const prepareTaskLog = (launchedCourse, lastcompleted, tasklog) => {
 
 //LEGACY due to network cache
 export const setUseMetaDataIncrement = async (data) => {
-  const firestore = getFirestore();
   const { uid, pts, lastcompleted, unlocked, launchedCourse, tasklog } =
     decrypt2(data);
   const tasklogPrepared = prepareTaskLog(
@@ -192,7 +181,7 @@ export const setUseMetaDataIncrement = async (data) => {
     lastcompleted,
     tasklog
   );
-  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  const userMetaRef = db.collection("usermeta").doc(uid);
   if (unlocked.length != 0) {
     await userMetaRef.update({
       [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
