@@ -108,7 +108,7 @@ export const setUseMetaData = async (data) => {
     tasklog,
     sum,
   } = data;
-
+  console.log(data);
   // = decrypt2(data);
   // try {
   //   const tasklogPrepared = prepareTaskLog(
