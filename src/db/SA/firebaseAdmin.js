@@ -24,7 +24,9 @@ export async function createFirebaseAdminApp(params) {
     projectId: params.projectId,
     storageBucket: params.storageBucket,
   });
-  firestore.settings({ timeout: 10000 });
+  // const firestore = admin.firestore();
+
+  // firestore.settings({ timeout: 10000 });
 }
 
 export async function initAdmin() {
