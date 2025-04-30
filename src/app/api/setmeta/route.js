@@ -12,6 +12,7 @@ import {
 
 export async function POST(request) {
   try {
+    console.log("here we go");
     const reqData = await request.json();
     const { type, data } = reqData;
     let res = "error";
