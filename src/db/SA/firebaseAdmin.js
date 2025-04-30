@@ -27,6 +27,7 @@ export async function createFirebaseAdminApp(params) {
 
   const firestore = admin.firestore();
   firestore.settings({ timeout: 10000 });
+  return firestore;
 }
 
 export async function initAdmin() {
@@ -38,3 +39,7 @@ export async function initAdmin() {
   };
   return createFirebaseAdminApp(params);
 }
+
+const db = await initAdmin();
+
+export { db };

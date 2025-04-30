@@ -3,8 +3,9 @@ import { getFirestore, FieldValue } from "firebase-admin/firestore";
 // import "server-only";
 import { initAdmin } from "./firebaseAdmin";
 import { encrypt2, decrypt2 } from "./encryption";
+import { db } from "./firebaseAdmin";
 
-await initAdmin();
+// await initAdmin();
 
 //ADMIN ACTIONS
 export const resetUseMetaData = async (lastunlocked, launchedCourse, uid) => {
@@ -97,7 +98,7 @@ export const checkCoursePaid = async (data) => {
 };
 
 export const setUseMetaData = async (data) => {
-  const firestore = getFirestore();
+  // const firestore = getFirestore();
   const {
     uid,
     pts,
@@ -119,7 +120,7 @@ export const setUseMetaData = async (data) => {
   // } catch (e) {
   //   return "error";
   // }
-  const userMetaRef = firestore.collection("usermeta").doc(uid);
+  const userMetaRef = db.collection("usermeta").doc(uid);
   if (unlocked.length != 0) {
     try {
       await userMetaRef.update({
