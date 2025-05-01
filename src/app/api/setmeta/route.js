@@ -22,7 +22,7 @@ export async function POST(request) {
       res = await setUseMetaData(data);
     }
     if (type == "wakeup") {
-      res = await setUseMetaData(data);
+      res = "wakeup";
     }
     if (type == "unlockandcomplete") {
       res = await setUseMetaUnlockedAndCompleted(data);
