@@ -12,11 +12,11 @@ import {
 
 export async function POST(request) {
   try {
-    console.log(type, data);
-
     const reqData = await request.json();
 
     const { type, data } = reqData;
+    console.log(type, data);
+
     let res = "error";
     if (type == "setusermetadata") {
       res = await setUseMetaData(data);
