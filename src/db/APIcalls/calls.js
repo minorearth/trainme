@@ -1,3 +1,15 @@
+setInterval(() => {
+  fetch("/api/wakeup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: "",
+  })
+    .then((res) => console.log("Pinged API to keep awake"))
+    .catch((err) => console.error("Ping failed", err));
+}, 30000); // каждые 45 секунд
+
 export const setDataFetch = async (data) => {
   try {
     const response = await fetch("/api/setmeta", {

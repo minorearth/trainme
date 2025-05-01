@@ -21,9 +21,9 @@ export async function POST(request) {
     if (type == "setusermetadata") {
       res = await setUseMetaData(data);
     }
-    if (type == "wakeup") {
-      res = "wakeup";
-    }
+    // if (type == "wakeup") {
+    //   res = "wakeup";
+    // }
     if (type == "unlockandcomplete") {
       res = await setUseMetaUnlockedAndCompleted(data);
     }
