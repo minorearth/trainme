@@ -161,10 +161,10 @@ const useNavigator = () => {
     ) {
       try {
         // progressStore.setShowProgress(true);
-        await setDataFetch({
-          type: "wakeup",
-          data: {},
-        });
+        // await setDataFetch({
+        //   type: "wakeup",
+        //   data: {},
+        // });
         const res = await setDataFetch({
           type: "setusermetadata",
           data: {
