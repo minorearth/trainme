@@ -160,7 +160,7 @@ const useNavigator = () => {
       CSP.nodemode == "renewal"
     ) {
       try {
-        progressStore.setShowProgress(true);
+        // progressStore.setShowProgress(true);
         await setDataFetch({
           type: "wakeup",
           data: {},
