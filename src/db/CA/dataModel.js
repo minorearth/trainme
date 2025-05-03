@@ -83,14 +83,12 @@ export const getDocDataFromCollectionById = async (db, collectionName, id) => {
   const docSnap = await getDoc(doc(db, collectionName, id));
   const data = docSnap.data();
   return { id: docSnap.id, data };
-  // return JSON.stringify({ id: docSnap.id, ...data });
 };
 
 export const getDocFromCollectionById = async (db, collectionName, id) => {
   const docSnap = await getDoc(doc(db, collectionName, id));
   const data = docSnap.data();
   return { id: docSnap.id, ...data };
-  // return JSON.stringify({ id: docSnap.id, ...data });
 };
 
 export const getDocFromCollectionByIdRealtime = async (

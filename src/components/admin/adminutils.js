@@ -1,4 +1,5 @@
 import { setDocInCollectionClient } from "@/db/domain/domain";
+
 import { courses } from "@/globals/courses";
 
 const getChapteeLevels = (chapters) => {

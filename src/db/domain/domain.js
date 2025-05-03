@@ -16,15 +16,6 @@ import {
   setTaskLogInChamp,
 } from "@/db/CA/dataModel";
 
-// import {
-//   UploadFile,
-//   deleteFileFromDB,
-//   deleteAllFileFromDir,
-//   getAllFiles,
-//   deleteFile,
-// } from "@/app/db/storage";
-
-// import { setAllIndexed, createIndexspealout2 } from "@/app/db/indexAdmin";
 import {
   setPersistenceDB,
   signIn,
@@ -62,29 +53,6 @@ export const setTaskLogInChampClient = async (collectionName, data, id) => {
 export const updateChampStatusClient = async (collectionName, status, id) => {
   await updateChampStatus(db, collectionName, status, id);
 };
-// export const increaseIndexCurrInCollectionClient = async (userId) => {
-//   return await increaseIndexCurrInCollection(db, userId);
-// };
-
-// export const getCurrIndexDocIDClient = async (userId) => {
-//   return await getCurrIndexDocID(db, userId);
-// };
-
-// export const getCurrIndexClient = async (userId) => {
-//   return await getCurrIndex(db, userId);
-// };
-
-// export const searchInIndexClient = async (
-//   manager,
-//   userpart,
-//   setSearchRows = () => {}
-// ) => {
-//   return await searchInIndex(db, manager, userpart, setSearchRows);
-// };
-
-// export const removeSurveyClient = async (syrveyid, userid) => {
-//   await removeSurvey(db, storage, syrveyid, userid);
-// };
 
 export const getDocDataFromCollectionByIdClient = async (
   collectionName,
@@ -92,10 +60,6 @@ export const getDocDataFromCollectionByIdClient = async (
 ) => {
   return await getDocDataFromCollectionById(db, collectionName, id);
 };
-
-// export const getDocsKeyValueClient = async (db, collectionName, key, value) => {
-//   return await getDocsKeyValue(db, collectionName, key, value);
-// };
 
 export const getDocFromCollectionByIdClient = async (collectionName, id) => {
   return await getDocFromCollectionById(db, collectionName, id);
@@ -125,6 +89,48 @@ export const getAllDocsClient = async (collectionName) => {
 export const deleteDocFromCollectionClient = async (collectionName, id) => {
   await deleteDocFromCollection(db, collectionName, id);
 };
+
+export const createNewUserClient = async (userId, name) => {
+  return await createNewUser(db, userId, name);
+};
+
+export const сopyDocClient = async (collection, oldindex, newindex) => {
+  await copyDoc(db, collection, oldindex, newindex);
+};
+
+export const signInClient = async (email, password) => {
+  return await signIn(auth, email, password);
+};
+
+export const resetPswClient = (email) => {
+  auth.languageCode = "ru";
+  resetPsw(auth, email);
+};
+
+export const SignUpUserClient = async (email, password, name) => {
+  // https://github.com/firebase/firebaseui-web/blob/master/LANGUAGES.md
+  auth.languageCode = "ru";
+  // auth.useDeviceLanguage();
+  await SignUpUser(auth, email, password, name);
+};
+
+export const signOutUserClient = async () => {
+  await signOutUser(auth);
+};
+
+// import {
+//   UploadFile,
+//   deleteFileFromDB,
+//   deleteAllFileFromDir,
+//   getAllFiles,
+//   deleteFile,
+// } from "@/app/db/storage";
+
+// import { setAllIndexed, createIndexspealout2 } from "@/app/db/indexAdmin";
+
+// export const backupClient = async () => {
+//   await backup(db);
+// };
 
 // export const removeFileFromSurveyClient = async (
 //   manager,
@@ -158,42 +164,38 @@ export const deleteDocFromCollectionClient = async (collectionName, id) => {
 //   await deleteFile(storage, relativePath);
 // };
 
-export const createNewUserClient = async (userId, name) => {
-  return await createNewUser(db, userId, name);
-};
-
 // export const createIndexspealout = async (manager, slice) => {
 //   await createIndexspealout2(db, manager, slice);
 // };
-
-export const сopyDocClient = async (collection, oldindex, newindex) => {
-  await copyDoc(db, collection, oldindex, newindex);
-};
 
 // export const setPersistenceClient = async () => {
 //   await setPersistenceDB(auth);
 // };
 
-export const signInClient = async (email, password) => {
-  return await signIn(auth, email, password);
-};
+// export const getDocsKeyValueClient = async (db, collectionName, key, value) => {
+//   return await getDocsKeyValue(db, collectionName, key, value);
+// };
 
-export const resetPswClient = (email) => {
-  auth.languageCode = "ru";
-  resetPsw(auth, email);
-};
+// export const increaseIndexCurrInCollectionClient = async (userId) => {
+//   return await increaseIndexCurrInCollection(db, userId);
+// };
 
-export const SignUpUserClient = async (email, password, name) => {
-  // https://github.com/firebase/firebaseui-web/blob/master/LANGUAGES.md
-  auth.languageCode = "ru";
-  // auth.useDeviceLanguage();
-  await SignUpUser(auth, email, password, name);
-};
+// export const getCurrIndexDocIDClient = async (userId) => {
+//   return await getCurrIndexDocID(db, userId);
+// };
 
-export const signOutUserClient = async () => {
-  await signOutUser(auth);
-};
+// export const getCurrIndexClient = async (userId) => {
+//   return await getCurrIndex(db, userId);
+// };
 
-// export const backupClient = async () => {
-//   await backup(db);
+// export const searchInIndexClient = async (
+//   manager,
+//   userpart,
+//   setSearchRows = () => {}
+// ) => {
+//   return await searchInIndex(db, manager, userpart, setSearchRows);
+// };
+
+// export const removeSurveyClient = async (syrveyid, userid) => {
+//   await removeSurvey(db, storage, syrveyid, userid);
 // };
