@@ -55,7 +55,7 @@ const Joingroup = observer(({ groupid, manager }) => {
           />
           <TextField
             id="outlined-basic"
-            label="Введите имя"
+            label="Введите Фамилию"
             variant="outlined"
             onChange={(e) => changeSecondName(e)}
             value={secondName}

@@ -51,6 +51,22 @@ export const updateUsersInChamp = async (db, collectionName, data, id) => {
   }
 };
 
+export const updateUserInGroup = async (db, collectionName, data, id) => {
+  console.log(data, id);
+  const ref = doc(db, collectionName, id);
+  try {
+    await updateDoc(ref, {
+      [`${data.groupid}.children.${data.groupid + data.uid}`]: {
+        uid: data.uid,
+        label: `${data.secondName} ${data.firstName}`,
+        isFolder: false,
+      },
+    });
+  } catch (e) {
+    return "error";
+  }
+};
+
 export const updatePoinsInChamp = async (db, collectionName, data, id) => {
   const ref = doc(db, collectionName, id);
 
