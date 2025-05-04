@@ -6,13 +6,15 @@ import Box from "@mui/material/Box";
 import { styled, alpha } from "@mui/material/styles";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+
 import { IconButton, Button, TextField } from "@mui/material";
 import GroupIcon from "@mui/icons-material/Group";
 import PersonIcon from "@mui/icons-material/Person";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useTreeItemUtils } from "@mui/x-tree-view/hooks";
+import { useTreeItemModel } from "@mui/x-tree-view/hooks";
 import {
   setDocInCollectionClient,
   getDocDataFromCollectionByIdClient,
@@ -28,6 +30,7 @@ import ExpandCircleDownRoundedIcon from "@mui/icons-material/ExpandCircleDownRou
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import HourglassBottomOutlinedIcon from "@mui/icons-material/HourglassBottomOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DrawOutlinedIcon from "@mui/icons-material/DrawOutlined";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
@@ -54,6 +57,7 @@ const MUI_X_PRODUCTS = [
   {
     id: "0",
     label: "Data Grid",
+    isFolder: true,
     children: [
       { id: "grid-community", label: "@mui/x-data-grid" },
       { id: "grid-pro", label: "@mui/x-data-grid-pro" },
@@ -63,6 +67,7 @@ const MUI_X_PRODUCTS = [
   {
     id: "1",
     label: "Date and Time Pickers",
+    isFolder: true,
     children: [
       { id: "pickers-community", label: "@mui/x-date-pickers" },
       { id: "pickers-pro", label: "@mui/x-date-pickers-pro" },
@@ -71,11 +76,13 @@ const MUI_X_PRODUCTS = [
   {
     id: "2",
     label: "Charts",
+    isFolder: true,
     children: [{ id: "charts-community", label: "@mui/x-charts" }],
   },
   {
     id: "3",
     label: "Tree View",
+    isFolder: true,
     children: [{ id: "tree-view-community", label: "@mui/x-tree-view" }],
   },
 ];
@@ -127,6 +134,8 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
     status,
   } = useTreeItem({ id, itemId, label, disabled, children, rootRef: ref });
 
+  const item = useTreeItemModel(itemId);
+  // console.log();
   const { interactions } = useTreeItemUtils({
     itemId,
     children,
@@ -144,8 +153,10 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
     event.defaultMuiPrevented = true;
   };
 
-  const handleSaveItemLabel = (event, value) => {
-    console.log(id, itemId, value);
+  const copyGroupLink = () => {
+    navigator.clipboard.writeText(
+      `${process.env.NEXT_PUBLIC_DOMAIN}/joingroup/${itemId}/${user.userid}`
+    );
   };
 
   return (
@@ -158,13 +169,14 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
           {status.editing ? (
             <CustomLabelInput
               {...getLabelInputProps()}
-              handleSaveItemLabel={handleSaveItemLabel}
+              handleSaveItemLabel={copyGroupLink}
             />
           ) : (
             <CustomLabel
               {...getLabelProps()}
+              copyGroupLink={copyGroupLink}
               toggleItemEditing={interactions.toggleItemEditing}
-              isGroup={children.length != 0}
+              isGroup={item.isFolder}
             />
           )}
         </TreeItemContent>
@@ -180,6 +192,8 @@ function CustomLabel({
   children,
   toggleItemEditing,
   isGroup,
+  handleSaveItemLabel,
+  copyGroupLink,
   ...other
 }) {
   return (
@@ -207,10 +221,10 @@ function CustomLabel({
         {isGroup && (
           <IconButton
             size="small"
-            onClick={toggleItemEditing}
+            onClick={copyGroupLink}
             sx={{ color: "text.secondary" }}
           >
-            <EditOutlinedIcon fontSize="small" />
+            <InsertLinkOutlinedIcon fontSize="small" />
           </IconButton>
         )}
       </Box>
@@ -253,6 +267,7 @@ export default function Groups() {
   const [newGroupName, setNewGroupName] = useState("");
   const [editGroupId, setEditGroupId] = useState(null);
   const [editMemberId, setEditMemberId] = useState(null);
+  let folders = useRef([]);
 
   const updateNodeLabel = (nodes, id, newLabel) => {
     return nodes.map((node) => {
@@ -283,8 +298,7 @@ export default function Groups() {
             "groups",
             user.userid
           );
-          console.log(groups);
-          console.log(groups.data);
+          folders.current = Object.keys(groups.data);
           setData(objectToArr(groups.data));
         };
         getGroups();
@@ -296,9 +310,11 @@ export default function Groups() {
     const arr = Object.keys(data).map((id) => ({
       id,
       label: data[id].label,
+      isFolder: data[id].isFolder,
       children: Object.keys(data[id].children).map((id2) => ({
         id: id2,
         label: data[id].children[id2].label,
+        isFolder: data[id].children[id2].isFolder,
       })),
     }));
     return arr;
@@ -310,9 +326,13 @@ export default function Groups() {
         ...acc,
         [item.id]: {
           label: item.label,
+          isFolder: item.isFolder,
 
           children: item.children.reduce(
-            (acc, child) => ({ ...acc, [child.id]: { label: child.label } }),
+            (acc, child) => ({
+              ...acc,
+              [child.id]: { label: child.label, isFolder: child.isFolder },
+            }),
             {}
           ),
         },
@@ -330,6 +350,7 @@ export default function Groups() {
           id: uuidv4(),
           label: "Новая группа",
           children: [],
+          isFolder: true,
         },
       ];
       setDocInCollectionClient("groups", arrToObject(data), user.userid);
