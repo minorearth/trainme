@@ -33,7 +33,9 @@ import HourglassBottomOutlinedIcon from "@mui/icons-material/HourglassBottomOutl
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import DrawOutlinedIcon from "@mui/icons-material/DrawOutlined";
+import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import CheckIcon from "@mui/icons-material/Check";
 import { useTreeItem } from "@mui/x-tree-view/useTreeItem";
@@ -160,6 +162,14 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
     );
   };
 
+  const showUserMeta = async () => {
+    const userMeta = await getDocDataFromCollectionByIdClient(
+      "usermeta",
+      item.uid
+    );
+    console.log(userMeta);
+  };
+
   return (
     <TreeItemProvider {...getContextProviderProps()}>
       <TreeItemRoot {...getRootProps()}>
@@ -178,6 +188,7 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
               copyGroupLink={copyGroupLink}
               toggleItemEditing={interactions.toggleItemEditing}
               isGroup={item.isFolder}
+              showUserMeta={showUserMeta}
             />
           )}
         </TreeItemContent>
@@ -195,6 +206,7 @@ function CustomLabel({
   isGroup,
   handleSaveItemLabel,
   copyGroupLink,
+  showUserMeta,
   ...other
 }) {
   return (
@@ -226,6 +238,15 @@ function CustomLabel({
             sx={{ color: "text.secondary" }}
           >
             <InsertLinkOutlinedIcon fontSize="small" />
+          </IconButton>
+        )}
+        {!isGroup && (
+          <IconButton
+            size="small"
+            onClick={showUserMeta}
+            sx={{ color: "text.secondary" }}
+          >
+            <VisibilityOutlinedIcon fontSize="small" />
           </IconButton>
         )}
       </Box>
@@ -313,6 +334,7 @@ export default function Groups() {
         id: id2,
         label: data[id].children[id2].label,
         isFolder: data[id].children[id2].isFolder,
+        uid: data[id].children[id2].uid,
       })),
     }));
     return arr;
@@ -364,7 +386,7 @@ export default function Groups() {
           onClick={addNewGroup}
           sx={{ color: "text.secondary" }}
         >
-          <EditOutlinedIcon fontSize="small" />
+          <GroupAddOutlinedIcon fontSize="small" />
         </IconButton>
       </Box>
       <RichTreeView

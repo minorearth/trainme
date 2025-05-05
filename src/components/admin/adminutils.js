@@ -1,6 +1,6 @@
 import { setDocInCollectionClient } from "@/db/domain/domain";
 
-import { courses } from "@/globals/courses";
+import { coursesToLoad, courses } from "@/globals/courses";
 
 const getChapteeLevels = (chapters) => {
   return chapters.reduce(
@@ -10,9 +10,9 @@ const getChapteeLevels = (chapters) => {
 };
 
 export const load = () => {
-  const coursesId = Object.keys(courses);
+  // const coursesId = Object.keys(coursesToLoad);
 
-  coursesId.forEach((id) => {
+  coursesToLoad.forEach((id) => {
     const {
       chapterFlowNodes,
       chapterFlowEdges,
@@ -21,6 +21,8 @@ export const load = () => {
       textbookchapter,
       taskcollection,
     } = courses[id];
+
+    console.log(id, chapterFlowNodes);
 
     setDocInCollectionClient(
       "chapters",

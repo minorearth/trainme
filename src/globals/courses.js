@@ -7,6 +7,7 @@ import {
 import { testsall1 } from "@/components/admin/course1";
 import { testsall2 } from "@/components/admin/course2";
 
+export const coursesToLoad = ["6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0"];
 export const courses = {
   "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0": {
     id: "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0",

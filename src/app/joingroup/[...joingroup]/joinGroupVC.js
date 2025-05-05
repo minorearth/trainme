@@ -40,6 +40,7 @@ const useJoinGroup = ({ groupid, manager }) => {
   // }, []);
 
   const joinGroup = async () => {
+    console.log("ads", user.userid);
     try {
       await updateUserInGroupClient(
         "groups",
@@ -47,14 +48,7 @@ const useJoinGroup = ({ groupid, manager }) => {
         manager
       );
       // updateChampStatusClient(stn.collections.CHAMPS, "started", champid);
-    } catch (e) {
-      alertdialog.showDialog(
-        "Нет такого чемпионата",
-        "Перепроверьте все еще раз",
-        1,
-        () => {}
-      );
-    }
+    } catch (e) {}
   };
 
   return {
