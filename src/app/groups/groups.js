@@ -19,6 +19,7 @@ import {
   setDocInCollectionClient,
   getDocDataFromCollectionByIdClient,
 } from "@/db/domain/domain";
+import { useTheme } from "@mui/material/styles";
 
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
@@ -233,20 +234,17 @@ function CustomLabel({
 }
 
 function CustomLabelInput(props) {
-  const { handleCancelItemLabelEditing, handleSaveItemLabel, value, ...other } =
-    props;
+  const { handleCancelItemLabelEditing, value, ...other } = props;
+  const theme = useTheme();
 
   return (
     <React.Fragment>
-      <TreeItemLabelInput {...other} value={value} />
-      <IconButton
-        color="error"
-        size="small"
-        onClick={() => {
-          console.log("ada", value);
-          // handleSaveItemLabel(event, value);
-        }}
-      >
+      <TreeItemLabelInput
+        {...other}
+        value={value}
+        sx={{ color: theme.palette.text.primary }}
+      />
+      <IconButton color="error" size="small" onClick={() => {}}>
         <CheckIcon fontSize="small" />
       </IconButton>
       <IconButton
@@ -382,237 +380,3 @@ export default function Groups() {
     </Box>
   );
 }
-
-// import React, { useState } from "react";
-// import { RichTreeView, TreeItem } from "@mui/lab";
-// import { IconButton, Button, Box, TextField } from "@mui/material";
-// import GroupIcon from "@mui/icons-material/Group";
-// import PersonIcon from "@mui/icons-material/Person";
-// import EditIcon from "@mui/icons-material/Edit";
-// import DeleteIcon from "@mui/icons-material/Delete";
-
-// const initialData = {
-//   groups: [
-//     {
-//       id: "1",
-//       name: "Группа A",
-//       members: [
-//         { id: "1-1", name: "Иван Иванов" },
-//         { id: "1-2", name: "Петр Петров" },
-//       ],
-//     },
-//     {
-//       id: "2",
-//       name: "Группа B",
-//       members: [{ id: "2-1", name: "Светлана Светлова" }],
-//     },
-//   ],
-// };
-
-// const MyRichTreeView = () => {
-//   const [data, setData] = useState(initialData);
-//   const [newGroupName, setNewGroupName] = useState("");
-//   const [editGroupId, setEditGroupId] = useState(null);
-//   const [editMemberId, setEditMemberId] = useState(null);
-
-//   const handleAddGroup = () => {
-//     if (newGroupName) {
-//       const newGroup = {
-//         id: Date.now().toString(),
-//         name: newGroupName,
-//         members: [],
-//       };
-//       setData((prev) => ({
-//         ...prev,
-//         groups: [...prev.groups, newGroup],
-//       }));
-//       setNewGroupName("");
-//     }
-//   };
-
-//   const handleEditGroup = (id) => {
-//     if (editGroupId === id) {
-//       setEditGroupId(null);
-//     } else {
-//       setEditGroupId(id);
-//     }
-//   };
-
-//   const handleSaveGroupEdit = (id, newName) => {
-//     setData((prev) => ({
-//       ...prev,
-//       groups: prev.groups.map((g) =>
-//         g.id === id ? { ...g, name: newName } : g
-//       ),
-//     }));
-//     setEditGroupId(null);
-//   };
-
-//   const handleDeleteGroup = (id) => {
-//     setData((prev) => ({
-//       ...prev,
-//       groups: prev.groups.filter((g) => g.id !== id),
-//     }));
-//   };
-
-//   const handleAddMember = (groupId) => {
-//     const memberName = prompt("Введите имя человека");
-//     if (memberName) {
-//       const newMember = { id: Date.now().toString(), name: memberName };
-//       setData((prev) => ({
-//         ...prev,
-//         groups: prev.groups.map((g) =>
-//           g.id === groupId ? { ...g, members: [...g.members, newMember] } : g
-//         ),
-//       }));
-//     }
-//   };
-
-//   const handleEditMember = (groupId, memberId) => {
-//     if (editMemberId === memberId) {
-//       setEditMemberId(null);
-//     } else {
-//       setEditMemberId(memberId);
-//     }
-//   };
-
-//   const handleSaveMemberEdit = (groupId, memberId, newName) => {
-//     setData((prev) => ({
-//       ...prev,
-//       groups: prev.groups.map((g) =>
-//         g.id === groupId
-//           ? {
-//               ...g,
-//               members: g.members.map((m) =>
-//                 m.id === memberId ? { ...m, name: newName } : m
-//               ),
-//             }
-//           : g
-//       ),
-//     }));
-//     setEditMemberId(null);
-//   };
-
-//   const handleDeleteMember = (groupId, memberId) => {
-//     setData((prev) => ({
-//       ...prev,
-//       groups: prev.groups.map((g) =>
-//         g.id === groupId
-//           ? { ...g, members: g.members.filter((m) => m.id !== memberId) }
-//           : g
-//       ),
-//     }));
-//   };
-
-//   return (
-//     <Box>
-//       <TextField
-//         label="Название группы"
-//         value={newGroupName}
-//         onChange={(e) => setNewGroupName(e.target.value)}
-//         variant="outlined"
-//         size="small"
-//         style={{ marginBottom: "16px" }}
-//       />
-
-//       <Button variant="contained" onClick={handleAddGroup}>
-//         Добавить группу
-//       </Button>
-
-//       <RichTreeView>
-//         {data.groups.map((group) => (
-//           <TreeItem
-//             key={group.id}
-//             nodeId={group.id}
-//             label={
-//               <Box display="flex" alignItems="center">
-//                 <GroupIcon style={{ marginRight: "8px" }} />
-//                 {editGroupId === group.id ? (
-//                   <EditableLabel
-//                     initialValue={group.name}
-//                     onSave={(newValue) =>
-//                       handleSaveGroupEdit(group.id, newValue)
-//                     }
-//                   />
-//                 ) : (
-//                   <>
-//                     {group.name}
-//                     <IconButton onClick={() => handleEditGroup(group.id)}>
-//                       <EditIcon />
-//                     </IconButton>
-//                     <IconButton onClick={() => handleDeleteGroup(group.id)}>
-//                       <DeleteIcon />
-//                     </IconButton>
-//                   </>
-//                 )}
-//               </Box>
-//             }
-//           >
-//             {group.members.map((member) => (
-//               <TreeItem
-//                 key={member.id}
-//                 nodeId={member.id}
-//                 label={
-//                   <Box display="flex" alignItems="center">
-//                     <PersonIcon style={{ marginRight: "8px" }} />
-//                     {editMemberId === member.id ? (
-//                       <EditableLabel
-//                         initialValue={member.name}
-//                         onSave={(newValue) =>
-//                           handleSaveMemberEdit(group.id, member.id, newValue)
-//                         }
-//                       />
-//                     ) : (
-//                       <>
-//                         {member.name}
-//                         <IconButton
-//                           onClick={() => handleEditMember(group.id, member.id)}
-//                         >
-//                           <EditIcon />
-//                         </IconButton>
-//                         <IconButton
-//                           onClick={() =>
-//                             handleDeleteMember(group.id, member.id)
-//                           }
-//                         >
-//                           <DeleteIcon />
-//                         </IconButton>
-//                       </>
-//                     )}
-//                   </Box>
-//                 }
-//               />
-//             ))}
-//             {/* Кнопка для добавления нового члена группы */}
-//             <Button
-//               variant="outlined"
-//               size="small"
-//               onClick={() => handleAddMember(group.id)}
-//             >
-//               Добавить человека
-//             </Button>
-//           </TreeItem>
-//         ))}
-//       </RichTreeView>
-//     </Box>
-//   );
-// };
-
-// // Компонент для редактирования метки
-// const EditableLabel = ({ initialValue, onSave }) => {
-//   const [value, setValue] = useState(initialValue);
-
-//   return (
-//     <>
-//       <TextField
-//         value={value}
-//         onChange={(e) => setValue(e.target.value)}
-//         size="small"
-//         onBlur={() => onSave(value)} // Сохраняем при потере фокуса
-//         autoFocus // Автофокус на поле ввода при редактировании
-//       />
-//     </>
-//   );
-// };
-
-// export default MyRichTreeView;

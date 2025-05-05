@@ -31,6 +31,7 @@ const Champ = observer(({ actionsNAV, appState }) => {
     setAvatarid,
     avatarid,
     setChampid,
+    nameChecked,
   } = useChamps({ actionsNAV, appState });
   const [activeStep, setActiveStep] = useState(0);
   const [createMode, setCreateMode] = useState();
@@ -80,12 +81,13 @@ const Champ = observer(({ actionsNAV, appState }) => {
               currentIndex={avatarid}
               setCurrentIndex={setAvatarid}
             />
+
             <Button
               sx={{ width: "30%" }}
               onClick={() => {
                 setActiveStep(1);
               }}
-              disabled={!userName}
+              disabled={!nameChecked}
               variant="outlined"
               fullWidth
             >

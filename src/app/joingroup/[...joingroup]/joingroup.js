@@ -12,6 +12,8 @@ const Joingroup = observer(({ groupid, manager }) => {
     changeSecondName,
     firstName,
     secondName,
+    firstNameChecked,
+    secondNameChecked,
   } = useJoinGroup({ groupid, manager });
 
   return (
@@ -46,6 +48,7 @@ const Joingroup = observer(({ groupid, manager }) => {
           }}
         >
           <TextField
+            helperText="Имя с большой буквы"
             id="outlined-basic"
             label="Введите имя"
             variant="outlined"
@@ -54,6 +57,7 @@ const Joingroup = observer(({ groupid, manager }) => {
             fullWidth
           />
           <TextField
+            helperText="Фамилия с большой буквы"
             id="outlined-basic"
             label="Введите Фамилию"
             variant="outlined"
@@ -63,6 +67,7 @@ const Joingroup = observer(({ groupid, manager }) => {
           />
           <Button
             variant="outlined"
+            disabled={!firstNameChecked || !secondNameChecked}
             onClick={() => {
               joinGroup();
             }}

@@ -24,6 +24,7 @@ const useChamps = ({ actionsNAV, appState }) => {
   const [userName, setUserName] = useState("Кто-то");
   const [range, setRange] = useState([1, 30]);
   const [avatarid, setAvatarid] = useState(0);
+  const [nameChecked, setNameChecked] = useState(false);
 
   const changeRange = (event, newValue) => {
     setRange(newValue);
@@ -39,26 +40,18 @@ const useChamps = ({ actionsNAV, appState }) => {
   };
 
   const changeTaskCount = (e) => {
-    // e.target.value.match(/[^\d]/g) == null &&
-    //   Number(e.target.value) != 0 &&
-    //   setTaskCount(e.target.value);
-
-    // e.target.value == "" && setTaskCount(e.target.value);
     /^\d{0,2}$/.test(e.target.value) && setTaskCount(e.target.value);
   };
 
   const changeUserName = (e) => {
-    /^[А-яA-Za-z][А-яA-Za-z0-9 ]{0,25}$/.test(e.target.value) &&
-      setUserName(e.target.value);
-
-    // if (e.target.value) {
-    //   const a = e.target.value.match(/[А-яA-Za-z]+[А-яA-Za-z ]*/g);
-    //   a && setUserName(a[0]);
-    // } else setUserName("");
+    /^[А-яA-Za-z][А-яA-Za-z0-9 ]{0,25}$/.test(e.target.value)
+      ? // setUserName(e.target.value);
+        setNameChecked(true)
+      : setNameChecked(false);
+    setUserName(e.target.value);
   };
 
   useEffect(() => {
-    // appState.champid && setInputChampd(appState.champid);
     appState.champid && setChampid(appState.champid);
     setUserName(user.name);
   }, []);
@@ -71,9 +64,6 @@ const useChamps = ({ actionsNAV, appState }) => {
       (data) => {
         const CSP = getCSP();
         if (data.status == "started" && CSP.page == "champ") {
-          // if (!data.users[user.userid]?.persstatus) {
-          //   return;
-          // }
           if (data.users[user.userid].persstatus == "joined") {
             countdowncircle.show(() => {
               actionsNAV.runChamp(champid);
@@ -212,6 +202,7 @@ const useChamps = ({ actionsNAV, appState }) => {
     champid,
     changeUserName,
     userName,
+    nameChecked,
     inputChampId,
     changeInputChampId,
     changeRange,

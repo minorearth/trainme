@@ -99,18 +99,12 @@ export const setUseMetaData = async (data) => {
     launchedCourse,
     tasklog,
     sum,
-  } = data;
-  console.log(data);
-  // = decrypt2(data);
-  // try {
-  //   const tasklogPrepared = prepareTaskLog(
-  //     launchedCourse,
-  //     lastcompleted,
-  //     tasklog
-  //   );
-  // } catch (e) {
-  //   return "error";
-  // }
+  } = decrypt2(data);
+  const tasklogPrepared = prepareTaskLog(
+    launchedCourse,
+    lastcompleted,
+    tasklog
+  );
   const userMetaRef = db.collection("usermeta").doc(uid);
   if (unlocked.length != 0) {
     try {
@@ -119,7 +113,7 @@ export const setUseMetaData = async (data) => {
         [`courses.${launchedCourse}.unlocked`]: allunlocked,
         [`courses.${launchedCourse}.lastunlocked`]: unlocked,
         [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
-        // ...tasklogPrepared,
+        ...tasklogPrepared,
       });
 
       return "ok";
@@ -131,7 +125,7 @@ export const setUseMetaData = async (data) => {
       await userMetaRef.update({
         [`courses.${launchedCourse}.rating`]: pts,
         [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
-        // ...tasklogPrepared,
+        ...tasklogPrepared,
       });
       return "ok";
     } catch (e) {

@@ -160,14 +160,16 @@ const useNavigator = () => {
       CSP.nodemode == "renewal"
     ) {
       try {
-        // progressStore.setShowProgress(true);
+        //TODO: После фейла запроса из-за отсуттвия интернета кнока сохранить не нажимается
+        //TODO: таймаут ожидания интернета
+        progressStore.setShowProgress(true);
         // await setDataFetch({
         //   type: "wakeup",
         //   data: {},
         // });
         const res = await setDataFetch({
           type: "setusermetadata",
-          data: {
+          data: encrypt2({
             lastcompleted: CSP.chapter,
             unlocked: CSP.tobeunlocked,
             allunlocked: [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],
@@ -176,13 +178,11 @@ const useNavigator = () => {
             tasklog: CSP.tasklog,
             launchedCourse: CSP.launchedCourse,
             sum: (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts,
-          },
+          }),
         });
         if (res == "error") {
-          throw new Error("Это искусственная ошибка");
+          throw new Error("Server error");
         }
-
-        // alertdialog.hideDialog();
         openFlowPageAfterAccomplished();
         progressStore.setCloseProgress();
       } catch (e) {

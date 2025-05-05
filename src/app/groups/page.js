@@ -11,11 +11,9 @@ import Groups from "./groups";
 export default function Page({ params }) {
   const { customTheme } = useCustomTheme();
   return (
-    <>
-      <ThemeProvider theme={customTheme}>
-        <CssBaseline />
-        <Groups />
-      </ThemeProvider>
-    </>
+    <ThemeProvider theme={customTheme}>
+      <CssBaseline />
+      <Groups />
+    </ThemeProvider>
   );
 }

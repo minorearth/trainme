@@ -39,7 +39,6 @@ const CongratPage = ({ appState, actionsNAV }) => {
         aria-label="repeat"
         onClick={async () => {
           await actionsNAV.saveProgress();
-          // await actionsNAV.saveProgress();
         }}
         endIcon={<ReplayIcon />}
       >
