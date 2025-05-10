@@ -9,8 +9,43 @@ const getChapteeLevels = (chapters) => {
   );
 };
 
+// {
+//   id: "4680f00b-b586-413c-890a-9669b4b7b1c3",
+//   position: { x: 550, y: 0 },
+//   type: "turbo",
+//   data: {
+//     id: "4680f00b-b586-413c-890a-9669b4b7b1c3",
+//     type: "turbo",
+//     title: "Вывод данных",
+//     lottie: "no",
+//     subline: "Учимся печатать данные",
+//     unlockpts: null,
+//     maxcoins: 30,
+//     level: 1,
+//     nodemode: "newtopic",
+//   },
+// },
+
+const prepareObjectModel = (chapterFlowNodes) => {
+  return chapterFlowNodes
+    .filter((item) => item.data.lottie == "no")
+    .reduce(
+      (acc, item) => ({
+        ...acc,
+        [item.id]: {
+          title: item.data.title,
+          maxcoins: item.data.maxcoins,
+          nodemode: item.data.nodemode,
+        },
+      }),
+      {}
+    );
+};
+
 export const load = () => {
   // const coursesId = Object.keys(coursesToLoad);
+
+  let chapterCourseObjectModel = {};
 
   coursesToLoad.forEach((id) => {
     const {
@@ -22,13 +57,14 @@ export const load = () => {
       taskcollection,
     } = courses[id];
 
-    console.log(id, chapterFlowNodes);
-
     setDocInCollectionClient(
       "chapters",
       { chapterFlowNodes, chapterFlowEdges },
       chaptersdoc
     );
+
+    const chapterObjectModel = prepareObjectModel(chapterFlowNodes);
+    chapterCourseObjectModel[id] = chapterObjectModel;
 
     // LoadTasks
     const idLevels = getChapteeLevels(chapterFlowNodes);
@@ -48,6 +84,8 @@ export const load = () => {
         setDocInCollectionClient(taskcollection, { tasks }, chapterid);
     });
   });
+
+  setDocInCollectionClient("views", chapterCourseObjectModel, "chaptersobject");
 };
 
 // export const load = () => {

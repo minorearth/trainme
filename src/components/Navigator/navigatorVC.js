@@ -186,7 +186,6 @@ const useNavigator = () => {
         openFlowPageAfterAccomplished();
         progressStore.setCloseProgress();
       } catch (e) {
-        console.log(e);
         alertdialog.showDialog(
           "Сохранение данных",
           ' "Что-то пошло не так, повторите попытку...',
@@ -556,7 +555,6 @@ const useNavigator = () => {
         levelStart: level - 5,
         levelEnd: level,
       });
-      console.log(tasksFetched);
 
       //TODO: proactively open chapters. Remade
       await setUseMetaUnlockedAndCompleted(

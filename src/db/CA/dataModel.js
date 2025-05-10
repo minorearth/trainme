@@ -52,7 +52,6 @@ export const updateUsersInChamp = async (db, collectionName, data, id) => {
 };
 
 export const updateUserInGroup = async (db, collectionName, data, id) => {
-  console.log(data, id);
   const ref = doc(db, collectionName, id);
   try {
     await updateDoc(ref, {

@@ -6,7 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { useCustomTheme } from "@/app/theme";
 import { CssBaseline } from "@mui/material";
 import ChampUsers from "@/components/champ/components/ChampUsersGrid/ChampUsers";
-import Groups from "./groups";
+import Groups from "../../components/manager/groups/groups";
 
 export default function Page({ params }) {
   const { customTheme } = useCustomTheme();

@@ -7,7 +7,17 @@ import {
 import { testsall1 } from "@/components/admin/course1";
 import { testsall2 } from "@/components/admin/course2";
 
-export const coursesToLoad = ["6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0"];
+export const coursesToLoad = [
+  "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0",
+  "a3905595-437e-47f3-b749-28ea5362bd39",
+];
+
+export const getReadyCourses = () => {
+  return Object.keys(courses).filter(
+    (courseId) => courses[courseId].state == "ready"
+  );
+};
+
 export const courses = {
   "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0": {
     id: "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0",

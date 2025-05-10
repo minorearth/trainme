@@ -40,7 +40,7 @@ const useJoinGroup = ({ groupid, manager }) => {
   // }, []);
 
   const joinGroup = async () => {
-    console.log("ads", user.userid);
+    console.log("user", user.userid);
     try {
       await updateUserInGroupClient(
         "groups",
