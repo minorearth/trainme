@@ -2,22 +2,16 @@
 // https://mui.com/x/react-tree-view/rich-tree-view/editing/
 
 import { useEffect } from "react";
+import stat from "@/components/manager/store/stat";
 
-import {
-  setDocInCollectionClient,
-  getDocDataFromCollectionByIdClient,
-} from "@/db/domain/domain";
-import user from "@/store/user";
-import { courses, getReadyCourses } from "@/globals/courses";
-
-import { allTasksToObject } from "@/components/manager/utils";
-
-export const useGroupsTreeitem = ({ itemId, uid }) => {
+export const useStatTreeitem = ({ code }) => {
   useEffect(() => {}, []);
 
-  const showUserMeta = async () => {};
+  const showCode = async () => {
+    stat.setCode(code);
+  };
 
   return {
-    showUserMeta,
+    showCode,
   };
 };

@@ -79,6 +79,17 @@ export const objectToArr = (data) => {
 //     ],
 //   },
 
+const prepareStatTaskCode = (task) => {
+  let res = "";
+  if (task.code) {
+    res += `\nЗасчитанный код:\n${task.code}`;
+  }
+  if (task.errorcode) {
+    res += `\nПоследний неправильный код:\n${task.errorcode}`;
+  }
+  return res;
+};
+
 export const getTreeRepresent = (userstat, chaptersobj) => {
   const res = Object.keys(userstat).map((courseId) => ({
     id: courseId,
@@ -98,15 +109,19 @@ export const getTreeRepresent = (userstat, chaptersobj) => {
         children: Object.keys(userstat[courseId].stat).map((chapterId) => ({
           id: `${chapterId}stat`,
           label: chaptersobj[courseId][chapterId].title,
-          children: Object.keys(userstat[courseId].stat[chapterId]).map(
+          children: Object.keys(userstat[courseId].stat[chapterId].tasks).map(
             (taskid) => ({
               id: `${taskid}`,
               label: "Задача",
+              code: prepareStatTaskCode(
+                userstat[courseId].stat[chapterId].tasks[taskid]
+              ),
             })
           ),
         })),
       },
     ],
   }));
+  console.log("res", res);
   return res;
 };

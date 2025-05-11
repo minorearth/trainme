@@ -159,7 +159,7 @@ export const setUseMetaUnlockedAndCompleted = async (data) => {
 //UTILITIES
 const prepareTaskLog = (launchedCourse, lastcompleted, tasklog) => {
   let res = {};
-  const dest = `courses.${launchedCourse}.stat.${lastcompleted}`;
+  const dest = `courses.${launchedCourse}.stat.${lastcompleted}.tasks`;
   Object.keys(tasklog).forEach(
     (taskuuid) => (res[`${dest}.${taskuuid}`] = tasklog[taskuuid])
   );

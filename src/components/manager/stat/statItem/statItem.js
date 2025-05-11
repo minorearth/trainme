@@ -25,7 +25,7 @@ import {
 import { TreeItemIcon } from "@mui/x-tree-view/TreeItemIcon";
 import { TreeItemProvider } from "@mui/x-tree-view/TreeItemProvider";
 import { TreeItemLabelInput } from "@mui/x-tree-view/TreeItemLabelInput";
-import { useGroupsTreeitem } from "./statVC";
+import { useStatTreeitem } from "./statVC";
 
 const CustomStatItem = React.forwardRef(function CustomStatItem(
   { id, itemId, label, disabled, children },
@@ -33,9 +33,9 @@ const CustomStatItem = React.forwardRef(function CustomStatItem(
 ) {
   const item = useTreeItemModel(itemId);
 
-  const { copyGroupLink, showUserMeta } = useGroupsTreeitem({
+  const { showCode } = useStatTreeitem({
     itemId,
-    uid: item.uid,
+    code: item.code,
   });
 
   const {
@@ -69,10 +69,9 @@ const CustomStatItem = React.forwardRef(function CustomStatItem(
           ) : ( */}
           <CustomLabel
             {...getLabelProps()}
-            copyGroupLink={copyGroupLink}
             toggleItemEditing={interactions.toggleItemEditing}
             // isGroup={item.isFolder}
-            // showUserMeta={showUserMeta}
+            showCode={showCode}
           />
           {/* )} */}
         </TreeItemContent>
@@ -88,9 +87,7 @@ function CustomLabel({
   children,
   toggleItemEditing,
   isGroup,
-  handleSaveItemLabel,
-  copyGroupLink,
-  showUserMeta,
+  showCode,
   ...other
 }) {
   return (
@@ -118,7 +115,7 @@ function CustomLabel({
         {/* {!isGroup && ( */}
         <IconButton
           size="small"
-          onClick={showUserMeta}
+          onClick={showCode}
           sx={{ color: "text.secondary" }}
         >
           <VisibilityOutlinedIcon fontSize="small" />

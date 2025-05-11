@@ -6,7 +6,7 @@ import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import { IconButton } from "@mui/material";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import { useStat } from "./statVC";
-import CustomTreeItem from "@/components/manager/groups/groupItem/groupItem";
+import CustomStatItem from "@/components/manager/stat/statItem/statItem";
 import { observer } from "mobx-react-lite";
 import stat from "@/components/manager/store/stat";
 
@@ -59,7 +59,7 @@ const Stat = observer(() => {
         </IconButton> */}
       </Box>
       <RichTreeView
-        slots={{ item: CustomTreeItem }}
+        slots={{ item: CustomStatItem }}
         items={stat.userstat}
         // isItemEditable
       />

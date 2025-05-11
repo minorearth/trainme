@@ -8,6 +8,7 @@ import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import { useGroups } from "./groupsVC";
 import CustomTreeItem from "@/components/manager/groups/groupItem/groupItem";
 import Stat from "@/components/manager/stat/stat";
+import StatViewer from "@/components/manager/StatViewer";
 
 export default function Groups() {
   const { changeLabel, addNewGroup, groupsData } = useGroups();
@@ -32,6 +33,7 @@ export default function Groups() {
         />
       </Box>
       <Stat />
+      <StatViewer />
     </Box>
   );
 }
