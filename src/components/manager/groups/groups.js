@@ -5,16 +5,28 @@ import Box from "@mui/material/Box";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import { IconButton } from "@mui/material";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
+import RefreshOutlinedIcon from "@mui/icons-material/RefreshOutlined";
 import { useGroups } from "./groupsVC";
 import CustomTreeItem from "@/components/manager/groups/groupItem/groupItem";
 import Stat from "@/components/manager/stat/stat";
 import StatViewer from "@/components/manager/StatViewer";
 
 export default function Groups() {
-  const { changeLabel, addNewGroup, groupsData } = useGroups();
+  const { changeLabel, addNewGroup, groupsData, fetchGroupsData } = useGroups();
 
   return (
-    <Box sx={{ flexDirection: "row", display: "flex" }}>
+    <Box
+      sx={{
+        flexDirection: "row",
+        display: "flex",
+        height: "75%",
+        width: "75%",
+        borderStyle: "solid",
+        borderColor: "black",
+        borderRadius: "10px",
+        padding: "20px",
+      }}
+    >
       <Box sx={{ flexDirection: "column", display: "flex" }}>
         <Box sx={{ flexDirection: "row", display: "flex" }}>
           <IconButton
@@ -23,6 +35,13 @@ export default function Groups() {
             sx={{ color: "text.secondary" }}
           >
             <GroupAddOutlinedIcon fontSize="small" />
+          </IconButton>
+          <IconButton
+            size="small"
+            onClick={fetchGroupsData}
+            sx={{ color: "text.secondary" }}
+          >
+            <RefreshOutlinedIcon fontSize="small" />
           </IconButton>
         </Box>
         <RichTreeView

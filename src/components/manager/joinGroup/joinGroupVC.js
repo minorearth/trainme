@@ -1,23 +1,15 @@
 "use client";
-import { useState, useEffect } from "react";
-import {
-  updateDocFieldsInCollectionByIdClient,
-  setDocInCollectionClient,
-  updateUsersInChampClient,
-  updateChampStatusClient,
-  getDocDataFromCollectionByIdClient,
-  updateUserInGroupClient,
-} from "@/db/domain/domain";
+import { useState } from "react";
+import { updateUserInGroupClient } from "@/db/domain/domain";
 
 import user from "@/store/user";
-import stn from "@/globals/settings";
-import alertdialog from "@/components/common/dialog/store";
 
 const useJoinGroup = ({ groupid, manager }) => {
   const [firstName, setFirstName] = useState("");
   const [secondName, setSecondName] = useState("");
   const [secondNameChecked, setSecondNameChecked] = useState(false);
   const [firstNameChecked, setFirstNameChecked] = useState(false);
+  const [inviteAccepted, setInviteAccepted] = useState(false);
 
   const changeFirstName = (e) => {
     /^[А-ЯA-Z][А-яA-Za-z]{0,25}$/.test(e.target.value)
@@ -35,10 +27,6 @@ const useJoinGroup = ({ groupid, manager }) => {
     setSecondName(e.target.value);
   };
 
-  // useEffect(() => {
-  //   setUserName(user.name);
-  // }, []);
-
   const joinGroup = async () => {
     console.log("user", user.userid);
     try {
@@ -47,7 +35,7 @@ const useJoinGroup = ({ groupid, manager }) => {
         { groupid, secondName, firstName, uid: user.userid },
         manager
       );
-      // updateChampStatusClient(stn.collections.CHAMPS, "started", champid);
+      setInviteAccepted(true);
     } catch (e) {}
   };
 
@@ -59,6 +47,7 @@ const useJoinGroup = ({ groupid, manager }) => {
     secondName,
     firstNameChecked,
     secondNameChecked,
+    inviteAccepted,
   };
 };
 

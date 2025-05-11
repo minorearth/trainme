@@ -48,7 +48,7 @@ const Stat = observer(() => {
   const { changeLabel, addNewGroup, data } = useStat();
 
   return (
-    <Box sx={{ minHeight: 352, maxWidth: 450 }}>
+    <Box sx={{ minHeight: 352, maxWidth: 450, overflow: "scroll" }}>
       <Box sx={{ flexDirection: "row", display: "flex" }}>
         {/* <IconButton
           size="small"

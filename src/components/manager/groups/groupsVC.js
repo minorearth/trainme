@@ -19,17 +19,20 @@ export const useGroups = () => {
 
   useEffect(() => {}, []);
 
+  const fetchGroupsData = async () => {
+    const groups = await getDocDataFromCollectionByIdClient(
+      "groups",
+      user.userid
+    );
+    setGroupsData(objectToArr(groups.data));
+  };
+
   reaction(
     () => user.userid,
     (userid) => {
       if (userid != "") {
         const getGroups = async () => {
-          const groups = await getDocDataFromCollectionByIdClient(
-            "groups",
-            user.userid
-          );
-
-          setGroupsData(objectToArr(groups.data));
+          fetchGroupsData();
           const chaptersObj = await getDocDataFromCollectionByIdClient(
             "views",
             "chaptersobject"
@@ -81,5 +84,6 @@ export const useGroups = () => {
     changeLabel,
     addNewGroup,
     groupsData,
+    fetchGroupsData,
   };
 };

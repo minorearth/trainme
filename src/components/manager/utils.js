@@ -82,10 +82,11 @@ export const objectToArr = (data) => {
 const prepareStatTaskCode = (task) => {
   let res = "";
   if (task.code) {
-    res += `\nЗасчитанный код:\n${task.code}`;
+    res += `Засчитанный код:\n${task.code}`;
+    res += "\n\n";
   }
   if (task.errorcode) {
-    res += `\nПоследний неправильный код:\n${task.errorcode}`;
+    res += `Последний неправильный код:\n${task.errorcode}`;
   }
   return res;
 };
