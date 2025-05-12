@@ -25,8 +25,7 @@ export const setDataFetch = async (data) => {
     // }
     return result.res;
   } catch (error) {
-    console.log("erroroooo");
-    console.error("Error:", error);
+    return "error";
   }
 };
 
