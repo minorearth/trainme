@@ -16,24 +16,27 @@ setInterval(() => {
 
 export const setDataFetch = async (data) => {
   wakeUp();
-  setTimeout(async () => {
-    try {
-      const response = await fetch("/api/setmeta", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const result = await response.json();
-      // if (result.res == "error") {
-      //   // throw new Error("Network response was not ok");
-      // }
-      return result.res;
-    } catch (error) {
-      return "error";
-    }
-  }, 1000);
+  const res = await new Promise(() => {
+    setTimeout(async (resolve) => {
+      try {
+        const response = await fetch("/api/setmeta", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        const result = await response.json();
+        // if (result.res == "error") {
+        //   // throw new Error("Network response was not ok");
+        // }
+        resolve(result.res);
+      } catch (error) {
+        resolve("error");
+      }
+    }, 1000);
+  });
+  return res;
 };
 
 export const getDataFetch = async (data) => {
