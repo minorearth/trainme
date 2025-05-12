@@ -110,15 +110,17 @@ export const getTreeRepresent = (userstat, chaptersobj) => {
         children: Object.keys(userstat[courseId].stat).map((chapterId) => ({
           id: `${chapterId}stat`,
           label: chaptersobj[courseId][chapterId].title,
-          children: Object.keys(userstat[courseId].stat[chapterId].tasks).map(
-            (taskid) => ({
-              id: `${taskid}`,
-              label: "Задача",
-              code: prepareStatTaskCode(
-                userstat[courseId].stat[chapterId].tasks[taskid]
-              ),
-            })
-          ),
+          children: userstat[courseId].stat[chapterId].tasks
+            ? Object.keys(userstat[courseId].stat[chapterId].tasks).map(
+                (taskid) => ({
+                  id: `${taskid}`,
+                  label: "Задача",
+                  code: prepareStatTaskCode(
+                    userstat[courseId].stat[chapterId].tasks[taskid]
+                  ),
+                })
+              )
+            : [],
         })),
       },
     ],
