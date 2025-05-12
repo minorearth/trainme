@@ -180,6 +180,7 @@ const useNavigator = () => {
             sum: (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts,
           }),
         });
+        console.log("res", res);
         if (res == "error") {
           throw new Error("Server error");
         }
