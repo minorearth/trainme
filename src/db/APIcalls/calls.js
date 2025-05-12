@@ -16,8 +16,8 @@ setInterval(() => {
 
 export const setDataFetch = async (data) => {
   wakeUp();
-  const res = await new Promise(() => {
-    setTimeout(async (resolve) => {
+  const res = await new Promise((resolve) => {
+    setTimeout(async () => {
       try {
         const response = await fetch("/api/setmeta", {
           method: "POST",
