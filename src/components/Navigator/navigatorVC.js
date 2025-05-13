@@ -184,7 +184,7 @@ const useNavigator = () => {
         if (res == "error") {
           throw new Error("Server error");
         }
-        openFlowPageAfterAccomplished();
+        await openFlowPageAfterAccomplished();
         progressStore.setCloseProgress();
       } catch (e) {
         alertdialog.showDialog(

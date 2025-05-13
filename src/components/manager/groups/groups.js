@@ -45,6 +45,7 @@ export default function Groups() {
           </IconButton>
         </Box>
         <RichTreeView
+          sx={{ overflow: "scroll" }}
           slots={{ item: CustomTreeItem }}
           items={groupsData}
           isItemEditable
