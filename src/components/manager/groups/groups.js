@@ -9,9 +9,11 @@ import RefreshOutlinedIcon from "@mui/icons-material/RefreshOutlined";
 import { useGroups } from "./groupsVC";
 import CustomTreeItem from "@/components/manager/groups/groupItem/groupItem";
 import Stat from "@/components/manager/stat/stat";
-import StatViewer from "@/components/manager/StatViewer";
+import PivotTable from "./pivotreport/pivot";
+import stat from "../store/stat";
+import { observer } from "mobx-react-lite";
 
-export default function Groups() {
+const Groups = observer(() => {
   const { changeLabel, addNewGroup, groupsData, fetchGroupsData } = useGroups();
 
   return (
@@ -52,8 +54,10 @@ export default function Groups() {
           onItemLabelChange={(itemId, label) => changeLabel({ itemId, label })}
         />
       </Box>
-      <Stat />
-      <StatViewer />
+      {stat.userstatvisible && <Stat />}
+      {stat.reportvisible && <PivotTable />}
     </Box>
   );
-}
+});
+
+export default Groups;

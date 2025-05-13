@@ -14,6 +14,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import CheckIcon from "@mui/icons-material/Check";
+import PivotTableChartOutlinedIcon from "@mui/icons-material/PivotTableChartOutlined";
 import { useTreeItem } from "@mui/x-tree-view/useTreeItem";
 import {
   TreeItemContent,
@@ -33,7 +34,7 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
 ) {
   const item = useTreeItemModel(itemId);
 
-  const { copyGroupLink, showUserMeta } = useGroupsTreeitem({
+  const { copyGroupLink, showUserMeta, showReport } = useGroupsTreeitem({
     itemId,
     uid: item.uid,
   });
@@ -73,6 +74,7 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
               toggleItemEditing={interactions.toggleItemEditing}
               isGroup={item.isFolder}
               showUserMeta={showUserMeta}
+              showReport={showReport}
             />
           )}
         </TreeItemContent>
@@ -91,6 +93,7 @@ function CustomLabel({
   handleSaveItemLabel,
   copyGroupLink,
   showUserMeta,
+  showReport,
   ...other
 }) {
   return (
@@ -122,6 +125,15 @@ function CustomLabel({
             sx={{ color: "text.secondary" }}
           >
             <InsertLinkOutlinedIcon fontSize="small" />
+          </IconButton>
+        )}
+        {isGroup && (
+          <IconButton
+            size="small"
+            onClick={showReport}
+            sx={{ color: "text.secondary" }}
+          >
+            <PivotTableChartOutlinedIcon fontSize="small" />
           </IconButton>
         )}
         {!isGroup && (

@@ -3,9 +3,20 @@ class stat {
   userstat = [];
   chaptersobj = {};
   code = "";
+  report = [];
+  userstatvisible = false;
+  reportvisible = false;
 
   setStat(data) {
     this.userstat = data;
+    this.reportvisible = false;
+    this.userstatvisible = true;
+  }
+
+  setReport(data) {
+    this.userstat = data;
+    this.userstatvisible = false;
+    this.reportvisible = true;
   }
 
   setChaptersObj(data) {
