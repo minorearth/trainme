@@ -74,7 +74,7 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
               toggleItemEditing={interactions.toggleItemEditing}
               isGroup={item.isFolder}
               showUserMeta={showUserMeta}
-              showReport={showReport}
+              showReport={() => showReport(itemId)}
             />
           )}
         </TreeItemContent>

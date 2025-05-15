@@ -12,6 +12,7 @@ import {
   onSnapshot,
   arrayUnion,
   increment,
+  documentId,
 } from "firebase/firestore";
 
 export const updateDocFieldsInCollectionById = async (
@@ -141,16 +142,22 @@ export const copyDoc = async (db, collection, oldindex, newindex) => {
   setDoc(doc(db, collection, newindex), data);
 };
 
-// const DBDocsToObject = (docs) => {
-//   let ret = [];
-//   docs.forEach((item) => {
-//     {
-//       const data = item.data();
-//       ret = [...ret, { id: item.id, ...data }];
-//     }
-//   });
-//   return ret;
-// };
+export const getMultipleDocs = async (db, collectionName, ids) => {
+  const col = collection(db, collectionName);
+  const q = query(col, where(documentId(), "in", ids));
+  return multipleDocsToObject(await getDocs(q));
+};
+
+const multipleDocsToObject = (docs) => {
+  let ret = [];
+  docs.forEach((item) => {
+    {
+      const data = item.data();
+      ret = [...ret, { id: item.id, ...data }];
+    }
+  });
+  return ret;
+};
 
 // export const updateDocFieldsInCollectionById2 = async (path, data) => {
 //   await updateDoc(doc(db, path), data);
@@ -173,12 +180,6 @@ export const copyDoc = async (db, collection, oldindex, newindex) => {
 //     }
 //   });
 //   return ret;
-// };
-
-// export const getMultipleDocsFromCollection = async (collectionName, ids) => {
-//   const col = collection(db, collectionName);
-//   const q = query(col, where(documentId(), "in", ids));
-//   return DBDocsToObject(await getDocs(q));
 // };
 
 // const getDocsExtFiltered = async (collectionName, dependentFilter) => {

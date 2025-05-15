@@ -15,8 +15,6 @@ import { arrToObject, objectToArr } from "@/components/manager/utils";
 import store from "@/components/manager/store/stat";
 
 export const useGroups = () => {
-  const [groupsData, setGroupsData] = useState([]);
-
   useEffect(() => {}, []);
 
   const fetchGroupsData = async () => {
@@ -24,7 +22,9 @@ export const useGroups = () => {
       "groups",
       user.userid
     );
-    setGroupsData(objectToArr(groups.data));
+    const data = objectToArr(groups.data);
+    console.log(data);
+    store.setGroupData(data);
   };
 
   reaction(
@@ -45,19 +45,18 @@ export const useGroups = () => {
   );
 
   const addNewGroup = () => {
-    setGroupsData((prev) => {
-      const data = [
-        ...prev,
-        {
-          id: uuidv4(),
-          label: "Новая группа",
-          children: [],
-          isFolder: true,
-        },
-      ];
-      setDocInCollectionClient("groups", arrToObject(data), user.userid);
-      return data;
-    });
+    const data = [
+      ...store.groupsdata,
+      {
+        id: uuidv4(),
+        label: "Новая группа",
+        children: [],
+        isFolder: true,
+      },
+    ];
+    store.setGroupData(data);
+    setDocInCollectionClient("groups", arrToObject(data), user.userid);
+    return data;
   };
 
   const updateNodeLabel = (nodes, id, newLabel) => {
@@ -83,7 +82,6 @@ export const useGroups = () => {
   return {
     changeLabel,
     addNewGroup,
-    groupsData,
     fetchGroupsData,
   };
 };

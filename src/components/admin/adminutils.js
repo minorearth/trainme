@@ -36,6 +36,7 @@ const prepareObjectModel = (chapterFlowNodes) => {
           title: item.data.title,
           maxcoins: item.data.maxcoins,
           nodemode: item.data.nodemode,
+          order: item.data.order,
         },
       }),
       {}
@@ -64,6 +65,7 @@ export const load = () => {
     );
 
     const chapterObjectModel = prepareObjectModel(chapterFlowNodes);
+    console.log("chapterObjectModel", chapterObjectModel);
     chapterCourseObjectModel[id] = chapterObjectModel;
 
     // LoadTasks

@@ -15,6 +15,7 @@ import {
   updatePoinsInChamp,
   setTaskLogInChamp,
   updateUserInGroup,
+  getMultipleDocs,
 } from "@/db/CA/dataModel";
 
 import {
@@ -69,6 +70,12 @@ export const getDocDataFromCollectionByIdClient = async (
 export const getDocFromCollectionByIdClient = async (collectionName, id) => {
   return await getDocFromCollectionById(db, collectionName, id);
 };
+
+export const getMultipleDocsClient = async (collectionName, ids) => {
+  return await getMultipleDocs(db, collectionName, ids);
+};
+
+getMultipleDocs;
 
 export const getDocFromCollectionByIdRealtimeClient = async (
   collectionName,

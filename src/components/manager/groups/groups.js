@@ -14,7 +14,7 @@ import stat from "../store/stat";
 import { observer } from "mobx-react-lite";
 
 const Groups = observer(() => {
-  const { changeLabel, addNewGroup, groupsData, fetchGroupsData } = useGroups();
+  const { changeLabel, addNewGroup, fetchGroupsData } = useGroups();
 
   return (
     <Box
@@ -49,7 +49,7 @@ const Groups = observer(() => {
         <RichTreeView
           sx={{ overflow: "scroll" }}
           slots={{ item: CustomTreeItem }}
-          items={groupsData}
+          items={stat.groupsdata}
           isItemEditable
           onItemLabelChange={(itemId, label) => changeLabel({ itemId, label })}
         />

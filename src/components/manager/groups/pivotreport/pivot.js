@@ -1,22 +1,28 @@
 import React from "react";
 import Box from "@mui/material/Box";
+import usePivot from "./pivotVC";
+import stat from "../../store/stat";
+import { observer } from "mobx-react-lite";
+import { toJS } from "mobx";
 
-const PivotTable = () => {
-  const data = [
-    { id: 1, col0: "Иванов Иван", col1: "V", col2: "", col3: "" },
-    { id: 1, col0: "Иванов Иван", col1: "V", col2: "V", col3: "" },
-    { id: 1, col0: "Иванов Иван", col1: "V", col2: "", col3: "" },
-    { id: 1, col0: "Иванов Иван", col1: "V", col2: "V", col3: "V" },
-    { id: 1, col0: "Иванов Иван", col1: "V", col2: "", col3: "" },
-    // ...
-  ];
+const PivotTable = observer(() => {
+  // const { data1, columns1 } = usePivot({ groupsData });
+  // const rows = [
+  //   { id: 1, col0: "Иванов Иван", col1: "V", col2: "", col3: "" },
+  //   { id: 1, col0: "Иванов Иван", col1: "V", col2: "V", col3: "" },
+  //   { id: 1, col0: "Иванов Иван", col1: "V", col2: "", col3: "" },
+  //   { id: 1, col0: "Иванов Иван", col1: "V", col2: "V", col3: "V" },
+  //   { id: 1, col0: "Иванов Иван", col1: "V", col2: "", col3: "" },
+  //   // ...
+  // ];
 
-  const columns = [
-    { header: "Имя", accessor: "col0" },
-    { header: "1", accessor: "col1" },
-    { header: "2", accessor: "col2" },
-    { header: "3", accessor: "col3" },
-  ];
+  // const columns = [
+  //   { header: "Имя", accessor: "col0" },
+  //   { header: "1", accessor: "col1" },
+  //   { header: "2", accessor: "col2" },
+  //   { header: "3", accessor: "col3" },
+  // ];
+  console.log("stat.report", toJS(stat.report));
 
   const cellStyle = {
     border: "1px solid gray",
@@ -44,7 +50,7 @@ const PivotTable = () => {
       >
         <thead>
           <tr style={{ height: "30px", boxSizing: "border-box" }}>
-            {columns.map((col) => (
+            {stat.report.columns[0].map((col) => (
               <th key={col.accessor} style={headerStyle}>
                 {col.header}
               </th>
@@ -52,12 +58,12 @@ const PivotTable = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((row) => (
+          {stat.report.rows[0].map((row) => (
             <tr
               key={row.id}
               style={{ height: "30px", boxSizing: "border-box" }}
             >
-              {columns.map((col, index) => (
+              {stat.report.columns[0].map((col, index) => (
                 <td
                   key={col.accessor}
                   style={{
@@ -77,6 +83,6 @@ const PivotTable = () => {
       </table>
     </Box>
   );
-};
+});
 
 export default PivotTable;

@@ -2,8 +2,9 @@ import { makeObservable, makeAutoObservable } from "mobx";
 class stat {
   userstat = [];
   chaptersobj = {};
+  groupsdata = [];
   code = "";
-  report = [];
+  report = {};
   userstatvisible = false;
   reportvisible = false;
 
@@ -13,8 +14,12 @@ class stat {
     this.userstatvisible = true;
   }
 
+  setGroupData(data) {
+    this.groupsdata = data;
+  }
+
   setReport(data) {
-    this.userstat = data;
+    this.report = data;
     this.userstatvisible = false;
     this.reportvisible = true;
   }
