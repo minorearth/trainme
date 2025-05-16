@@ -5,7 +5,8 @@ import stat from "../../store/stat";
 import { observer } from "mobx-react-lite";
 import { toJS } from "mobx";
 
-const PivotTable = observer(() => {
+const PivotTable = observer(({ data }) => {
+  console.log("data", toJS(data));
   // const { data1, columns1 } = usePivot({ groupsData });
   // const rows = [
   //   { id: 1, col0: "Иванов Иван", col1: "V", col2: "", col3: "" },
@@ -45,12 +46,11 @@ const PivotTable = observer(() => {
       <table
         style={{
           borderCollapse: "collapse",
-          height: "auto",
         }}
       >
         <thead>
           <tr style={{ height: "30px", boxSizing: "border-box" }}>
-            {stat.report.columns[0].map((col) => (
+            {data.cols.map((col) => (
               <th key={col.accessor} style={headerStyle}>
                 {col.header}
               </th>
@@ -58,18 +58,18 @@ const PivotTable = observer(() => {
           </tr>
         </thead>
         <tbody>
-          {stat.report.rows[0].map((row) => (
+          {data.rows.map((row) => (
             <tr
               key={row.id}
               style={{ height: "30px", boxSizing: "border-box" }}
             >
-              {stat.report.columns[0].map((col, index) => (
+              {data.cols.map((col, index) => (
                 <td
                   key={col.accessor}
                   style={{
                     ...cellStyle,
                     backgroundColor: index === 0 ? "#d0e0f0" : undefined,
-                    width: index === 0 ? "200px" : "30px",
+                    width: index === 0 ? "300px" : "30px",
 
                     boxSizing: "border-box",
                   }}

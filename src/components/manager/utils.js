@@ -125,6 +125,5 @@ export const getTreeRepresent = (userstat, chaptersobj) => {
       },
     ],
   }));
-  console.log("res", res);
   return res;
 };

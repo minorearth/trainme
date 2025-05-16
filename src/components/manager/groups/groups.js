@@ -12,6 +12,7 @@ import Stat from "@/components/manager/stat/stat";
 import PivotTable from "./pivotreport/pivot";
 import stat from "../store/stat";
 import { observer } from "mobx-react-lite";
+import Reports from "@/components/manager/groups/pivotreport/reports";
 
 const Groups = observer(() => {
   const { changeLabel, addNewGroup, fetchGroupsData } = useGroups();
@@ -54,8 +55,8 @@ const Groups = observer(() => {
           onItemLabelChange={(itemId, label) => changeLabel({ itemId, label })}
         />
       </Box>
-      {stat.userstatvisible && <Stat />}
-      {stat.reportvisible && <PivotTable />}
+      <Reports />
+      <Stat />
     </Box>
   );
 });

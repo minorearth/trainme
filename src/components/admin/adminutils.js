@@ -65,7 +65,6 @@ export const load = () => {
     );
 
     const chapterObjectModel = prepareObjectModel(chapterFlowNodes);
-    console.log("chapterObjectModel", chapterObjectModel);
     chapterCourseObjectModel[id] = chapterObjectModel;
 
     // LoadTasks

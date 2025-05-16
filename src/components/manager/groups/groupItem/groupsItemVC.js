@@ -41,46 +41,114 @@ export const useGroupsTreeitem = ({ itemId, uid }) => {
       }),
       {}
     );
-    console.log("users2", users2);
     return users2;
   };
 
   const prepareReport = ({ chapters, completed, usernames }) => {
-    // { id: 1, col0: "Иванов Иван", col1: "V", col2: "", col3: "" },
-    const getRow = (chapters, rowid, user, order) => {
-      const rows = Object.keys(chapters).reduce(
-        (acc, chapterid, id) => ({
+    console.log("completed", completed);
+
+    const getCourseChapters = (courses) => {
+      const res = Object.keys(courses).reduce(
+        (acc, courseid) => ({
           ...acc,
-          [`col${id + 1}`]: "V",
+          [courseid]: { completed: courses[courseid].completed },
+        }),
+        {}
+      );
+      return res;
+    };
+
+    const userMetaToObject = (completed) => {
+      const res = completed.reduce(
+        (acc, user) => ({
+          ...acc,
+          [user.userId]: getCourseChapters(user.courses),
+        }),
+        {}
+      );
+      return res;
+    };
+
+    const chaptersObjToArray = (chapters) => {
+      const res = Object.keys(chapters).map((chapterId) => ({
+        chapterId,
+        order: chapters[chapterId].order,
+      }));
+      return res.sort((a, b) => a.order - b.order);
+    };
+
+    const getRow = (chapters, rowid, user, order, userMetaObj, courseid) => {
+      const chaptersArr = chaptersObjToArray(chapters);
+      console.log("chaptersArr", chaptersArr);
+      console.log("chapters", toJS(chapters));
+      const rows = chaptersArr.reduce(
+        (acc, chapter, id) => ({
+          ...acc,
+          [`col${id + 1}`]: userMetaObj[user.uid][courseid].completed.includes(
+            chapter.chapterId
+          )
+            ? "V"
+            : "",
           id: order,
         }),
         {}
       );
+      // const rows = Object.keys(chapters).reduce(
+      //   (acc, chapterid, id) => ({
+      //     ...acc,
+      //     [`col${id + 1}`]: userMetaObj[user.uid][courseid].completed.includes(
+      //       chapterid
+      //     )
+      //       ? "V"
+      //       : "",
+      //     id: order,
+      //   }),
+      //   {}
+      // );
       return { ...rows, col0: user.name };
     };
 
-    let rows = Object.keys(chapters).map((courseid, rowid) =>
-      Object.keys(usernames).map((user, id) =>
-        getRow(chapters[courseid], rowid, usernames[user], id)
-      )
-    );
-    let columns = Object.keys(chapters).map((courseid) =>
-      Object.keys(chapters[courseid])
+    const getColumns = (chapters) => {
+      return Object.keys(chapters)
         .map((chapterid) => ({
-          header: `${chapters[courseid][chapterid].order}`,
-          accessor: `col${chapters[courseid][chapterid].order}`,
-          order: chapters[courseid][chapterid].order,
+          header: `${chapters[chapterid].order}`,
+          accessor: `col${chapters[chapterid].order}`,
+          order: chapters[chapterid].order,
         }))
-        .sort((a, b) => a.order - b.order)
-    );
-    // columns = [...columns, { header: "Имя", accessor: "col0" }];
+        .sort((a, b) => a.order - b.order);
+    };
+    const userMetaObj = userMetaToObject(completed);
 
-    return { rows, columns };
+    let report = {};
+    Object.keys(chapters).forEach((courseid, rowid) => {
+      const rows = Object.keys(usernames).map((user, id) =>
+        getRow(
+          chapters[courseid],
+          rowid,
+          usernames[user],
+          id,
+          userMetaObj,
+          courseid
+        )
+      );
+      report[courseid] = { rows };
+    });
+
+    Object.keys(chapters).map((courseid) => {
+      let cols = getColumns(chapters[courseid]);
+      cols = [{ header: "Имя", accessor: "col0" }, ...cols];
+      report[courseid] = { ...report[courseid], cols };
+    });
+
+    console.log("userMetaObj", userMetaObj);
+
+    return report;
     // console.log(toJS(chapters), toJS(completed), usernames);
   };
 
   const showReport = async (itemId) => {
     const users = getGroupUsers(stat.groupsdata, itemId);
+    console.log(users, "users");
     const uids = Object.keys(users);
     if (uids) {
       const usersMeta = await getMultipleDocsClient("usermeta", uids);
@@ -89,6 +157,7 @@ export const useGroupsTreeitem = ({ itemId, uid }) => {
         completed: usersMeta,
         usernames: users,
       });
+      console.log("report", report);
 
       stat.setReport(report);
     }

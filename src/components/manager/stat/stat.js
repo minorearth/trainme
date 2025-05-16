@@ -12,20 +12,20 @@ import stat from "@/components/manager/store/stat";
 import StatViewer from "@/components/manager/StatViewer";
 
 const Stat = observer(() => {
-  const { changeLabel, addNewGroup, data } = useStat();
-
-  return (
-    <Box sx={{ minHeight: 352, overflow: "scroll" }}>
-      <Box sx={{ flexDirection: "row", display: "flex" }}>
-        <RichTreeView
-          slots={{ item: CustomStatItem }}
-          items={stat.userstat}
-          // isItemEditable
-        />
-        <StatViewer />
+  if (stat.userstatvisible) {
+    return (
+      <Box sx={{ minHeight: 352, overflow: "scroll" }}>
+        <Box sx={{ flexDirection: "row", display: "flex" }}>
+          <RichTreeView
+            slots={{ item: CustomStatItem }}
+            items={stat.userstat}
+            // isItemEditable
+          />
+          <StatViewer />
+        </Box>
       </Box>
-    </Box>
-  );
+    );
+  }
 });
 
 export default Stat;

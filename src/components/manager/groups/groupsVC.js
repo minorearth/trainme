@@ -23,7 +23,6 @@ export const useGroups = () => {
       user.userid
     );
     const data = objectToArr(groups.data);
-    console.log(data);
     store.setGroupData(data);
   };
 
