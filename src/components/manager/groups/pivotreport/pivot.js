@@ -68,13 +68,18 @@ const PivotTable = observer(({ data }) => {
                   key={col.accessor}
                   style={{
                     ...cellStyle,
-                    backgroundColor: index === 0 ? "#d0e0f0" : undefined,
+                    backgroundColor:
+                      index === 0
+                        ? "#d0e0f0"
+                        : row[col.accessor].completed
+                        ? "red"
+                        : "yellow",
                     width: index === 0 ? "300px" : "30px",
 
                     boxSizing: "border-box",
                   }}
                 >
-                  {row[col.accessor]}
+                  {row[col.accessor].sum}
                 </td>
               ))}
             </tr>

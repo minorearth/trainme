@@ -12,7 +12,7 @@ import user from "@/store/user";
 import { reaction } from "mobx";
 
 import { arrToObject, objectToArr } from "@/components/manager/utils";
-import store from "@/components/manager/store/stat";
+import stat from "@/components/manager/store/stat";
 
 export const useGroups = () => {
   useEffect(() => {}, []);
@@ -23,7 +23,7 @@ export const useGroups = () => {
       user.userid
     );
     const data = objectToArr(groups.data);
-    store.setGroupData(data);
+    stat.setGroupData(data);
   };
 
   reaction(
@@ -36,7 +36,7 @@ export const useGroups = () => {
             "views",
             "chaptersobject"
           );
-          store.setChaptersObj(chaptersObj.data);
+          stat.setChaptersObj(chaptersObj.data);
         };
         getGroups();
       }
@@ -45,7 +45,7 @@ export const useGroups = () => {
 
   const addNewGroup = () => {
     const data = [
-      ...store.groupsdata,
+      ...stat.groupsdata,
       {
         id: uuidv4(),
         label: "Новая группа",
@@ -53,7 +53,7 @@ export const useGroups = () => {
         isFolder: true,
       },
     ];
-    store.setGroupData(data);
+    stat.setGroupData(data);
     setDocInCollectionClient("groups", arrToObject(data), user.userid);
     return data;
   };
@@ -74,7 +74,7 @@ export const useGroups = () => {
   };
 
   const changeLabel = ({ itemId, label }) => {
-    const newdata = updateNodeLabel(groupsData, itemId, label);
+    const newdata = updateNodeLabel(stat.groupsdata, itemId, label);
     setDocInCollectionClient("groups", arrToObject(newdata), user.userid);
   };
 

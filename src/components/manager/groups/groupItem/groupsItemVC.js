@@ -47,14 +47,28 @@ export const useGroupsTreeitem = ({ itemId, uid }) => {
   const prepareReport = ({ chapters, completed, usernames }) => {
     console.log("completed", completed);
 
+    const getChaptersData = (chapters) => {
+      return Object.keys(chapters).reduce(
+        (acc, chapterid) => ({
+          ...acc,
+          [chapterid]: { sum: chapters[chapterid].sum },
+        }),
+        {}
+      );
+    };
+
     const getCourseChapters = (courses) => {
       const res = Object.keys(courses).reduce(
         (acc, courseid) => ({
           ...acc,
-          [courseid]: { completed: courses[courseid].completed },
+          [courseid]: {
+            completed: courses[courseid].completed,
+            stat: getChaptersData(courses[courseid].stat),
+          },
         }),
         {}
       );
+      console.log("asdasdasd", res);
       return res;
     };
 
@@ -77,6 +91,15 @@ export const useGroupsTreeitem = ({ itemId, uid }) => {
       return res.sort((a, b) => a.order - b.order);
     };
 
+    const getCellValue = (chapters, chapterId) => {
+      console.log("stst", chapters.stat);
+      if (chapters.stat[chapterId]) {
+        return chapters.stat[chapterId].sum;
+      } else {
+        return 0;
+      }
+    };
+
     const getRow = (chapters, rowid, user, order, userMetaObj, courseid) => {
       const chaptersArr = chaptersObjToArray(chapters);
       console.log("chaptersArr", chaptersArr);
@@ -84,11 +107,15 @@ export const useGroupsTreeitem = ({ itemId, uid }) => {
       const rows = chaptersArr.reduce(
         (acc, chapter, id) => ({
           ...acc,
-          [`col${id + 1}`]: userMetaObj[user.uid][courseid].completed.includes(
-            chapter.chapterId
-          )
-            ? "V"
-            : "",
+          [`col${id + 1}`]: {
+            completed: userMetaObj[user.uid][courseid].completed.includes(
+              chapter.chapterId
+            ),
+            sum: getCellValue(
+              userMetaObj[user.uid][courseid],
+              chapter.chapterId
+            ),
+          },
           id: order,
         }),
         {}
@@ -105,7 +132,7 @@ export const useGroupsTreeitem = ({ itemId, uid }) => {
       //   }),
       //   {}
       // );
-      return { ...rows, col0: user.name };
+      return { ...rows, col0: { sum: user.name } };
     };
 
     const getColumns = (chapters) => {
