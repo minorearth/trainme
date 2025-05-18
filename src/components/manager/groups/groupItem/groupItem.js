@@ -27,6 +27,7 @@ import { TreeItemIcon } from "@mui/x-tree-view/TreeItemIcon";
 import { TreeItemProvider } from "@mui/x-tree-view/TreeItemProvider";
 import { TreeItemLabelInput } from "@mui/x-tree-view/TreeItemLabelInput";
 import { useGroupsTreeitem } from "./groupsItemVC";
+import stat from "../../store/stat";
 
 const CustomTreeItem = React.forwardRef(function CustomTreeItem(
   { id, itemId, label, disabled, children },
@@ -74,7 +75,10 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
               toggleItemEditing={interactions.toggleItemEditing}
               isGroup={item.isFolder}
               showUserMeta={showUserMeta}
-              showReport={() => showReport(itemId)}
+              showReport={() => {
+                stat.setGroupSelected(itemId);
+                showReport(itemId);
+              }}
             />
           )}
         </TreeItemContent>

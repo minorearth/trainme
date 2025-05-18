@@ -7,6 +7,8 @@ class stat {
   report = {};
   userstatvisible = false;
   reportvisible = false;
+  userMetaObj = {};
+  groupSelected = -1;
 
   setStat(data) {
     this.userstat = data;
@@ -16,6 +18,14 @@ class stat {
 
   setGroupData(data) {
     this.groupsdata = data;
+  }
+
+  setUserMetaObj(data) {
+    this.userMetaObj = data;
+  }
+
+  setGroupSelected(groupid) {
+    this.groupSelected = groupid;
   }
 
   setReport(data) {

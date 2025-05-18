@@ -6,7 +6,6 @@ import { observer } from "mobx-react-lite";
 import { toJS } from "mobx";
 
 const PivotTable = observer(({ data }) => {
-  console.log("data", toJS(data));
   // const { data1, columns1 } = usePivot({ groupsData });
   // const rows = [
   //   { id: 1, col0: "Иванов Иван", col1: "V", col2: "", col3: "" },
@@ -23,7 +22,6 @@ const PivotTable = observer(({ data }) => {
   //   { header: "2", accessor: "col2" },
   //   { header: "3", accessor: "col3" },
   // ];
-  console.log("stat.report", toJS(stat.report));
 
   const cellStyle = {
     border: "1px solid gray",
@@ -52,7 +50,7 @@ const PivotTable = observer(({ data }) => {
           <tr style={{ height: "30px", boxSizing: "border-box" }}>
             {data.cols.map((col) => (
               <th key={col.accessor} style={headerStyle}>
-                {col.header}
+                {`${col.header}\n${col.maxcoins}`}
               </th>
             ))}
           </tr>
@@ -69,17 +67,33 @@ const PivotTable = observer(({ data }) => {
                   style={{
                     ...cellStyle,
                     backgroundColor:
-                      index === 0
-                        ? "#d0e0f0"
-                        : row[col.accessor].completed
-                        ? "red"
-                        : "yellow",
+                      index === 0 ? "#d0e0f0" : row[col.accessor].completed,
+
                     width: index === 0 ? "300px" : "30px",
 
                     boxSizing: "border-box",
                   }}
                 >
                   {row[col.accessor].sum}
+
+                  {/* <span
+                    style={{
+                      fontSize: 10,
+                      // padding: "0 4px",
+                      display: "inline-block",
+                    }}
+                  >
+                    {row[col.accessor].sum}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 8,
+                      display: "inline-block",
+                      verticalAlign: "sub",
+                    }}
+                  >
+                    {row[col.accessor].maxcoins}
+                  </span> */}
                 </td>
               ))}
             </tr>

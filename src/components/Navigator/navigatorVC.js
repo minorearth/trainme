@@ -315,7 +315,6 @@ const useNavigator = () => {
   }) => {
     progressStore.setShowProgress(true);
     const CSP = getCSP();
-    console.log(nodemode);
     if (nodemode == "champ") {
       setChampTasks({
         champid,

@@ -1,14 +1,21 @@
 "use client";
-import { useState, useEffect } from "react";
 
-import stn from "@/globals/settings";
+import stat from "@/components/manager/store/stat";
 
-const usePivot = ({ champid }) => {
-  const [rows, setRowsx] = useState([]);
-  const [started, setStarted] = useState(false);
+import { setDocInCollectionClient } from "@/db/domain/domain";
+import user from "@/store/user";
+
+const usePivot = () => {
+  const makeSnapshot = () => {
+    setDocInCollectionClient(
+      "snapshots",
+      stat.userMetaObj,
+      `${user.userid}_${stat.groupSelected}`
+    );
+  };
 
   return {
-    rows,
+    makeSnapshot,
   };
 };
 
