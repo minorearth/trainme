@@ -495,7 +495,9 @@ const useNavigator = () => {
     }
 
     if (taskstage == "recap_suspended") {
-      openRecapTasksPage(CSP.recapTasksIds, tasks);
+      CSP.nodemode == "renewal"
+        ? openCongratPage({ CSP, success: false })
+        : openRecapTasksPage(CSP.recapTasksIds, tasks);
     }
 
     if (taskstage == "accomplished_suspended") {

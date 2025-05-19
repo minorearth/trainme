@@ -49,7 +49,9 @@ const useTest = ({
           ok(() => openCongratPage({ CSP, success: true }));
         }
         if (CSP.recapTasksIds.length != 0 && CSP.taskstage == "WIP") {
-          ok(() => openRecapTasksPage(CSP.recapTasksIds, tests));
+          CSP.nodemode == "renewal"
+            ? ok(() => openCongratPage({ CSP, success: false }))
+            : ok(() => openRecapTasksPage(CSP.recapTasksIds, tests));
         }
         return;
       case error:
@@ -276,7 +278,10 @@ const useTest = ({
       return;
     }
     if (CSP.taskstage == "recap_suspended") {
-      openRecapTasksPage(CSP.recapTasksIds, tests);
+      CSP.nodemode == "renewal"
+        ? openCongratPage({ CSP, success: false })
+        : openRecapTasksPage(CSP.recapTasksIds, tests);
+
       return;
     }
     if (CSP.taskId != tests.length) {
