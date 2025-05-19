@@ -99,6 +99,7 @@ export const setUseMetaData = async (data) => {
     launchedCourse,
     tasklog,
     sum,
+    completed,
   } = decrypt2(data);
   const tasklogPrepared = prepareTaskLog(
     launchedCourse,
@@ -110,8 +111,8 @@ export const setUseMetaData = async (data) => {
   if (unlocked.length != 0) {
     try {
       await userMetaRef.update({
-        [`courses.${launchedCourse}.completed`]:
-          FieldValue.arrayUnion(lastcompleted),
+        [`courses.${launchedCourse}.completed`]: completed,
+        // FieldValue.arrayUnion(lastcompleted),
         [`courses.${launchedCourse}.rating`]: pts,
         [`courses.${launchedCourse}.unlocked`]: allunlocked,
         [`courses.${launchedCourse}.lastunlocked`]: unlocked,

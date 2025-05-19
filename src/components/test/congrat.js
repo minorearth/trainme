@@ -11,9 +11,12 @@ import { getCSP } from "@/db/localstorage";
 let pts;
 const CongratPage = ({ appState, actionsNAV }) => {
   const [pts, setPts] = useState(10);
+  const [isSuccess, setIsSuccess] = useState();
+
   useEffect(() => {
-    const { pts } = getCSP();
+    const { pts, success } = getCSP();
     setPts(pts);
+    setIsSuccess(success);
   }, []);
 
   const theme = useTheme();
@@ -29,7 +32,9 @@ const CongratPage = ({ appState, actionsNAV }) => {
         backgroundColor: theme.palette.background.default,
       }}
     >
-      <Animation width={"700px"} height={"700px"} name={"success"} />
+      {isSuccess && (
+        <Animation width={"700px"} height={"700px"} name={"success"} />
+      )}
       <Box sx={{}}></Box>
       {pts != 0 && <TextAnimated text={`Заработанные монеты: ${pts} `} />}
 
@@ -38,7 +43,8 @@ const CongratPage = ({ appState, actionsNAV }) => {
         variant="outlined"
         aria-label="repeat"
         onClick={async () => {
-          await actionsNAV.saveProgress();
+          const { success } = getCSP();
+          await actionsNAV.saveProgress(success);
         }}
         endIcon={<ReplayIcon />}
       >

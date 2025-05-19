@@ -151,7 +151,7 @@ const useNavigator = () => {
     setappState(data);
   };
 
-  const saveProgress = async () => {
+  const saveProgress = async (success) => {
     const CSP = getCSP();
     if (
       CSP.nodemode == "addhoc" ||
@@ -166,17 +166,33 @@ const useNavigator = () => {
         //   type: "wakeup",
         //   data: {},
         // });
-        const dataToEncrypt = {
-          lastcompleted: CSP.chapter,
-          unlocked: CSP.tobeunlocked,
-          allunlocked: [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],
-          pts: CSP.userProgress.rating + CSP.pts,
-          uid: user.userid,
-          tasklog: CSP.tasklog,
-          launchedCourse: CSP.launchedCourse,
-          sum: (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts,
-        };
-        console.log("dataToEncrypt", dataToEncrypt);
+        let dataToEncrypt;
+        if (success) {
+          dataToEncrypt = {
+            completed: [...CSP.userProgress.completed, CSP.chapter],
+            lastcompleted: CSP.chapter,
+            unlocked: CSP.tobeunlocked,
+            allunlocked: [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],
+            pts: CSP.userProgress.rating + CSP.pts,
+            uid: user.userid,
+            tasklog: CSP.tasklog,
+            launchedCourse: CSP.launchedCourse,
+            sum: (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts,
+          };
+        } else {
+          dataToEncrypt = {
+            completed: CSP.userProgress.completed,
+            lastcompleted: CSP.chapter,
+            unlocked: CSP.userProgress.lastunlocked,
+            allunlocked: CSP.userProgress.unlocked,
+            pts: CSP.userProgress.rating + CSP.pts,
+            uid: user.userid,
+            tasklog: CSP.tasklog,
+            launchedCourse: CSP.launchedCourse,
+            sum: (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts,
+          };
+        }
+
         const res = await setDataFetch({
           type: "setusermetadata",
           data: encrypt2(dataToEncrypt),
@@ -280,10 +296,11 @@ const useNavigator = () => {
     setStateAndCSP(initialState);
   };
 
+  //TODO:not used
   const interruptExamMode = () => {
     const CSP = getCSP();
     if (CSP.nodemode != "champ") {
-      openCongratPage({ CSP });
+      openCongratPage({ CSP, success: true });
       // setStateAndCSP({
       //   launchedCourse: CSP.launchedCourse,
       //   page: "flow",
@@ -353,7 +370,7 @@ const useNavigator = () => {
     progressStore.setCloseProgress();
   };
 
-  const openCongratPage = async ({ CSP }) => {
+  const openCongratPage = async ({ CSP, success }) => {
     countdownbutton.hideButton();
     let pts;
     pts = getSense();
@@ -369,6 +386,7 @@ const useNavigator = () => {
       ...CSP,
       page: "congrat",
       pts,
+      success,
     });
   };
 
@@ -408,7 +426,7 @@ const useNavigator = () => {
       text,
       2,
       () => {
-        openCongratPage({ CSP });
+        openCongratPage({ CSP, success: false });
       },
       () => {}
     );
@@ -481,7 +499,7 @@ const useNavigator = () => {
     }
 
     if (taskstage == "accomplished_suspended") {
-      openCongratPage({ CSP });
+      openCongratPage({ CSP, success: false });
     }
 
     if (taskstage == "recap") {

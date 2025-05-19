@@ -26,8 +26,8 @@ const useTest = ({
   const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
     // editorRef.current.getModel().setValue("");
     setEarned(error);
-    //TODO:
     setTaskLog({ error, code });
+    setFixed(error);
 
     const CSP = getCSP();
 
@@ -38,10 +38,15 @@ const useTest = ({
         return;
       case CSP.taskId == tests.length - 1 && !error:
         if (CSP.taskstage == "recap") {
-          ok(() => openCongratPage({ CSP }));
+          ok(() =>
+            openCongratPage({
+              CSP,
+              success: CSP.recapTasksIds.length == CSP.fixed,
+            })
+          );
         }
         if (CSP.recapTasksIds.length == 0 && CSP.taskstage == "WIP") {
-          ok(() => openCongratPage({ CSP }));
+          ok(() => openCongratPage({ CSP, success: true }));
         }
         if (CSP.recapTasksIds.length != 0 && CSP.taskstage == "WIP") {
           ok(() => openRecapTasksPage(CSP.recapTasksIds, tests));
@@ -71,6 +76,13 @@ const useTest = ({
     }
   };
 
+  const setFixed = (error) => {
+    const CSP = getCSP();
+    CSP.taskstage == "recap" &&
+      !error &&
+      updateSCP({ fixed: CSP.fixed ? CSP.fixed + 1 : 1 });
+  };
+
   const setTaskLog = ({ code, error }) => {
     const CSP = getCSP();
 
@@ -96,7 +108,10 @@ const useTest = ({
   };
 
   const nextTask = ({ CSP }) => {
-    setStateAndCSP({ ...CSP, taskId: CSP.taskId + 1 });
+    setStateAndCSP({
+      ...CSP,
+      taskId: CSP.taskId + 1,
+    });
   };
 
   // const nextTask = ({ CSP }) => {
@@ -257,7 +272,7 @@ const useTest = ({
     // if (CSP.taskId != tests.length - 1) {
 
     if (CSP.taskstage == "accomplished_suspended") {
-      openCongratPage({ CSP });
+      openCongratPage({ CSP, success: false });
       return;
     }
     if (CSP.taskstage == "recap_suspended") {
