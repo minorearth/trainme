@@ -263,34 +263,23 @@ export const getRandomTasksForRepeat = async ({
     "alltasks"
   );
 
-  let filteredTasks;
-  let tasksuuids;
-
   if (CSP.randomsaved && CSP.randomsaved?.length != 0) {
-    filteredTasks = allTasks.data.tasks.filter((task) =>
+    const filteredTasks = allTasks.data.tasks.filter((task) =>
       CSP.randomsaved.includes(task.taskuuid)
     );
-    tasksuuids = CSP.randomsaved;
+    const tasksuuids = CSP.randomsaved;
+    return { tasksuuids, tasksFetched: filteredTasks };
   } else {
-    filteredTasks = getRandomTasks(
+    const filteredTasks = getRandomTasks(
       allTasks.data.tasks,
       levelStart,
       levelEnd,
       5
     );
 
-    tasksuuids = filteredTasks.data.map((task) => task.taskuuid);
+    const tasksuuids = filteredTasks.data.map((task) => task.taskuuid);
+    return { tasksuuids, tasksFetched: filteredTasks.data };
   }
-
-  const res = { tasksuuids, tasksFetched: filteredTasks.data };
-
-  // const res = stn.mode.ALL_RIGHT_CODE
-  //   ? filteredTasks.map((task) => ({
-  //       ...task,
-  //       defaultcode: task.rightcode,
-  //     }))
-  //   : filteredTasks;
-  return res;
 };
 
 export const getRandomTasksForChamp = async ({

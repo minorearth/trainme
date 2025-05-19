@@ -18,7 +18,7 @@ const SplashAction = observer(({ name }) => {
       () => splashCDStore.state.showSplashCD,
       () => {
         if (!splashCDStore.state.showSplashCD) {
-          action(splashCDStore.state.action2());
+          splashCDStore.state.action2();
         }
       }
     );

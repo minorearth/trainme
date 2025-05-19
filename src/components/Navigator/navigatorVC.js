@@ -134,7 +134,6 @@ const useNavigator = () => {
     setCSP(stateToUpdate);
     return stateToUpdate;
   };
-
   const resetStateToInitial = async () => {
     setStateAndCSP(initialState);
   };
@@ -167,18 +166,20 @@ const useNavigator = () => {
         //   type: "wakeup",
         //   data: {},
         // });
+        const dataToEncrypt = {
+          lastcompleted: CSP.chapter,
+          unlocked: CSP.tobeunlocked,
+          allunlocked: [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],
+          pts: CSP.userProgress.rating + CSP.pts,
+          uid: user.userid,
+          tasklog: CSP.tasklog,
+          launchedCourse: CSP.launchedCourse,
+          sum: (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts,
+        };
+        console.log("dataToEncrypt", dataToEncrypt);
         const res = await setDataFetch({
           type: "setusermetadata",
-          data: encrypt2({
-            lastcompleted: CSP.chapter,
-            unlocked: CSP.tobeunlocked,
-            allunlocked: [...CSP.userProgress.unlocked, ...CSP.tobeunlocked],
-            pts: CSP.userProgress.rating + CSP.pts,
-            uid: user.userid,
-            tasklog: CSP.tasklog,
-            launchedCourse: CSP.launchedCourse,
-            sum: (CSP.userProgress.stat[CSP.chapter]?.sum ?? 0) + CSP.pts,
-          }),
+          data: encrypt2(dataToEncrypt),
         });
         if (res == "error") {
           throw new Error("Server error");
@@ -509,15 +510,15 @@ const useNavigator = () => {
     tobeunlocked,
   }) => {
     //TODO: proactively open chapters. Remade
-    await setDataFetch({
-      type: "unlockandcomplete",
-      data: encrypt2({
-        lastcompleted: chapter,
-        unlocked: tobeunlocked,
-        uid: user.userid,
-        launchedCourse: courseid,
-      }),
-    });
+    // await setDataFetch({
+    //   type: "unlockandcomplete",
+    //   data: encrypt2({
+    //     lastcompleted: chapter,
+    //     unlocked: tobeunlocked,
+    //     uid: user.userid,
+    //     launchedCourse: courseid,
+    //   }),
+    // });
 
     updateStateAndCSP({
       chapter,
@@ -556,14 +557,15 @@ const useNavigator = () => {
       });
 
       //TODO: proactively open chapters. Remade
-      await setUseMetaUnlockedAndCompleted(
-        encrypt2({
-          lastcompleted: chapter,
-          unlocked: tobeunlocked,
-          uid: user.userid,
-          launchedCourse: courseid,
-        })
-      );
+      // await setUseMetaUnlockedAndCompleted(
+      //   encrypt2({
+      //     lastcompleted: chapter,
+      //     unlocked: tobeunlocked,
+      //     uid: user.userid,
+      //     launchedCourse: courseid,
+      //   })
+      // );
+
       updateStateAndCSP({
         chapter,
         page: "testsStarted",

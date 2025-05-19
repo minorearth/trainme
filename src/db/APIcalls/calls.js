@@ -27,9 +27,6 @@ export const setDataFetch = async (data) => {
           body: JSON.stringify(data),
         });
         const result = await response.json();
-        // if (result.res == "error") {
-        //   // throw new Error("Network response was not ok");
-        // }
         resolve(result.res);
       } catch (error) {
         resolve("error");

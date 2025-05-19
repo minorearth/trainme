@@ -29,7 +29,6 @@ const useTest = ({
     //TODO:
     setTaskLog({ error, code });
 
-    // CSP.nodemode != "champ" && setTaskLog({ error, code });
     const CSP = getCSP();
 
     switch (true) {
@@ -193,6 +192,7 @@ const useTest = ({
   };
 
   const ok = (action = () => {}) => {
+    console.log("action", action);
     splashCDStore.setShow(false, "ok", 500, () => action());
   };
 

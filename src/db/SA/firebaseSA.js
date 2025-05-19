@@ -106,9 +106,12 @@ export const setUseMetaData = async (data) => {
     tasklog
   );
   const userMetaRef = db.collection("usermeta").doc(uid);
+  //TODO: wrong condition for terminal task
   if (unlocked.length != 0) {
     try {
       await userMetaRef.update({
+        [`courses.${launchedCourse}.completed`]:
+          FieldValue.arrayUnion(lastcompleted),
         [`courses.${launchedCourse}.rating`]: pts,
         [`courses.${launchedCourse}.unlocked`]: allunlocked,
         [`courses.${launchedCourse}.lastunlocked`]: unlocked,
