@@ -30,7 +30,7 @@ import alertdialog from "@/components/common/dialog/store";
 import dialog from "@/components/common/dialog/store";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import { useRouter } from "next/navigation";
-import { set } from "mobx";
+
 import { setDataFetch, getDataFetch } from "@/db/APIcalls/calls";
 
 const useNavigator = () => {
@@ -43,6 +43,21 @@ const useNavigator = () => {
   const initialState = {
     page: "courses",
   };
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      const message = "Вы уверены, что хотите покинуть страницу?";
+      event.preventDefault();
+      event.returnValue = message;
+      return message;
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   useEffect(() => {
     //TODO: uncomment

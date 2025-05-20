@@ -102,6 +102,7 @@ export const useAuth = () => {
     if (isValid) {
       cleanUpCSP();
       await authNow(email, password);
+      router.replace("/chapters"); // заменяет текущую страницу
     } else {
       progressStore.setCloseProgress();
     }

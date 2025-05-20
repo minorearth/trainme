@@ -11,18 +11,8 @@ export function middleware(request) {
   ) {
     return Response.redirect(new URL("/", request.url));
   }
-  // if (
-  //   !session &&
-  //   request.nextUrl.pathname.startsWith("/main/tasksclassifier")
-  // ) {
-  //   return Response.redirect(new URL("/", request.url));
-  // }
 
-  // if (!session && request.nextUrl.pathname.startsWith("/testrun")) {
-  //   return Response.redirect(new URL("/", request.url));
-  // }
+  if (session && request.nextUrl.pathname.startsWith("/login")) {
+    return Response.redirect(new URL("/chapters", request.url));
+  }
 }
-
-//   export const config = {
-//     matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
-//   }
