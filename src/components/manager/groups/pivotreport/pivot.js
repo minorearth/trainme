@@ -4,6 +4,7 @@ import usePivot from "./pivotVC";
 import stat from "../../store/stat";
 import { observer } from "mobx-react-lite";
 import { toJS } from "mobx";
+import styled from "styled-components";
 
 const PivotTable = observer(({ data }) => {
   // const { data1, columns1 } = usePivot({ groupsData });
@@ -23,6 +24,38 @@ const PivotTable = observer(({ data }) => {
   //   { header: "3", accessor: "col3" },
   // ];
 
+  const Wrapper = styled.div`
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      /* border-bottom: 1px dotted black; */
+    }
+
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      /* width: 500px; */
+      left: 5px;
+      white-space: nowrap;
+      max-width: 500px;
+      background-color: white;
+      color: black;
+      text-align: center;
+      border-radius: 3px;
+      border-color: black;
+      border-style: solid;
+      padding: 5px;
+
+      /* Position the tooltip */
+      position: absolute;
+      top: 20px;
+      z-index: 100000;
+    }
+
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+    }
+  `;
+
   const cellStyle = {
     border: "1px solid gray",
     width: "30px",
@@ -38,6 +71,8 @@ const PivotTable = observer(({ data }) => {
   const headerStyle = {
     ...cellStyle,
     backgroundColor: "#f0f0f0",
+    overflow: "visible",
+    cursor: "pointer",
   };
   return (
     <Box>
@@ -50,7 +85,17 @@ const PivotTable = observer(({ data }) => {
           <tr style={{ height: "30px", boxSizing: "border-box" }}>
             {data.cols.map((col) => (
               <th key={col.accessor} style={headerStyle}>
-                {`${col.header}\n${col.maxcoins}`}
+                <Wrapper>
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <p class="tooltip">
+                      {col.header}
+                      <span class="tooltiptext">{col.title}</span>
+                    </p>
+                    <span style={{ fontSize: "10px" }}>
+                      {col.maxcoins || "ученика"}
+                    </span>
+                  </div>
+                </Wrapper>
               </th>
             ))}
           </tr>

@@ -106,9 +106,9 @@ export const useGroupsTreeitem = ({ itemId, uid }) => {
     const getCompletedInfo = (userMetaObj, snapShot, chapterId) => {
       const isInclude = userMetaObj.includes(chapterId);
       const isIncludeSnapShot = snapShot.includes(chapterId);
-      if (isInclude && isIncludeSnapShot) return "green";
-      if (isInclude && !isIncludeSnapShot) return "yellow";
-      if (!isInclude && !isIncludeSnapShot) return "blue";
+      if (isInclude && isIncludeSnapShot) return "#1878D4";
+      if (isInclude && !isIncludeSnapShot) return "#CADCEE";
+      if (!isInclude && !isIncludeSnapShot) return "white";
     };
 
     const getRows = (
@@ -160,6 +160,7 @@ export const useGroupsTreeitem = ({ itemId, uid }) => {
           accessor: `col${chapters[chapterid].order}`,
           order: chapters[chapterid].order,
           maxcoins: chapters[chapterid].maxcoins,
+          title: chapters[chapterid].title,
         }))
         .sort((a, b) => a.order - b.order);
     };

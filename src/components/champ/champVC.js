@@ -43,6 +43,7 @@ const useChamps = ({ actionsNAV, appState }) => {
     /^\d{0,2}$/.test(e.target.value) && setTaskCount(e.target.value);
   };
 
+  //TODO ё letter is forbidden somehow
   const changeUserName = (e) => {
     /^[А-яA-Za-z][А-яA-Za-z0-9 ]{0,25}$/.test(e.target.value)
       ? // setUserName(e.target.value);

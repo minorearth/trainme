@@ -100,6 +100,7 @@ export const setUseMetaData = async (data) => {
     tasklog,
     sum,
     completed,
+    repeat,
   } = decrypt2(data);
   const tasklogPrepared = prepareTaskLog(
     launchedCourse,
@@ -108,7 +109,7 @@ export const setUseMetaData = async (data) => {
   );
   const userMetaRef = db.collection("usermeta").doc(uid);
   //TODO: wrong condition for terminal task
-  if (unlocked.length != 0) {
+  if (!repeat) {
     try {
       await userMetaRef.update({
         [`courses.${launchedCourse}.completed`]: completed,

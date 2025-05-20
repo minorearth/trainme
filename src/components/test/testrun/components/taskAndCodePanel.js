@@ -77,7 +77,6 @@ const TaskAndCodePanel = (props) => {
       )}
       <Grid size={{ xs: 1, md: 2 }}>
         <Panel label={"Редактор кода"}>
-          {/* <EdtorNoTask code={"print(a)"} /> */}
           <MonacoEd
             currTask={currTask}
             monacoRef={monacoRef}
