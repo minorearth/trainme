@@ -1,11 +1,7 @@
-import Fab from "@mui/material/Fab";
 import { motion } from "framer-motion";
-import { Tooltip } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 const TextAnimated = ({ text, tooltip }) => {
   return (
@@ -19,7 +15,6 @@ const TextAnimated = ({ text, tooltip }) => {
       transition={{
         duration: 5,
         ease: "easeInOut",
-        // times: [0, 0.2, 0.5, 0.8, 1],
         repeat: Infinity,
         repeatDelay: 0,
       }}

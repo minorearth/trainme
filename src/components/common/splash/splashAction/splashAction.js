@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 import splashCDStore from "./store";
 import dynamic from "next/dynamic";
 import { reaction, action } from "mobx";
-import { getLottie } from "../../animation/getLottie";
+import { getLottie } from "../../lottieAnimation/getLottie";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 

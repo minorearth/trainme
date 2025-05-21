@@ -1,7 +1,7 @@
 "use client";
 import { useTheme } from "@mui/material/styles";
 import { useState, useEffect, useRef } from "react";
-import usePythonRunner from "./withPythonRunner";
+import usePythonRunner from "./pythonRunner";
 import Box from "@mui/material/Box";
 import useCheck from "./useCheck";
 import useTest from "./useTest";

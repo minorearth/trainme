@@ -10,13 +10,13 @@ import { BsUnlock } from "react-icons/bs";
 import { useTheme } from "@mui/material/styles";
 import localFont from "next/font/local";
 import { RxLayers } from "react-icons/rx";
-import Animation from "@/components/common/animation/Animation";
+import Animation from "@/components/common/lottieAnimation/Animation";
 
 const myFont = localFont({
   src: "../../../app/Monaco.ttf",
 });
 
-const Wrapper = styled.div(({ theme }) => ({
+const Wrapper = styled.div(({ theme, data }) => ({
   borderRadius: "12px",
   display: "flex",
   height: "auto",
@@ -48,6 +48,7 @@ const Wrapper = styled.div(({ theme }) => ({
     overflow: "hidden",
     display: "flex",
     padding: "2px",
+    // padding: data.nodemode == "renewal" ? "6px" : "2px",
     position: "relative",
     borderRadius: "12px",
     flexGrow: 1,
@@ -169,9 +170,9 @@ const Wrapper = styled.div(({ theme }) => ({
 
 const TurboNode = memo(({ data }) => {
   const theme = useTheme();
-
+  console.log("data", data);
   return (
-    <Wrapper theme={theme}>
+    <Wrapper theme={theme} data={data}>
       <div className="cloud gradient">
         <div style={{ width: "30px" }}>
           {data.completed ? (

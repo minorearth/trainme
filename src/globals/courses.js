@@ -7,15 +7,18 @@ import {
 import { testsall1 } from "@/components/admin/course1";
 import { testsall2 } from "@/components/admin/course2";
 
-export const coursesToLoad = [
-  "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0",
-  "a3905595-437e-47f3-b749-28ea5362bd39",
-];
-
 export const getReadyCourses = () => {
   return Object.keys(courses).filter(
     (courseId) => courses[courseId].state == "ready"
   );
+};
+
+export const getCoursesToLoad = () => {
+  return Object.keys(courses).filter((courseId) => courses[courseId].toload);
+};
+
+export const getFreeCourses = () => {
+  return Object.keys(courses).filter((courseId) => courses[courseId].free);
 };
 
 export const courses = {
@@ -33,6 +36,8 @@ export const courses = {
     state: "ready",
     type: "course",
     order: 1,
+    toload: true,
+    free: true,
   },
   "a3905595-437e-47f3-b749-28ea5362bd39": {
     id: "a3905595-437e-47f3-b749-28ea5362bd39",
@@ -48,6 +53,8 @@ export const courses = {
     state: "cwip",
     type: "course",
     order: 2,
+    toload: true,
+    free: true,
   },
   555: {
     id: "555",
@@ -63,6 +70,8 @@ export const courses = {
     state: "empty",
     type: "course",
     order: 3,
+    toload: false,
+    free: false,
   },
   777: {
     id: "777",
@@ -78,5 +87,7 @@ export const courses = {
     state: "empty",
     type: "champ",
     order: 4,
+    toload: false,
+    free: false,
   },
 };

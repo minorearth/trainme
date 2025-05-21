@@ -6,7 +6,7 @@ import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import { IconButton } from "@mui/material";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import { useStat } from "./statVC";
-import CustomStatItem from "@/components/manager/stat/statItem/statItem";
+import CustomStatItem from "@/components/manager/components/stat/statItem/statItem";
 import { observer } from "mobx-react-lite";
 import stat from "@/components/manager/store/stat";
 import StatViewer from "@/components/manager/StatViewer";

@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "dependency-cruiser": "^16.10.2",
     "eslint": "^9",
     "eslint-config-next": "15.1.0"
   }

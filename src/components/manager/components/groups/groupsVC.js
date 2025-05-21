@@ -11,7 +11,10 @@ import { v4 as uuidv4 } from "uuid";
 import user from "@/store/user";
 import { reaction } from "mobx";
 
-import { arrToObject, objectToArr } from "@/components/manager/utils";
+import {
+  groupsArrToObject,
+  groupsObjectToArr,
+} from "@/components/manager/utils";
 import stat from "@/components/manager/store/stat";
 
 export const useGroups = () => {
@@ -22,7 +25,7 @@ export const useGroups = () => {
       "groups",
       user.userid
     );
-    const data = objectToArr(groups.data);
+    const data = groupsObjectToArr(groups.data);
     stat.setGroupData(data);
   };
 
@@ -54,7 +57,7 @@ export const useGroups = () => {
       },
     ];
     stat.setGroupData(data);
-    setDocInCollectionClient("groups", arrToObject(data), user.userid);
+    setDocInCollectionClient("groups", groupsArrToObject(data), user.userid);
     return data;
   };
 
@@ -75,7 +78,7 @@ export const useGroups = () => {
 
   const changeLabel = ({ itemId, label }) => {
     const newdata = updateNodeLabel(stat.groupsdata, itemId, label);
-    setDocInCollectionClient("groups", arrToObject(newdata), user.userid);
+    setDocInCollectionClient("groups", groupsArrToObject(newdata), user.userid);
   };
 
   return {

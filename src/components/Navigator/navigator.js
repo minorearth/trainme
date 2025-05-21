@@ -22,7 +22,7 @@ import Tutorial from "../tutorial/tutorial";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import CountdownCircle from "@/components/common/countdown/CountdownCircle/CountdownCircle";
 import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
-import { Watcher } from "@/components/common/watcher/watcher";
+import { Watcher } from "@/components/Navigator/watcher/watcher";
 import TawkToChat from "@/components/common/tawkto/tawkto.js";
 
 const Navigator = observer(() => {
@@ -61,11 +61,9 @@ const Navigator = observer(() => {
               />
             </>
           )}
-          {/* {countdownbutton.state.visible && <Countdown />} */}
           <AlertDialog />
           <Tutorial />
           {countdowncircle.state.visible && <CountdownCircle />}
-
           {stn.mode.DEV_MODE && (
             <AdminPanel
               flow={flow}

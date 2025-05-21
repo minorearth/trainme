@@ -11,7 +11,10 @@ import { v4 as uuidv4 } from "uuid";
 import user from "@/store/user";
 import { reaction } from "mobx";
 
-import { arrToObject, objectToArr } from "@/components/manager/utils";
+import {
+  groupsArrToObject,
+  groupsObjectToArr,
+} from "@/components/manager/utils";
 
 export const useStat = () => {
   const [data, setData] = useState([]);

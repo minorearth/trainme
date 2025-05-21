@@ -1,12 +1,9 @@
 "use client";
-import ChampUsers from "./components/ChampUsersGrid/ChampUsers";
 import { Box } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { Button } from "@mui/material";
 import useChamps from "./champVC";
-import Input from "@mui/material/Input";
 import { useState } from "react";
-import { Panel } from "./components/Panel";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import RangeSlider from "./components/RangeSlider";
@@ -30,7 +27,6 @@ const Champ = observer(({ actionsNAV, appState }) => {
     range,
     setAvatarid,
     avatarid,
-    setChampid,
     nameChecked,
   } = useChamps({ actionsNAV, appState });
   const [activeStep, setActiveStep] = useState(0);

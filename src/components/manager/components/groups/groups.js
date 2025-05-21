@@ -7,12 +7,11 @@ import { IconButton } from "@mui/material";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import RefreshOutlinedIcon from "@mui/icons-material/RefreshOutlined";
 import { useGroups } from "./groupsVC";
-import CustomTreeItem from "@/components/manager/groups/groupItem/groupItem";
-import Stat from "@/components/manager/stat/stat";
-import PivotTable from "./pivotreport/pivot";
-import stat from "../store/stat";
+import CustomTreeItem from "@/components/manager/components/groups/groupItem/groupItem";
+import Stat from "@/components/manager/components/stat/stat";
+import stat from "../../store/stat";
 import { observer } from "mobx-react-lite";
-import Reports from "@/components/manager/groups/pivotreport/reports";
+import Reports from "@/components/manager/components/pivotreport/reports";
 
 const Groups = observer(() => {
   const { changeLabel, addNewGroup, fetchGroupsData } = useGroups();

@@ -26,7 +26,7 @@ export const allTasksToObject = (allTasks) => {
   );
 };
 
-export const arrToObject = (data) => {
+export const groupsArrToObject = (data) => {
   const obj = data.reduce(
     (acc, item) => ({
       ...acc,
@@ -52,7 +52,7 @@ export const arrToObject = (data) => {
   return obj;
 };
 
-export const objectToArr = (data) => {
+export const groupsObjectToArr = (data) => {
   const arr = Object.keys(data).map((id) => ({
     id,
     label: data[id].label,
@@ -66,18 +66,6 @@ export const objectToArr = (data) => {
   }));
   return arr;
 };
-
-// data = [
-//   {
-//     id: "0",
-//     label: "Data Grid",
-//     isFolder: true,
-//     children: [
-//       { id: "grid-community", label: "@mui/x-data-grid" },
-//       { id: "grid-pro", label: "@mui/x-data-grid-pro" },
-//       { id: "grid-premium", label: "@mui/x-data-grid-premium" },
-//     ],
-//   },
 
 const prepareStatTaskCode = (task) => {
   let res = "";

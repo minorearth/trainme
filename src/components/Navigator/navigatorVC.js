@@ -1,4 +1,3 @@
-import { stn } from "@/constants";
 import { useEffect, useState, useLayoutEffect, useRef } from "react";
 import { setCSP, getCSP, getSense } from "@/db/localstorage";
 import user from "@/store/user";
@@ -23,13 +22,12 @@ import {
   setUseMetaUnlockedAndCompleted,
 } from "@/db/SA/firebaseSA";
 import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
-import { setUseMetaData } from "@/db/SA/firebaseSA";
-import { getTargetsBySource } from "./utils";
 import progressStore from "../common/splash/progressdots/store";
 import alertdialog from "@/components/common/dialog/store";
 import dialog from "@/components/common/dialog/store";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import { useRouter } from "next/navigation";
+import { getReadyCourses } from "@/globals/courses";
 
 import { setDataFetch, getDataFetch } from "@/db/APIcalls/calls";
 
@@ -175,7 +173,6 @@ const useNavigator = () => {
     ) {
       try {
         //TODO: После фейла запроса из-за отсуттвия интернета кнока сохранить не нажимается
-        //TODO: таймаут ожидания интернета
         progressStore.setShowProgress(true);
         // await setDataFetch({
         //   type: "wakeup",
@@ -258,10 +255,7 @@ const useNavigator = () => {
       data: { courseid: launchedCourse, uid: user.userid },
     });
 
-    if (
-      !coursePaid ||
-      launchedCourse == "a3905595-437e-47f3-b749-28ea5362bd39"
-    ) {
+    if (!coursePaid || !getReadyCourses().includes(launchedCourse)) {
       alertdialog.showDialog(
         "Курс недоступен",
         "Данный курс пока недоступен",
@@ -311,22 +305,6 @@ const useNavigator = () => {
 
   const openAllCoursePage = () => {
     setStateAndCSP(initialState);
-  };
-
-  //TODO:not used
-  const interruptExamMode = () => {
-    const CSP = getCSP();
-    if (CSP.nodemode != "champ") {
-      openCongratPage({ CSP, success: true });
-      // setStateAndCSP({
-      //   launchedCourse: CSP.launchedCourse,
-      //   page: "flow",
-      //   userProgress: CSP.userProgress,
-      // });
-      // loadFlowNodes(CSP.launchedCourse, CSP);
-    } else {
-      openAllCoursePage();
-    }
   };
 
   const openChampPage = () => {
@@ -385,6 +363,11 @@ const useNavigator = () => {
       });
     }
     progressStore.setCloseProgress();
+  };
+
+  const openTestRunPage = async () => {
+    progressStore.setShowProgress(true, false, "progressdots", 2000);
+    updateStateAndCSP({ page: "testrun" });
   };
 
   const openCongratPage = async ({ CSP, success }) => {
@@ -504,7 +487,6 @@ const useNavigator = () => {
     }
 
     if (nodemode == "textbook") {
-      //TODO: removee all updateStaates
       openTextBook({
         courseid: CSP.launchedCourse,
         CSP,
@@ -647,12 +629,12 @@ const useNavigator = () => {
       updateStateAndCSP,
       setStateAndCSP,
       setappState,
-
       openFlowPageAfterAccomplished,
       openTestsStartedPage,
       openChampPage,
       openAllCoursePage,
       openCongratPage,
+      openTestRunPage,
       openCongratPageInterrupted,
       openAndRefreshFlowPage,
       openRecapTasksPage,
@@ -662,7 +644,6 @@ const useNavigator = () => {
       openSupportPage,
       openTutorial,
       saveProgress,
-      interruptExamMode,
       getRandomTasksForChamp,
       updateChampPoins,
       updateChampTaskLog,

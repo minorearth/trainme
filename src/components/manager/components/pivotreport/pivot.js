@@ -1,29 +1,10 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import usePivot from "./pivotVC";
-import stat from "../../store/stat";
 import { observer } from "mobx-react-lite";
 import { toJS } from "mobx";
 import styled from "styled-components";
 
 const PivotTable = observer(({ data }) => {
-  // const { data1, columns1 } = usePivot({ groupsData });
-  // const rows = [
-  //   { id: 1, col0: "Иванов Иван", col1: "V", col2: "", col3: "" },
-  //   { id: 1, col0: "Иванов Иван", col1: "V", col2: "V", col3: "" },
-  //   { id: 1, col0: "Иванов Иван", col1: "V", col2: "", col3: "" },
-  //   { id: 1, col0: "Иванов Иван", col1: "V", col2: "V", col3: "V" },
-  //   { id: 1, col0: "Иванов Иван", col1: "V", col2: "", col3: "" },
-  //   // ...
-  // ];
-
-  // const columns = [
-  //   { header: "Имя", accessor: "col0" },
-  //   { header: "1", accessor: "col1" },
-  //   { header: "2", accessor: "col2" },
-  //   { header: "3", accessor: "col3" },
-  // ];
-
   const Wrapper = styled.div`
     .tooltip {
       position: relative;
@@ -64,8 +45,8 @@ const PivotTable = observer(({ data }) => {
     margin: 0,
     textAlign: "center",
     boxSizing: "border-box",
-    lineHeight: "30px", // чтобы текст был по центру по вертикали
-    overflow: "hidden", // чтобы содержимое не растягивалось
+    lineHeight: "30px",
+    overflow: "hidden",
   };
 
   const headerStyle = {
@@ -91,9 +72,7 @@ const PivotTable = observer(({ data }) => {
                       {col.header}
                       <span class="tooltiptext">{col.title}</span>
                     </p>
-                    <span style={{ fontSize: "10px" }}>
-                      {col.maxcoins || "ученика"}
-                    </span>
+                    <span style={{ fontSize: "10px" }}>{col.maxcoins}</span>
                   </div>
                 </Wrapper>
               </th>
@@ -120,25 +99,6 @@ const PivotTable = observer(({ data }) => {
                   }}
                 >
                   {row[col.accessor].sum}
-
-                  {/* <span
-                    style={{
-                      fontSize: 10,
-                      // padding: "0 4px",
-                      display: "inline-block",
-                    }}
-                  >
-                    {row[col.accessor].sum}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 8,
-                      display: "inline-block",
-                      verticalAlign: "sub",
-                    }}
-                  >
-                    {row[col.accessor].maxcoins}
-                  </span> */}
                 </td>
               ))}
             </tr>
@@ -150,3 +110,19 @@ const PivotTable = observer(({ data }) => {
 });
 
 export default PivotTable;
+
+// const rows = [
+//   { id: 1, col0: "Иванов Иван", col1: "V", col2: "", col3: "" },
+//   { id: 1, col0: "Иванов Иван", col1: "V", col2: "V", col3: "" },
+//   { id: 1, col0: "Иванов Иван", col1: "V", col2: "", col3: "" },
+//   { id: 1, col0: "Иванов Иван", col1: "V", col2: "V", col3: "V" },
+//   { id: 1, col0: "Иванов Иван", col1: "V", col2: "", col3: "" },
+//   // ...
+// ];
+
+// const columns = [
+//   { header: "Имя", accessor: "col0" },
+//   { header: "1", accessor: "col1" },
+//   { header: "2", accessor: "col2" },
+//   { header: "3", accessor: "col3" },
+// ];

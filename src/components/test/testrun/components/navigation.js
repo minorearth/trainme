@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import CountdownButton from "@/components/common/countdown/CountdownButton/CountdownButton";
 import { observer } from "mobx-react-lite";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
-import Animation from "@/components/common/animation/Animation";
+import Animation from "@/components/common/lottieAnimation/Animation";
 import stn from "@/globals/settings";
 import { getCSP } from "@/db/localstorage";
 import alertdialog from "@/components/common/dialog/store";

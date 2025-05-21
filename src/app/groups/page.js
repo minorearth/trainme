@@ -5,8 +5,8 @@ import { observer } from "mobx-react-lite";
 import { ThemeProvider } from "@mui/material/styles";
 import { useCustomTheme } from "@/app/theme";
 import { CssBaseline } from "@mui/material";
-import ChampUsers from "@/components/champ/components/ChampUsersGrid/ChampUsers";
-import Groups from "../../components/manager/groups/groups";
+import ChampUsers from "@/legacy/ChampUsersGrid/ChampUsers";
+import Groups from "../../components/manager/components/groups/groups";
 import Box from "@mui/material/Box";
 
 export default function Page({ params }) {

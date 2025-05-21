@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { ThemeProvider } from "@mui/material/styles";
 import { useCustomTheme } from "@/app/theme";
 import { CssBaseline } from "@mui/material";
-import ChampUsers from "@/components/champ/components/ChampUsersGrid/ChampUsers";
+import ChampUsers from "@/legacy/ChampUsersGrid/ChampUsers";
 import SortableList from "@/components/champ/components/ChampUsersList/ChampUsersList";
 
 export default function Page({ params }) {

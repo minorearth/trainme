@@ -18,6 +18,7 @@ class alertdialog {
     this.dialogState.actionCancel = actionCancel;
     this.dialogState.type = type;
   }
+
   okDialog() {
     this.dialogState.visible = false;
     this.dialogState.actionOk();

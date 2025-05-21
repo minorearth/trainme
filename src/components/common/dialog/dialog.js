@@ -1,24 +1,18 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { observer } from "mobx-react-lite";
-
 import alertdialog from "@/components/common/dialog/store";
 import local from "@/globals/local";
 import { Box } from "@mui/material";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
 import DialogWrapper from "./dialogWrapper";
 
 import { useTheme } from "@mui/material/styles";
 
 const AlertDialog = observer(() => {
-  const theme = useTheme();
-
   return (
     <DialogWrapper
       onClose={() => alertdialog.okDialog()}
@@ -36,7 +30,6 @@ const AlertDialog = observer(() => {
             // whiteSpace: "pre-line",
           }}
         >
-          {/* {alertdialog.dialogState.text} */}
           <DialogContentText
             sx={{ display: "inline-block", whiteSpace: "pre-line" }}
           >

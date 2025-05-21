@@ -8,7 +8,7 @@ import { red } from "@mui/material/colors";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Animation from "@/components/common/animation/Animation";
+import Animation from "@/components/common/lottieAnimation/Animation";
 import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
 import ArrowCircleDownOutlinedIcon from "@mui/icons-material/ArrowCircleDownOutlined";
 import { GoDash } from "react-icons/go";

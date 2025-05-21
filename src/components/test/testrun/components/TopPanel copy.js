@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import LinearProgressWithLabel from "@/components/test/testrun/components/LinearProgress";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
-import Animation from "@/components/common/animation/Animation";
+import Animation from "@/components/common/lottieAnimation/Animation";
 import Typography from "@mui/material/Typography";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButtonNoRipple";

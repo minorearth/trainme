@@ -1,21 +1,10 @@
-import { setDoc, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
-
-import {
-  updateDocFieldsInCollectionById,
-  getDocsKeyValue,
-  setDocInCollection,
-  getDocDataFromCollectionById,
-} from "./dataModel";
+import { setDocInCollection } from "./dataModel";
 
 import stn from "@/globals/settings";
 
-import { courses } from "@/globals/courses";
-const freeCourses = [
-  "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0",
-  "a3905595-437e-47f3-b749-28ea5362bd39",
-];
+import { courses, getFreeCourses } from "@/globals/courses";
 
-const getFreeCourses = () => {
+const getInitalDataForFreeCourses = (freeCourses) => {
   return freeCourses.reduce(
     (acc, item, id) => ({
       ...acc,
@@ -33,12 +22,12 @@ const getFreeCourses = () => {
 };
 
 export const createNewUser = async (db, userId, name) => {
+  const freeCourses = getFreeCourses();
   const data = {
     name,
     userId,
     paidcourses: freeCourses,
-    courses: getFreeCourses(),
+    courses: getInitalDataForFreeCourses(freeCourses),
   };
   await setDocInCollection(db, stn.collections.USER_META, data, userId);
-  return doc.id;
 };

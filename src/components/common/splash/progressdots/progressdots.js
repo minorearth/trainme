@@ -4,7 +4,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { Paper } from "@mui/material";
-import Animation from "@/components/common/animation/Animation";
+import Animation from "@/components/common/lottieAnimation/Animation";
 import progress from "./store";
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";

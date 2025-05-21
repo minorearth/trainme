@@ -1,13 +1,8 @@
-import React, { useEffect } from "react";
-import "./custom.css";
+import { useEffect } from "react";
 
-import { useTheme } from "@mui/material/styles";
-
+//TODO: wrap up monaco editor only
 export const Watcher = () => {
-  const theme = useTheme();
-
-  const isDarkMode = theme.palette.mode === "dark";
-
+  //Hide python text block quotes in Monaco Editor
   useEffect(() => {
     const targetNode = document.body;
 
@@ -20,10 +15,6 @@ export const Watcher = () => {
               node.textContent.includes("'''")
             ) {
               node.firstChild.firstChild.style.display = "none";
-              // isDarkMode
-              //   ? (node.firstChild.firstChild.style.color = "#242323")
-              //   : (node.firstChild.firstChild.style.color = "#CADCEE");
-              // node.classList.add("markdown2");
             }
           });
         }
