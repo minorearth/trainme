@@ -18,7 +18,11 @@ import {
 import stat from "@/components/manager/store/stat";
 
 export const useGroups = () => {
-  useEffect(() => {}, []);
+  const copyGroupLink = (itemId) => {
+    navigator.clipboard.writeText(
+      `${process.env.NEXT_PUBLIC_DOMAIN}/joingroup/${itemId}/${user.userid}`
+    );
+  };
 
   const fetchGroupsData = async () => {
     const groups = await getDocDataFromCollectionByIdClient(
@@ -85,5 +89,6 @@ export const useGroups = () => {
     changeLabel,
     addNewGroup,
     fetchGroupsData,
+    copyGroupLink,
   };
 };

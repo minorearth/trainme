@@ -1,19 +1,11 @@
-// https://mui.com/x/react-tree-view/tree-item-customization/
-// https://mui.com/x/react-tree-view/rich-tree-view/editing/
-
 import Box from "@mui/material/Box";
 import * as React from "react";
 
 import { IconButton } from "@mui/material";
 import { useTreeItemUtils } from "@mui/x-tree-view/hooks";
 import { useTreeItemModel } from "@mui/x-tree-view/hooks";
-import { useTheme } from "@mui/material/styles";
 
-import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import CheckIcon from "@mui/icons-material/Check";
 import { useTreeItem } from "@mui/x-tree-view/useTreeItem";
 import {
   TreeItemContent,
@@ -24,8 +16,7 @@ import {
 } from "@mui/x-tree-view/TreeItem";
 import { TreeItemIcon } from "@mui/x-tree-view/TreeItemIcon";
 import { TreeItemProvider } from "@mui/x-tree-view/TreeItemProvider";
-import { TreeItemLabelInput } from "@mui/x-tree-view/TreeItemLabelInput";
-import { useStatTreeitem } from "./statVC";
+import { useUserReport } from "@/components/manager/components/reports/userreport/userReportVC";
 
 const CustomStatItem = React.forwardRef(function CustomStatItem(
   { id, itemId, label, disabled, children },
@@ -33,10 +24,7 @@ const CustomStatItem = React.forwardRef(function CustomStatItem(
 ) {
   const item = useTreeItemModel(itemId);
 
-  const { showCode } = useStatTreeitem({
-    itemId,
-    code: item.code,
-  });
+  const { showCode } = useUserReport();
 
   const {
     getContextProviderProps,
@@ -45,7 +33,6 @@ const CustomStatItem = React.forwardRef(function CustomStatItem(
     getLabelProps,
     getGroupTransitionProps,
     getIconContainerProps,
-    getLabelInputProps,
     status,
   } = useTreeItem({ id, itemId, label, disabled, children, rootRef: ref });
 
@@ -61,19 +48,13 @@ const CustomStatItem = React.forwardRef(function CustomStatItem(
           <TreeItemIconContainer {...getIconContainerProps()}>
             <TreeItemIcon status={status} />
           </TreeItemIconContainer>
-          {/* {status.editing ? (
-            <CustomLabelInput
-              {...getLabelInputProps()}
-              handleSaveItemLabel={copyGroupLink}
-            />
-          ) : ( */}
           <CustomLabel
             {...getLabelProps()}
             toggleItemEditing={interactions.toggleItemEditing}
             // isGroup={item.isFolder}
-            showCode={showCode}
+            showCode={() => showCode(item.code)}
+            type={item.type}
           />
-          {/* )} */}
         </TreeItemContent>
         {children && <TreeItemGroupTransition {...getGroupTransitionProps()} />}
       </TreeItemRoot>
@@ -86,8 +67,8 @@ function CustomLabel({
   editable,
   children,
   toggleItemEditing,
-  isGroup,
   showCode,
+  type,
   ...other
 }) {
   return (
@@ -103,24 +84,15 @@ function CustomLabel({
     >
       {children}
       <Box sx={{ display: "flex" }}>
-        {/* {isGroup && (
+        {type == "task" && (
           <IconButton
             size="small"
-            onClick={copyGroupLink}
+            onClick={showCode}
             sx={{ color: "text.secondary" }}
           >
-            <InsertLinkOutlinedIcon fontSize="small" />
+            <VisibilityOutlinedIcon fontSize="small" />
           </IconButton>
-        )} */}
-        {/* {!isGroup && ( */}
-        <IconButton
-          size="small"
-          onClick={showCode}
-          sx={{ color: "text.secondary" }}
-        >
-          <VisibilityOutlinedIcon fontSize="small" />
-        </IconButton>
-        {/* )} */}
+        )}
       </Box>
     </TreeItemLabel>
   );

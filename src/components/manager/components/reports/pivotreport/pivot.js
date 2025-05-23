@@ -3,8 +3,9 @@ import Box from "@mui/material/Box";
 import { observer } from "mobx-react-lite";
 import { toJS } from "mobx";
 import styled from "styled-components";
+import { courses } from "@/globals/courses";
 
-const PivotTable = observer(({ data }) => {
+const PivotTable = observer(({ data, courseid }) => {
   const Wrapper = styled.div`
     .tooltip {
       position: relative;
@@ -57,6 +58,7 @@ const PivotTable = observer(({ data }) => {
   };
   return (
     <Box>
+      <p>{courses[courseid].title}</p>
       <table
         style={{
           borderCollapse: "collapse",

@@ -79,7 +79,7 @@ const prepareStatTaskCode = (task) => {
   return res;
 };
 
-export const getTreeRepresent = (userstat, chaptersobj) => {
+export const getReportTree = (userstat, chaptersobj) => {
   const res = Object.keys(userstat).map((courseId) => ({
     id: courseId,
     label: courses[courseId].title,
@@ -106,6 +106,7 @@ export const getTreeRepresent = (userstat, chaptersobj) => {
                   code: prepareStatTaskCode(
                     userstat[courseId].stat[chapterId].tasks[taskid]
                   ),
+                  type: "task",
                 })
               )
             : [],

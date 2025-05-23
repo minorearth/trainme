@@ -6,12 +6,14 @@ import { observer } from "mobx-react-lite";
 import stat from "@/components/manager/store/stat";
 import Typography from "@mui/material/Typography";
 
-const StatViewer = observer(() => {
+const CodeViewer = observer(() => {
+  console.log(stat.code);
   return (
-    <Box sx={{ minHeight: 352, maxWidth: 450 }}>
+    <Box sx={{ minHeight: 352, maxWidth: 450, overflow: "scroll" }}>
       <Typography
+        variant="body1"
         // dangerouslySetInnerHTML={{ __html: `<p>${currTask.task}</p>` }}
-        sx={{ display: "inline-block", whiteSpace: "pre-line" }}
+        sx={{ whiteSpace: "pre" }}
       >
         {stat.code}
       </Typography>
@@ -19,4 +21,4 @@ const StatViewer = observer(() => {
   );
 });
 
-export default StatViewer;
+export default CodeViewer;

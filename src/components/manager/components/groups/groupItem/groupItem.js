@@ -26,19 +26,16 @@ import {
 import { TreeItemIcon } from "@mui/x-tree-view/TreeItemIcon";
 import { TreeItemProvider } from "@mui/x-tree-view/TreeItemProvider";
 import { TreeItemLabelInput } from "@mui/x-tree-view/TreeItemLabelInput";
-import { useGroupsTreeitem } from "./groupsItemVC";
 import stat from "../../../store/stat";
+import usePivotReport from "../../reports/pivotreport/pivotVC";
+import { useUserReport } from "@/components/manager/components/reports/userreport/userReportVC";
+import { useGroups } from "../groupsVC";
 
 const CustomTreeItem = React.forwardRef(function CustomTreeItem(
   { id, itemId, label, disabled, children },
   ref
 ) {
   const item = useTreeItemModel(itemId);
-
-  const { copyGroupLink, showUserMeta, showReport } = useGroupsTreeitem({
-    itemId,
-    uid: item.uid,
-  });
 
   const {
     getContextProviderProps,
@@ -50,6 +47,10 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
     getLabelInputProps,
     status,
   } = useTreeItem({ id, itemId, label, disabled, children, rootRef: ref });
+
+  const { showReport } = usePivotReport();
+  const { showUserReport } = useUserReport();
+  const { copyGroupLink } = useGroups();
 
   const { interactions } = useTreeItemUtils({
     itemId,
@@ -66,15 +67,15 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
           {status.editing ? (
             <CustomLabelInput
               {...getLabelInputProps()}
-              handleSaveItemLabel={copyGroupLink}
+              handleSaveItemLabel={() => {}}
             />
           ) : (
             <CustomLabel
               {...getLabelProps()}
-              copyGroupLink={copyGroupLink}
+              copyGroupLink={() => copyGroupLink(itemId)}
               toggleItemEditing={interactions.toggleItemEditing}
               isGroup={item.isFolder}
-              showUserMeta={showUserMeta}
+              showUserMeta={() => showUserReport(item.uid)}
               showReport={() => {
                 stat.setGroupSelected(itemId);
                 showReport(itemId);

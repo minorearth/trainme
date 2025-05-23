@@ -1,8 +1,6 @@
-// https://mui.com/x/react-tree-view/tree-item-customization/
-// https://mui.com/x/react-tree-view/rich-tree-view/editing/
+"use client";
 
-import { useEffect } from "react";
-import { toJS } from "mobx";
+import stat from "@/components/manager/store/stat";
 
 import {
   setDocInCollectionClient,
@@ -10,47 +8,56 @@ import {
   getMultipleDocsClient,
 } from "@/db/domain/domain";
 import user from "@/store/user";
-import { courses, getReadyCourses } from "@/globals/courses";
 
-import { allTasksToObject, getTreeRepresent } from "@/components/manager/utils";
-import stat from "@/components/manager/store/stat";
+import { toJS } from "mobx";
 
-export const useGroupsTreeitem = ({ itemId, uid }) => {
-  const copyGroupLink = () => {
-    navigator.clipboard.writeText(
-      `${process.env.NEXT_PUBLIC_DOMAIN}/joingroup/${itemId}/${user.userid}`
+const usePivotReport = () => {
+  const makeSnapshot = () => {
+    setDocInCollectionClient(
+      "snapshots",
+      stat.userMetaObj,
+      `${user.userid}_${stat.groupSelected}`
     );
   };
 
-  const showUserMeta = async () => {
-    const userMeta = await getDocDataFromCollectionByIdClient("usermeta", uid);
-    const treeRepresent = getTreeRepresent(
-      userMeta.data.courses,
-      stat.chaptersobj
+  const getSnapShot = async (groupid) => {
+    const snapshot = await getDocDataFromCollectionByIdClient(
+      "snapshots",
+      `${user.userid}_${groupid}`
     );
-    stat.setStat(treeRepresent);
+    return snapshot.data;
   };
 
   const getGroupUsers = (groupsdata, itemId) => {
     const group = groupsdata.filter((item) => item.id == itemId)[0];
-    const users = group.children.map((item) => item.uid);
-    const users2 = group.children.reduce(
+    const users = group.children.reduce(
       (acc, item) => ({
         ...acc,
         [item.uid]: { name: item.label, uid: item.uid },
       }),
       {}
     );
-    return users2;
+    return users;
   };
 
-  const prepareReport = ({
-    chapters,
-    completed,
-    usernames,
-    groupid,
-    snapShot,
-  }) => {
+  const showReport = async (itemId) => {
+    const users = getGroupUsers(stat.groupsdata, itemId);
+    const uids = Object.keys(users);
+    if (uids) {
+      const usersMeta = await getMultipleDocsClient("usermeta", uids);
+      const snapShot = await getSnapShot(itemId);
+      const report = prepareReport({
+        chapters: stat.chaptersobj,
+        completed: usersMeta,
+        usernames: users,
+        groupid: itemId,
+        snapShot: snapShot ? snapShot.userMetaObj : {},
+      });
+      stat.setReport(report);
+    }
+  };
+
+  const prepareReport = ({ chapters, completed, usernames, snapShot }) => {
     const getChaptersData = (chapters) => {
       return Object.keys(chapters).reduce(
         (acc, chapterid) => ({
@@ -111,17 +118,16 @@ export const useGroupsTreeitem = ({ itemId, uid }) => {
       if (!isInclude && !isIncludeSnapShot) return "white";
     };
 
-    const getRows = (
+    const getRows = ({
       chapters,
-      rowid,
       user,
       order,
       userMetaObj,
       courseid,
-      snapShot
-    ) => {
+      snapShot,
+    }) => {
       const chaptersArr = chaptersObjToArray(chapters);
-      console.log("ss", snapShot);
+
       const rows = chaptersArr.reduce(
         (acc, chapter, id) => ({
           ...acc,
@@ -138,18 +144,6 @@ export const useGroupsTreeitem = ({ itemId, uid }) => {
         }),
         {}
       );
-      // const rows = Object.keys(chapters).reduce(
-      //   (acc, chapterid, id) => ({
-      //     ...acc,
-      //     [`col${id + 1}`]: userMetaObj[user.uid][courseid].completed.includes(
-      //       chapterid
-      //     )
-      //       ? "V"
-      //       : "",
-      //     id: order,
-      //   }),
-      //   {}
-      // );
       return { ...rows, col0: { sum: user.name } };
     };
 
@@ -169,17 +163,16 @@ export const useGroupsTreeitem = ({ itemId, uid }) => {
     stat.setUserMetaObj({ userMetaObj });
 
     let report = {};
-    Object.keys(chapters).forEach((courseid, rowid) => {
+    Object.keys(chapters).forEach((courseid) => {
       const rows = Object.keys(usernames).map((user, id) =>
-        getRows(
-          chapters[courseid],
-          rowid,
-          usernames[user],
-          id,
+        getRows({
+          chapters: chapters[courseid],
+          user: usernames[user],
+          order: id,
           userMetaObj,
           courseid,
-          snapShot
-        )
+          snapShot,
+        })
       );
       report[courseid] = { rows };
     });
@@ -193,34 +186,10 @@ export const useGroupsTreeitem = ({ itemId, uid }) => {
     return report;
   };
 
-  const getSnapShot = async (groupid) => {
-    const snapshot = await getDocDataFromCollectionByIdClient(
-      "snapshots",
-      `${user.userid}_${groupid}`
-    );
-    return snapshot.data;
-  };
-
-  const showReport = async (itemId) => {
-    const users = getGroupUsers(stat.groupsdata, itemId);
-    const uids = Object.keys(users);
-    if (uids) {
-      const usersMeta = await getMultipleDocsClient("usermeta", uids);
-      const snapShot = await getSnapShot(itemId);
-      const report = prepareReport({
-        chapters: stat.chaptersobj,
-        completed: usersMeta,
-        usernames: users,
-        groupid: itemId,
-        snapShot: snapShot ? snapShot.userMetaObj : {},
-      });
-      stat.setReport(report);
-    }
-  };
-
   return {
-    showUserMeta,
-    copyGroupLink,
+    makeSnapshot,
     showReport,
   };
 };
+
+export default usePivotReport;

@@ -6,7 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { useCustomTheme } from "@/app/theme";
 import { CssBaseline } from "@mui/material";
 import ChampUsers from "@/legacy/ChampUsersGrid/ChampUsers";
-import Groups from "../../components/manager/components/groups/groups";
+import DashBoard from "../../components/manager/dashboard";
 import Box from "@mui/material/Box";
 
 export default function Page({ params }) {
@@ -23,7 +23,7 @@ export default function Page({ params }) {
           height: "100vh",
         }}
       >
-        <Groups />
+        <DashBoard />
       </Box>
     </ThemeProvider>
   );
