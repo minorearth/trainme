@@ -12,7 +12,7 @@ const Groups = observer(() => {
   const { changeLabel, addNewGroup, fetchGroupsData } = useGroups();
 
   return (
-    <Box sx={{ flexDirection: "column", display: "flex" }}>
+    <Box sx={{ flexDirection: "column", display: "flex", minWidth: "350px" }}>
       <Box sx={{ flexDirection: "row", display: "flex" }}>
         <IconButton
           size="small"

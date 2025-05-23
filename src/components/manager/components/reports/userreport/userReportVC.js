@@ -1,14 +1,16 @@
 import { getDocDataFromCollectionByIdClient } from "@/db/domain/domain";
 
-import { getReportTree } from "@/components/manager/utils";
+import { getReportTree } from "./utils";
 import stat from "@/components/manager/store/stat";
+import { toJS } from "mobx";
 
 export const useUserReport = () => {
   const showUserReport = async (uid) => {
     const userMeta = await getDocDataFromCollectionByIdClient("usermeta", uid);
     const treeRepresent = getReportTree(
       userMeta.data.courses,
-      stat.chaptersobj
+      stat.chaptersobj,
+      stat.allCoursesTasks
     );
     stat.setCode("");
     stat.setStat(treeRepresent);

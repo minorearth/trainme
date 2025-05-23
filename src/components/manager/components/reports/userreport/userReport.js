@@ -20,8 +20,8 @@ const UserReport = observer(() => {
       >
         <Box
           sx={{
-            minHeight: 352,
             overflow: "scroll",
+            minWidth: "450px",
           }}
         >
           <RichTreeView

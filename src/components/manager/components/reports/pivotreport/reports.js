@@ -2,7 +2,6 @@ import Box from "@mui/material/Box";
 import PivotTable from "./pivot";
 import stat from "@/components/manager/store/stat";
 import { observer } from "mobx-react-lite";
-import { Button } from "@mui/material";
 import usePivotReport from "./pivotVC";
 import { IconButton } from "@mui/material";
 import MonochromePhotosOutlinedIcon from "@mui/icons-material/MonochromePhotosOutlined";

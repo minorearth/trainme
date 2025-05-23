@@ -50,7 +50,12 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
 
   const { showReport } = usePivotReport();
   const { showUserReport } = useUserReport();
-  const { copyGroupLink } = useGroups();
+
+  const copyGroupLink = (itemId) => {
+    navigator.clipboard.writeText(
+      `${process.env.NEXT_PUBLIC_DOMAIN}/joingroup/${itemId}/${user.userid}`
+    );
+  };
 
   const { interactions } = useTreeItemUtils({
     itemId,

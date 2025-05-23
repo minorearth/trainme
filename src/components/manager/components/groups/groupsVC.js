@@ -1,8 +1,3 @@
-// https://mui.com/x/react-tree-view/tree-item-customization/
-// https://mui.com/x/react-tree-view/rich-tree-view/editing/
-
-import { useState, useEffect } from "react";
-
 import {
   setDocInCollectionClient,
   getDocDataFromCollectionByIdClient,
@@ -11,18 +6,47 @@ import { v4 as uuidv4 } from "uuid";
 import user from "@/store/user";
 import { reaction } from "mobx";
 
-import {
-  groupsArrToObject,
-  groupsObjectToArr,
-} from "@/components/manager/utils";
+import { groupsArrToObject, groupsObjectToArr } from "./utils";
 import stat from "@/components/manager/store/stat";
+import { useEffect } from "react";
+import { courses, getReadyCourses } from "@/globals/courses";
 
 export const useGroups = () => {
-  const copyGroupLink = (itemId) => {
-    navigator.clipboard.writeText(
-      `${process.env.NEXT_PUBLIC_DOMAIN}/joingroup/${itemId}/${user.userid}`
+  const allTasksArrToObj = (allTasks) => {
+    const alltasksObj = allTasks.data.tasks.reduce(
+      (acc, task) => ({
+        ...acc,
+        [task.taskuuid]: { task: task.task, id: task.id },
+      }),
+      {}
     );
+
+    return alltasksObj;
   };
+
+  useEffect(() => {
+    const readyCourses = getReadyCourses();
+    let allCoursesTasks = {};
+
+    const getAllTasksData = async (taskcollection, courseid) => {
+      const allTasks = await getDocDataFromCollectionByIdClient(
+        taskcollection,
+        "alltasks"
+      );
+      const allTasksObj = allTasksArrToObj(allTasks);
+      allCoursesTasks[courseid] = allTasksObj;
+    };
+
+    const getAAllCousesTasks = async () => {
+      await Promise.all(
+        readyCourses.map(async (courseid) => {
+          await getAllTasksData(courses[courseid].taskcollection, courseid);
+        })
+      );
+      stat.setAllCoursesTasks(allCoursesTasks);
+    };
+    getAAllCousesTasks();
+  }, []);
 
   const fetchGroupsData = async () => {
     const groups = await getDocDataFromCollectionByIdClient(
@@ -89,6 +113,5 @@ export const useGroups = () => {
     changeLabel,
     addNewGroup,
     fetchGroupsData,
-    copyGroupLink,
   };
 };

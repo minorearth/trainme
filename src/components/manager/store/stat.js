@@ -9,6 +9,7 @@ class stat {
   reportvisible = false;
   userMetaObj = {};
   groupSelected = -1;
+  allCoursesTasks = {};
 
   setStat(data) {
     this.userstat = data;
@@ -18,6 +19,9 @@ class stat {
 
   setGroupData(data) {
     this.groupsdata = data;
+  }
+  setAllCoursesTasks(data) {
+    this.allCoursesTasks = data;
   }
 
   setUserMetaObj(data) {
