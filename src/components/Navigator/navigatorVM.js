@@ -2,10 +2,10 @@ import {
   getDocDataFromCollectionByIdClient,
   updatePoinsInChampClient,
   setTaskLogInChampClient,
+  getDocDataFromSubCollectionByIdClient,
 } from "@/db/domain/domain";
 
 import alertdialog from "@/components/common/dialog/store";
-import { payChapter } from "@/db/SA/firebaseSA";
 import { encrypt2 } from "@/globals/utils/encryption";
 import user from "@/store/user";
 import stn from "@/globals/settings";
@@ -13,9 +13,9 @@ import countdownbutton from "@/components/common/countdown/CountdownButton/store
 import progressCircle from "@/components/common/splash/progressdots/store";
 import { courses } from "@/globals/courses";
 import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
-import { setCSP, getCSP } from "@/db/localstorage";
+import { getCSP } from "@/db/localstorage";
 import { getTargetsBySource } from "./utils";
-import { getDataFetch, setDataFetch } from "@/db/APIcalls/calls";
+import { setDataFetch } from "@/db/APIcalls/calls";
 
 const nodeAction = (data) => {
   const {
@@ -188,28 +188,11 @@ export const setFlowNodes = async ({
   return flow;
 };
 
-export const getTestsByMode = async (chapter, courseid) => {
-  const filteredTasks = await getDocDataFromCollectionByIdClient(
-    courses[courseid].taskcollection,
-    chapter
-  );
-
-  if (!filteredTasks.data) {
-    return [];
-  }
-  const res = stn.mode.ALL_RIGHT_CODE
-    ? filteredTasks.data.tasks.map((task) => ({
-        ...task,
-        defaultcode: task.rightcode,
-      }))
-    : filteredTasks.data.tasks;
-
-  return res;
-};
-
-export const getAllTestsFromChapter = async (chapter, courseid) => {
-  const filteredTasks = await getDocDataFromCollectionByIdClient(
-    courses[courseid].taskcollection,
+export const getAllTasksFromChapter = async (chapter, courseid) => {
+  const filteredTasks = await getDocDataFromSubCollectionByIdClient(
+    "newtasks",
+    courseid,
+    "chapters",
     chapter
   );
   if (!filteredTasks.data) {
@@ -226,8 +209,10 @@ export const getAllTestsFromChapter = async (chapter, courseid) => {
 };
 
 export const getTextBook = async (CSP, courseid) => {
-  const filteredTasks = await getDocDataFromCollectionByIdClient(
-    courses[courseid].taskcollection,
+  const filteredTasks = await getDocDataFromSubCollectionByIdClient(
+    "newtasks",
+    courseid,
+    "chapters",
     courses[courseid].textbookchapter
   );
   const unlockedTheory = filteredTasks.data.tasks.filter((item) =>
@@ -258,8 +243,10 @@ export const getRandomTasksForRepeat = async ({
 }) => {
   const CSP = getCSP();
 
-  const allTasks = await getDocDataFromCollectionByIdClient(
-    courses[courseid].taskcollection,
+  const allTasks = await getDocDataFromSubCollectionByIdClient(
+    "newtasks",
+    courseid,
+    "chapters",
     "alltasks"
   );
 

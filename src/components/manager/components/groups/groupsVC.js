@@ -1,6 +1,7 @@
 import {
   setDocInCollectionClient,
   getDocDataFromCollectionByIdClient,
+  getDocDataFromSubCollectionByIdClient,
 } from "@/db/domain/domain";
 import { v4 as uuidv4 } from "uuid";
 import user from "@/store/user";
@@ -28,24 +29,26 @@ export const useGroups = () => {
     const readyCourses = getReadyCourses();
     let allCoursesTasks = {};
 
-    const getAllTasksData = async (taskcollection, courseid) => {
-      const allTasks = await getDocDataFromCollectionByIdClient(
-        taskcollection,
+    const getAllTasksData = async (courseid) => {
+      const allTasks = await getDocDataFromSubCollectionByIdClient(
+        "newtasks",
+        courseid,
+        "chapters",
         "alltasks"
       );
       const allTasksObj = allTasksArrToObj(allTasks);
       allCoursesTasks[courseid] = allTasksObj;
     };
 
-    const getAAllCousesTasks = async () => {
+    const getAllCousesTasks = async () => {
       await Promise.all(
         readyCourses.map(async (courseid) => {
-          await getAllTasksData(courses[courseid].taskcollection, courseid);
+          await getAllTasksData(courseid);
         })
       );
       stat.setAllCoursesTasks(allCoursesTasks);
     };
-    getAAllCousesTasks();
+    getAllCousesTasks();
   }, []);
 
   const fetchGroupsData = async () => {

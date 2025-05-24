@@ -34,6 +34,17 @@ export const setDocInCollection = async (db, collectionName, data, id) => {
   await setDoc(doc(db, collectionName, id), data);
 };
 
+export const setDocInSubCollection = async (
+  db,
+  collectionName1,
+  id1,
+  collectionName2,
+  id2,
+  data
+) => {
+  await setDoc(doc(db, collectionName1, id1, collectionName2, id2), data);
+};
+
 export const updateUsersInChamp = async (db, collectionName, data, id) => {
   const ref = doc(db, collectionName, id);
   try {
@@ -97,6 +108,20 @@ export const updateChampStatus = async (db, collectionName, status, id) => {
 
 export const getDocDataFromCollectionById = async (db, collectionName, id) => {
   const docSnap = await getDoc(doc(db, collectionName, id));
+  const data = docSnap.data();
+  return { id: docSnap.id, data };
+};
+
+export const getDocDataFromSubCollectionById = async (
+  db,
+  collectionName1,
+  id1,
+  collectionName2,
+  id2
+) => {
+  const docSnap = await getDoc(
+    doc(db, collectionName1, id1, collectionName2, id2)
+  );
   const data = docSnap.data();
   return { id: docSnap.id, data };
 };

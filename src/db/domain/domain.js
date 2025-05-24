@@ -16,6 +16,8 @@ import {
   setTaskLogInChamp,
   updateUserInGroup,
   getMultipleDocs,
+  setDocInSubCollection,
+  getDocDataFromSubCollectionById,
 } from "@/db/CA/dataModel";
 
 import {
@@ -38,6 +40,23 @@ export const updateDocFieldsInCollectionByIdClient = async (
 
 export const setDocInCollectionClient = async (collectionName, data, id) => {
   await setDocInCollection(db, collectionName, data, id);
+};
+
+export const setDocInSubCollectionClient = async (
+  collectionName1,
+  id1,
+  collectionName2,
+  id2,
+  data
+) => {
+  await setDocInSubCollection(
+    db,
+    collectionName1,
+    id1,
+    collectionName2,
+    id2,
+    data
+  );
 };
 
 export const updateUsersInChampClient = async (collectionName, data, id) => {
@@ -65,6 +84,21 @@ export const getDocDataFromCollectionByIdClient = async (
   id
 ) => {
   return await getDocDataFromCollectionById(db, collectionName, id);
+};
+
+export const getDocDataFromSubCollectionByIdClient = async (
+  collectionName1,
+  id1,
+  collectionName2,
+  id2
+) => {
+  return await getDocDataFromSubCollectionById(
+    db,
+    collectionName1,
+    id1,
+    collectionName2,
+    id2
+  );
 };
 
 export const getDocFromCollectionByIdClient = async (collectionName, id) => {

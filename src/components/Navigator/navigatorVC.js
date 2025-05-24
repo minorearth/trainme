@@ -6,7 +6,7 @@ import tutorial from "@/components/tutorial/store";
 import { signOutUserClient } from "@/db/domain/domain";
 
 import {
-  getAllTestsFromChapter,
+  getAllTasksFromChapter,
   setFlowNodes,
   getTestsRecap,
   getTextBook,
@@ -476,7 +476,7 @@ const useNavigator = () => {
       tasks = tasksFetched;
     }
     if (nodemode == "addhoc" || nodemode == "newtopic") {
-      tasks = await getAllTestsFromChapter(CSP.chapter, CSP.launchedCourse);
+      tasks = await getAllTasksFromChapter(CSP.chapter, CSP.launchedCourse);
     }
 
     if (nodemode == "champ") {
@@ -553,7 +553,7 @@ const useNavigator = () => {
       pts: 0,
       tasklog: {},
     });
-    const tasks = await getAllTestsFromChapter(chapter, courseid);
+    const tasks = await getAllTasksFromChapter(chapter, courseid);
     setTests(tasks);
   };
 

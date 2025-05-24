@@ -1,4 +1,7 @@
-import { setDocInCollectionClient } from "@/db/domain/domain";
+import {
+  setDocInCollectionClient,
+  setDocInSubCollectionClient,
+} from "@/db/domain/domain";
 
 import { getCoursesToLoad, courses } from "@/globals/courses";
 
@@ -46,7 +49,7 @@ const prepareObjectModel = (chapterFlowNodes) => {
 export const load = () => {
   let chapterCourseObjectModel = {};
   const coursesToLoad = getCoursesToLoad();
-  coursesToLoad.forEach((id) => {
+  coursesToLoad.forEach(async (courseid) => {
     const {
       chapterFlowNodes,
       chapterFlowEdges,
@@ -54,7 +57,7 @@ export const load = () => {
       testsall,
       textbookchapter,
       taskcollection,
-    } = courses[id];
+    } = courses[courseid];
 
     setDocInCollectionClient(
       "chapters",
@@ -63,7 +66,7 @@ export const load = () => {
     );
 
     const chapterObjectModel = prepareObjectModel(chapterFlowNodes);
-    chapterCourseObjectModel[id] = chapterObjectModel;
+    chapterCourseObjectModel[courseid] = chapterObjectModel;
 
     // LoadTasks
     const idLevels = getChapteeLevels(chapterFlowNodes);
@@ -73,14 +76,39 @@ export const load = () => {
         return { ...task, level: idLevels[task.chapterparentid] };
       });
 
-    setDocInCollectionClient(taskcollection, { tasks: allTasks }, "alltasks");
+    // setDocInCollectionClient(taskcollection, { tasks: allTasks }, "alltasks");
 
     let chapters = chapterFlowNodes.map((chapter) => chapter.id);
     chapters = [...chapters, textbookchapter];
+    // chapters.forEach((chapterid) => {
+    //   const tasks = testsall.filter((test) => test.chapterid == chapterid);
+    //   tasks.length != 0 &&
+    //     setDocInCollectionClient(taskcollection, { tasks }, chapterid);
+    // });
+
+    await setDocInCollectionClient("newtasks", {}, courseid);
+    await setDocInSubCollectionClient(
+      "newtasks",
+      courseid,
+      "chapters",
+      "alltasks",
+      {
+        tasks: allTasks,
+      }
+    );
+
     chapters.forEach((chapterid) => {
       const tasks = testsall.filter((test) => test.chapterid == chapterid);
       tasks.length != 0 &&
-        setDocInCollectionClient(taskcollection, { tasks }, chapterid);
+        setDocInSubCollectionClient(
+          "newtasks",
+          courseid,
+          "chapters",
+          chapterid,
+          {
+            tasks,
+          }
+        );
     });
   });
 
