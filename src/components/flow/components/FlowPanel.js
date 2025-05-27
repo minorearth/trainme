@@ -16,9 +16,11 @@ import HomeIcon from "@mui/icons-material/Home";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButtonNoRipple";
 import { Tooltip } from "@mui/material";
+import AS from "@/store/appstate";
+import { observer } from "mobx-react-lite";
 
 const ICON_SIZE = "60px";
-const FlowPanel = ({ appState, actionsNAV }) => {
+const FlowPanel = observer(({ actionsNAV }) => {
   return (
     <Panel position="top-left" style={{ width: "97%" }}>
       <Paper
@@ -53,7 +55,7 @@ const FlowPanel = ({ appState, actionsNAV }) => {
           }}
         >
           <BiCoinStack size={ICON_SIZE} />
-          <Typography variant="h4">{appState.userProgress.rating}</Typography>
+          <Typography variant="h4">{AS.as.userProgress.rating}</Typography>
         </Box>
 
         <IconButtonNoRipple>
@@ -63,7 +65,7 @@ const FlowPanel = ({ appState, actionsNAV }) => {
               onClick={async () => {
                 actionsNAV.openTestsStartedPage({
                   nodemode: "textbook",
-                  courseid: appState.launchedCourse,
+                  courseid: AS.as.launchedCourse,
                 });
               }}
             />
@@ -94,32 +96,6 @@ const FlowPanel = ({ appState, actionsNAV }) => {
       </Paper>
     </Panel>
   );
-};
+});
 
 export default FlowPanel;
-
-{
-  /* <Animation
-          height={"60px"}
-          width={"60px"}
-          name={"home"}
-          onClick={() => {
-            actionsNAV.openAllCoursePage();
-          }}
-        /> */
-}
-
-{
-  /* <Animation
-          id="textbook"
-          height={"60px"}
-          width={"60px"}
-          name={"book"}
-          onClick={async () => {
-            actionsNAV.openTestsStartedPage({
-              nodemode: "textbook",
-              courseid: appState.launchedCourse,
-            });
-          }}
-        /> */
-}

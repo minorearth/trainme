@@ -16,6 +16,7 @@ import TurboNode from "./components/TurboNode.js";
 import TurboEdge from "./components/TurboEdge.js";
 import AnimNode from "./components/AnimNode";
 import alertdialog from "@/components/common/dialog/store";
+import AS from "@/store/appstate";
 
 const nodeTypes = {
   turbo: TurboNode,
@@ -31,7 +32,7 @@ const defaultEdgeOptions = {
   markerEnd: "edge-circle",
 };
 
-const useFlow = ({ appState, flow }) => {
+const useFlow = ({ flow }) => {
   const { fitView } = useReactFlow();
   const [nodes, setNodes, onNodesChange] = useNodesState();
   const [edges, setEdges, onEdgesChange] = useEdgesState();
@@ -46,7 +47,7 @@ const useFlow = ({ appState, flow }) => {
   }, [nodes]);
 
   const showUnlocked = () => {
-    const unlockedNodesToShow = appState.userProgress.lastunlocked;
+    const unlockedNodesToShow = AS.as.userProgress.lastunlocked;
     if (unlockedNodesToShow.length > 0) {
       for (let i = 0; i < unlockedNodesToShow.length; i++) {
         setTimeout(() => {

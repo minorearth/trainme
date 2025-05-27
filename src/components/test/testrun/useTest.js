@@ -5,26 +5,28 @@ import countdownbutton from "@/components/common/countdown/CountdownButton/store
 import splashCDStore from "@/components/common/splash/splashAction/store";
 import { getSense, getCSP, setCSP, updateSCP } from "@/db/localstorage";
 import "./custom.css";
+import AS from "@/store/appstate";
+import { reaction } from "mobx";
 
-const useTest = ({
-  appState,
-  tests,
-  actionsNAV,
-  editorRef,
-  setEditorDisabled,
-}) => {
-  const { setappState, openCongratPage, openRecapTasksPage, setStateAndCSP } =
-    actionsNAV;
+const useTest = ({ tasks, actionsNAV, editorRef, setEditorDisabled }) => {
+  const { openCongratPage, openRecapTasksPage, setStateAndCSP } = actionsNAV;
 
   const [currTask, setCurrTask] = useState({});
 
   useEffect(() => {
-    appState.taskId != tests.length && openTask(appState.taskId, editorRef);
-    // editorRef?.current?.getModel().setValue(currTask?.code);
-  }, [appState.taskId]);
+    AS.as.taskId != tasks.length && openTask(AS.as.taskId);
+  }, []);
+
+  reaction(
+    () => AS.as.taskId,
+    (taskId) => {
+      if (taskId != "") {
+        taskId != tasks.length && openTask(taskId);
+      }
+    }
+  );
 
   const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
-    // editorRef.current.getModel().setValue("");
     setEarned(error);
     setTaskLog({ error, code });
     setFixed(error);
@@ -32,11 +34,11 @@ const useTest = ({
     const CSP = getCSP();
 
     switch (true) {
-      case CSP.taskId != tests.length - 1 && !error:
+      case CSP.taskId != tasks.length - 1 && !error:
         ok();
         nextTask({ CSP });
         return;
-      case CSP.taskId == tests.length - 1 && !error:
+      case CSP.taskId == tasks.length - 1 && !error:
         if (CSP.taskstage == "recap") {
           ok(() =>
             openCongratPage({
@@ -51,24 +53,24 @@ const useTest = ({
         if (CSP.recapTasksIds.length != 0 && CSP.taskstage == "WIP") {
           CSP.nodemode == "renewal"
             ? ok(() => openCongratPage({ CSP, success: false }))
-            : ok(() => openRecapTasksPage(CSP.recapTasksIds, tests));
+            : ok(() => openRecapTasksPage(CSP.recapTasksIds, tasks));
         }
         return;
       case error:
         showRightCodeAfterError({ errorMsg });
-        if (CSP.taskstage == "WIP" && CSP.taskId != tests.length - 1) {
+        if (CSP.taskstage == "WIP" && CSP.taskId != tasks.length - 1) {
           addErrorTaskToRecap({ CSP });
         }
 
-        if (CSP.taskstage == "recap" && CSP.taskId != tests.length - 1) {
+        if (CSP.taskstage == "recap" && CSP.taskId != tasks.length - 1) {
           updateSCP({
             taskId: CSP.taskId + 1,
           });
         }
-        if (CSP.taskstage == "WIP" && CSP.taskId == tests.length - 1) {
+        if (CSP.taskstage == "WIP" && CSP.taskId == tasks.length - 1) {
           errorOnLastWIPTask();
         }
-        if (CSP.taskstage == "recap" && CSP.taskId == tests.length - 1) {
+        if (CSP.taskstage == "recap" && CSP.taskId == tasks.length - 1) {
           errorOnLastRecapTask();
         }
         return;
@@ -116,36 +118,31 @@ const useTest = ({
     });
   };
 
-  // const nextTask = ({ CSP }) => {
-  //   setStateAndCSP({ ...CSP, taskId: CSP.taskId + 1 });
-  // };
-
   const prevTaskNoPts = () => {
     const CSP = getCSP();
     setStateAndCSP({ ...CSP, taskId: CSP.taskId - 1 });
   };
 
   const addErrorTaskToRecap = ({ CSP }) => {
-    const recapTasksIds = [...CSP.recapTasksIds, appState.taskId];
-    // appState.recapTasksIds = recapTasksIds;
+    const recapTasksIds = [...CSP.recapTasksIds, AS.as.taskId];
     setCSP({
       ...CSP,
       recapTasksIds,
-      taskId: appState.taskId + 1,
+      taskId: AS.as.taskId + 1,
     });
   };
 
   const errorOnLastRecapTask = () => {
-    appState.taskstage = "accomplished_suspended";
+    AS.as.taskstage = "accomplished_suspended";
     updateSCP({
       taskstage: "accomplished_suspended",
     });
   };
 
   const errorOnLastWIPTask = () => {
-    appState.taskstage = "recap_suspended";
-    const recapTasksIds = [...appState.recapTasksIds, appState.taskId];
-    appState.recapTasksIds = recapTasksIds;
+    AS.as.taskstage = "recap_suspended";
+    const recapTasksIds = [...AS.as.recapTasksIds, AS.as.taskId];
+    AS.as.recapTasksIds = recapTasksIds;
     updateSCP({
       taskstage: "recap_suspended",
       recapTasksIds,
@@ -161,7 +158,7 @@ const useTest = ({
       () => {
         editorRef.current.setValue(
           `'''\n  Правильный код:\n'''\n\n${
-            tests[appState.taskId].rightcode
+            tasks[AS.as.taskId].rightcode
           } \n\n'''\n  Твой код:\n'''\n\n${currTask.code}`
         );
 
@@ -175,27 +172,6 @@ const useTest = ({
       }
     );
   };
-
-  // const showRightCodeAfterError = ({ errorMsg }) => {
-  //   alertdialog.showDialog(
-  //     local.ru.msg.alert.PSW_TEST_ERROR,
-  //     errorMsg,
-  //     1,
-
-  //     () => {
-  //       editorRef.current.setValue(tests[appState.taskId].rightcode);
-
-  //       updateCurrTask({
-  //         code: `${tests[appState.taskId].rightcode} \n\n Твой код:\n\n${
-  //           currTask.code
-  //         }`,
-  //         info: "Правильный код",
-  //       });
-  //       setEditorDisabled(true);
-  //       countdownbutton.showButton();
-  //     }
-  //   );
-  // };
 
   const handleChangeContent = ({ value }) => {
     const model = editorRef.current.getModel();
@@ -266,12 +242,10 @@ const useTest = ({
   };
 
   const errorCountDownPressed = async () => {
-    // editorRef.current.getModel().setValue("");
     updateCurrTask({ info: "", editordisabled: false });
     editorRef.current.updateOptions({ lineNumbers: "on" });
     setEditorDisabled(false);
     const CSP = getCSP();
-    // if (CSP.taskId != tests.length - 1) {
 
     if (CSP.taskstage == "accomplished_suspended") {
       openCongratPage({ CSP, success: false });
@@ -280,34 +254,34 @@ const useTest = ({
     if (CSP.taskstage == "recap_suspended") {
       CSP.nodemode == "renewal"
         ? openCongratPage({ CSP, success: false })
-        : openRecapTasksPage(CSP.recapTasksIds, tests);
+        : openRecapTasksPage(CSP.recapTasksIds, tasks);
 
       return;
     }
-    if (CSP.taskId != tests.length) {
-      setappState({ ...CSP });
+    if (CSP.taskId != tasks.length) {
+      AS.setAppState({ ...CSP });
       return;
     }
   };
 
-  const openTask = (id, editorRef) => {
-    const test = tests[id];
+  const openTask = (id) => {
+    const task = tasks[id];
 
     setCurrTask({
       task:
-        test.task +
+        task.task +
         formatForbidden(
-          test.restrictions.forbidden,
-          test.restrictions.forbiddenRe,
-          test.restrictions.maxlines,
-          test.tasktype
+          task.restrictions.forbidden,
+          task.restrictions.forbiddenRe,
+          task.restrictions.maxlines,
+          task.tasktype
         ),
-      tasktype: test.tasktype,
-      input: test.defaultinput.join("\n"),
-      code: test.defaultcode,
-      expectedOutput: test.defaultoutput.join("\n"),
-      taskuuid: test.taskuuid,
-      maxlines: test.restrictions.maxlines,
+      tasktype: task.tasktype,
+      input: task.defaultinput.join("\n"),
+      code: task.defaultcode,
+      expectedOutput: task.defaultoutput.join("\n"),
+      taskuuid: task.taskuuid,
+      maxlines: task.restrictions.maxlines,
 
       output: "",
       restrictErrors: "",
@@ -315,38 +289,22 @@ const useTest = ({
   };
 
   const setRightCode = (id) => {
-    editorRef.current.setValue(tests[appState.taskId].rightcode);
-
-    //controlled version  do not remove
-    // const test = tests[id];
-    // setCurrTask((state) => ({
-    //   ...state,
-    //   code: test.rightcode,
-    // }));
+    editorRef.current.setValue(tasks[AS.as.taskId].rightcode);
   };
 
   const setForbiddenCode = (id) => {
-    editorRef.current.setValue(tests[appState.taskId].forbiddencode);
-    //controlled version  do not remove
-
-    // const test = tests[id];
-    // setCurrTask((state) => ({
-    //   ...state,
-    //   code: test.forbiddencode,
-    // }));
+    editorRef.current.setValue(tasks[AS.as.taskId].forbiddencode);
   };
 
   const refreshInput = () => {
-    const test = tests[appState.taskId];
+    const test = tasks[AS.as.taskId];
     const input = test.defaultinput.join("\n");
     currTask.input = input;
     setCurrTask((state) => ({ ...state, input }));
   };
 
   const refreshEditor = () => {
-    // both are worked
-    editorRef.current.setValue(tests[appState.taskId].defaultcode);
-    // editorRef.current.getModel().setValue(tests[appState.taskId].defaultcode);
+    editorRef.current.setValue(tasks[AS.as.taskId].defaultcode);
   };
 
   //UTILIIES
@@ -380,9 +338,6 @@ const useTest = ({
     res += `\n\n<b>Ограничения</b>:\nМаксимальное количество строк кода: ${maxlines}`;
 
     if (forbidden.length) {
-      // res += `\nЗапрещенные приёмы: <div class="tooltip"><span class="tooltiptext">[i for i in range(a)]</span>${forbidden.join(
-      //   "</div>,<div class='tooltip'><span class='tooltiptext'>[i for i in range(a)]</span>"
-      // )}</div>`;
       res += `\nЗапрещенные приёмы:`;
       for (let i = 0; i < forbidden.length; i++) {
         res += `<div class="tooltip">${

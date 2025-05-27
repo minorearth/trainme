@@ -5,14 +5,15 @@ import LinearProgressWithLabel from "@/components/test/testrun/components/Linear
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import Animation from "@/components/common/lottieAnimation/Animation";
 import Typography from "@mui/material/Typography";
-import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButtonNoRipple";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import { Tooltip } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import Grid from "@mui/material/Grid2";
+import { observer } from "mobx-react-lite";
+import AS from "@/store/appstate";
 
-const TopPanel = ({ tests, appState, monacoRef, actionsNAV }) => {
+const TopPanel = observer(({ tasks, monacoRef, actionsNAV }) => {
   const theme = useTheme();
 
   return (
@@ -33,8 +34,8 @@ const TopPanel = ({ tests, appState, monacoRef, actionsNAV }) => {
         >
           <Animation height={"80px"} width={"80px"} name={"sheep"} />
           <LinearProgressWithLabel
-            value={((appState.taskId + 1) / tests.length) * 100}
-            label={`${appState.taskId + 1}\\${tests.length}`}
+            value={((AS.as.taskId + 1) / tasks.length) * 100}
+            label={`${AS.as.taskId + 1}\\${tasks.length}`}
           />
         </Box>
       </Grid>
@@ -52,7 +53,7 @@ const TopPanel = ({ tests, appState, monacoRef, actionsNAV }) => {
             variant="body2"
             sx={{ color: "text.secondary", fontSize: 22 }}
           >
-            {appState.pts}
+            {AS.as.pts}
           </Typography>
 
           <IconButtonNoRipple>
@@ -86,15 +87,14 @@ const TopPanel = ({ tests, appState, monacoRef, actionsNAV }) => {
               <HomeIcon
                 sx={{ fontSize: "40px", marginRight: "15px" }}
                 onClick={() => {
-                  appState.nodemode != "textbook" &&
+                  AS.as.nodemode != "textbook" &&
                     actionsNAV.openCongratPageInterrupted();
-                  appState.nodemode == "textbook" &&
+                  AS.as.nodemode == "textbook" &&
                     actionsNAV.openFlowPageAfterAccomplished();
                 }}
               />
             </Tooltip>
           </IconButtonNoRipple>
-          {/* TODO:  */}
           <DLSwitch monacoRef={monacoRef} />
         </Box>
       </Grid>
@@ -110,6 +110,6 @@ const TopPanel = ({ tests, appState, monacoRef, actionsNAV }) => {
 
     // </Box>
   );
-};
+});
 
 export default TopPanel;

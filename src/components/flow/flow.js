@@ -12,9 +12,9 @@ import "./styles.css";
 import FlowPanel from "./components/FlowPanel.js";
 import useFlow from "./useFlow";
 
-const Flow = ({ appState, flow, actionsNAV }) => {
+const Flow = ({ flow, actionsNAV }) => {
   const theme = useTheme();
-  const flowOptions = useFlow({ appState, flow });
+  const flowOptions = useFlow({ flow });
 
   return (
     <Box
@@ -35,7 +35,7 @@ const Flow = ({ appState, flow, actionsNAV }) => {
         minZoom={1}
         {...flowOptions}
       >
-        <FlowPanel appState={appState} actionsNAV={actionsNAV} />
+        <FlowPanel actionsNAV={actionsNAV} />
       </ReactFlow>
     </Box>
   );

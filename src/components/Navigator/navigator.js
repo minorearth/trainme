@@ -24,20 +24,17 @@ import CountdownCircle from "@/components/common/countdown/CountdownCircle/Count
 import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
 import { Watcher } from "@/components/Navigator/watcher/watcher";
 import TawkToChat from "@/components/common/tawkto/tawkto.js";
+import AS from "@/store/appstate";
 
 const Navigator = observer(() => {
   const [showSplashTimeout, setShowSplashTimeout] = useState(true);
-  const { actionsNAV, appState, loading, tests, flow } = useNavigator();
+  const { actionsNAV, loading, tasks, flow } = useNavigator();
   const { pyodide2 } = usePyodide();
 
   return (
     <Box>
       {(loading || !pyodide2 || showSplashTimeout) && (
-        <SplashTimeout
-          action={setShowSplashTimeout}
-          duration={4000}
-          appState={appState}
-        />
+        <SplashTimeout action={setShowSplashTimeout} duration={4000} />
       )}
       <Watcher />
       <TawkToChat />
@@ -49,11 +46,11 @@ const Navigator = observer(() => {
             height: "100vh",
           }}
         >
-          {(appState.page == "courses" || appState.page == "champ") && (
+          {(AS.as.page == "courses" || AS.as.page == "champ") && (
             <>
               <FloatMenu
                 // state={{ qrVisible, noteVisible }}
-                page={appState.page}
+                page={AS.as.page}
                 actionsNAV={actionsNAV}
               />
               <DLSwitch
@@ -65,46 +62,32 @@ const Navigator = observer(() => {
           <Tutorial />
           {countdowncircle.state.visible && <CountdownCircle />}
           {stn.mode.DEV_MODE && (
-            <AdminPanel
-              flow={flow}
-              appState={appState}
-              actionsNAV={actionsNAV}
-              tests={tests}
-            />
+            <AdminPanel flow={flow} actionsNAV={actionsNAV} tasks={tasks} />
           )}
           <Progress />
           <SplashAction name={"ok"} />
-          {appState.page == "courses" && <Courses actionsNAV={actionsNAV} />}
+          {AS.as.page == "courses" && <Courses actionsNAV={actionsNAV} />}
 
-          {appState.page == "champ" && (
-            <Champ actionsNAV={actionsNAV} appState={appState} />
-          )}
+          {AS.as.page == "champ" && <Champ actionsNAV={actionsNAV} />}
 
-          {appState.page == "flow" &&
+          {AS.as.page == "flow" &&
             !loading &&
             !!flow &&
-            appState.launchedCourse && (
+            AS.as.launchedCourse && (
               <ReactFlowProvider>
-                <Flow appState={appState} actionsNAV={actionsNAV} flow={flow} />
+                <Flow actionsNAV={actionsNAV} flow={flow} />
               </ReactFlowProvider>
             )}
 
-          {appState.page == "testsStarted" && !loading && (
-            <Start actionsNAV={actionsNAV} appState={appState} />
+          {AS.as.page == "testsStarted" && !loading && (
+            <Start actionsNAV={actionsNAV} />
           )}
 
-          {appState.page == "testrun" && tests?.length != 0 && (
-            <Test
-              appState={appState}
-              tests={tests}
-              actionsNAV={actionsNAV}
-              pyodide={pyodide2}
-            />
+          {AS.as.page == "testrun" && tasks?.length != 0 && (
+            <Test tasks={tasks} actionsNAV={actionsNAV} pyodide={pyodide2} />
           )}
 
-          {appState.page == "congrat" && (
-            <CongratPage appState={appState} actionsNAV={actionsNAV} />
-          )}
+          {AS.as.page == "congrat" && <CongratPage actionsNAV={actionsNAV} />}
         </Box>
       )}
     </Box>

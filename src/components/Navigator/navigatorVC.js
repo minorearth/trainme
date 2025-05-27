@@ -1,6 +1,7 @@
 import { useEffect, useState, useLayoutEffect, useRef } from "react";
 import { setCSP, getCSP, getSense } from "@/db/localstorage";
 import user from "@/store/user";
+import AS from "@/store/appstate";
 import tutorial from "@/components/tutorial/store";
 
 import { signOutUserClient } from "@/db/domain/domain";
@@ -33,8 +34,7 @@ import { setDataFetch, getDataFetch } from "@/db/APIcalls/calls";
 
 const useNavigator = () => {
   const [loading, setLoading] = useState(true);
-  const [tests, setTests] = useState([]);
-  const [appState, setappState] = useState({});
+  const [tests, setTasks] = useState([]);
   const [flow, setFlow] = useState();
   const router = useRouter();
 
@@ -152,16 +152,13 @@ const useNavigator = () => {
   };
 
   const updateStateAndCSP = (data) => {
-    setappState((state) => {
-      const newState = { ...state, ...data };
-      setCSP(newState);
-      return newState;
-    });
+    setCSP({ ...AS.as, ...data });
+    AS.updateAppState(data);
   };
 
   const setStateAndCSP = (data) => {
     setCSP(data);
-    setappState(data);
+    AS.setAppState(data);
   };
 
   const saveProgress = async (success) => {
@@ -237,6 +234,7 @@ const useNavigator = () => {
   //PAGES NAVIGATION
   const openAndRefreshFlowPage = async (launchedCourse) => {
     setFlow();
+    console.log("imhere");
     const CSP = await fetchUserMetaAndPersist(launchedCourse);
     await loadFlowNodes(launchedCourse, CSP);
 
@@ -290,7 +288,7 @@ const useNavigator = () => {
         launchedCourse: CSP.launchedCourse,
         userProgress: CSP.userProgress,
       });
-      setTests(tasks);
+      setTasks(tasks);
     } else {
       alertdialog.showDialog(
         "В учебнике нет отрытых тем",
@@ -505,18 +503,19 @@ const useNavigator = () => {
 
     if (taskstage == "recap") {
       const recapTests = getTestsRecap(CSP.recapTasksIds, tasks);
-      setTests(recapTests);
+      setTasks(recapTests);
     }
 
     if (taskstage == "WIP") {
-      setTests(tasks);
+      setTasks(tasks);
     }
+    console.log("tasks", tasks);
   };
 
   const setRecapTasks = (recapTasksIds, tasks) => {
     const CSP = getCSP();
     setStateAndCSP({ ...CSP, taskstage: "recap", taskId: 0 });
-    setTests(getTestsRecap(recapTasksIds, tasks));
+    setTasks(getTestsRecap(recapTasksIds, tasks));
   };
 
   const setRegularTasks = async ({
@@ -554,7 +553,7 @@ const useNavigator = () => {
       tasklog: {},
     });
     const tasks = await getAllTasksFromChapter(chapter, courseid);
-    setTests(tasks);
+    setTasks(tasks);
   };
 
   const setRandomTasksToRepeat = async ({
@@ -602,7 +601,7 @@ const useNavigator = () => {
         randomsaved: tasksuuids,
       });
 
-      setTests(tasksFetched);
+      setTasks(tasksFetched);
     } catch (e) {
       console.error("some error");
     }
@@ -621,14 +620,13 @@ const useNavigator = () => {
     const tasks = await getChampTasks({
       champid,
     });
-    setTests(tasks.data.tasks);
+    setTasks(tasks.data.tasks);
   };
 
   return {
     actionsNAV: {
       updateStateAndCSP,
       setStateAndCSP,
-      setappState,
       openFlowPageAfterAccomplished,
       openTestsStartedPage,
       openChampPage,
@@ -650,53 +648,10 @@ const useNavigator = () => {
       runChamp,
       setRecapTasks,
     },
-    appState,
     loading,
-    tests,
+    tasks: tests,
     flow,
   };
 };
 
 export default useNavigator;
-
-// const openCongratPage = async ({ CSP }) => {
-//   countdownbutton.hideButton();
-//   let pts;
-//   if (
-//     CSP.nodemode == "addhoc" ||
-//     CSP.nodemode == "newtopic" ||
-//     CSP.nodemode == "renewal"
-//   ) {
-//     pts = Math.min(getSense(), CSP.remainsum);
-//     await setUseMetaData(
-//       encrypt2({
-//         lastcompleted: CSP.chapter,
-//         unlocked: CSP.tobeunlocked,
-//         pts,
-//         uid: user.userid,
-//         tasklog: CSP.tasklog,
-//         launchedCourse: CSP.launchedCourse,
-//       })
-//     );
-//     setStateAndCSP({
-//       page: "congrat",
-//       pts,
-//       launchedCourse: CSP.launchedCourse,
-//       userProgress: CSP.userProgress,
-//       nodemode: CSP.nodemode,
-//     });
-//   }
-
-//   if (CSP.nodemode == "champ") {
-//     pts = getSense();
-//     updateChampTaskLog(CSP.tasklog, CSP.champid);
-//     setStateAndCSP({
-//       page: "congrat",
-//       champid: CSP.champid,
-//       pts,
-//       // launchedCourse: CSP.launchedCourse,
-//       userProgress: CSP.userProgress,
-//       nodemode: CSP.nodemode,
-//     });
-//   }
-// };

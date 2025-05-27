@@ -8,14 +8,12 @@ import countdownbutton from "@/components/common/countdown/CountdownButton/store
 import Animation from "@/components/common/lottieAnimation/Animation";
 import stn from "@/globals/settings";
 import { getCSP } from "@/db/localstorage";
-import alertdialog from "@/components/common/dialog/store";
+import AS from "@/store/appstate";
 
 const Navigation = observer(
   ({
     actionsTsk,
-    tests,
-    actionsNAV,
-    appState,
+    tasks,
     pyodide,
     checkTask,
     currTask,
@@ -74,7 +72,7 @@ const Navigation = observer(
             onClick={async (e) => {
               if (!pyodide || executing) return;
               refreshInput();
-              checkTask(currTask.code, tests[appState.taskId], tests.length);
+              checkTask(currTask.code, tasks[AS.as.taskId], tasks.length);
               editorRef.current.setValue("");
             }}
             disabled={!pyodide || executing}
@@ -84,14 +82,14 @@ const Navigation = observer(
             Проверить!
           </Button>
         )}
-        {(appState.nodemode == "textbook" || stn.mode.DEV_MODE) && (
+        {(AS.as.nodemode == "textbook" || stn.mode.DEV_MODE) && (
           <Button
             onClick={() => {
               editorRef.current.setValue("");
               prevTaskNoPts();
             }}
             variant="outlined"
-            disabled={appState.taskId <= 0}
+            disabled={AS.as.taskId <= 0}
           >
             Назад
           </Button>
@@ -104,7 +102,7 @@ const Navigation = observer(
               nextTask({ CSP });
             }}
             variant="outlined"
-            disabled={appState.taskId >= tests.length - 1}
+            disabled={AS.as.taskId >= tasks.length - 1}
           >
             Продолжить
           </Button>
@@ -124,7 +122,7 @@ const Navigation = observer(
         {stn.mode.DEV_MODE && (
           <Button
             onClick={() => {
-              setRightCode(appState.taskId);
+              setRightCode(AS.as.taskId);
             }}
             variant="outlined"
           >
@@ -134,7 +132,7 @@ const Navigation = observer(
         {stn.mode.DEV_MODE && (
           <Button
             onClick={() => {
-              setForbiddenCode(appState.taskId);
+              setForbiddenCode(AS.as.taskId);
             }}
             variant="outlined"
           >

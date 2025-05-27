@@ -4,7 +4,6 @@ import {
   resetUseMetaData,
   unlockAll,
   unlockAndCompleteAll,
-  getMoney,
   setMoney,
 } from "@/db/SA/firebaseSA";
 import { load } from "@/components/admin/adminutils";
@@ -14,7 +13,7 @@ import Input from "@mui/material/Input";
 import { useState } from "react";
 import { getCSP } from "@/db/localstorage";
 
-const AdminPanel = ({ flow, actionsNAV, tests }) => {
+const AdminPanel = ({ flow, actionsNAV, tasks }) => {
   const [inValue, setInValue] = useState(5000);
 
   const handleChange = (e) => {
@@ -105,7 +104,7 @@ const AdminPanel = ({ flow, actionsNAV, tests }) => {
       <Button
         onClick={() => {
           const CSP = getCSP();
-          actionsNAV.setStateAndCSP({ ...CSP, taskId: tests.length - 1 });
+          actionsNAV.setStateAndCSP({ ...CSP, taskId: tasks.length - 1 });
         }}
       >
         lasttask

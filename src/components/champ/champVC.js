@@ -11,12 +11,14 @@ import {
 
 import { getCSP } from "@/db/localstorage";
 import user from "@/store/user";
+import AS from "@/store/appstate";
 import { generateString } from "@/globals/utils/utilsRandom";
 import stn from "@/globals/settings";
 import alertdialog from "@/components/common/dialog/store";
 import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
+import { courses } from "@/globals/courses";
 
-const useChamps = ({ actionsNAV, appState }) => {
+const useChamps = ({ actionsNAV }) => {
   const [monitoringStarted, setMonitoringStarted] = useState(false);
   const [champid, setChampid] = useState("");
   const [inputChampId, setInputChampd] = useState("");
@@ -53,7 +55,7 @@ const useChamps = ({ actionsNAV, appState }) => {
   };
 
   useEffect(() => {
-    appState.champid && setChampid(appState.champid);
+    AS.as.champid && setChampid(AS.as.champid);
     setUserName(user.name);
   }, []);
 
@@ -99,6 +101,7 @@ const useChamps = ({ actionsNAV, appState }) => {
       levelStart: range[0],
       levelEnd: range[1],
       taskCount,
+      courseid: "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0",
     });
     if (tasks.status == "error") {
       alertdialog.showDialog(

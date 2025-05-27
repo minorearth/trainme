@@ -12,8 +12,7 @@ import InOutPanel from "@/components/test/testrun/components/InOutPanel";
 import TaskAndCodePanel from "@/components/test/testrun/components/taskAndCodePanel";
 import TopPanel from "@/components/test/testrun/components/TopPanel";
 
-const Test = observer((props) => {
-  const { appState, tests, actionsNAV, pyodide } = props;
+const Test = observer(({ tasks, actionsNAV, pyodide }) => {
   const monacoRef = useRef(null);
   const editorRef = useRef(null);
   const theme = useTheme();
@@ -21,8 +20,7 @@ const Test = observer((props) => {
   const { setEditorDisabled } = useMonaco({ monacoRef, editorRef });
 
   const { actionsTsk, currTask, monacoInfo } = useTest({
-    appState,
-    tests,
+    tasks,
     actionsNAV,
     editorRef,
     setEditorDisabled: (disabled) => setEditorDisabled(disabled, editorRef),
@@ -50,20 +48,14 @@ const Test = observer((props) => {
           padding: "6px",
         }}
       >
-        <TopPanel
-          tests={tests}
-          appState={appState}
-          monacoRef={monacoRef}
-          actionsNAV={actionsNAV}
-        />
+        <TopPanel tasks={tasks} monacoRef={monacoRef} actionsNAV={actionsNAV} />
 
         <TaskAndCodePanel
           pyodide={pyodide}
           actionsTsk={actionsTsk}
           actionsNAV={actionsNAV}
           currTask={currTask}
-          appState={appState}
-          tests={tests}
+          tasks={tasks}
           checkTask={checkTask}
           runPythonCode={runPythonCode}
           monacoRef={monacoRef}

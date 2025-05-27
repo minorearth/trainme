@@ -16,9 +16,15 @@ class StdinHandler {
 
 const runCodeNoGLobals = async (pyodide, code) => {
   // https://github.com/pyodide/pyodide/issues/703
+
   const dict = pyodide.globals.get("dict");
   const globals = dict();
-  await pyodide.runPython(code, { globals, locals: globals });
+  await pyodide.runPython(
+    "f=open('file.txt', 'w')\nf.write('Это содержимое файла в виртуальной файловой системе Pyodide.')\nf.close()\n" +
+      code,
+    { globals, locals: globals }
+  );
+
   globals.destroy();
   dict.destroy();
 };
@@ -39,6 +45,7 @@ export default function usePythonRunner({ updateCurrTask, pyodide }) {
         const stdInSplitted = stdIn.split("\n");
         pyodide.setStdin(new StdinHandler(stdInSplitted));
         pyodide.setStdout({ batched: stdout });
+
         if (pyodide) {
           await runCodeNoGLobals(pyodide, code);
           return { outputTxt: output.join("\n"), outputArr: output };

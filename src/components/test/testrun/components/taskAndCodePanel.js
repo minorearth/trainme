@@ -41,10 +41,9 @@ const Wrapper = styled.div`
 
 const TaskAndCodePanel = (props) => {
   const {
-    tests,
+    tasks,
     actionsNAV,
     actionsTsk,
-    appState,
     pyodide,
     currTask,
     monacoRef,
@@ -88,10 +87,9 @@ const TaskAndCodePanel = (props) => {
           <Navigation
             checkTask={checkTask}
             editorRef={editorRef}
-            tests={tests}
+            tasks={tasks}
             actionsNAV={actionsNAV}
             actionsTsk={actionsTsk}
-            appState={appState}
             pyodide={pyodide}
             currTask={currTask}
             runPythonCode={runPythonCode}

@@ -11,7 +11,7 @@ const Courses = ({ actionsNAV }) => {
     .map((id) => ({
       title: courses[id].title,
       text: courses[id].text,
-      id: courses[id].id,
+      id: id,
       order: courses[id].order,
       action:
         courses[id].type == "course"

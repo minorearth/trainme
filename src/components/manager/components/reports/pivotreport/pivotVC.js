@@ -6,6 +6,7 @@ import {
   setDocInCollectionClient,
   getDocDataFromCollectionByIdClient,
   getMultipleDocsClient,
+  setDocInSubCollectionClient,
 } from "@/db/domain/domain";
 import user from "@/store/user";
 
@@ -19,6 +20,13 @@ import { toJS } from "mobx";
 
 const usePivotReport = () => {
   const makeSnapshot = () => {
+    setDocInSubCollectionClient(
+      "snapshots",
+      user.userid,
+      "snapshot",
+      stat.groupSelected,
+      stat.userMetaObj
+    );
     setDocInCollectionClient(
       "snapshots",
       stat.userMetaObj,

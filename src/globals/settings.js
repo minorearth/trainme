@@ -2,7 +2,6 @@ import local from "./local";
 const stn = {
   mode: {
     needCt: false,
-    ALL_RIGHT_CODE: process.env.NEXT_PUBLIC_ALL_RIGHT_CODE == "YES",
     DEV_MODE: process.env.NEXT_PUBLIC_DEV_MODE == "YES",
   },
 

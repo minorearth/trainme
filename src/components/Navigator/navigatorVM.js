@@ -170,10 +170,7 @@ export const setFlowNodes = async ({
   openTestsStartedPage,
   openAndRefreshFlowPage,
 }) => {
-  const data = await getDocDataFromCollectionByIdClient(
-    "chapters",
-    courses[courseid].chaptersdoc
-  );
+  const data = await getDocDataFromCollectionByIdClient("chapters", courseid);
   const edges = data.data.chapterFlowEdges;
   const nodes = fullFillProgess(
     progress,
@@ -189,36 +186,26 @@ export const setFlowNodes = async ({
 };
 
 export const getAllTasksFromChapter = async (chapter, courseid) => {
-  const filteredTasks = await getDocDataFromSubCollectionByIdClient(
+  const tasks = await getDocDataFromSubCollectionByIdClient(
     "newtasks",
     courseid,
     "chapters",
     chapter
   );
-  if (!filteredTasks.data) {
-    return [];
-  }
-  const res = stn.mode.ALL_RIGHT_CODE
-    ? filteredTasks.data.tasks.map((task) => ({
-        ...task,
-        defaultcode: task.rightcode,
-      }))
-    : filteredTasks.data.tasks;
-
-  return res;
+  return !tasks.data ? [] : tasks.data.tasks;
 };
 
 export const getTextBook = async (CSP, courseid) => {
-  const filteredTasks = await getDocDataFromSubCollectionByIdClient(
+  const tasks = await getDocDataFromSubCollectionByIdClient(
     "newtasks",
     courseid,
     "chapters",
-    courses[courseid].textbookchapter
+    "textbook"
   );
-  const unlockedTheory = filteredTasks.data.tasks.filter((item) =>
+  const unlockedTheory = tasks.data.tasks.filter((item) =>
     CSP.userProgress.completed.includes(item.chapterparentid)
   );
-  if (!filteredTasks.data) {
+  if (!tasks.data) {
     return [];
   }
   return unlockedTheory;
@@ -273,9 +260,12 @@ export const getRandomTasksForChamp = async ({
   levelStart,
   levelEnd,
   taskCount,
+  courseid,
 }) => {
-  const allTasks = await getDocDataFromCollectionByIdClient(
-    "tasks",
+  const allTasks = await getDocDataFromSubCollectionByIdClient(
+    "newtasks",
+    courseid,
+    "chapters",
     "alltasks"
   );
 

@@ -6,15 +6,14 @@ import { useTheme } from "@mui/material/styles";
 import Animation from "../../lottieAnimation/Animation";
 import Loader from "../CSSSplash";
 
-const SplashTimeout = ({ action, duration, appState }) => {
+const SplashTimeout = ({ action, duration }) => {
   const theme = useTheme();
 
   useEffect(() => {
-    appState &&
-      setTimeout(() => {
-        action(false);
-      }, duration);
-  }, [appState]);
+    setTimeout(() => {
+      action(false);
+    }, duration);
+  }, []);
 
   return (
     <Box
