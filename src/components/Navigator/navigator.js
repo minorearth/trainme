@@ -9,7 +9,7 @@ import useNavigator from "./navigatorVC";
 import Progress from "@/components/common/splash/progressdots/progressdots";
 import AlertDialog from "@/components/common/dialog/dialog";
 import { observer } from "mobx-react-lite";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import AdminPanel from "@/components/admin/adminpanel";
 import SplashTimeout from "@/components/common/splash/splashTimeout/splashTimeout";
 import SplashAction from "@/components/common/splash/splashAction/splashAction";
@@ -48,11 +48,7 @@ const Navigator = observer(() => {
         >
           {(AS.as.page == "courses" || AS.as.page == "champ") && (
             <>
-              <FloatMenu
-                // state={{ qrVisible, noteVisible }}
-                page={AS.as.page}
-                actionsNAV={actionsNAV}
-              />
+              <FloatMenu page={AS.as.page} actionsNAV={actionsNAV} />
               <DLSwitch
                 sx={{ position: "absolute", top: "40px", left: "60px" }}
               />

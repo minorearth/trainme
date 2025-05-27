@@ -14,17 +14,57 @@ const useTest = ({ tasks, actionsNAV, editorRef, setEditorDisabled }) => {
   const [currTask, setCurrTask] = useState({});
 
   useEffect(() => {
-    AS.as.taskId != tasks.length && openTask(AS.as.taskId);
+    const loadTasks = async () => {
+      await loadAllFiles(tasks);
+      AS.as.taskId != tasks.length && openTask(AS.as.taskId);
+    };
+    loadTasks();
   }, []);
 
   reaction(
     () => AS.as.taskId,
     (taskId) => {
-      if (taskId != "") {
+      if (AS.as.taskId && taskId != "") {
         taskId != tasks.length && openTask(taskId);
       }
     }
   );
+
+  const fetchFile = async (fileUrl) => {
+    try {
+      const response = await fetch(fileUrl);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.text();
+      return data.replace(/\n/g, "\\n").replace(/\r/g, "\\r");
+    } catch (error) {
+      console.error("Ошибка:", error);
+    }
+  };
+
+  const loadAllFiles = async (tasks) => {
+    const files = {};
+    tasks.forEach(
+      (task) =>
+        (files[task.file] = {
+          fileurl:
+            "https://hog6lcngzkudsdma.public.blob.vercel-storage.com/a3905595-437e-47f3-b749-28ea5362bd39/d06b8c0d-4837-484a-ad85-9257e0e6af01/" +
+            task.file,
+        })
+    );
+    await Promise.all(
+      Object.keys(files).map(async (file) => {
+        files[file] = {
+          fileurl: files[file].fileurl,
+          data: await fetchFile(files[file].fileurl),
+        };
+      })
+    );
+
+    tasks.forEach((task) => (task.filedata = files[task.file].data));
+    console.log("tasks", tasks);
+  };
 
   const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
     setEarned(error);
@@ -185,7 +225,6 @@ const useTest = ({ tasks, actionsNAV, editorRef, setEditorDisabled }) => {
   };
 
   const ok = (action = () => {}) => {
-    console.log("action", action);
     splashCDStore.setShow(false, "ok", 500, () => action());
   };
 
@@ -282,7 +321,7 @@ const useTest = ({ tasks, actionsNAV, editorRef, setEditorDisabled }) => {
       expectedOutput: task.defaultoutput.join("\n"),
       taskuuid: task.taskuuid,
       maxlines: task.restrictions.maxlines,
-
+      filedata: task.filedata || "",
       output: "",
       restrictErrors: "",
     });

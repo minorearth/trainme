@@ -3,12 +3,12 @@ import local from "@/globals/local";
 
 const useCheck = ({ actionsTsk, runPythonCode }) => {
   const { nextTaskOrCompleteTestRun, updateCurrTask } = actionsTsk;
-  const checkTask = async (code, test) => {
+  const checkTask = async (code, task) => {
     if (!code) {
       return;
     }
     const { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked } =
-      await runCheckers(code, test, runPythonCode);
+      await runCheckers(code, task, runPythonCode);
     const error = getErrorMessage(
       codeChecked,
       linesChecked,

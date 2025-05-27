@@ -170,7 +170,6 @@ const Wrapper = styled.div(({ theme, data }) => ({
 
 const TurboNode = memo(({ data }) => {
   const theme = useTheme();
-  console.log("data", data);
   return (
     <Wrapper theme={theme} data={data}>
       <div className="cloud gradient">

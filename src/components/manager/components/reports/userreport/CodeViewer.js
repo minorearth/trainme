@@ -7,7 +7,6 @@ import stat from "@/components/manager/store/stat";
 import Typography from "@mui/material/Typography";
 
 const CodeViewer = observer(() => {
-  console.log(stat.code);
   return (
     <Box sx={{ minHeight: 352, overflow: "scroll" }}>
       <Typography

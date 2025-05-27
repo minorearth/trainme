@@ -234,7 +234,6 @@ const useNavigator = () => {
   //PAGES NAVIGATION
   const openAndRefreshFlowPage = async (launchedCourse) => {
     setFlow();
-    console.log("imhere");
     const CSP = await fetchUserMetaAndPersist(launchedCourse);
     await loadFlowNodes(launchedCourse, CSP);
 
@@ -439,8 +438,9 @@ const useNavigator = () => {
       "Повторение",
       "Попробуй еще раз решить ошибочные задачи",
       1,
-      () => setRecapTasks(recapTasksIds, tasks)
+      () => {}
     );
+    setRecapTasks(recapTasksIds, tasks);
   };
 
   const runChamp = async (champid) => {
@@ -509,7 +509,6 @@ const useNavigator = () => {
     if (taskstage == "WIP") {
       setTasks(tasks);
     }
-    console.log("tasks", tasks);
   };
 
   const setRecapTasks = (recapTasksIds, tasks) => {

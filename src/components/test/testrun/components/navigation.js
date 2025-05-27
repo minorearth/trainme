@@ -32,6 +32,11 @@ const Navigation = observer(
       updateCurrTask,
     } = actionsTsk;
 
+    const createfile = (data) => {
+      console.log(data);
+      // return `print("${data}")\n`;
+      return `f=open("17.txt", 'w')\nf.write("${data}")\nf.close()\n`;
+    };
     return (
       <Box
         sx={{
@@ -49,7 +54,8 @@ const Navigation = observer(
               if (!pyodide || executing) return;
               setExecuting(true);
               const { outputTxt } = await runPythonCode(
-                currTask.code,
+                (currTask.filedata ? createfile(currTask.filedata) : "") +
+                  currTask.code,
                 currTask.input
               );
 

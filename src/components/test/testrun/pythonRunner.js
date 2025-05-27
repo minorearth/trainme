@@ -19,11 +19,7 @@ const runCodeNoGLobals = async (pyodide, code) => {
 
   const dict = pyodide.globals.get("dict");
   const globals = dict();
-  await pyodide.runPython(
-    "f=open('file.txt', 'w')\nf.write('Это содержимое файла в виртуальной файловой системе Pyodide.')\nf.close()\n" +
-      code,
-    { globals, locals: globals }
-  );
+  await pyodide.runPython(code, { globals, locals: globals });
 
   globals.destroy();
   dict.destroy();
