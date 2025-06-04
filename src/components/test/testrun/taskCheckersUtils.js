@@ -51,9 +51,10 @@ const checkForbidden = (code, musthave, musthaveRe) => {
   return forbiddenCheck && forbiddenReCheck;
 };
 
-const checkCode = async (code, test, runPythonCode) => {
+const checkCode = async (code, task, runPythonCode) => {
+  // тута
   const results = await Promise.all(
-    test.inout.map(async (check) => {
+    task.inout.map(async (check) => {
       const { outputArr } = await runPythonCode(code, check.inv.join("\n"));
       return eqArrays(outputArr, check.outv);
     })
@@ -61,18 +62,18 @@ const checkCode = async (code, test, runPythonCode) => {
   return results.every(Boolean);
 };
 
-export const runCheckers = async (code, test, runPythonCode) => {
-  const codeChecked = await checkCode(code, test, runPythonCode);
-  const linesChecked = checkLines(code, test.restrictions.maxlines);
+export const runCheckers = async (code, task, runPythonCode) => {
+  const codeChecked = await checkCode(code, task, runPythonCode);
+  const linesChecked = checkLines(code, task.restrictions.maxlines);
   const mustHaveChecked = checkMustHave(
     code,
-    test.restrictions.musthave,
-    test.restrictions.musthaveRe
+    task.restrictions.musthave,
+    task.restrictions.musthaveRe
   );
   const forbiddenChecked = checkForbidden(
     code,
-    test.restrictions.forbidden,
-    test.restrictions.forbiddenRe
+    task.restrictions.forbidden,
+    task.restrictions.forbiddenRe
   );
   return { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked };
 };

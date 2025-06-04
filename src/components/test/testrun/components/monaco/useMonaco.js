@@ -5,7 +5,6 @@ import { Background } from "@xyflow/react";
 import { useEffect, useState } from "react";
 
 const useMonaco = ({ editorRef, monacoRef, currTask }) => {
-  const theme = useTheme();
   const [value, setValue] = useState("");
   const [mounted, setMounted] = useState(false);
 
@@ -17,10 +16,11 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
   }, [currTask, mounted]);
 
   useEffect(() => {
+    currTask && console.log("herer", currTask.code);
     if (!editorRef.current) {
       return;
     }
-    editorRef.current.getModel().setValue(currTask.code);
+    editorRef.current.setValue(currTask.code);
 
     currTask.tasktype == "guide"
       ? editorRef.current.updateOptions({ lineNumbers: "off" })

@@ -16,12 +16,14 @@ const useCheck = ({ actionsTsk, runPythonCode }) => {
       forbiddenChecked
     );
     const isError = error != "";
-    nextTaskOrCompleteTestRun({
+    await nextTaskOrCompleteTestRun({
       error: isError,
       errorMsg: error,
       code,
     });
-    updateCurrTask({ code: "" });
+    console.log("check7");
+
+    // updateCurrTask({ code: "" });
     return error != "";
   };
 

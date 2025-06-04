@@ -25,7 +25,7 @@ const runCodeNoGLobals = async (pyodide, code) => {
   dict.destroy();
 };
 
-export default function usePythonRunner({ updateCurrTask, pyodide }) {
+export default function usePythonRunner({ pyodide }) {
   const runPythonCode = async (code, stdIn) => {
     if (pyodide) {
       let output = [];

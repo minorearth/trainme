@@ -49,6 +49,23 @@ export const useGroups = () => {
       stat.setAllCoursesTasks(allCoursesTasks);
     };
     getAllCousesTasks();
+
+    return reaction(
+      () => user.userid,
+      (userid) => {
+        if (userid != "") {
+          const getGroups = async () => {
+            fetchGroupsData();
+            const chaptersObj = await getDocDataFromCollectionByIdClient(
+              "views",
+              "chaptersobject"
+            );
+            stat.setChaptersObj(chaptersObj.data);
+          };
+          getGroups();
+        }
+      }
+    );
   }, []);
 
   const fetchGroupsData = async () => {
@@ -59,23 +76,6 @@ export const useGroups = () => {
     const data = groupsObjectToArr(groups.data);
     stat.setGroupData(data);
   };
-
-  reaction(
-    () => user.userid,
-    (userid) => {
-      if (userid != "") {
-        const getGroups = async () => {
-          fetchGroupsData();
-          const chaptersObj = await getDocDataFromCollectionByIdClient(
-            "views",
-            "chaptersobject"
-          );
-          stat.setChaptersObj(chaptersObj.data);
-        };
-        getGroups();
-      }
-    }
-  );
 
   const addNewGroup = () => {
     const data = [

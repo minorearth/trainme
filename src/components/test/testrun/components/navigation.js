@@ -32,10 +32,8 @@ const Navigation = observer(
       updateCurrTask,
     } = actionsTsk;
 
-    const createfile = (data) => {
-      console.log(data);
-      // return `print("${data}")\n`;
-      return `f=open("17.txt", 'w')\nf.write("${data}")\nf.close()\n`;
+    const createfile = (data, filename) => {
+      return `f=open("${filename}", 'w')\nf.write("${data}")\nf.close()\n`;
     };
     return (
       <Box
@@ -54,10 +52,12 @@ const Navigation = observer(
               if (!pyodide || executing) return;
               setExecuting(true);
               const { outputTxt } = await runPythonCode(
-                (currTask.filedata ? createfile(currTask.filedata) : "") +
-                  currTask.code,
+                (currTask.filedata
+                  ? createfile(currTask.filedata, currTask.file)
+                  : "") + currTask.code,
                 currTask.input
               );
+              console.log("check10");
 
               updateCurrTask({ output: outputTxt });
               setExecuting(false);
@@ -77,9 +77,10 @@ const Navigation = observer(
           <Button
             onClick={async (e) => {
               if (!pyodide || executing) return;
-              refreshInput();
-              checkTask(currTask.code, tasks[AS.as.taskId], tasks.length);
-              editorRef.current.setValue("");
+              //TODO: Не понимаю зачем делал это, закомментировал
+              // refreshInput();
+              await checkTask(currTask.code, tasks[AS.as.taskId]);
+              // editorRef.current.setValue("");
             }}
             disabled={!pyodide || executing}
             variant="outlined"

@@ -19,16 +19,17 @@ const useTest = ({ tasks, actionsNAV, editorRef, setEditorDisabled }) => {
       AS.as.taskId != tasks.length && openTask(AS.as.taskId);
     };
     loadTasks();
-  }, []);
 
-  reaction(
-    () => AS.as.taskId,
-    (taskId) => {
-      if (AS.as.taskId && taskId != "") {
-        taskId != tasks.length && openTask(taskId);
+    return reaction(
+      () => AS.as.taskId,
+      (taskId) => {
+        console.log("тута", taskId);
+        if (AS.as.taskId && taskId != "") {
+          taskId != tasks.length && openTask(taskId);
+        }
       }
-    }
-  );
+    );
+  }, []);
 
   const fetchFile = async (fileUrl) => {
     try {
@@ -63,7 +64,6 @@ const useTest = ({ tasks, actionsNAV, editorRef, setEditorDisabled }) => {
     );
 
     tasks.forEach((task) => (task.filedata = files[task.file].data));
-    console.log("tasks", tasks);
   };
 
   const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
@@ -216,12 +216,14 @@ const useTest = ({ tasks, actionsNAV, editorRef, setEditorDisabled }) => {
   const handleChangeContent = ({ value }) => {
     const model = editorRef.current.getModel();
     const lineCount = model.getLineCount();
+    console.log("check66", value);
+
     lineCount > currTask.maxlines && currTask.tasktype != "guide"
       ? updateCurrTask({
-          code: value ?? "",
+          code: value || "",
           maxlineserror: "Превышено максимальное количество строк",
         })
-      : updateCurrTask({ code: value ?? "", maxlineserror: "" });
+      : updateCurrTask({ code: value || "", maxlineserror: "" });
   };
 
   const ok = (action = () => {}) => {
@@ -274,6 +276,8 @@ const useTest = ({ tasks, actionsNAV, editorRef, setEditorDisabled }) => {
   };
 
   const updateCurrTask = (data) => {
+    console.log("check2", data);
+
     setCurrTask((state) => ({
       ...state,
       ...data,
@@ -281,6 +285,8 @@ const useTest = ({ tasks, actionsNAV, editorRef, setEditorDisabled }) => {
   };
 
   const errorCountDownPressed = async () => {
+    console.log("check9");
+
     updateCurrTask({ info: "", editordisabled: false });
     editorRef.current.updateOptions({ lineNumbers: "on" });
     setEditorDisabled(false);
@@ -305,6 +311,7 @@ const useTest = ({ tasks, actionsNAV, editorRef, setEditorDisabled }) => {
 
   const openTask = (id) => {
     const task = tasks[id];
+    console.log("check3");
 
     setCurrTask({
       task:
@@ -327,11 +334,11 @@ const useTest = ({ tasks, actionsNAV, editorRef, setEditorDisabled }) => {
     });
   };
 
-  const setRightCode = (id) => {
+  const setRightCode = () => {
     editorRef.current.setValue(tasks[AS.as.taskId].rightcode);
   };
 
-  const setForbiddenCode = (id) => {
+  const setForbiddenCode = () => {
     editorRef.current.setValue(tasks[AS.as.taskId].forbiddencode);
   };
 
@@ -339,6 +346,7 @@ const useTest = ({ tasks, actionsNAV, editorRef, setEditorDisabled }) => {
     const test = tasks[AS.as.taskId];
     const input = test.defaultinput.join("\n");
     currTask.input = input;
+    console.log("check4");
     setCurrTask((state) => ({ ...state, input }));
   };
 
