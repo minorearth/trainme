@@ -41,20 +41,11 @@ const MonacoEd = ({
 }) => {
   const theme = useTheme();
   const { mode } = useColorScheme();
-  const { handleEditorDidMount, value, undo, redo } = useMonaco({
+  const { handleEditorDidMount } = useMonaco({
     monacoRef,
     editorRef,
     currTask,
   });
-
-  useEffect(() => {
-    // const items = document.querySelectorAll(".mtk20");
-    // items.forEach((item) => {
-    //   item.classList.add("markdown2");
-    //   item.parentElement.parentElement.classList.add("markdown");
-    //   // }
-    // });
-  }, []);
 
   return (
     <>
@@ -84,8 +75,6 @@ const MonacoEd = ({
       >
         <CachedIcon />
       </IconButton>
-      {/* <Button onClick={() => undo()}>undo</Button>
-      <Button onClick={() => redo()}>redo</Button> */}
 
       <Editor
         height="50vh"
@@ -93,7 +82,6 @@ const MonacoEd = ({
         theme={"dark"}
         options={{ ...EditorOptions }}
         language="python"
-        // value={value}
         onChange={(value, e) =>
           handleChangeContent({
             value,
@@ -112,37 +100,6 @@ const MonacoEd = ({
 };
 
 export default MonacoEd;
-
-// import styled from "styled-components";
-
-// const StyledEditor = styled.div(({ theme }) => ({
-//   ".monaco-editor .view-line:has(.mtk7):not(:has(.mtk1)):not(:has(.mtk8))": {
-//     backgroundColor: "white",
-//     borderLeft: "20px",
-//     borderLeftStyle: "solid",
-//     borderColor: "blueviolet",
-//   },
-
-//   ".monaco-editor .mtk7": {
-//     color: theme == "dark" ? "white" : "inherit",
-//   },
-
-//   ".monaco-editor .view-line:has(.mtk8):not(:has(.mtk4)):not(:has(.mtk9)):not(:has(.mtk6))":
-//     {
-//       backgroundColor: "#121212",
-//       borderLeft: "20px",
-//       borderLeftStyle: "solid",
-//       borderColor: "blueviolet",
-//     },
-
-//   // ".monaco-editor .mtk7": {
-//   //   color: theme == "dark" ? "white" : "black",
-//   // },
-
-//   ".monaco-editor .mtk8": {
-//     color: theme != "dark" ? "white" : "inherit",
-//   },
-// }));
 
 // editorRef?.current
 //   ?.getContainerDomNode()

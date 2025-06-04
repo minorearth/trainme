@@ -1,19 +1,7 @@
-import { useRef } from "react";
-import { useTheme } from "@mui/material/styles";
-import { useCallback } from "react";
-import { Background } from "@xyflow/react";
 import { useEffect, useState } from "react";
 
 const useMonaco = ({ editorRef, monacoRef, currTask }) => {
-  const [value, setValue] = useState("");
   const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    if (!mounted || !currTask) {
-      return;
-    }
-    // setValue(currTask.code);
-  }, [currTask, mounted]);
 
   useEffect(() => {
     currTask && console.log("herer", currTask.code);
@@ -112,63 +100,7 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
   return {
     setEditorDisabled,
     handleEditorDidMount,
-    editorRef,
-    monacoRef,
-    value,
   };
 };
 
 export default useMonaco;
-
-// const undo = () => {
-//   if (historyRef.current.length > 1) {
-//     redoHistoryRef.current.push(
-//       historyRef.current[historyRef.current.length - 1]
-//     );
-//     historyRef.current.pop();
-//     const previousValue = historyRef.current[historyRef.current.length - 1];
-//     editorRef.current.setValue(previousValue);
-//   }
-// };
-
-// const redo = () => {
-//   if (redoHistoryRef.current.length > 0) {
-//     const redoValue = redoHistoryRef.current.pop();
-//     historyRef.current.push(redoValue);
-//     editorRef.current.setValue(redoValue);
-//   }
-// };
-
-// disabled
-//   ? editorRef.current.onKeyDown((event) => {
-//       event.preventDefault();
-//       event.stopPropagation();
-//     })
-//   : editorRef.current.onKeyDown();
-// if (disabled) {
-//   editorRef.current.getContainerDomNode().addEventListener("keydown", zu);
-//   editorRef.current
-//     .getContainerDomNode()
-//     .addEventListener("selectionchange", zu2);
-// } else {
-//   editorRef.current
-//     .getContainerDomNode()
-//     .removeEventListener("keydown", zu);
-// }
-
-// function handleContentChange({ editor, monaco, darkmode }) {
-//   const items = document.querySelectorAll(".mtk7");
-
-//   items.forEach((item) => {
-//     // if (item.textContent.includes(searchString)) {
-//     item.classList.add("markdown2");
-//     item.parentElement.parentElement.classList.add("markdown");
-//     // }
-//   });
-// }
-
-// const editorDisabled = useRef({ disabled: false });
-// const zu = useCallback((event) => {
-//   event.preventDefault();
-//   event.stopPropagation();
-// }, []);
