@@ -52,9 +52,7 @@ const Navigation = observer(
               if (!pyodide || executing) return;
               setExecuting(true);
               const { outputTxt } = await runPythonCode(
-                (currTask.filedata
-                  ? createfile(currTask.filedata, currTask.file)
-                  : "") + currTask.code,
+                currTask.filedata + currTask.code,
                 currTask.input
               );
               console.log("check10");

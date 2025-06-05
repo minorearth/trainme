@@ -52,10 +52,13 @@ const checkForbidden = (code, musthave, musthaveRe) => {
 };
 
 const checkCode = async (code, task, runPythonCode) => {
-  // тута
   const results = await Promise.all(
     task.inout.map(async (check) => {
-      const { outputArr } = await runPythonCode(code, check.inv.join("\n"));
+      const { outputArr } = await runPythonCode(
+        //TODO: Join in LoadFilesData initially
+        check.filesdata.join("\n") + code,
+        check.inv.join("\n")
+      );
       return eqArrays(outputArr, check.outv);
     })
   );
@@ -107,3 +110,6 @@ export const getErrorMessage = (
       return "";
   }
 };
+
+//TODO:
+// https://www.taniarascia.com/sokoban-game/

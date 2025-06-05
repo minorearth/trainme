@@ -4,11 +4,12 @@ const useMonaco = ({ editorRef, monacoRef, currTask }) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    currTask && console.log("herer", currTask.code);
-    if (!editorRef.current) {
+    currTask && console.log("herer", currTask);
+    if (!editorRef.current || Object.keys(currTask).length === 0) {
       return;
     }
-    editorRef.current.setValue(currTask.code);
+    console.log("OOO", editorRef, editorRef.current, currTask);
+    editorRef.current.setValue(currTask?.code);
 
     currTask.tasktype == "guide"
       ? editorRef.current.updateOptions({ lineNumbers: "off" })

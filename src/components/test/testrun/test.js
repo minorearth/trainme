@@ -16,6 +16,7 @@ const Test = observer(({ tasks, actionsNAV, pyodide }) => {
   const monacoRef = useRef(null);
   const editorRef = useRef(null);
   const theme = useTheme();
+  console.log("sds", tasks);
 
   const { setEditorDisabled } = useMonaco({ monacoRef, editorRef });
 

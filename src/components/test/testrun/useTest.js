@@ -23,10 +23,8 @@ const useTest = ({ tasks, actionsNAV, editorRef, setEditorDisabled }) => {
     return reaction(
       () => AS.as.taskId,
       (taskId) => {
-        console.log("тута", taskId);
-        if (AS.as.taskId && taskId != "") {
-          taskId != tasks.length && openTask(taskId);
-        }
+        console.log("тута2", taskId, taskId != "", tasks.length);
+        taskId != tasks.length && openTask(taskId);
       }
     );
   }, []);
@@ -44,16 +42,27 @@ const useTest = ({ tasks, actionsNAV, editorRef, setEditorDisabled }) => {
     }
   };
 
+  //  const createfile = (data, filename) => {
+  //   return `f=open("${filename}", 'w')\nf.write("${data}")\nf.close()\n`;
+  // };
+
   const loadAllFiles = async (tasks) => {
     const files = {};
-    tasks.forEach(
-      (task) =>
-        (files[task.file] = {
-          fileurl:
-            "https://hog6lcngzkudsdma.public.blob.vercel-storage.com/a3905595-437e-47f3-b749-28ea5362bd39/d06b8c0d-4837-484a-ad85-9257e0e6af01/" +
-            task.file,
-        })
-    );
+    tasks.forEach((task) => {
+      task.inout.forEach((inout) => {
+        inout.inv
+          .filter((item) => item.includes(".txt"))
+          .forEach(
+            (item) =>
+              (files[item] = {
+                fileurl:
+                  "https://hog6lcngzkudsdma.public.blob.vercel-storage.com/a3905595-437e-47f3-b749-28ea5362bd39/d06b8c0d-4837-484a-ad85-9257e0e6af01/" +
+                  item,
+              })
+          );
+      });
+    });
+
     await Promise.all(
       Object.keys(files).map(async (file) => {
         files[file] = {
@@ -63,7 +72,20 @@ const useTest = ({ tasks, actionsNAV, editorRef, setEditorDisabled }) => {
       })
     );
 
-    tasks.forEach((task) => (task.filedata = files[task.file].data));
+    tasks.forEach((task) => {
+      task.inout.forEach((inouttest) => {
+        inouttest.filesdata = [];
+        inouttest.inv.forEach((item) => {
+          item.includes(".txt")
+            ? inouttest.filesdata.push(
+                `f=open("${item}", 'w')\nf.write("${files[item].data}")\nf.close()\n`
+              )
+            : inouttest.filesdata.push("");
+        });
+      });
+    });
+
+    console.log("kkk", tasks);
   };
 
   const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
@@ -328,7 +350,7 @@ const useTest = ({ tasks, actionsNAV, editorRef, setEditorDisabled }) => {
       expectedOutput: task.defaultoutput.join("\n"),
       taskuuid: task.taskuuid,
       maxlines: task.restrictions.maxlines,
-      filedata: task.filedata || "",
+      filedata: task.inout[0].filesdata.join("\n"),
       output: "",
       restrictErrors: "",
     });
