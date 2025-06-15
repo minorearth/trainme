@@ -17,7 +17,6 @@ export default function CustomEdge({
   const yEqual = sourceY === targetY;
 
   const [edgePath] = getBezierPath({
-    // we need this little hack in order to display the gradient for a straight line
     sourceX: xEqual ? sourceX + 0.0001 : sourceX,
     sourceY: yEqual ? sourceY + 0.0001 : sourceY,
     sourcePosition,

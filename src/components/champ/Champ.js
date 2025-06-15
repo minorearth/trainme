@@ -11,7 +11,7 @@ import SortableList from "@/components/champ/components/ChampUsersList/ChampUser
 import StepByStep from "@/components/champ/components/Stepper";
 import AvatarSelector from "@/components/champ/components/avatar/avatar";
 
-const Champ = observer(({ actionsNAV }) => {
+const Champ = observer(() => {
   const {
     createChamp,
     joinChamp,
@@ -28,7 +28,7 @@ const Champ = observer(({ actionsNAV }) => {
     setAvatarid,
     avatarid,
     nameChecked,
-  } = useChamps({ actionsNAV });
+  } = useChamps();
   const [activeStep, setActiveStep] = useState(0);
   const [createMode, setCreateMode] = useState();
 

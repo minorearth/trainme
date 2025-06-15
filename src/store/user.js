@@ -3,6 +3,12 @@ class user {
   userid = "";
   isa = false;
   name = "";
+  progress = {};
+
+  setProgress(data) {
+    this.progress = data;
+    // this.isa = !!isadmin;
+  }
 
   setUserid({ id }) {
     this.userid = id;

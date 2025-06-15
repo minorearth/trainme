@@ -8,10 +8,10 @@ import { db } from "./firebaseAdmin";
 // await initAdmin();
 
 //ADMIN ACTIONS
-export const resetUseMetaData = async (lastunlocked, launchedCourse, uid) => {
+export const resetUseMetaData = async (lastunlocked, courseid, uid) => {
   const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
-    [`courses.${launchedCourse}`]: {
+    [`courses.${courseid}`]: {
       completed: [],
       unlocked: [lastunlocked],
       lastunlocked: [lastunlocked],
@@ -21,43 +21,38 @@ export const resetUseMetaData = async (lastunlocked, launchedCourse, uid) => {
     },
   });
 };
-export const getMoney = async (launchedCourse, uid) => {
+export const getMoney = async (courseid, uid) => {
   const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
-    [`courses.${launchedCourse}.rating`]: 5000,
+    [`courses.${courseid}.rating`]: 5000,
   });
 };
-export const setMoney = async (launchedCourse, uid, money) => {
+export const setMoney = async (courseid, uid, money) => {
   const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
-    [`courses.${launchedCourse}.rating`]: Number(money),
+    [`courses.${courseid}.rating`]: Number(money),
   });
 };
 export const unlockAndCompleteAll = async (
   unlocked,
   lastunlocked,
-  launchedCourse,
+  courseid,
   uid
 ) => {
   const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
-    [`courses.${launchedCourse}.completed`]: unlocked,
-    [`courses.${launchedCourse}.unlocked`]: unlocked,
-    [`courses.${launchedCourse}.lastunlocked`]: [lastunlocked],
-    [`courses.${launchedCourse}.paid`]: unlocked,
+    [`courses.${courseid}.completed`]: unlocked,
+    [`courses.${courseid}.unlocked`]: unlocked,
+    [`courses.${courseid}.lastunlocked`]: [lastunlocked],
+    [`courses.${courseid}.paid`]: unlocked,
   });
 };
-export const unlockAll = async (
-  unlocked,
-  lastunlocked,
-  launchedCourse,
-  uid
-) => {
+export const unlockAll = async (unlocked, lastunlocked, courseid, uid) => {
   const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
-    [`courses.${launchedCourse}.completed`]: [],
-    [`courses.${launchedCourse}.unlocked`]: unlocked,
-    [`courses.${launchedCourse}.lastunlocked`]: [lastunlocked],
+    [`courses.${courseid}.completed`]: [],
+    [`courses.${courseid}.unlocked`]: unlocked,
+    [`courses.${courseid}.lastunlocked`]: [lastunlocked],
   });
 };
 
@@ -65,12 +60,12 @@ export const unlockAll = async (
 
 // TODO:remade
 export const payChapter = async (data) => {
-  const { pts, id, uid, lastunlocked, launchedCourse } = decrypt2(data);
+  const { pts, id, uid, lastunlocked, courseid } = decrypt2(data);
   const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
-    [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
-    [`courses.${launchedCourse}.lastunlocked`]: [lastunlocked],
-    [`courses.${launchedCourse}.paid`]: FieldValue.arrayUnion(id),
+    [`courses.${courseid}.rating`]: FieldValue.increment(pts),
+    [`courses.${courseid}.lastunlocked`]: [lastunlocked],
+    [`courses.${courseid}.paid`]: FieldValue.arrayUnion(id),
   });
   return "ok";
 };
@@ -96,28 +91,24 @@ export const setUseMetaData = async (data) => {
     lastcompleted,
     unlocked,
     allunlocked,
-    launchedCourse,
+    courseid,
     tasklog,
     sum,
     completed,
     repeat,
   } = decrypt2(data);
-  const tasklogPrepared = prepareTaskLog(
-    launchedCourse,
-    lastcompleted,
-    tasklog
-  );
+  const tasklogPrepared = prepareTaskLog(courseid, lastcompleted, tasklog);
   const userMetaRef = db.collection("usermeta").doc(uid);
   //TODO: wrong condition for terminal task
   if (!repeat) {
     try {
       await userMetaRef.update({
-        [`courses.${launchedCourse}.completed`]: completed,
+        [`courses.${courseid}.completed`]: completed,
         // FieldValue.arrayUnion(lastcompleted),
-        [`courses.${launchedCourse}.rating`]: pts,
-        [`courses.${launchedCourse}.unlocked`]: allunlocked,
-        [`courses.${launchedCourse}.lastunlocked`]: unlocked,
-        [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
+        [`courses.${courseid}.rating`]: pts,
+        [`courses.${courseid}.unlocked`]: allunlocked,
+        [`courses.${courseid}.lastunlocked`]: unlocked,
+        [`courses.${courseid}.stat.${lastcompleted}.sum`]: sum,
         ...tasklogPrepared,
       });
 
@@ -128,8 +119,8 @@ export const setUseMetaData = async (data) => {
   } else {
     try {
       await userMetaRef.update({
-        [`courses.${launchedCourse}.rating`]: pts,
-        [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]: sum,
+        [`courses.${courseid}.rating`]: pts,
+        [`courses.${courseid}.stat.${lastcompleted}.sum`]: sum,
         ...tasklogPrepared,
       });
       return "ok";
@@ -141,30 +132,26 @@ export const setUseMetaData = async (data) => {
 
 // TODO:remade
 export const setUseMetaUnlockedAndCompleted = async (data) => {
-  const { uid, lastcompleted, unlocked, launchedCourse } = decrypt2(data);
+  const { uid, lastcompleted, unlocked, courseid } = decrypt2(data);
   const userMetaRef = db.collection("usermeta").doc(uid);
   if (unlocked.length != 0) {
     userMetaRef.update({
-      [`courses.${launchedCourse}.completed`]:
-        FieldValue.arrayUnion(lastcompleted),
-      [`courses.${launchedCourse}.unlocked`]: FieldValue.arrayUnion(
-        ...unlocked
-      ),
-      [`courses.${launchedCourse}.lastunlocked`]: unlocked,
+      [`courses.${courseid}.completed`]: FieldValue.arrayUnion(lastcompleted),
+      [`courses.${courseid}.unlocked`]: FieldValue.arrayUnion(...unlocked),
+      [`courses.${courseid}.lastunlocked`]: unlocked,
     });
   } else {
     userMetaRef.update({
-      [`courses.${launchedCourse}.completed`]:
-        FieldValue.arrayUnion(lastcompleted),
+      [`courses.${courseid}.completed`]: FieldValue.arrayUnion(lastcompleted),
     });
   }
   return "ok";
 };
 
 //UTILITIES
-const prepareTaskLog = (launchedCourse, lastcompleted, tasklog) => {
+const prepareTaskLog = (courseid, lastcompleted, tasklog) => {
   let res = {};
-  const dest = `courses.${launchedCourse}.stat.${lastcompleted}.tasks`;
+  const dest = `courses.${courseid}.stat.${lastcompleted}.tasks`;
   Object.keys(tasklog).forEach(
     (taskuuid) => (res[`${dest}.${taskuuid}`] = tasklog[taskuuid])
   );
@@ -173,34 +160,28 @@ const prepareTaskLog = (launchedCourse, lastcompleted, tasklog) => {
 
 //LEGACY due to network cache
 export const setUseMetaDataIncrement = async (data) => {
-  const { uid, pts, lastcompleted, unlocked, launchedCourse, tasklog } =
+  const { uid, pts, lastcompleted, unlocked, courseid, tasklog } =
     decrypt2(data);
-  const tasklogPrepared = prepareTaskLog(
-    launchedCourse,
-    lastcompleted,
-    tasklog
-  );
+  const tasklogPrepared = prepareTaskLog(courseid, lastcompleted, tasklog);
   const userMetaRef = db.collection("usermeta").doc(uid);
   if (unlocked.length != 0) {
     await userMetaRef.update({
-      [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
-      [`courses.${launchedCourse}.completed`]:
+      [`courses.${courseid}.rating`]: FieldValue.increment(pts),
+      [`courses.${courseid}.completed`]:
         //TODO: lastcompleted is not needed?
         FieldValue.arrayUnion(lastcompleted),
-      [`courses.${launchedCourse}.unlocked`]: FieldValue.arrayUnion(
-        ...unlocked
-      ),
-      [`courses.${launchedCourse}.lastunlocked`]: unlocked,
-      [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]:
+      [`courses.${courseid}.unlocked`]: FieldValue.arrayUnion(...unlocked),
+      [`courses.${courseid}.lastunlocked`]: unlocked,
+      [`courses.${courseid}.stat.${lastcompleted}.sum`]:
         FieldValue.increment(pts),
       ...tasklogPrepared,
     });
   } else {
     userMetaRef.update({
-      [`courses.${launchedCourse}.rating`]: FieldValue.increment(pts),
-      // [`courses.${launchedCourse}.completed`]:
+      [`courses.${courseid}.rating`]: FieldValue.increment(pts),
+      // [`courses.${courseid}.completed`]:
       //   FieldValue.arrayUnion(lastcompleted),
-      [`courses.${launchedCourse}.stat.${lastcompleted}.sum`]:
+      [`courses.${courseid}.stat.${lastcompleted}.sum`]:
         FieldValue.increment(pts),
       ...tasklogPrepared,
     });

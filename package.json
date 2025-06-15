@@ -39,8 +39,11 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/node": "^22.15.30",
+    "@types/react": "^19.1.6",
     "dependency-cruiser": "^16.10.2",
     "eslint": "^9",
-    "eslint-config-next": "15.1.0"
+    "eslint-config-next": "15.1.0",
+    "typescript": "^5.8.3"
   }
 }

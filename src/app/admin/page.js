@@ -15,7 +15,7 @@ const Page = observer(({ params }) => {
       <ThemeProvider theme={customTheme}>
         <CssBaseline />
         {/* <Navigator> */}
-        {/* <AdminPanel flow={flow} actionsNAV={actionsNAV} tasks={tasks} /> */}
+        {/* <AdminPanel flow={flow}  tasks={tasks} /> */}
         {/* </Navigator> */}
       </ThemeProvider>
     </>

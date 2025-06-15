@@ -33,7 +33,7 @@ export const load = () => {
   let chapterCourseObjectModel = {};
   const coursesToLoad = getCoursesToLoad();
   coursesToLoad.forEach(async (courseid) => {
-    const { chapterFlowNodes, chapterFlowEdges, testsall } = courses[courseid];
+    const { chapterFlowNodes, chapterFlowEdges, tasksall } = courses[courseid];
 
     setDocInCollectionClient(
       "chapters",
@@ -46,21 +46,14 @@ export const load = () => {
 
     // LoadTasks
     const idLevels = getChapteeLevels(chapterFlowNodes);
-    const allTasks = testsall
+    const allTasksWithLevels = tasksall
       .filter((task) => task.tasktype == "task")
       .map((task) => {
         return { ...task, level: idLevels[task.chapterparentid] };
       });
 
-    // setDocInCollectionClient(taskcollection, { tasks: allTasks }, "alltasks");
-
     let chapters = chapterFlowNodes.map((chapter) => chapter.id);
     chapters = [...chapters, "textbook"];
-    // chapters.forEach((chapterid) => {
-    //   const tasks = testsall.filter((test) => test.chapterid == chapterid);
-    //   tasks.length != 0 &&
-    //     setDocInCollectionClient(taskcollection, { tasks }, chapterid);
-    // });
 
     await setDocInCollectionClient("newtasks", {}, courseid);
     await setDocInSubCollectionClient(
@@ -69,20 +62,22 @@ export const load = () => {
       "chapters",
       "alltasks",
       {
-        tasks: allTasks,
+        tasks: allTasksWithLevels,
       }
     );
 
     chapters.forEach((chapterid) => {
-      const tasks = testsall.filter((test) => test.chapterid == chapterid);
-      tasks.length != 0 &&
+      const chapterTasks = tasksall.filter(
+        (test) => test.chapterid == chapterid
+      );
+      chapterTasks.length != 0 &&
         setDocInSubCollectionClient(
           "newtasks",
           courseid,
           "chapters",
           chapterid,
           {
-            tasks,
+            tasks: chapterTasks,
           }
         );
     });

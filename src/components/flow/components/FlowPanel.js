@@ -10,17 +10,18 @@ import Typography from "@mui/material/Typography";
 import "@xyflow/react/dist/base.css";
 import { BiCoinStack } from "react-icons/bi";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
-import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
 import HomeIcon from "@mui/icons-material/Home";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButtonNoRipple";
 import { Tooltip } from "@mui/material";
-import AS from "@/store/appstate";
 import { observer } from "mobx-react-lite";
+import navigator from "@/components/Navigator/store/navigator";
+import user from "@/store/user";
+import chapter from "@/components/chapter/store/chapter";
 
 const ICON_SIZE = "60px";
-const FlowPanel = observer(({ actionsNAV }) => {
+const FlowPanel = observer(() => {
   return (
     <Panel position="top-left" style={{ width: "97%" }}>
       <Paper
@@ -40,7 +41,7 @@ const FlowPanel = observer(({ actionsNAV }) => {
             <HomeIcon
               sx={{ fontSize: ICON_SIZE }}
               onClick={() => {
-                actionsNAV.openAllCoursePage();
+                navigator.navMethods.openAllCoursePage();
               }}
             />
           </Tooltip>
@@ -55,7 +56,7 @@ const FlowPanel = observer(({ actionsNAV }) => {
           }}
         >
           <BiCoinStack size={ICON_SIZE} />
-          <Typography variant="h4">{AS.as.userProgress.rating}</Typography>
+          <Typography variant="h4">{user.progress.rating}</Typography>
         </Box>
 
         <IconButtonNoRipple>
@@ -63,31 +64,21 @@ const FlowPanel = observer(({ actionsNAV }) => {
             <ImportContactsOutlinedIcon
               sx={{ fontSize: ICON_SIZE }}
               onClick={async () => {
-                actionsNAV.openTestsStartedPage({
+                navigator.navMethods.openLessonStartPage({
                   nodemode: "textbook",
-                  courseid: AS.as.launchedCourse,
+                  courseid: chapter.state.courseid,
                 });
               }}
             />
           </Tooltip>
         </IconButtonNoRipple>
 
-        {/* <IconButtonNoRipple>
-          <Tooltip title={"Поддержка"}>
-            <SupportAgentIcon
-              sx={{ fontSize: ICON_SIZE }}
-              onClick={() => {
-                actionsNAV.openSupportPage();
-              }}
-            />
-          </Tooltip>
-        </IconButtonNoRipple> */}
         <IconButtonNoRipple>
           <Tooltip title={"Как проходить курс"}>
             <LightbulbIcon
               sx={{ fontSize: ICON_SIZE }}
               onClick={() => {
-                actionsNAV.openTutorial();
+                navigator.navMethods.openTutorial();
               }}
             />
           </Tooltip>

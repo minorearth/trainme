@@ -1,33 +1,17 @@
 "use client";
 import Grid from "@mui/material/Grid2";
 import Card from "./course";
-import DLSwitch from "@/components/common/themeswitch/themeSwitch";
-import { Box } from "@mui/material";
-import LogoutBtn from "./LogoutBtn";
 import { courses } from "@/globals/courses";
 
-const Courses = ({ actionsNAV }) => {
+const Courses = () => {
   const coursesData = Object.keys(courses)
     .map((id) => ({
-      title: courses[id].title,
-      text: courses[id].text,
-      id: id,
-      order: courses[id].order,
-      action:
-        courses[id].type == "course"
-          ? actionsNAV.openCourseFlowPageFromMain
-          : actionsNAV.openChampPage,
+      ...courses[id],
     }))
     .sort((a, b) => a.order - b.order);
 
   return (
     <>
-      {/* <Box sx={{ position: "absolute", right: "10px", top: "10px" }}>
-        <DLSwitch />
-      </Box> */}
-      {/* <Box sx={{ position: "absolute", right: "20px", top: "20px" }}>
-        <LogoutBtn />
-      </Box> */}
       <Grid
         container
         spacing={2}
@@ -48,10 +32,9 @@ const Courses = ({ actionsNAV }) => {
             key={id}
           >
             <Card
-              openCourseFlowPageFromMain={crs.action}
+              onClick={crs.coursesAction}
               title={crs.title}
               text={crs.text}
-              id={crs.id}
             />
           </Grid>
         ))}

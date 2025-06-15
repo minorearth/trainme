@@ -1,16 +1,13 @@
 import FabAnimated from "@/components/common/fabAnimated/fabAnimated";
-
 import stn from "@/globals/settings";
-import local from "@/globals/local";
-
-const LEFT = 16;
-const RIGHT = 16;
-const TOP = 16;
-const BOTTOM = 16;
 import { motion } from "framer-motion";
 import Box from "@mui/material/Box";
+import navigator from "./store/navigator";
 
-const FloatMenu = ({ page, actionsNAV }) => {
+const RIGHT = 16;
+const TOP = 16;
+
+const FloatMenu = () => {
   return (
     <Box
       id="human"
@@ -35,21 +32,15 @@ const FloatMenu = ({ page, actionsNAV }) => {
       <FabAnimated
         tooltip={"Выйти"}
         icon="close"
-        action={async () => await actionsNAV.openLoginPageSignOut()}
+        action={() => navigator.navMethods.openLoginPageSignOut()}
         position={{ top: TOP, right: RIGHT }}
       />
-      {/* <FabAnimated
-        tooltip={"Поддержка"}
-        icon="support"
-        action={() => actionsNAV.openSupportPage()}
-        position={{ top: TOP, right: RIGHT + stn.ui.FLOAT_BTN_PADDING }}
-      /> */}
 
-      {page == "champ" && (
+      {navigator.as.page == "champ" && (
         <FabAnimated
           tooltip={"На главную"}
           icon="home"
-          action={() => actionsNAV.openAllCoursePage()}
+          action={() => navigator.navMethods.openAllCoursePage()}
           position={{ top: TOP, right: RIGHT + stn.ui.FLOAT_BTN_PADDING }}
         />
       )}

@@ -2,10 +2,10 @@
 import Box from "@mui/material/Box";
 import Flow from "../flow/flow";
 import { ReactFlowProvider } from "@xyflow/react";
-import CongratPage from "@/components/test/congrat";
-import Start from "@/components/test/start";
-import Test from "@/components/test/testrun/test";
-import useNavigator from "./navigatorVC";
+import CongratPage from "@/components/chapter/congrat";
+import Start from "@/components/chapter/start";
+import Task from "@/components/chapter/taskrun/task";
+import useNavigator from "./hooks/navigatorVC";
 import Progress from "@/components/common/splash/progressdots/progressdots";
 import AlertDialog from "@/components/common/dialog/dialog";
 import { observer } from "mobx-react-lite";
@@ -14,7 +14,7 @@ import AdminPanel from "@/components/admin/adminpanel";
 import SplashTimeout from "@/components/common/splash/splashTimeout/splashTimeout";
 import SplashAction from "@/components/common/splash/splashAction/splashAction";
 import stn from "@/globals/settings";
-import usePyodide from "@/components/Navigator/usePyodide.js";
+import usePyodide from "@/components/Navigator/hooks/usePyodide.js";
 import Courses from "../courses/courses";
 import Champ from "../champ/Champ";
 import FloatMenu from "./floatMenu.js";
@@ -24,20 +24,22 @@ import CountdownCircle from "@/components/common/countdown/CountdownCircle/Count
 import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
 import { Watcher } from "@/components/Navigator/watcher/watcher";
 import TawkToChat from "@/components/common/tawkto/tawkto.js";
-import AS from "@/store/appstate";
+import navigator from "@/components/Navigator/store/navigator";
+import task from "@/components/chapter/taskrun/store/task";
+import chapter from "@/components/chapter/store/chapter";
+import { toJS } from "mobx";
 
 const Navigator = observer(() => {
   const [showSplashTimeout, setShowSplashTimeout] = useState(true);
-  const { actionsNAV, loading, tasks, flow } = useNavigator();
+  const { loading, flow } = useNavigator();
   const { pyodide2 } = usePyodide();
-
   return (
     <Box>
       {(loading || !pyodide2 || showSplashTimeout) && (
         <SplashTimeout action={setShowSplashTimeout} duration={4000} />
       )}
       <Watcher />
-      <TawkToChat />
+      {/* <TawkToChat /> */}
       {!loading && pyodide2 && !showSplashTimeout && (
         <Box
           id="human"
@@ -46,9 +48,9 @@ const Navigator = observer(() => {
             height: "100vh",
           }}
         >
-          {(AS.as.page == "courses" || AS.as.page == "champ") && (
+          {(navigator.as.page == "courses" || navigator.as.page == "champ") && (
             <>
-              <FloatMenu page={AS.as.page} actionsNAV={actionsNAV} />
+              <FloatMenu />
               <DLSwitch
                 sx={{ position: "absolute", top: "40px", left: "60px" }}
               />
@@ -57,33 +59,29 @@ const Navigator = observer(() => {
           <AlertDialog />
           <Tutorial />
           {countdowncircle.state.visible && <CountdownCircle />}
-          {stn.mode.DEV_MODE && (
-            <AdminPanel flow={flow} actionsNAV={actionsNAV} tasks={tasks} />
-          )}
+          {stn.mode.DEV_MODE && <AdminPanel flow={flow} />}
           <Progress />
           <SplashAction name={"ok"} />
-          {AS.as.page == "courses" && <Courses actionsNAV={actionsNAV} />}
+          {navigator.as.page == "courses" && <Courses />}
 
-          {AS.as.page == "champ" && <Champ actionsNAV={actionsNAV} />}
+          {navigator.as.page == "champ" && <Champ />}
 
-          {AS.as.page == "flow" &&
+          {navigator.as.page == "flow" &&
             !loading &&
             !!flow &&
-            AS.as.launchedCourse && (
+            chapter.state.courseid && (
               <ReactFlowProvider>
-                <Flow actionsNAV={actionsNAV} flow={flow} />
+                <Flow flow={flow} />
               </ReactFlowProvider>
             )}
 
-          {AS.as.page == "testsStarted" && !loading && (
-            <Start actionsNAV={actionsNAV} />
+          {navigator.as.page == "lessonStarted" && !loading && <Start />}
+
+          {navigator.as.page == "testrun" && chapter.allTasks?.length != 0 && (
+            <Task pyodide={pyodide2} />
           )}
 
-          {AS.as.page == "testrun" && tasks?.length != 0 && (
-            <Test tasks={tasks} actionsNAV={actionsNAV} pyodide={pyodide2} />
-          )}
-
-          {AS.as.page == "congrat" && <CongratPage actionsNAV={actionsNAV} />}
+          {navigator.as.page == "congrat" && <CongratPage />}
         </Box>
       )}
     </Box>

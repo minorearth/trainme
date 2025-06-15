@@ -9,11 +9,7 @@ import Typography from "@mui/material/Typography";
 const CodeViewer = observer(() => {
   return (
     <Box sx={{ minHeight: 352, overflow: "scroll" }}>
-      <Typography
-        variant="body1"
-        // dangerouslySetInnerHTML={{ __html: `<p>${currTask.task}</p>` }}
-        sx={{ whiteSpace: "pre-wrap" }}
-      >
+      <Typography variant="body1" sx={{ whiteSpace: "pre-wrap" }}>
         {stat.code}
       </Typography>
     </Box>

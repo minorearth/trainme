@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 import { useEffect } from "react";
 import { useColorScheme } from "@mui/material/styles";
+import task from "@/components/chapter/taskrun/store/task";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -60,7 +61,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function DLSwitch({ monacoRef, sx = {} }) {
+export default function DLSwitch({ sx = {} }) {
   const { mode, setMode } = useColorScheme();
 
   if (!mode) {
@@ -70,8 +71,8 @@ export default function DLSwitch({ monacoRef, sx = {} }) {
   const handleChange = (event) => {
     setMode(event.target.checked ? "dark" : "light");
     event.target.checked
-      ? monacoRef?.current.editor.setTheme("dark")
-      : monacoRef?.current.editor.setTheme("light");
+      ? task.monacoRef?.current.editor.setTheme("dark")
+      : task.monacoRef?.current.editor.setTheme("light");
   };
 
   return (

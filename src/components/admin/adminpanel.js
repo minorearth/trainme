@@ -11,9 +11,12 @@ import user from "@/store/user";
 import { courses } from "@/globals/courses";
 import Input from "@mui/material/Input";
 import { useState } from "react";
-import { getCSP } from "@/db/localstorage";
+import { updateSCP } from "@/db/localstorage";
+import navigator from "@/components/Navigator/store/navigator";
+import chapter from "@/components/chapter/store/chapter";
+import task from "@/components/chapter/taskrun/store/task";
 
-const AdminPanel = ({ flow, actionsNAV, tasks }) => {
+const AdminPanel = ({ flow }) => {
   const [inValue, setInValue] = useState(5000);
 
   const handleChange = (e) => {
@@ -31,50 +34,50 @@ const AdminPanel = ({ flow, actionsNAV, tasks }) => {
     <>
       <Button
         onClick={async () => {
-          const CSP = getCSP();
+          const courseid = chapter.state.courseid;
           await resetUseMetaData(
-            courses[CSP.launchedCourse].firstchapter,
-            CSP.launchedCourse,
+            courses[courseid].firstchapter,
+            courseid,
             user.userid
           );
-          actionsNAV.openAndRefreshFlowPage(CSP.launchedCourse);
+          navigator.navMethods.openAndRefreshFlowPage(courseid);
         }}
       >
         reset
       </Button>
       <Button
         onClick={async () => {
-          const CSP = getCSP();
+          const courseid = chapter.state.courseid;
           await unlockAll(
             flow.nodes.filter((node) => node.id != -1).map((node) => node.id),
-            courses[CSP.launchedCourse].firstchapter,
-            CSP.launchedCourse,
+            courses[courseid].firstchapter,
+            courseid,
             user.userid
           );
-          actionsNAV.openAndRefreshFlowPage(CSP.launchedCourse);
+          navigator.navMethods.openAndRefreshFlowPage(courseid);
         }}
       >
         unlockAll
       </Button>
       <Button
         onClick={async () => {
-          const CSP = getCSP();
+          const courseid = chapter.state.courseid;
           await unlockAndCompleteAll(
             flow.nodes.filter((node) => node.id != -1).map((node) => node.id),
-            courses[CSP.launchedCourse].firstchapter,
-            CSP.launchedCourse,
+            courses[courseid].firstchapter,
+            courseid,
             user.userid
           );
-          actionsNAV.openAndRefreshFlowPage(CSP.launchedCourse);
+          navigator.navMethods.openAndRefreshFlowPage(courseid);
         }}
       >
         CompleteAll
       </Button>
       <Button
         onClick={() => {
-          const CSP = getCSP();
           load();
-          actionsNAV.openAndRefreshFlowPage(CSP.launchedCourse);
+          const courseid = chapter.state.courseid;
+          navigator.navMethods.openAndRefreshFlowPage(courseid);
         }}
       >
         load
@@ -94,17 +97,19 @@ const AdminPanel = ({ flow, actionsNAV, tasks }) => {
       />
       <Button
         onClick={async () => {
-          const CSP = getCSP();
-          await setMoney(CSP.launchedCourse, user.userid, inValue);
-          actionsNAV.openAndRefreshFlowPage(CSP.launchedCourse);
+          const courseid = chapter.state.courseid;
+          await setMoney(courseid, user.userid, inValue);
+          navigator.navMethods.openAndRefreshFlowPage(courseid);
         }}
       >
         money2
       </Button>
       <Button
         onClick={() => {
-          const CSP = getCSP();
-          actionsNAV.setStateAndCSP({ ...CSP, taskId: tasks.length - 1 });
+          updateSCP({
+            task: { currTaskId: chapter.allTasks.length - 1 },
+          });
+          task.setCurrTask(chapter.allTasks.length - 1);
         }}
       >
         lasttask

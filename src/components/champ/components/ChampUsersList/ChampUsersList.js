@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import UserCard from "@/components/champ/components/userCard";
-import useDashboard from "@/legacy/ChampUsersGrid/dashboardVC";
+import useDashboard from "@/components/champ/components/ChampUsersList/dashboardVC";
 import Box from "@mui/material/Box";
 
 const ListItem = ({ key, name, pts, change, avatarid }) => (

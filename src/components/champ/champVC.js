@@ -2,23 +2,21 @@
 import { useState, useEffect } from "react";
 import {
   getDocFromCollectionByIdRealtimeClient,
-  updateDocFieldsInCollectionByIdClient,
   setDocInCollectionClient,
   updateUsersInChampClient,
   updateChampStatusClient,
   getDocDataFromCollectionByIdClient,
 } from "@/db/domain/domain";
 
-import { getCSP } from "@/db/localstorage";
 import user from "@/store/user";
-import AS from "@/store/appstate";
 import { generateString } from "@/globals/utils/utilsRandom";
 import stn from "@/globals/settings";
 import alertdialog from "@/components/common/dialog/store";
 import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
-import { courses } from "@/globals/courses";
+import navigator from "@/components/Navigator/store/navigator";
+import chapter from "@/components/chapter/store/chapter";
 
-const useChamps = ({ actionsNAV }) => {
+const useChamps = () => {
   const [monitoringStarted, setMonitoringStarted] = useState(false);
   const [champid, setChampid] = useState("");
   const [inputChampId, setInputChampd] = useState("");
@@ -55,7 +53,7 @@ const useChamps = ({ actionsNAV }) => {
   };
 
   useEffect(() => {
-    AS.as.champid && setChampid(AS.as.champid);
+    chapter.state.champid && setChampid(chapter.state.champid);
     setUserName(user.name);
   }, []);
 
@@ -65,11 +63,10 @@ const useChamps = ({ actionsNAV }) => {
       stn.collections.CHAMPS,
       champid,
       (data) => {
-        const CSP = getCSP();
-        if (data.status == "started" && CSP.page == "champ") {
+        if (data.status == "started" && navigator.as.page == "champ") {
           if (data.users[user.userid].persstatus == "joined") {
             countdowncircle.show(() => {
-              actionsNAV.runChamp(champid);
+              navigator.navMethods.runChamp(champid);
               updateUsersInChampClient(
                 stn.collections.CHAMPS,
                 {
@@ -97,7 +94,7 @@ const useChamps = ({ actionsNAV }) => {
   }, [monitoringStarted]);
 
   const createChamp = async () => {
-    const tasks = await actionsNAV.getRandomTasksForChamp({
+    const tasks = await navigator.requestMethods.getRandomTasksForChamp({
       levelStart: range[0],
       levelEnd: range[1],
       taskCount,
@@ -170,25 +167,6 @@ const useChamps = ({ actionsNAV }) => {
         () => {}
       );
     }
-    // const res = await updateUsersInChampClient(
-    //   stn.collections.CHAMPS,
-    //   {
-    //     id: user.userid,
-    //     name: userName,
-    //     change: 0,
-    //     pts: 0,
-    //     persstatus: "joined",
-    //   },
-    //   champid
-    // );
-    // if (res == "error") {
-    //   // alertdialog.showDialog(
-    //   //   "Нет такого чемпионата",
-    //   //   "Перепроверьте все еще раз",
-    //   //   1,
-    //   //   () => {}
-    //   // );
-    // } else setMonitoringStarted((state) => !state);
   };
 
   const startChamp = async (champid) => {

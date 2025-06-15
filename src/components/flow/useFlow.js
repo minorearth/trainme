@@ -8,7 +8,6 @@ import {
   useEdgesState,
   addEdge,
   useReactFlow,
-  useOnViewportChange,
 } from "@xyflow/react";
 import "@xyflow/react/dist/base.css";
 import "./styles.css";
@@ -16,7 +15,8 @@ import TurboNode from "./components/TurboNode.js";
 import TurboEdge from "./components/TurboEdge.js";
 import AnimNode from "./components/AnimNode";
 import alertdialog from "@/components/common/dialog/store";
-import AS from "@/store/appstate";
+import navigator from "@/components/Navigator/store/navigator";
+import user from "@/store/user";
 
 const nodeTypes = {
   turbo: TurboNode,
@@ -47,7 +47,7 @@ const useFlow = ({ flow }) => {
   }, [nodes]);
 
   const showUnlocked = () => {
-    const unlockedNodesToShow = AS.as.userProgress.lastunlocked;
+    const unlockedNodesToShow = user.progress.lastunlocked;
     if (unlockedNodesToShow.length > 0) {
       for (let i = 0; i < unlockedNodesToShow.length; i++) {
         setTimeout(() => {
@@ -59,17 +59,6 @@ const useFlow = ({ flow }) => {
       }
     }
   };
-
-  useOnViewportChange({
-    // onEnd: (viewport) => {
-    //   setTimeout(() => {
-    //     fitView({
-    //       nodes: [{ id: progress.current.currentchapter }],
-    //       duration: 500,
-    //     });
-    //   }, 2000);
-    // },
-  });
 
   const onConnect = useCallback(
     (params) => setEdges((els) => addEdge(params, els)),
