@@ -1,4 +1,6 @@
 import { makeObservable, makeAutoObservable } from "mobx";
+import { updateSCP } from "@/db/localstorage";
+
 class user {
   userid = "";
   isa = false;
@@ -7,7 +9,9 @@ class user {
 
   setProgress(data) {
     this.progress = data;
-    // this.isa = !!isadmin;
+    updateSCP({
+      user: { progress: data },
+    });
   }
 
   setUserid({ id }) {

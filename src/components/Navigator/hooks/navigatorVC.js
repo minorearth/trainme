@@ -46,7 +46,6 @@ import tutorial from "@/components/tutorial/store";
 
 const useNavigator = () => {
   const [loading, setLoading] = useState(true);
-  const [flow, setFlow] = useState();
   const router = useRouter();
 
   useEffect(() => {
@@ -76,6 +75,12 @@ const useNavigator = () => {
   }, []);
 
   useEffect(() => {
+    //TODO: uncomment
+    document.addEventListener("copy", (e) => {
+      e.clipboardData.setData("text/plain", "No Copying!");
+      e.preventDefault();
+    });
+
     const handleBeforeUnload = (event) => {
       const message = "Вы уверены, что хотите покинуть страницу?";
       event.preventDefault();
@@ -91,11 +96,6 @@ const useNavigator = () => {
   }, []);
 
   useEffect(() => {
-    //TODO: uncomment
-    document.addEventListener("copy", (e) => {
-      e.clipboardData.setData("text/plain", "No Copying!");
-      e.preventDefault();
-    });
     loadPTrek();
   }, [user]);
 
@@ -104,7 +104,6 @@ const useNavigator = () => {
     //TODO:load username
     const CSP = getCSP();
     if (!CSP) {
-      updateSCP({ navigator: initials.initialState.navigator });
       navigator.setAppState(initials.initialState.navigator);
     } else {
       CSP.navigator && navigator.setAppState(CSP.navigator);
@@ -127,26 +126,15 @@ const useNavigator = () => {
     if (page == "testrun" || page == "lessonStarted") {
       recoverLessonInProgress({ CSP });
     }
-    if (page == "congrat") {
-      //TODO: wtf
-    }
 
     if (!page || page == "courses" || page == "champ") {
-      updateSCP({ navigator: initials.initialState.navigator });
       navigator.setAppState(initials.initialState.navigator);
     }
     setLoading(false);
     progressStore.setCloseProgress();
   };
 
-  const recoverLessonInProgress = async ({ CSP }) => {
-    let tasks;
-    const nodemode = CSP.chapter.nodemode;
-    const taskstage = CSP.chapter.taskstage;
-    // //for recover purposes
-    // navigator.updateAppState({ page: "testrun" });
-    // //
-
+  const getTasks = async ({ nodemode, taskstage, CSP }) => {
     if (nodemode == "renewal") {
       const { tasksFetched } = await getRandomTasksForRepeat({
         courseid: CSP.chapter.courseid,
@@ -154,20 +142,29 @@ const useNavigator = () => {
         levelEnd: CSP.chapter.level,
         randomsaved: CSP.chapter.randomsaved,
       });
-      tasks = tasksFetched;
+      return tasksFetched;
     }
     if (nodemode == "addhoc" || nodemode == "newtopic") {
-      tasks = await getAllTasksFromChapter(
+      const tasks = await getAllTasksFromChapter(
         CSP.chapter.chapterid,
         CSP.chapter.courseid
       );
+      if (taskstage == "recap") {
+        const recapTasks = getTasksRecap(CSP.chapter.recapTasksIds, tasks);
+        return recapTasks;
+      } else return tasks;
     }
 
     if (nodemode == "champ") {
       const champTasks = await getChampTasks({
         champid: CSP.chapter.champid,
       });
-      tasks = champTasks.data.tasks;
+      const tasks = champTasks.data.tasks;
+      if (taskstage == "recap") {
+        const recapTasks = getTasksRecap(CSP.chapter.recapTasksIds, tasks);
+        // chapter.setAllTasks(recapTasks, CSP.task.currTaskId);
+        return recapTasks;
+      } else return tasks;
     }
 
     if (nodemode == "textbook") {
@@ -175,6 +172,19 @@ const useNavigator = () => {
         userProgress: CSP.user.progress,
         courseid,
       });
+      return tasks;
+    }
+  };
+
+  const recoverLessonInProgress = async ({ CSP }) => {
+    const { nodemode, pts, remainsum, taskstage } = chapter.state;
+
+    // // //for recover purposes
+    // navigator.updateAppState({ page: "testrun" });
+    // // //
+    const tasks = await getTasks({ nodemode, taskstage, CSP });
+
+    if (nodemode == "textbook") {
       openTextBook({
         courseid: CSP.chapter.courseid,
         tasks,
@@ -183,20 +193,17 @@ const useNavigator = () => {
 
     if (taskstage == "recap_suspended") {
       CSP.chapter.nodemode == "renewal"
-        ? openCongratPage({ state: CSP, success: false })
-        : openRecapTasksPage(CSP.chapter.recapTasksIds);
+        ? openCongratPage({ nodemode, pts, remainsum, success: false })
+        : openRecapTasksPage({
+            chapter: { state: CSP.chapter, allTasks: tasks },
+          });
     }
 
     if (taskstage == "accomplished_suspended") {
-      openCongratPage({ state: CSP, success: false });
+      openCongratPage({ nodemode, pts, remainsum, success: false });
     }
 
-    if (taskstage == "recap") {
-      const recapTasks = getTasksRecap(CSP.chapter.recapTasksIds, tasks);
-      chapter.setAllTasks(recapTasks, CSP.task.currTaskId);
-    }
-
-    if (taskstage == "WIP") {
+    if (taskstage == "recap" || taskstage == "WIP") {
       chapter.setAllTasks(tasks, CSP.task.currTaskId);
     }
   };
@@ -285,7 +292,7 @@ const useNavigator = () => {
   };
 
   const openAndRefreshFlowPage = async (courseid) => {
-    setFlow({});
+    chapter.setFlow({});
     const progress = await fetchUserMetaAndPersist(courseid);
 
     const flow = await setFlowNodes({
@@ -296,18 +303,10 @@ const useNavigator = () => {
         await openAndRefreshFlowPage(courseid),
     });
 
-    setFlow(flow);
-    updateSCP({
-      navigator: { page: "flow" },
-      chapter: { courseid },
-      user: { progress },
-    });
-
+    chapter.setFlow(flow);
     navigator.updateAppState({ page: "flow" });
     chapter.updateState({ courseid });
     user.setProgress(progress);
-
-    setLoading(false);
   };
 
   const openCourseFlowPageFromMain = async (courseid) => {
@@ -333,27 +332,13 @@ const useNavigator = () => {
   };
 
   const openFlowPageAfterAccomplished = async () => {
-    // setCSP({
-    //   chapter: { courseid: chapter.state.courseid },
-    //   navigator: { page: "flow" },
-    //   userProgress: user.progress,
-    // });
     await openAndRefreshFlowPage(chapter.state.courseid);
   };
 
   const openTextBook = async ({ courseid, tasks }) => {
     if (tasks.length) {
-      //checked
-      updateSCP({
-        navigator: { ...initials.textBook.navigator },
-        task: { ...initials.textBook.task },
-        chapter: {
-          courseid,
-          ...initials.textBook.chapter,
-        },
-      });
       chapter.setAllTasks(tasks, 0);
-      chapter.updateState({ ...initials.textBook.chapter });
+      chapter.updateState({ ...initials.textBook.chapter, courseid });
       navigator.updateAppState({ ...initials.textBook.navigator });
     } else {
       alertdialog.showDialog(
@@ -368,21 +353,15 @@ const useNavigator = () => {
   };
 
   const openAllCoursePage = () => {
-    setCSP({ navigator: { ...initials.courses.navigator } });
     navigator.setAppState({ ...initials.courses.navigator });
     chapter.setAllTasks([], -1);
   };
 
   const openChampPage = () => {
-    setCSP({ navigator: { ...initials.champ.navigator } });
     navigator.setAppState({ ...initials.champ.navigator });
   };
 
   const openSpecChampPage = ({ champid }) => {
-    setCSP({
-      navigator: { ...initials.champ.navigator },
-      chapter: { champid },
-    });
     navigator.setAppState({ ...initials.champ.navigator });
     chapter.updateState({ champid });
   };
@@ -399,7 +378,6 @@ const useNavigator = () => {
     tobeunlocked,
   }) => {
     progressStore.setShowProgress(true);
-    console.log("тут", nodemode);
     if (nodemode == "champ") {
       setChampTasks({
         champid,
@@ -444,7 +422,6 @@ const useNavigator = () => {
 
   const openLessonRunPage = async () => {
     progressStore.setShowProgress(true, false, "progressdots", 2000);
-    updateSCP({ navigator: { ...initials.lessonRun.navigator } });
     navigator.updateAppState({ ...initials.lessonRun.navigator });
   };
 
@@ -460,24 +437,19 @@ const useNavigator = () => {
     return pts;
   };
 
-  const openCongratPage = async ({ state, success }) => {
+  const openCongratPage = async ({ nodemode, pts, remainsum, success }) => {
     countdownbutton.hideButton();
-    const pts = finalizePts({
-      nodemode: state.chapter.state.nodemode,
-      pts: state.chapter.state.pts,
-      remainsum: state.chapter.state.remainsum,
+    const ptsFinalized = finalizePts({
+      nodemode,
+      pts,
+      remainsum,
     });
-
     navigator.updateAppState({ page: "congrat" });
-    chapter.updateState({ pts, success });
-    updateSCP({
-      navigator: { page: "congrat" },
-      chapter: { ...chapter.state, pts, success },
-    });
+    chapter.updateState({ pts: ptsFinalized, success });
   };
 
   const openCongratPageInterrupted = () => {
-    const nodemode = chapter.state.nodemode;
+    const { nodemode, pts, remainsum, taskstage } = chapter.state;
     let caption, text;
     if (
       nodemode == "renewal" ||
@@ -515,7 +487,9 @@ const useNavigator = () => {
       2,
       () => {
         openCongratPage({
-          state: { chapter, navigator },
+          nodemode,
+          pts,
+          remainsum,
           success: false,
         });
       },
@@ -527,14 +501,14 @@ const useNavigator = () => {
     tutorial.show();
   };
 
-  const openRecapTasksPage = (recapTasksIds) => {
+  const openRecapTasksPage = ({ chapter }) => {
     dialog.showDialog(
       "Повторение",
       "Попробуй еще раз решить ошибочные задачи",
       1,
       () => {}
     );
-    setRecapTasks(recapTasksIds);
+    setRecapTasks(chapter);
   };
 
   const runChamp = async (champid) => {
@@ -555,12 +529,11 @@ const useNavigator = () => {
 
   //TASKS MANAGEMENT
 
-  const setRecapTasks = (recapTasksIds) => {
-    updateSCP({
-      chapter: { ...chapter.state, taskstage: "recap" },
-      task: { currTaskId: 0 },
-    });
-    chapter.setAllTasks(getTasksRecap(recapTasksIds, chapter.allTasks), 0);
+  const setRecapTasks = (chapterState) => {
+    chapter.setAllTasks(
+      getTasksRecap(chapterState.state.recapTasksIds, chapterState.allTasks),
+      0
+    );
     chapter.updateState({ taskstage: "recap" });
   };
 
@@ -573,22 +546,8 @@ const useNavigator = () => {
     nodemode,
     tobeunlocked,
   }) => {
-    updateSCP({
-      chapter: {
-        ...initials.regularTasks.chapter,
-        courseid,
-        chapterid,
-        repeat,
-        overflow,
-        remainsum,
-        nodemode,
-        tobeunlocked,
-      },
-      task: { ...initials.regularTasks.task },
-      navigator: { ...initials.regularTasks.navigator },
-    });
     const tasks = await getAllTasksFromChapter(chapterid, courseid);
-    chapter.setAllTasks(tasks, 0);
+    chapter.setAllTasks(tasks, initials.regularTasks.task.currTaskId);
     chapter.updateState({
       ...initials.regularTasks.chapter,
       courseid,
@@ -621,24 +580,7 @@ const useNavigator = () => {
       });
       console.log("tasksuuids, tasksFetched", tasksuuids, tasksFetched);
 
-      setCSP({
-        chapter: {
-          ...initials.regularTasks.chapter,
-          courseid,
-          chapterid,
-          repeat,
-          overflow,
-          nodemode,
-          level,
-          remainsum,
-          tobeunlocked,
-          randomsaved: tasksuuids,
-        },
-        task: { ...initials.regularTasks.task },
-        navigator: { ...initials.regularTasks.navigator },
-      });
-
-      chapter.setAllTasks(tasksFetched, 0);
+      chapter.setAllTasks(tasksFetched, initials.regularTasks.task.currTaskId);
       chapter.updateState({
         ...initials.regularTasks.chapter,
         courseid,
@@ -659,23 +601,16 @@ const useNavigator = () => {
   };
 
   const setChampTasks = async ({ champid }) => {
-    //TODO: create initial states
-    setCSP({
-      chapter: { champid, ...initials.champTasks.chapter },
-      navigator: { ...initials.champTasks.navigator },
-      task: { ...initials.champTasks.task },
-    });
     const tasks = await getChampTasks({
       champid,
     });
-    chapter.setAllTasks(tasks.data.tasks, 0);
+    chapter.setAllTasks(tasks.data.tasks, initials.champTasks.task.currTaskId);
     chapter.updateState({ champid, ...initials.champTasks.chapter });
     navigator.updateAppState({ ...initials.champTasks.navigator });
   };
 
   return {
     loading,
-    flow,
   };
 };
 

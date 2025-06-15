@@ -17,6 +17,8 @@ import AnimNode from "./components/AnimNode";
 import alertdialog from "@/components/common/dialog/store";
 import navigator from "@/components/Navigator/store/navigator";
 import user from "@/store/user";
+import chapter from "@/components/chapter/store/chapter";
+import { reaction } from "mobx";
 
 const nodeTypes = {
   turbo: TurboNode,
@@ -32,15 +34,23 @@ const defaultEdgeOptions = {
   markerEnd: "edge-circle",
 };
 
-const useFlow = ({ flow }) => {
+const useFlow = () => {
   const { fitView } = useReactFlow();
   const [nodes, setNodes, onNodesChange] = useNodesState();
   const [edges, setEdges, onEdgesChange] = useEdgesState();
 
   useEffect(() => {
-    setEdges(flow.edges);
-    setNodes(flow.nodes);
-  }, [flow]);
+    setEdges(chapter.flow.edges);
+    setNodes(chapter.flow.nodes);
+    // return reaction(
+    //   () => chapter.flow,
+    //   () => {
+    //     console.log("reacted", chapter.flow);
+    //     setEdges(chapter.flow.edges);
+    //     setNodes(chapter.flow.nodes);
+    //   }
+    // );
+  }, []);
 
   useEffect(() => {
     !alertdialog.dialogState.visible && showUnlocked();

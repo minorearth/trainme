@@ -31,7 +31,7 @@ import { toJS } from "mobx";
 
 const Navigator = observer(() => {
   const [showSplashTimeout, setShowSplashTimeout] = useState(true);
-  const { loading, flow } = useNavigator();
+  const { loading } = useNavigator();
   const { pyodide2 } = usePyodide();
   return (
     <Box>
@@ -59,7 +59,7 @@ const Navigator = observer(() => {
           <AlertDialog />
           <Tutorial />
           {countdowncircle.state.visible && <CountdownCircle />}
-          {stn.mode.DEV_MODE && <AdminPanel flow={flow} />}
+          {stn.mode.DEV_MODE && <AdminPanel />}
           <Progress />
           <SplashAction name={"ok"} />
           {navigator.as.page == "courses" && <Courses />}
@@ -67,17 +67,16 @@ const Navigator = observer(() => {
           {navigator.as.page == "champ" && <Champ />}
 
           {navigator.as.page == "flow" &&
-            !loading &&
-            !!flow &&
+            !!chapter.flow &&
             chapter.state.courseid && (
               <ReactFlowProvider>
-                <Flow flow={flow} />
+                <Flow />
               </ReactFlowProvider>
             )}
 
-          {navigator.as.page == "lessonStarted" && !loading && <Start />}
+          {navigator.as.page == "lessonStarted" && <Start />}
 
-          {navigator.as.page == "testrun" && chapter.allTasks?.length != 0 && (
+          {navigator.as.page == "testrun" && chapter.allTasks.length != 0 && (
             <Task pyodide={pyodide2} />
           )}
 

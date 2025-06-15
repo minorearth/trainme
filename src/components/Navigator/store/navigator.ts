@@ -1,4 +1,6 @@
 import { makeObservable, makeAutoObservable } from "mobx";
+import { updateSCP } from "@/db/localstorage";
+import { loadPTrek } from "@/components/Navigator/hooks/navigatorMobx";
 interface INavMethods {
   openFlowPageAfterAccomplished?: () => void;
   openLessonStartPage?: () => void;
@@ -34,6 +36,9 @@ class navigator {
 
   updateAppState(data) {
     this.as = { ...this.as, ...data };
+    updateSCP({
+      navigator: { ...this.as, ...data },
+    });
   }
 
   setNavigationMethods(methods: INavMethods) {

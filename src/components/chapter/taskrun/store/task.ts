@@ -4,6 +4,7 @@ import { Monaco } from "@monaco-editor/react";
 import React from "react";
 import { editor } from "monaco-editor";
 import { toJS } from "mobx";
+import { updateSCP } from "@/db/localstorage";
 
 interface ITask {
   // openFlowPageAfterAccomplished?: () => void;
@@ -32,12 +33,16 @@ class task {
     if (id != chapter.allTasks.length) {
       this.currTask = chapter.allTasks[id];
       this.currTaskId = id;
+      updateSCP({
+        task: { currTaskId: id },
+      });
     }
   };
 
   setCurrTaskData(data, id) {
     this.currTask = data;
     this.currTaskId = id;
+    updateSCP({ task: { currTaskId: id } });
   }
 
   setExecuting(executing: boolean) {

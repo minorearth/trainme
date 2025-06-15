@@ -1,6 +1,7 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { runInAction } from "mobx";
 import task from "@/components/chapter/taskrun/store/task";
+import { updateSCP } from "@/db/localstorage";
 
 import { ETL } from "./ETl";
 
@@ -19,13 +20,21 @@ class chapter {
   tasknum: number;
   actionsTsk: any;
   state: any = { recapTasksIds: [] };
+  flow: any = {};
 
   updateState(data) {
     this.state = { ...this.state, ...data };
+    updateSCP({
+      chapter: { ...this.state, ...data },
+    });
   }
 
   setTaskMethods(methods: any) {
     this.actionsTsk = methods;
+  }
+
+  setFlow(data) {
+    this.flow = data;
   }
 
   async setAllTasks(tasks, currid) {

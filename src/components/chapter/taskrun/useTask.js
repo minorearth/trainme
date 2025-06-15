@@ -6,7 +6,6 @@ import splashCDStore from "@/components/common/splash/splashAction/store";
 import { updateSCP } from "@/db/localstorage";
 //TODO:check
 import "./custom.css";
-import { reaction } from "mobx";
 import navigator from "@/components/Navigator/store/navigator";
 import chapter from "@/components/chapter/store/chapter";
 import task from "@/components/chapter/taskrun/store/task";
@@ -36,10 +35,10 @@ const useTask = () => {
     setTaskLog({ error, code });
     setFixed(error);
 
-    const taskstage = chapter.state.taskstage;
     const tasknum = chapter.allTasks.length;
     const recapTaskNum = chapter.state.recapTasksIds.length;
     const currTaskId = task.currTaskId;
+    const { nodemode, pts, remainsum, taskstage } = chapter.state;
 
     switch (true) {
       case currTaskId != tasknum - 1 && !error:
@@ -50,7 +49,9 @@ const useTask = () => {
         if (taskstage == "recap") {
           ok(() =>
             openCongratPage({
-              state: { chapter, navigator },
+              nodemode,
+              pts,
+              remainsum,
               success: recapTaskNum == chapter.state.fixed,
             })
           );
@@ -58,7 +59,9 @@ const useTask = () => {
         if (recapTaskNum == 0 && taskstage == "WIP") {
           ok(() =>
             openCongratPage({
-              state: { chapter, navigator },
+              nodemode,
+              pts,
+              remainsum,
               success: true,
             })
           );
@@ -67,17 +70,26 @@ const useTask = () => {
           chapter.state.nodemode == "renewal"
             ? ok(() =>
                 openCongratPage({
-                  state: { chapter, navigator },
+                  nodemode,
+                  pts,
+                  remainsum,
                   success: false,
                 })
               )
-            : ok(() => openRecapTasksPage(chapter.state.recapTasksIds));
+            : ok(() =>
+                openRecapTasksPage({
+                  chapter: { state: chapter.state, allTasks: chapter.allTasks },
+                })
+              );
         }
         return;
       case error:
         showRightCodeAfterError({ errorMsg });
         if (taskstage == "WIP" && currTaskId != tasknum - 1) {
           addErrorTaskToRecap();
+          updateSCP({
+            task: { currTaskId: currTaskId + 1 },
+          });
         }
 
         if (taskstage == "recap" && currTaskId != tasknum - 1) {
@@ -86,10 +98,11 @@ const useTask = () => {
           });
         }
         if (taskstage == "WIP" && currTaskId == tasknum - 1) {
-          errorOnLastWIPTask();
+          addErrorTaskToRecap();
+          chapter.updateState({ taskstage: "recap_suspended" });
         }
         if (taskstage == "recap" && currTaskId == tasknum - 1) {
-          errorOnLastRecapTask();
+          chapter.updateState({ taskstage: "accomplished_suspended" });
         }
         return;
 
@@ -101,9 +114,6 @@ const useTask = () => {
   const setFixed = (error) => {
     const fixed = chapter.state.fixed;
     if (chapter.state.taskstage == "recap" && !error) {
-      updateSCP({
-        chapter: { ...chapter.state, fixed: fixed ? fixed + 1 : 1 },
-      });
       chapter.updateState({ fixed: fixed ? fixed + 1 : 1 });
     }
   };
@@ -126,56 +136,20 @@ const useTask = () => {
         },
       },
     };
-    updateSCP({
-      chapter: newChapterState,
-    });
-    chapter.updateState({
-      ...newChapterState,
-    });
+    chapter.updateState(newChapterState);
   };
 
   const nextTask = () => {
-    updateSCP({
-      task: { currTaskId: task.currTaskId + 1 },
-    });
-
     task.setCurrTask(task.currTaskId + 1);
   };
 
   const prevTaskNoPts = () => {
-    updateSCP({ task: { currTaskId: task.currTaskId - 1 } });
     task.setCurrTask(task.currTaskId - 1);
   };
 
   const addErrorTaskToRecap = () => {
     const recapTasksIds = [...chapter.state.recapTasksIds, task.currTaskId];
     chapter.updateState({ recapTasksIds });
-    task.setCurrTask(task.currTaskId + 1);
-    updateSCP({
-      chapter: { ...chapter.state, recapTasksIds },
-      task: { currTaskId: task.currTaskId + 1 },
-    });
-  };
-
-  const errorOnLastRecapTask = () => {
-    chapter.state.taskstage = "accomplished_suspended";
-    updateSCP({
-      chapter: { ...chapter.state, taskstage: "accomplished_suspended" },
-    });
-  };
-
-  const errorOnLastWIPTask = () => {
-    const recapTasksIds = [...chapter.state.recapTasksIds, task.currTaskId];
-    chapter.state.taskstage = "recap_suspended";
-    chapter.state.recapTasksIds = recapTasksIds;
-    chapter.updateState({ recapTasksIds, taskstage: "recap_suspended" });
-    updateSCP({
-      chapter: {
-        ...chapter.state,
-        taskstage: "recap_suspended",
-        recapTasksIds,
-      },
-    });
   };
 
   const showRightCodeAfterError = ({ errorMsg }) => {
@@ -241,7 +215,6 @@ const useTask = () => {
         updateChampPoints(income, champid);
       }
     }
-    updateSCP({ chapter: { ...chapter.state, pts: pts + income } });
     chapter.updateState({ pts: pts + income });
     return pts;
   };
@@ -250,12 +223,13 @@ const useTask = () => {
     task.updateCurrTask({ info: "", editordisabled: false });
     task.editorRef.current.updateOptions({ lineNumbers: "on" });
     setEditorDisabled(false);
-    const taskstage = chapter.state.taskstage;
-    const nodemode = chapter.state.nodemode;
+    const { nodemode, pts, remainsum, taskstage } = chapter.state;
 
     if (taskstage == "accomplished_suspended") {
       openCongratPage({
-        state: { chapter, navigator },
+        nodemode,
+        pts,
+        remainsum,
         success: false,
       });
       return;
@@ -263,16 +237,19 @@ const useTask = () => {
     if (taskstage == "recap_suspended") {
       nodemode == "renewal"
         ? openCongratPage({
-            state: { chapter, navigator },
+            nodemode,
+            pts,
+            remainsum,
             success: false,
           })
-        : openRecapTasksPage(chapter.state.recapTasksIds);
+        : openRecapTasksPage({
+            chapter: { state: chapter.state, allTasks: chapter.allTasks },
+          });
 
       return;
     }
     if (task.currTaskId != chapter.allTasks.length) {
-      //TODO:smth bad
-      // navigator.setAppState({ ...CSP });
+      task.setCurrTask(task.currTaskId + 1);
       return;
     }
   };

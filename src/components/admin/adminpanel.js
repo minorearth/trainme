@@ -16,7 +16,7 @@ import navigator from "@/components/Navigator/store/navigator";
 import chapter from "@/components/chapter/store/chapter";
 import task from "@/components/chapter/taskrun/store/task";
 
-const AdminPanel = ({ flow }) => {
+const AdminPanel = () => {
   const [inValue, setInValue] = useState(5000);
 
   const handleChange = (e) => {
@@ -49,7 +49,9 @@ const AdminPanel = ({ flow }) => {
         onClick={async () => {
           const courseid = chapter.state.courseid;
           await unlockAll(
-            flow.nodes.filter((node) => node.id != -1).map((node) => node.id),
+            chapter.flow.nodes
+              .filter((node) => node.id != -1)
+              .map((node) => node.id),
             courses[courseid].firstchapter,
             courseid,
             user.userid
@@ -63,7 +65,9 @@ const AdminPanel = ({ flow }) => {
         onClick={async () => {
           const courseid = chapter.state.courseid;
           await unlockAndCompleteAll(
-            flow.nodes.filter((node) => node.id != -1).map((node) => node.id),
+            chapter.flow.nodes
+              .filter((node) => node.id != -1)
+              .map((node) => node.id),
             courses[courseid].firstchapter,
             courseid,
             user.userid
@@ -106,9 +110,6 @@ const AdminPanel = ({ flow }) => {
       </Button>
       <Button
         onClick={() => {
-          updateSCP({
-            task: { currTaskId: chapter.allTasks.length - 1 },
-          });
           task.setCurrTask(chapter.allTasks.length - 1);
         }}
       >

@@ -12,9 +12,9 @@ import "./styles.css";
 import FlowPanel from "./components/FlowPanel.js";
 import useFlow from "./useFlow";
 
-const Flow = ({ flow }) => {
+const Flow = () => {
   const theme = useTheme();
-  const flowOptions = useFlow({ flow });
+  const flowOptions = useFlow();
 
   return (
     <Box
