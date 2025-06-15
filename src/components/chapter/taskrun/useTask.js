@@ -100,12 +100,12 @@ const useTask = () => {
 
   const setFixed = (error) => {
     const fixed = chapter.state.fixed;
-    chapter.state.taskstage == "recap" &&
-      !error &&
+    if (chapter.state.taskstage == "recap" && !error) {
       updateSCP({
         chapter: { ...chapter.state, fixed: fixed ? fixed + 1 : 1 },
       });
-    chapter.updateState({ fixed: fixed ? fixed + 1 : 1 });
+      chapter.updateState({ fixed: fixed ? fixed + 1 : 1 });
+    }
   };
 
   const setTaskLog = ({ code, error }) => {

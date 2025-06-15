@@ -49,6 +49,7 @@ export const getRandomTasksForRepeat = async ({
   courseid,
   levelStart,
   levelEnd,
+  randomsaved,
 }) => {
   const allTasks = await getDocDataFromSubCollectionByIdClient(
     "newtasks",
@@ -56,8 +57,6 @@ export const getRandomTasksForRepeat = async ({
     "chapters",
     "alltasks"
   );
-
-  const randomsaved = chapter.state.randomsaved;
 
   if (randomsaved && randomsaved?.length != 0) {
     const filteredTasks = allTasks.data.tasks.filter((task) =>

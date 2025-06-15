@@ -90,6 +90,7 @@ const nodeAction = (data) => {
     );
   }
 
+  console.log(unlocked, paid, completed);
   if (unlocked && paid && !completed) {
     countdownbutton.hideButton();
     openLessonStartPage({

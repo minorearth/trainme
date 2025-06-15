@@ -109,7 +109,8 @@ const useNavigator = () => {
     } else {
       CSP.navigator && navigator.setAppState(CSP.navigator);
       CSP.chapter && chapter.updateState(CSP.chapter);
-      CSP.task && task.setCurrTask(CSP.currTaskId);
+      CSP.task && task.setCurrTask(CSP.task.currTaskId);
+      CSP.user && user.setProgress(CSP.user.progress);
     }
     const page = CSP?.navigator?.page || "courses";
     if (page == "flow") {
@@ -142,11 +143,16 @@ const useNavigator = () => {
     let tasks;
     const nodemode = CSP.chapter.nodemode;
     const taskstage = CSP.chapter.taskstage;
+    // //for recover purposes
+    // navigator.updateAppState({ page: "testrun" });
+    // //
+
     if (nodemode == "renewal") {
       const { tasksFetched } = await getRandomTasksForRepeat({
         courseid: CSP.chapter.courseid,
         levelStart: CSP.chapter.level - 5,
         levelEnd: CSP.chapter.level,
+        randomsaved: CSP.chapter.randomsaved,
       });
       tasks = tasksFetched;
     }
@@ -165,8 +171,13 @@ const useNavigator = () => {
     }
 
     if (nodemode == "textbook") {
+      const tasks = await getTextBook({
+        userProgress: CSP.user.progress,
+        courseid,
+      });
       openTextBook({
         courseid: CSP.chapter.courseid,
+        tasks,
       });
     }
 
@@ -255,6 +266,7 @@ const useNavigator = () => {
         await openFlowPageAfterAccomplished();
         progressStore.setCloseProgress();
       } catch (e) {
+        console.log(e);
         alertdialog.showDialog(
           "Сохранение данных",
           ' "Что-то пошло не так, повторите попытку...',
@@ -329,15 +341,14 @@ const useNavigator = () => {
     await openAndRefreshFlowPage(chapter.state.courseid);
   };
 
-  const openTextBook = async ({ courseid }) => {
-    const tasks = await getTextBook({ userProgress: user.progress, courseid });
+  const openTextBook = async ({ courseid, tasks }) => {
     if (tasks.length) {
       //checked
       updateSCP({
         navigator: { ...initials.textBook.navigator },
         task: { ...initials.textBook.task },
         chapter: {
-          courseid: chapter.state.courseid,
+          courseid,
           ...initials.textBook.chapter,
         },
       });
@@ -388,14 +399,21 @@ const useNavigator = () => {
     tobeunlocked,
   }) => {
     progressStore.setShowProgress(true);
+    console.log("тут", nodemode);
     if (nodemode == "champ") {
       setChampTasks({
         champid,
       });
     }
     if (nodemode == "textbook") {
+      const tasks = await getTextBook({
+        userProgress: user.progress,
+        courseid,
+      });
+
       openTextBook({
         courseid,
+        tasks,
       });
     }
     if (nodemode == "renewal") {
@@ -599,25 +617,31 @@ const useNavigator = () => {
         courseid,
         levelStart: level - 5,
         levelEnd: level,
+        randomsaved: chapter.state.randomsaved,
       });
+      console.log("tasksuuids, tasksFetched", tasksuuids, tasksFetched);
 
       setCSP({
-        ...initials.regularTasks.chapter,
-        ...initials.regularTasks.task,
-        ...initials.regularTasks.navigator,
-        chapterid,
-        repeat,
-        overflow,
-        nodemode,
-        level,
-        remainsum,
-        tobeunlocked,
-        randomsaved: tasksuuids,
+        chapter: {
+          ...initials.regularTasks.chapter,
+          courseid,
+          chapterid,
+          repeat,
+          overflow,
+          nodemode,
+          level,
+          remainsum,
+          tobeunlocked,
+          randomsaved: tasksuuids,
+        },
+        task: { ...initials.regularTasks.task },
+        navigator: { ...initials.regularTasks.navigator },
       });
 
       chapter.setAllTasks(tasksFetched, 0);
       chapter.updateState({
         ...initials.regularTasks.chapter,
+        courseid,
         chapterid,
         repeat,
         overflow,
@@ -629,6 +653,7 @@ const useNavigator = () => {
       });
       navigator.updateAppState({ ...initials.regularTasks.navigator });
     } catch (e) {
+      console.log(e);
       console.error("some error");
     }
   };
