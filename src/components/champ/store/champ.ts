@@ -1,20 +1,6 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { updateSCP } from "@/db/localstorage";
-import {
-  openAllCoursePage,
-  openAndRefreshFlowPage,
-  openCourseFlowPageFromMain,
-  openLessonStartPage,
-  openTextBook,
-  openLessonRunPage,
-  openCongratPage,
-  closeCongratPage,
-  openCongratPageInterrupted,
-  openTutorial,
-  openRecapTasksPage,
-  openLoginPageSignOut,
-  openChampPage,
-} from "@/components/Navigator/store/navigatorMobx";
+import { openAllCoursePage } from "@/components/Navigator/store/navigatorMobx";
 
 class champ {
   actions: any = {
@@ -22,14 +8,34 @@ class champ {
   };
   champid = null;
   state = {};
+  taskcount = 5;
+  range = [1, 30];
+
+  setRange = (range) => {
+    this.range = range;
+  };
 
   setState(data) {
     this.state = data;
   }
 
+  changeTaskCount = (e) => {};
+
+  setTaskCount(taskcount) {
+    if (/^\d{0,2}$/.test(taskcount)) this.taskcount = taskcount;
+  }
+
+  getChampId() {
+    return this.champid;
+  }
+
   setChampId(id) {
     this.champid = id;
     updateSCP({ champ: { champid: id } });
+  }
+
+  updateState(data) {
+    this.state = { ...this.state, ...data };
   }
 
   constructor() {

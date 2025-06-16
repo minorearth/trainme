@@ -11,12 +11,12 @@ import { setDataFetch, getDataFetch } from "@/db/APIcalls/calls";
 //
 
 //ViewModel
-import { setFlowNodes } from "@/components/Navigator/hooks/courseFlowVM";
+import { setFlowNodes } from "@/components/course/store/courseFlowVM";
 import {
   updateChampPoints,
   updateChampTaskLog,
   getUserProgress,
-} from "@/components/Navigator/hooks/navigatorVM";
+} from "@/components/Navigator/store/navigatorVM";
 import {
   getAllTasksFromChapter,
   getTasksRecap,
@@ -50,9 +50,6 @@ import {
   setRandomTasksToRepeat,
   setChampTasks,
   setRecapTasks,
-} from "@/components/chapter/store/chapterMobx";
+} from "@/components/chapter/store/chapterUtilsMobx";
 
-export const openAllCoursePage = () => {
-  navigator.setAppState({ ...initials.courses.navigator });
-  chapter.setAllTasks([], -1);
-};
+export const dummy = () => {};

@@ -4,17 +4,15 @@ import { useEffect, useRef } from "react";
 import usePythonRunner from "./pythonRunner";
 import Box from "@mui/material/Box";
 import useCheck from "./useCheck";
-import useTask from "./useTask";
 import { observer } from "mobx-react-lite";
 import progressStore from "@/components/common/splash/progressdots/store";
-import useMonaco from "./components/monaco/useMonaco";
 import InOutPanel from "@/components/chapter/taskrun/components/InOutPanel";
 import TaskAndCodePanel from "@/components/chapter/taskrun/components/taskAndCodePanel";
 import TopPanel from "@/components/chapter/taskrun/components/TopPanel";
+import "./custom.css";
 
 const Task = observer(({ pyodide }) => {
   const theme = useTheme();
-  useTask();
 
   const { runPythonCode } = usePythonRunner({
     pyodide,

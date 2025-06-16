@@ -83,6 +83,7 @@ export const getDocDataFromCollectionByIdClient = async (
   collectionName,
   id
 ) => {
+  console.log("sdfsfd", id);
   return await getDocDataFromCollectionById(db, collectionName, id);
 };
 

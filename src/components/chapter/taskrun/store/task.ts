@@ -5,6 +5,10 @@ import React from "react";
 import { editor } from "monaco-editor";
 import { toJS } from "mobx";
 import { updateSCP } from "@/db/localstorage";
+import {
+  setRightCode,
+  setForbiddenCode,
+} from "@/components/chapter/taskrun/store/taskMobx";
 
 interface ITask {
   /**
@@ -22,6 +26,7 @@ class task {
   monacoRef: React.RefObject<Monaco | null> = React.createRef();
   editorRef: React.RefObject<editor.IStandaloneCodeEditor | null> =
     React.createRef();
+  actions: any = { setRightCode, setForbiddenCode };
 
   setMonacoRefs(monacoRef: Monaco, editorRef: editor.IStandaloneCodeEditor) {
     this.monacoRef.current = monacoRef;

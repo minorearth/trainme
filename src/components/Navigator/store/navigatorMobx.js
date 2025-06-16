@@ -1,26 +1,16 @@
 import { toJS } from "mobx";
-//react stuff
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-
 //data model
-import { setCSP, getCSP, updateSCP } from "@/db/localstorage";
 import { signOutUserClient } from "@/db/domain/domain";
 import { setDataFetch, getDataFetch } from "@/db/APIcalls/calls";
 
 //
 
 //ViewModel
-import { setFlowNodes } from "@/components/Navigator/hooks/courseFlowVM";
+import { setFlowNodes } from "@/components/course/store/courseFlowVM";
 import { updateChampTaskLog } from "@/components/champ/store/champVM";
-import { getUserProgress } from "@/components/Navigator/hooks/navigatorVM";
+import { getUserProgress } from "@/components/Navigator/store/navigatorVM";
 import {
-  getAllTasksFromChapter,
-  getTasksRecap,
   getTextBook,
-  getRandomTasksForRepeat,
-  getRandomTasksForChamp,
-  getChampTasks,
   finalizePts,
 } from "@/components/chapter/store/chapterTasksVM";
 //
@@ -48,7 +38,7 @@ import {
   setRandomTasksToRepeat,
   setChampTasks,
   setRecapTasks,
-} from "@/components/chapter/store/chapterMobx";
+} from "@/components/chapter/store/chapterTasksMobx";
 export const openAllCoursePage = () => {
   navigator.setAppState({ ...initials.courses.navigator });
   chapter.setAllTasks([], -1);
@@ -108,6 +98,7 @@ export const openLessonStartPage = async ({
 }) => {
   progressStore.setShowProgress(true);
   if (nodemode == "champ") {
+    console.log("champwid", champid);
     setChampTasks({
       champid,
     });

@@ -15,9 +15,6 @@ class flow {
 
   setFlow(data) {
     this.flow = data;
-    // updateSCP({
-    //   flow: data,
-    // });
   }
 
   constructor() {

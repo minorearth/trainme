@@ -6,7 +6,16 @@ class user {
   isa = false;
   name = "";
   progress = {};
+  avatarid = 0;
+  nickname = "";
+  nicknamechecked = false;
 
+  changeNickName(nickname) {
+    //TODO: ё letter is forbidden somehow
+    const correctNick = /^[А-яA-Za-z][А-яA-Za-z0-9 ]{0,25}$/.test(nickname);
+    this.nicknamechecked = correctNick;
+    this.nickname = nickname;
+  }
   setProgress(data) {
     this.progress = data;
     updateSCP({
@@ -16,6 +25,11 @@ class user {
 
   setUserid({ id }) {
     this.userid = id;
+    // this.isa = !!isadmin;
+  }
+
+  setAvatarId(id) {
+    this.avatarid = id;
     // this.isa = !!isadmin;
   }
 

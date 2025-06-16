@@ -17,17 +17,42 @@ class StdinHandler {
   }
 }
 
+// function MyComponent() {
+//   const [pyodide, setPyodide] = useState(null);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     const loadPyodide = async () => {
+//       // Загрузка скрипта pyodide.js из локальных файлов
+//       const script = document.createElement('script');
+//       script.src = '/pyodide/pyodide.js'; // путь к вашему файлу
+//       script.onload = async () => {
+//         // Инициализация pyodide
+//         const pyodideInstance = await window.loadPyodide({
+//           indexURL: '/pyodide/', // указываем папку с файлами
+//         });
+//         setPyodide(pyodideInstance);
+//         setLoading(false);
+//       };
+//       document.body.appendChild(script);
+//     };
+
+//     loadPyodide();
+//   }, []);
+
+//   if (loading) return <div>Загрузка Pyodide...</div>;
+
 function usePyodide() {
   const [pyodide2, setPyodide] = useState(null);
 
   const pyodideScriptStatus = useScript(
-    `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/pyodide.js`
+    `http://localhost:3000/pyodide/pyodide.js`
   );
   useEffect(() => {
     if (pyodideScriptStatus === "ready" && !pyodide2) {
       (async () => {
         const loadedPyodide = await globalThis.loadPyodide({
-          indexURL: `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/`,
+          indexURL: `/pyodide/`,
         });
         setPyodide(loadedPyodide);
       })();
@@ -40,3 +65,25 @@ function usePyodide() {
 }
 
 export default usePyodide;
+
+// function usePyodide() {
+//   const [pyodide2, setPyodide] = useState(null);
+
+//   const pyodideScriptStatus = useScript(
+//     `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/pyodide.js`
+//   );
+//   useEffect(() => {
+//     if (pyodideScriptStatus === "ready" && !pyodide2) {
+//       (async () => {
+//         const loadedPyodide = await globalThis.loadPyodide({
+//           indexURL: `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/`,
+//         });
+//         setPyodide(loadedPyodide);
+//       })();
+//     }
+//   }, [pyodideScriptStatus, pyodide2]);
+
+//   return {
+//     pyodide2,
+//   };
+// }

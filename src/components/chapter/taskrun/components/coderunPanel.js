@@ -87,7 +87,7 @@ const CodeRunPanel = observer(({ checkTask, runTask }) => {
       {stn.mode.DEV_MODE && (
         <Button
           onClick={() => {
-            chapter.actionsTsk.setRightCode(task.currTaskId);
+            task.actions.setRightCode(task.currTaskId);
           }}
           variant="outlined"
         >
@@ -97,7 +97,7 @@ const CodeRunPanel = observer(({ checkTask, runTask }) => {
       {stn.mode.DEV_MODE && (
         <Button
           onClick={() => {
-            chapter.actionsTsk.setForbiddenCode(task.currTaskId);
+            task.actions.setForbiddenCode(task.currTaskId);
           }}
           variant="outlined"
         >

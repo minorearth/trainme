@@ -11,24 +11,11 @@ import SortableList from "@/components/champ/components/ChampUsersList/ChampUser
 import StepByStep from "@/components/champ/components/Stepper";
 import AvatarSelector from "@/components/champ/components/avatar/avatar";
 
+import champ from "@/components/champ/store/champ";
+import user from "@/store/user";
+
 const Champ = observer(() => {
-  const {
-    createChamp,
-    joinChamp,
-    champid,
-    startChamp,
-    changeUserName,
-    userName,
-    inputChampId,
-    changeInputChampId,
-    changeRange,
-    changeTaskCount,
-    taskCount,
-    range,
-    setAvatarid,
-    avatarid,
-    nameChecked,
-  } = useChamps();
+  const { createChamp, joinChamp, startChamp } = useChamps();
   const [activeStep, setActiveStep] = useState(0);
   const [createMode, setCreateMode] = useState();
 
@@ -69,21 +56,18 @@ const Champ = observer(() => {
               id="outlined-basic"
               label="Введите имя"
               variant="outlined"
-              onChange={(e) => changeUserName(e)}
-              value={userName}
+              onChange={(e) => user.changeNickName(e.target.value)}
+              value={user.nickname}
               fullWidth
             />
-            <AvatarSelector
-              currentIndex={avatarid}
-              setCurrentIndex={setAvatarid}
-            />
+            <AvatarSelector />
 
             <Button
               sx={{ width: "30%" }}
               onClick={() => {
                 setActiveStep(1);
               }}
-              disabled={!nameChecked}
+              disabled={!user.nicknamechecked}
               variant="outlined"
               fullWidth
             >
@@ -146,7 +130,7 @@ const Champ = observer(() => {
           >
             <>
               <Typography>Сложность</Typography>
-              <RangeSlider changeRange={changeRange} range={range} />
+              <RangeSlider />
             </>
 
             <TextField
@@ -155,17 +139,17 @@ const Champ = observer(() => {
               variant="outlined"
               sx={{
                 "& .MuiInputBase-input": {
-                  textAlign: "center", // Центрируем текст
-                  fontSize: "24px", // Увеличиваем размер шрифта
+                  textAlign: "center",
+                  fontSize: "24px",
                 },
               }}
-              onChange={(e) => changeTaskCount(e)}
-              value={taskCount}
+              onChange={(e) => champ.setTaskCount(e.target.value)}
+              value={champ.taskcount}
               width="30%"
             />
 
             <Button
-              disabled={!taskCount}
+              disabled={!champ.taskcount}
               onClick={() => {
                 createChamp();
                 setActiveStep(2);
@@ -177,17 +161,19 @@ const Champ = observer(() => {
               Создать чемпионат
             </Button>
 
-            {champid && <Typography variant="h4">{champid}</Typography>}
+            {champ.champid && (
+              <Typography variant="h4">{champ.champid}</Typography>
+            )}
             <Button
-              disabled={!champid}
-              onClick={() => startChamp(champid)}
+              disabled={!champ.champid}
+              onClick={() => startChamp(champ.champid)}
               variant="outlined"
               fullWidth
             >
               Начать
             </Button>
             <Button
-              disabled={!champid}
+              disabled={!champ.champid}
               variant="outlined"
               onClick={() => {
                 joinChamp();
@@ -221,13 +207,13 @@ const Champ = observer(() => {
               id="outlined-basic"
               label="Номер чемпионата"
               variant="outlined"
-              onChange={(e) => changeInputChampId(e)}
-              value={inputChampId}
+              onChange={(e) => champ.setChampId(e.target.value)}
+              value={champ.champid}
               fullWidth
             />
 
             <Button
-              disabled={!inputChampId}
+              disabled={!champ.champid}
               variant="outlined"
               onClick={() => joinChamp()}
               fullWidth
@@ -247,7 +233,7 @@ const Champ = observer(() => {
           </Box>
         )}
       </Box>
-      {champid && (
+      {champ.champid && (
         <Box
           sx={{
             display: "flex",
@@ -257,7 +243,7 @@ const Champ = observer(() => {
             alignItems: "center",
           }}
         >
-          <SortableList champid={champid} />
+          <SortableList champid={champ.champid} />
         </Box>
       )}
     </Box>

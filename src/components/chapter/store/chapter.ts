@@ -8,7 +8,14 @@ import {
   setRegularTasks,
   setRandomTasksToRepeat,
   setChampTasks,
-} from "@/components/chapter/store/chapterMobx";
+} from "@/components/chapter/store/chapterUtilsMobx";
+
+import {
+  nextTaskOrCompleteTestRun,
+  nextTask,
+  prevTaskNoPts,
+  errorCountDownPressed,
+} from "@/components/chapter/store/chapterNavigationMobx";
 
 interface ITask {
   /**
@@ -22,7 +29,15 @@ interface ITask {
 class chapter {
   allTasks: any = [];
   tasknum: number = -1;
-  actionsTsk: any = { setRegularTasks, setRandomTasksToRepeat, setChampTasks };
+  actionsTsk: any = {
+    setRegularTasks,
+    setRandomTasksToRepeat,
+    setChampTasks,
+    nextTaskOrCompleteTestRun,
+    nextTask,
+    prevTaskNoPts,
+    errorCountDownPressed,
+  };
   state: any = { recapTasksIds: [] };
   flow: any = {};
 

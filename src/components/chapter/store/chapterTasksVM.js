@@ -1,9 +1,4 @@
-import {
-  getDocDataFromCollectionByIdClient,
-  updatePoinsInChampClient,
-  setTaskLogInChampClient,
-  getDocDataFromSubCollectionByIdClient,
-} from "@/db/domain/domain";
+import { getDocDataFromSubCollectionByIdClient } from "@/db/domain/domain";
 
 import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
 

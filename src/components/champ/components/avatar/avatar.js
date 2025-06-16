@@ -3,16 +3,16 @@ import { Box, IconButton } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { avatars } from "./allavatars";
+import user from "@/store/user";
+import { observer } from "mobx-react-lite";
 
-const AvatarSelector = ({ currentIndex, setCurrentIndex }) => {
+const AvatarSelector = observer(() => {
   const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % avatars.length);
+    user.setAvatarId((user.avatarid + 1) % avatars.length);
   };
 
   const handlePrevious = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + avatars.length) % avatars.length
-    );
+    user.setAvatarId(user.avatarid - 1 + avatars.length) % avatars.length;
   };
 
   return (
@@ -32,13 +32,13 @@ const AvatarSelector = ({ currentIndex, setCurrentIndex }) => {
           margin: "0 10px",
         }}
       >
-        {avatars[currentIndex]}
+        {avatars[user.avatarid]}
       </Box>
       <IconButton onClick={handleNext}>
         <ArrowForwardIcon />
       </IconButton>
     </Box>
   );
-};
+});
 
 export default AvatarSelector;

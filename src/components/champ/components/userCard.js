@@ -1,11 +1,4 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-import { red } from "@mui/material/colors";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Animation from "@/components/common/lottieAnimation/Animation";
@@ -34,9 +27,6 @@ const UserCard = ({ name, pts, change, avatarid }) => {
           gap: "10px",
         }}
       >
-        {/* <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-          {avatars[avatarid]}
-        </Avatar> */}
         <Box
           sx={{
             display: "flex",

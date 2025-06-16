@@ -14,49 +14,18 @@ import stn from "@/globals/settings";
 import alertdialog from "@/components/common/dialog/store";
 import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
 import navigator from "@/components/Navigator/store/navigator";
-import chapter from "@/components/chapter/store/chapter";
 import champ from "@/components/champ/store/champ";
 import { getRandomTasksForChamp } from "@/components/champ/store/champVM";
 
 const useChamps = () => {
   const [monitoringStarted, setMonitoringStarted] = useState(false);
-  const [champid, setChampid] = useState("");
-  const [inputChampId, setInputChampd] = useState("");
-  const [taskCount, setTaskCount] = useState(5);
-  const [userName, setUserName] = useState("Кто-то");
-  const [range, setRange] = useState([1, 30]);
-  const [avatarid, setAvatarid] = useState(0);
-  const [nameChecked, setNameChecked] = useState(false);
-
-  const changeRange = (event, newValue) => {
-    setRange(newValue);
-  };
 
   const disconnectChamp = () => {
     setMonitoringStarted(false);
   };
 
-  const changeInputChampId = (e) => {
-    setInputChampd(e.target.value);
-    setChampid(e.target.value);
-  };
-
-  const changeTaskCount = (e) => {
-    /^\d{0,2}$/.test(e.target.value) && setTaskCount(e.target.value);
-  };
-
-  //TODO ё letter is forbidden somehow
-  const changeUserName = (e) => {
-    /^[А-яA-Za-z][А-яA-Za-z0-9 ]{0,25}$/.test(e.target.value)
-      ? // setUserName(e.target.value);
-        setNameChecked(true)
-      : setNameChecked(false);
-    setUserName(e.target.value);
-  };
-
   useEffect(() => {
-    champ.champid && setChampid(champ.champid);
-    setUserName(user.name);
+    user.changeNickName(user.name);
   }, []);
 
   useEffect(() => {
@@ -64,25 +33,25 @@ const useChamps = () => {
     console.log("monitoringStarted", monitoringStarted);
     getDocFromCollectionByIdRealtimeClient(
       stn.collections.CHAMPS,
-      champid,
+      champ.champid,
       (data) => {
         if (data.status == "started" && navigator.as.page == "champ") {
           if (data.users[user.userid].persstatus == "joined") {
             countdowncircle.show(() => {
               navigator.navMethods.openLessonStartPage({
-                champid,
+                champid: champ.champid,
                 nodemode: "champ",
               });
               updateUsersInChampClient(
                 stn.collections.CHAMPS,
                 {
                   id: user.userid,
-                  name: userName,
+                  name: user.nickname,
                   change: 0,
                   pts: 0,
                   persstatus: "champwip",
                 },
-                champid
+                champ.champid
               );
               setMonitoringStarted(false);
             });
@@ -101,9 +70,9 @@ const useChamps = () => {
 
   const createChamp = async () => {
     const tasks = await getRandomTasksForChamp({
-      levelStart: range[0],
-      levelEnd: range[1],
-      taskCount,
+      levelStart: champ.range[0],
+      levelEnd: champ.range[1],
+      taskCount: champ.taskcount,
       courseid: "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0",
     });
     if (tasks.status == "error") {
@@ -115,7 +84,6 @@ const useChamps = () => {
       );
     } else {
       const champid = generateString(7);
-      setChampid(champid);
       champ.setChampId(champid);
       setDocInCollectionClient(
         stn.collections.CHAMPS,
@@ -129,7 +97,7 @@ const useChamps = () => {
     try {
       const champData = await getDocDataFromCollectionByIdClient(
         stn.collections.CHAMPS,
-        champid
+        champ.champid
       );
       champData;
       if (
@@ -141,13 +109,13 @@ const useChamps = () => {
           stn.collections.CHAMPS,
           {
             id: user.userid,
-            name: userName,
+            name: user.nickname,
             change: 0,
             pts: 0,
             persstatus: "joined",
-            avatarid,
+            avatarid: user.avatarid,
           },
-          champid
+          champ.champid
         );
       } else if (champData.data.users[user.userid].persstatus == "champwip") {
         alertdialog.showDialog(
@@ -188,20 +156,7 @@ const useChamps = () => {
     createChamp,
     joinChamp,
     startChamp,
-    champid,
-    changeUserName,
-    userName,
-    nameChecked,
-    inputChampId,
-    changeInputChampId,
-    changeRange,
-    range,
-    changeTaskCount,
-    taskCount,
     disconnectChamp,
-    avatarid,
-    setAvatarid,
-    setChampid,
   };
 };
 
