@@ -14,6 +14,7 @@ import navigator from "@/components/Navigator/store/navigator";
 import task from "@/components/chapter/taskrun/store/task";
 import chapter from "@/components/chapter/store/chapter";
 import { observer } from "mobx-react-lite";
+import flow from "@/components/course/store/course";
 
 const TopPanel = observer(() => {
   return (
@@ -79,7 +80,9 @@ const TopPanel = observer(() => {
                   chapter.state.nodemode != "textbook" &&
                     navigator.navMethods.openCongratPageInterrupted();
                   chapter.state.nodemode == "textbook" &&
-                    navigator.navMethods.openFlowPageAfterAccomplished();
+                    navigator.navMethods.openAndRefreshFlowPage(
+                      flow.state.courseid
+                    );
                 }}
               />
             </Tooltip>

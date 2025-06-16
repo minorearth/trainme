@@ -12,7 +12,7 @@ import "./styles.css";
 import FlowPanel from "./components/FlowPanel.js";
 import useFlow from "./useFlow";
 
-const Flow = () => {
+const Course = () => {
   const theme = useTheme();
   const flowOptions = useFlow();
 
@@ -41,4 +41,4 @@ const Flow = () => {
   );
 };
 
-export default Flow;
+export default Course;

@@ -4,9 +4,13 @@ import task from "@/components/chapter/taskrun/store/task";
 import { updateSCP } from "@/db/localstorage";
 
 import { ETL } from "./ETl";
+import {
+  setRegularTasks,
+  setRandomTasksToRepeat,
+  setChampTasks,
+} from "@/components/chapter/store/chapterMobx";
 
 interface ITask {
-  // openFlowPageAfterAccomplished?: () => void;
   /**
    * Open course flow page
    * @param courseid - course to show.
@@ -17,8 +21,8 @@ interface ITask {
 
 class chapter {
   allTasks: any = [];
-  tasknum: number;
-  actionsTsk: any;
+  tasknum: number = -1;
+  actionsTsk: any = { setRegularTasks, setRandomTasksToRepeat, setChampTasks };
   state: any = { recapTasksIds: [] };
   flow: any = {};
 
@@ -26,6 +30,13 @@ class chapter {
     this.state = { ...this.state, ...data };
     updateSCP({
       chapter: { ...this.state, ...data },
+    });
+  }
+
+  eraseState() {
+    this.state = {};
+    updateSCP({
+      chapter: {},
     });
   }
 

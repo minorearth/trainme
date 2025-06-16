@@ -7,6 +7,14 @@ import {
 
 import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
 
+export const finalizePts = ({ nodemode, pts, remainsum }) => {
+  if (nodemode == "addhoc" || nodemode == "newtopic" || nodemode == "renewal") {
+    //TODO: wtf?
+    return Math.min(pts, remainsum);
+  }
+  return pts;
+};
+
 export const getAllTasksFromChapter = async (chapterid, courseid) => {
   const tasks = await getDocDataFromSubCollectionByIdClient(
     "newtasks",
@@ -33,7 +41,7 @@ export const getTextBook = async ({ userProgress, courseid }) => {
   return unlockedTheory;
 };
 
-const getRandomTasks = (allTasks, levelStart, levelEnd, num) => {
+export const getRandomTasks = (allTasks, levelStart, levelEnd, num) => {
   const scope = allTasks.filter(
     (task) => task.level <= levelEnd && task.level >= levelStart
   );
@@ -75,34 +83,6 @@ export const getRandomTasksForRepeat = async ({
     const tasksuuids = filteredTasks.data.map((task) => task.taskuuid);
     return { tasksuuids, tasksFetched: filteredTasks.data };
   }
-};
-
-export const getRandomTasksForChamp = async ({
-  levelStart,
-  levelEnd,
-  taskCount,
-  courseid,
-}) => {
-  const allTasks = await getDocDataFromSubCollectionByIdClient(
-    "newtasks",
-    courseid,
-    "chapters",
-    "alltasks"
-  );
-
-  const filteredTasks = getRandomTasks(
-    allTasks.data.tasks,
-    levelStart,
-    levelEnd,
-    taskCount
-  );
-
-  return filteredTasks;
-};
-
-export const getChampTasks = async ({ champid }) => {
-  const allTasks = await getDocDataFromCollectionByIdClient("champs", champid);
-  return allTasks;
 };
 
 export const getTasksRecap = (recapTasksIds, tasks) => {

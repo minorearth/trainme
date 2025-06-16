@@ -1,11 +1,11 @@
 "use client";
 import Box from "@mui/material/Box";
-import Flow from "../flow/flow";
+import Course from "../course/course";
 import { ReactFlowProvider } from "@xyflow/react";
 import CongratPage from "@/components/chapter/congrat";
 import Start from "@/components/chapter/start";
 import Task from "@/components/chapter/taskrun/task";
-import useNavigator from "./hooks/navigatorVC";
+import useApp from "./hooks/loadApp";
 import Progress from "@/components/common/splash/progressdots/progressdots";
 import AlertDialog from "@/components/common/dialog/dialog";
 import { observer } from "mobx-react-lite";
@@ -28,10 +28,11 @@ import navigator from "@/components/Navigator/store/navigator";
 import task from "@/components/chapter/taskrun/store/task";
 import chapter from "@/components/chapter/store/chapter";
 import { toJS } from "mobx";
+import flow from "@/components/course/store/course";
 
 const Navigator = observer(() => {
   const [showSplashTimeout, setShowSplashTimeout] = useState(true);
-  const { loading } = useNavigator();
+  const { loading } = useApp();
   const { pyodide2 } = usePyodide();
   return (
     <Box>
@@ -67,10 +68,11 @@ const Navigator = observer(() => {
           {navigator.as.page == "champ" && <Champ />}
 
           {navigator.as.page == "flow" &&
-            !!chapter.flow &&
-            chapter.state.courseid && (
+            //TODO: flow.state.courseid
+            !!flow.flow &&
+            flow.state.courseid && (
               <ReactFlowProvider>
-                <Flow />
+                <Course />
               </ReactFlowProvider>
             )}
 

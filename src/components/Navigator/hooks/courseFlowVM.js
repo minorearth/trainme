@@ -5,6 +5,8 @@ import {
   getDocDataFromSubCollectionByIdClient,
 } from "@/db/domain/domain";
 
+import { openLessonStartPage } from "@/components/Navigator/store/navigatorMobx";
+
 import alertdialog from "@/components/common/dialog/store";
 import { encrypt2 } from "@/globals/utils/encryption";
 import user from "@/store/user";

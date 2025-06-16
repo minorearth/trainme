@@ -19,6 +19,7 @@ import { observer } from "mobx-react-lite";
 import navigator from "@/components/Navigator/store/navigator";
 import user from "@/store/user";
 import chapter from "@/components/chapter/store/chapter";
+import flow from "@/components/course/store/course";
 
 const ICON_SIZE = "60px";
 const FlowPanel = observer(() => {
@@ -66,7 +67,7 @@ const FlowPanel = observer(() => {
               onClick={async () => {
                 navigator.navMethods.openLessonStartPage({
                   nodemode: "textbook",
-                  courseid: chapter.state.courseid,
+                  courseid: flow.state.courseid,
                 });
               }}
             />

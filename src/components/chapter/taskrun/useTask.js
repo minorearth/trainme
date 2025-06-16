@@ -9,11 +9,12 @@ import "./custom.css";
 import navigator from "@/components/Navigator/store/navigator";
 import chapter from "@/components/chapter/store/chapter";
 import task from "@/components/chapter/taskrun/store/task";
+import champ from "@/components/champ/store/champ";
 import { toJS } from "mobx";
+import { updateChampPoints } from "@/components/champ/store/champVM";
 
 const useTask = () => {
   const { openCongratPage, openRecapTasksPage } = navigator.navMethods;
-  const { updateChampPoints } = navigator.requestMethods;
 
   useEffect(() => {
     chapter.setTaskMethods({
@@ -179,8 +180,7 @@ const useTask = () => {
   };
 
   const setEarned = (error) => {
-    const { taskstage, repeat, overflow, nodemode, champid, pts } =
-      chapter.state;
+    const { taskstage, repeat, overflow, nodemode, pts } = chapter.state;
     let income = 0;
     if (overflow) {
       return pts;
@@ -212,7 +212,7 @@ const useTask = () => {
       }
       if (nodemode == "champ") {
         //In order to save champ points on every task execution
-        updateChampPoints(income, champid);
+        updateChampPoints(income, champ.champid);
       }
     }
     chapter.updateState({ pts: pts + income });

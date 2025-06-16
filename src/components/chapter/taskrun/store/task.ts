@@ -7,7 +7,6 @@ import { toJS } from "mobx";
 import { updateSCP } from "@/db/localstorage";
 
 interface ITask {
-  // openFlowPageAfterAccomplished?: () => void;
   /**
    * Open course flow page
    * @param courseid - course to show.
@@ -55,6 +54,14 @@ class task {
       ...data,
     };
   };
+
+  eraseState() {
+    this.currTaskId = -1;
+    this.currTask = {};
+    updateSCP({
+      task: {},
+    });
+  }
 
   refreshInput = () => {
     const taskData = chapter.allTasks[this.currTaskId];

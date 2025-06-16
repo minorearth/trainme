@@ -15,6 +15,7 @@ import { updateSCP } from "@/db/localstorage";
 import navigator from "@/components/Navigator/store/navigator";
 import chapter from "@/components/chapter/store/chapter";
 import task from "@/components/chapter/taskrun/store/task";
+import flow from "@/components/course/store/course";
 
 const AdminPanel = () => {
   const [inValue, setInValue] = useState(5000);
@@ -34,7 +35,7 @@ const AdminPanel = () => {
     <>
       <Button
         onClick={async () => {
-          const courseid = chapter.state.courseid;
+          const courseid = flow.state.courseid;
           await resetUseMetaData(
             courses[courseid].firstchapter,
             courseid,
@@ -47,9 +48,9 @@ const AdminPanel = () => {
       </Button>
       <Button
         onClick={async () => {
-          const courseid = chapter.state.courseid;
+          const courseid = flow.state.courseid;
           await unlockAll(
-            chapter.flow.nodes
+            flow.flow.nodes
               .filter((node) => node.id != -1)
               .map((node) => node.id),
             courses[courseid].firstchapter,
@@ -63,9 +64,9 @@ const AdminPanel = () => {
       </Button>
       <Button
         onClick={async () => {
-          const courseid = chapter.state.courseid;
+          const courseid = flow.state.courseid;
           await unlockAndCompleteAll(
-            chapter.flow.nodes
+            flow.flow.nodes
               .filter((node) => node.id != -1)
               .map((node) => node.id),
             courses[courseid].firstchapter,
@@ -80,7 +81,7 @@ const AdminPanel = () => {
       <Button
         onClick={() => {
           load();
-          const courseid = chapter.state.courseid;
+          const courseid = flow.state.courseid;
           navigator.navMethods.openAndRefreshFlowPage(courseid);
         }}
       >
@@ -101,7 +102,7 @@ const AdminPanel = () => {
       />
       <Button
         onClick={async () => {
-          const courseid = chapter.state.courseid;
+          const courseid = flow.state.courseid;
           await setMoney(courseid, user.userid, inValue);
           navigator.navMethods.openAndRefreshFlowPage(courseid);
         }}

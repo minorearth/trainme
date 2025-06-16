@@ -15,6 +15,8 @@ import alertdialog from "@/components/common/dialog/store";
 import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
 import navigator from "@/components/Navigator/store/navigator";
 import chapter from "@/components/chapter/store/chapter";
+import champ from "@/components/champ/store/champ";
+import { getRandomTasksForChamp } from "@/components/champ/store/champVM";
 
 const useChamps = () => {
   const [monitoringStarted, setMonitoringStarted] = useState(false);
@@ -53,12 +55,13 @@ const useChamps = () => {
   };
 
   useEffect(() => {
-    chapter.state.champid && setChampid(chapter.state.champid);
+    champ.champid && setChampid(champ.champid);
     setUserName(user.name);
   }, []);
 
   useEffect(() => {
     if (!monitoringStarted) return;
+    console.log("monitoringStarted", monitoringStarted);
     getDocFromCollectionByIdRealtimeClient(
       stn.collections.CHAMPS,
       champid,
@@ -66,7 +69,10 @@ const useChamps = () => {
         if (data.status == "started" && navigator.as.page == "champ") {
           if (data.users[user.userid].persstatus == "joined") {
             countdowncircle.show(() => {
-              navigator.navMethods.runChamp(champid);
+              navigator.navMethods.openLessonStartPage({
+                champid,
+                nodemode: "champ",
+              });
               updateUsersInChampClient(
                 stn.collections.CHAMPS,
                 {
@@ -94,7 +100,7 @@ const useChamps = () => {
   }, [monitoringStarted]);
 
   const createChamp = async () => {
-    const tasks = await navigator.requestMethods.getRandomTasksForChamp({
+    const tasks = await getRandomTasksForChamp({
       levelStart: range[0],
       levelEnd: range[1],
       taskCount,
@@ -110,6 +116,7 @@ const useChamps = () => {
     } else {
       const champid = generateString(7);
       setChampid(champid);
+      champ.setChampId(champid);
       setDocInCollectionClient(
         stn.collections.CHAMPS,
         { tasks: tasks.data, users: [], status: "created" },
