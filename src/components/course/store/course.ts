@@ -2,14 +2,22 @@ import { makeObservable, makeAutoObservable } from "mobx";
 import { runInAction } from "mobx";
 import { updateSCP } from "@/db/localstorage";
 
-class flow {
+class course {
   flow: any = [];
   state: any = {};
+
+  eraseState() {
+    this.flow = {};
+    this.state = {};
+    updateSCP({
+      course: {},
+    });
+  }
 
   updateState(data) {
     this.state = { ...this.state, ...data };
     updateSCP({
-      flow: { ...this.state, ...data },
+      course: { ...this.state, ...data },
     });
   }
 
@@ -22,4 +30,4 @@ class flow {
   }
 }
 
-export default new flow();
+export default new course();

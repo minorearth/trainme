@@ -7,17 +7,15 @@ import { useTheme } from "@mui/material/styles";
 import TextAnimated from "@/components/common/textAnimated/textAnimated";
 import { useEffect, useState } from "react";
 import navigator from "@/components/Navigator/store/navigator";
-import chapter from "./store/chapter";
+import taskset from "@/components/taskset/store/taskset";
+
 import { observer } from "mobx-react-lite";
 
 const CongratPage = observer(() => {
   const [pts, setPts] = useState(10);
   const [isSuccess, setIsSuccess] = useState();
 
-  useEffect(() => {
-    // setPts(chapter.state.pts);
-    // setIsSuccess(chapter.state.success);
-  }, []);
+  useEffect(() => {}, []);
 
   const theme = useTheme();
   return (
@@ -32,12 +30,12 @@ const CongratPage = observer(() => {
         backgroundColor: theme.palette.background.default,
       }}
     >
-      {chapter.state.success && (
+      {taskset.state.success && (
         <Animation width={"700px"} height={"700px"} name={"success"} />
       )}
       <Box sx={{}}></Box>
-      {chapter.state.pts != 0 && (
-        <TextAnimated text={`Заработанные монеты: ${chapter.state.pts} `} />
+      {taskset.state.pts != 0 && (
+        <TextAnimated text={`Заработанные монеты: ${taskset.state.pts} `} />
       )}
 
       <Button
@@ -45,7 +43,7 @@ const CongratPage = observer(() => {
         variant="outlined"
         aria-label="repeat"
         onClick={() => {
-          navigator.navMethods.closeCongratPage(chapter.state.success);
+          navigator.actions.closeCongratPage(taskset.state.success);
         }}
         endIcon={<ReplayIcon />}
       >

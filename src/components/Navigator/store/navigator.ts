@@ -40,7 +40,7 @@ import {
 // }
 
 class navigator {
-  navMethods: any = {
+  actions: any = {
     openAllCoursePage,
     openAndRefreshFlowPage,
     openCourseFlowPageFromMain,
@@ -55,29 +55,24 @@ class navigator {
     openLoginPageSignOut,
     openChampPage,
   };
-  requestMethods = {};
-  as = {};
+  state = {};
 
   setAppState(data) {
-    this.as = data;
+    this.state = data;
     updateSCP({
       navigator: data,
     });
   }
 
   updateAppState(data) {
-    this.as = { ...this.as, ...data };
+    this.state = { ...this.state, ...data };
     updateSCP({
-      navigator: { ...this.as, ...data },
+      navigator: { ...this.state, ...data },
     });
   }
 
   setNavigationMethods(methods: INavMethods) {
-    this.navMethods = methods;
-  }
-
-  setRequestMethods(methods) {
-    this.requestMethods = methods;
+    this.actions = methods;
   }
 
   constructor() {

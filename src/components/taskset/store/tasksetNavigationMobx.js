@@ -2,8 +2,8 @@
 import { updateSCP } from "@/db/localstorage";
 
 //stores
-import task from "@/components/chapter/taskrun/store/task";
-import chapter from "@/components/chapter/store/chapter";
+import task from "@/components/taskset/taskrun/store/task";
+import taskset from "@/components/taskset/store/taskset";
 import splashCDStore from "@/components/common/splash/splashAction/store";
 import navigator from "@/components/Navigator/store/navigator";
 //
@@ -13,22 +13,22 @@ import {
   setTaskLog,
   setFixed,
   addErrorTaskToRecap,
-} from "@/components/chapter/store/chapterUtilsMobx";
+} from "@/components/taskset/store/tasksetUtilsMobx";
 
 import {
   showRightCodeAfterError,
   setEditorDisabled,
-} from "@/components/chapter/taskrun/store/taskMobx";
+} from "@/components/taskset/taskrun/store/taskMobx";
 
 export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
   setEarned(error);
   setTaskLog({ error, code });
   setFixed(error);
 
-  const tasknum = chapter.allTasks.length;
-  const recapTaskNum = chapter.state.recapTasksIds.length;
+  const tasknum = taskset.allTasks.length;
+  const recapTaskNum = taskset.state.recapTasksIds.length;
   const currTaskId = task.currTaskId;
-  const { nodemode, pts, remainsum, taskstage } = chapter.state;
+  const { nodemode, pts, remainsum, taskstage } = taskset.state;
 
   switch (true) {
     case currTaskId != tasknum - 1 && !error:
@@ -38,17 +38,17 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
     case currTaskId == tasknum - 1 && !error:
       if (taskstage == "recap") {
         ok(() =>
-          navigator.navMethods.openCongratPage({
+          navigator.actions.openCongratPage({
             nodemode,
             pts,
             remainsum,
-            success: recapTaskNum == chapter.state.fixed,
+            success: recapTaskNum == taskset.state.fixed,
           })
         );
       }
       if (recapTaskNum == 0 && taskstage == "WIP") {
         ok(() =>
-          navigator.navMethods.openCongratPage({
+          navigator.actions.openCongratPage({
             nodemode,
             pts,
             remainsum,
@@ -57,9 +57,9 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
         );
       }
       if (recapTaskNum != 0 && taskstage == "WIP") {
-        chapter.state.nodemode == "renewal"
+        taskset.state.nodemode == "renewal"
           ? ok(() =>
-              navigator.navMethods.openCongratPage({
+              navigator.actions.openCongratPage({
                 nodemode,
                 pts,
                 remainsum,
@@ -67,8 +67,8 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
               })
             )
           : ok(() =>
-              navigator.navMethods.openRecapTasksPage({
-                chapter: { state: chapter.state, allTasks: chapter.allTasks },
+              navigator.actions.openRecapTasksPage({
+                taskset: { state: taskset.state, allTasks: taskset.allTasks },
               })
             );
       }
@@ -89,10 +89,10 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
       }
       if (taskstage == "WIP" && currTaskId == tasknum - 1) {
         addErrorTaskToRecap();
-        chapter.updateState({ taskstage: "recap_suspended" });
+        taskset.updateState({ taskstage: "recap_suspended" });
       }
       if (taskstage == "recap" && currTaskId == tasknum - 1) {
-        chapter.updateState({ taskstage: "accomplished_suspended" });
+        taskset.updateState({ taskstage: "accomplished_suspended" });
       }
       return;
 
@@ -117,10 +117,10 @@ export const errorCountDownPressed = async () => {
   task.updateCurrTask({ info: "", editordisabled: false });
   task.editorRef.current.updateOptions({ lineNumbers: "on" });
   setEditorDisabled(false);
-  const { nodemode, pts, remainsum, taskstage } = chapter.state;
+  const { nodemode, pts, remainsum, taskstage } = taskset.state;
 
   if (taskstage == "accomplished_suspended") {
-    openCongratPage({
+    navigator.actions.openCongratPage({
       nodemode,
       pts,
       remainsum,
@@ -130,19 +130,19 @@ export const errorCountDownPressed = async () => {
   }
   if (taskstage == "recap_suspended") {
     nodemode == "renewal"
-      ? openCongratPage({
+      ? navigator.actions.openCongratPage({
           nodemode,
           pts,
           remainsum,
           success: false,
         })
-      : openRecapTasksPage({
-          chapter: { state: chapter.state, allTasks: chapter.allTasks },
+      : navigator.actions.openRecapTasksPage({
+          taskset: { state: taskset.state, allTasks: taskset.allTasks },
         });
 
     return;
   }
-  if (task.currTaskId != chapter.allTasks.length) {
+  if (task.currTaskId != taskset.allTasks.length) {
     task.setCurrTask(task.currTaskId + 1);
     return;
   }

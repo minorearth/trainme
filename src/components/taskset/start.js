@@ -7,28 +7,28 @@ import Button from "@mui/material/Button";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import navigator from "@/components/Navigator/store/navigator";
-import chapter from "./store/chapter";
+import taskset from "@/components/taskset/store/taskset";
 
 const getIntro = () => {
-  if (chapter.state.nodemode == "textbook") {
+  if (taskset.state.nodemode == "textbook") {
     return "Приветствуем вас в учебнике 📘 ! В учебнике доступна теория только по открытым темам";
   }
 
-  if (chapter.state.nodemode == "champ") {
+  if (taskset.state.nodemode == "champ") {
     return "Удачи в чемпионате!";
   }
 
-  if (!chapter.state.repeat) {
+  if (!taskset.state.repeat) {
     return "Постарайтесь решить задачу с первого раза, за это начисляются монеты, которые используются для открытия новых уроков";
   }
 
-  if (chapter.state.overflow) {
+  if (taskset.state.overflow) {
     return "Вы достигли лимита монет по этой главе😭, здесь вы уже их не заработаете🚫";
   }
-  if (chapter.state.repeat) {
+  if (taskset.state.repeat) {
     return "В режиме повторения начисляется гораздо меньше монет";
   }
-  if (chapter.state.overflow) {
+  if (taskset.state.overflow) {
     return "Вы достигли лимита монет по этой главе😭, здесь вы уже их не заработаете🚫";
   }
 };
@@ -51,11 +51,11 @@ export default function Start() {
     >
       <Button
         onClick={() => {
-          navigator.navMethods.openLessonRunPage();
+          navigator.actions.openLessonRunPage();
         }}
         variant="outlined"
       >
-        {chapter.state.repeat ? "Повторяем урок" : "Начать"}
+        {taskset.state.repeat ? "Повторяем урок" : "Начать"}
       </Button>
       <Typography
         variant="body1"

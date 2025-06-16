@@ -1,5 +1,5 @@
 import { makeObservable, makeAutoObservable } from "mobx";
-import chapter from "@/components/chapter/store/chapter";
+import taskset from "@/components/taskset/store/taskset";
 import { Monaco } from "@monaco-editor/react";
 import React from "react";
 import { editor } from "monaco-editor";
@@ -8,7 +8,7 @@ import { updateSCP } from "@/db/localstorage";
 import {
   setRightCode,
   setForbiddenCode,
-} from "@/components/chapter/taskrun/store/taskMobx";
+} from "@/components/taskset/taskrun/store/taskMobx";
 
 interface ITask {
   /**
@@ -34,8 +34,8 @@ class task {
   }
 
   setCurrTask = (id: number) => {
-    if (id != chapter.allTasks.length) {
-      this.currTask = chapter.allTasks[id];
+    if (id != taskset.allTasks.length) {
+      this.currTask = taskset.allTasks[id];
       this.currTaskId = id;
       updateSCP({
         task: { currTaskId: id },
@@ -69,10 +69,8 @@ class task {
   }
 
   refreshInput = () => {
-    const taskData = chapter.allTasks[this.currTaskId];
+    const taskData = taskset.allTasks[this.currTaskId];
     const input = taskData.defaultinput.join("\n");
-    //TODO:wtf
-    // task.currTask.input = input;
     this.updateCurrTask({ input });
   };
 

@@ -17,9 +17,8 @@ import AnimNode from "./components/AnimNode";
 import alertdialog from "@/components/common/dialog/store";
 import navigator from "@/components/Navigator/store/navigator";
 import user from "@/store/user";
-import chapter from "@/components/chapter/store/chapter";
 import { reaction } from "mobx";
-import flow from "@/components/course/store/course";
+import course from "@/components/course/store/course";
 
 const nodeTypes = {
   turbo: TurboNode,
@@ -41,16 +40,8 @@ const useFlow = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState();
 
   useEffect(() => {
-    setEdges(flow.flow.edges);
-    setNodes(flow.flow.nodes);
-    // return reaction(
-    //   () => chapter.flow,
-    //   () => {
-    //     console.log("reacted", chapter.flow);
-    //     setEdges(chapter.flow.edges);
-    //     setNodes(chapter.flow.nodes);
-    //   }
-    // );
+    setEdges(course.flow.edges);
+    setNodes(course.flow.nodes);
   }, []);
 
   useEffect(() => {

@@ -1,21 +1,22 @@
 import { toJS } from "mobx";
 
-//stores
-import task from "@/components/chapter/taskrun/store/task";
-import chapter from "@/components/chapter/store/chapter";
 import { updateChampPoints } from "@/components/champ/store/champVM";
+
+//stores
+import task from "@/components/taskset/taskrun/store/task";
+import taskset from "@/components/taskset/store/taskset";
 import champ from "@/components/champ/store/champ";
 //
 
 export const setFixed = (error) => {
-  const fixed = chapter.state.fixed;
-  if (chapter.state.taskstage == "recap" && !error) {
-    chapter.updateState({ fixed: fixed ? fixed + 1 : 1 });
+  const fixed = taskset.state.fixed;
+  if (taskset.state.taskstage == "recap" && !error) {
+    taskset.updateState({ fixed: fixed ? fixed + 1 : 1 });
   }
 };
 
 export const setTaskLog = ({ code, error }) => {
-  const tasklog = chapter.state.tasklog;
+  const tasklog = taskset.state.tasklog;
   const taskuuid = task.currTask.taskuuid;
 
   const tasklogdata = !error ? { code } : { errorcode: code };
@@ -23,7 +24,7 @@ export const setTaskLog = ({ code, error }) => {
     ? tasklog[taskuuid]
     : {};
   const newChapterState = {
-    ...chapter.state,
+    ...taskset.state,
     tasklog: {
       ...tasklog,
       [taskuuid]: {
@@ -32,16 +33,16 @@ export const setTaskLog = ({ code, error }) => {
       },
     },
   };
-  chapter.updateState(newChapterState);
+  taskset.updateState(newChapterState);
 };
 
 export const addErrorTaskToRecap = () => {
-  const recapTasksIds = [...chapter.state.recapTasksIds, task.currTaskId];
-  chapter.updateState({ recapTasksIds });
+  const recapTasksIds = [...taskset.state.recapTasksIds, task.currTaskId];
+  taskset.updateState({ recapTasksIds });
 };
 
 export const setEarned = (error) => {
-  const { taskstage, repeat, overflow, nodemode, pts } = chapter.state;
+  const { taskstage, repeat, overflow, nodemode, pts } = taskset.state;
   let income = 0;
   if (overflow) {
     return pts;
@@ -76,6 +77,6 @@ export const setEarned = (error) => {
       updateChampPoints(income, champ.champid);
     }
   }
-  chapter.updateState({ pts: pts + income });
+  taskset.updateState({ pts: pts + income });
   return pts;
 };

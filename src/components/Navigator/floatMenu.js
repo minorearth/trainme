@@ -3,11 +3,13 @@ import stn from "@/globals/settings";
 import { motion } from "framer-motion";
 import Box from "@mui/material/Box";
 import navigator from "./store/navigator";
+import { useRouter } from "next/navigation";
 
 const RIGHT = 16;
 const TOP = 16;
 
 const FloatMenu = () => {
+  const router = useRouter();
   return (
     <Box
       id="human"
@@ -32,15 +34,18 @@ const FloatMenu = () => {
       <FabAnimated
         tooltip={"Выйти"}
         icon="close"
-        action={() => navigator.navMethods.openLoginPageSignOut()}
+        action={() => {
+          navigator.actions.openLoginPageSignOut();
+          router.push(`/login/`);
+        }}
         position={{ top: TOP, right: RIGHT }}
       />
 
-      {navigator.as.page == "champ" && (
+      {navigator.state.page == "champ" && (
         <FabAnimated
           tooltip={"На главную"}
           icon="home"
-          action={() => navigator.navMethods.openAllCoursePage()}
+          action={() => navigator.actions.openAllCoursePage()}
           position={{ top: TOP, right: RIGHT + stn.ui.FLOAT_BTN_PADDING }}
         />
       )}

@@ -1,7 +1,7 @@
 export const initials = {
   initialState: {
     navigator: { page: "courses" },
-    chapter: {},
+    taskset: {},
     task: { currTaskId: -1 },
   },
   champ: {
@@ -9,7 +9,7 @@ export const initials = {
   },
   champTasks: {
     navigator: { page: "lessonStarted" },
-    chapter: {
+    taskset: {
       recapTasksIds: [],
       taskstage: "WIP",
       nodemode: "champ",
@@ -21,7 +21,7 @@ export const initials = {
   lessonRun: { navigator: { page: "testrun" } },
   textBook: {
     navigator: { page: "lessonStarted" },
-    chapter: { nodemode: "textbook" },
+    taskset: { nodemode: "textbook" },
     task: { currTaskId: 0 },
   },
   courses: {
@@ -29,7 +29,7 @@ export const initials = {
   },
   regularTasks: {
     navigator: { page: "lessonStarted" },
-    chapter: {
+    taskset: {
       recapTasksIds: [],
       taskstage: "WIP",
       pts: 0,

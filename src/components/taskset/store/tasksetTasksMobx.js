@@ -6,7 +6,7 @@ import {
   getAllTasksFromChapter,
   getTasksRecap,
   getRandomTasksForRepeat,
-} from "@/components/chapter/store/chapterTasksVM";
+} from "@/components/taskset/store/tasksetTasksVM";
 
 import { getChampTasks } from "@/components/champ/store/champVM";
 //
@@ -15,8 +15,8 @@ import { initials } from "@/components/Navigator/hooks/initialStates";
 
 //stores
 import navigator from "@/components/Navigator/store/navigator";
-import chapter from "@/components/chapter/store/chapter";
-import flow from "@/components/course/store/course";
+import taskset from "@/components/taskset/store/taskset";
+import course from "@/components/course/store/course";
 //
 
 export const setRegularTasks = async ({
@@ -29,9 +29,9 @@ export const setRegularTasks = async ({
   tobeunlocked,
 }) => {
   const tasks = await getAllTasksFromChapter(chapterid, courseid);
-  chapter.setAllTasks(tasks, initials.regularTasks.task.currTaskId);
-  chapter.updateState({
-    ...initials.regularTasks.chapter,
+  taskset.setAllTasks(tasks, initials.regularTasks.task.currTaskId);
+  taskset.updateState({
+    ...initials.regularTasks.taskset,
     chapterid,
     repeat,
     overflow,
@@ -39,8 +39,6 @@ export const setRegularTasks = async ({
     nodemode,
     tobeunlocked,
   });
-  //TODO: why?
-  flow.updateState({ courseid });
   navigator.updateAppState({ ...initials.regularTasks.navigator });
 };
 
@@ -59,11 +57,11 @@ export const setRandomTasksToRepeat = async ({
       courseid,
       levelStart: level - 5,
       levelEnd: level,
-      randomsaved: chapter.state.randomsaved,
+      randomsaved: taskset.state.randomsaved,
     });
-    chapter.setAllTasks(tasksFetched, initials.regularTasks.task.currTaskId);
-    chapter.updateState({
-      ...initials.regularTasks.chapter,
+    taskset.setAllTasks(tasksFetched, initials.regularTasks.task.currTaskId);
+    taskset.updateState({
+      ...initials.regularTasks.taskset,
       chapterid,
       repeat,
       overflow,
@@ -73,7 +71,7 @@ export const setRandomTasksToRepeat = async ({
       tobeunlocked,
       randomsaved: tasksuuids,
     });
-    flow.updateState({ courseid });
+    course.updateState({ courseid });
     navigator.updateAppState({ ...initials.regularTasks.navigator });
   } catch (e) {
     console.log(e);
@@ -85,15 +83,15 @@ export const setChampTasks = async ({ champid }) => {
   const tasks = await getChampTasks({
     champid,
   });
-  chapter.setAllTasks(tasks.data.tasks, initials.champTasks.task.currTaskId);
-  chapter.updateState({ ...initials.champTasks.chapter });
+  taskset.setAllTasks(tasks.data.tasks, initials.champTasks.task.currTaskId);
+  taskset.updateState({ ...initials.champTasks.taskset });
   navigator.updateAppState({ ...initials.champTasks.navigator });
 };
 
-export const setRecapTasks = (chapterState) => {
-  chapter.setAllTasks(
-    getTasksRecap(chapterState.state.recapTasksIds, chapterState.allTasks),
+export const setRecapTasks = (tasksetState) => {
+  taskset.setAllTasks(
+    getTasksRecap(tasksetState.state.recapTasksIds, tasksetState.allTasks),
     0
   );
-  chapter.updateState({ taskstage: "recap" });
+  taskset.updateState({ taskstage: "recap" });
 };

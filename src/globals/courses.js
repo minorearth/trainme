@@ -34,7 +34,7 @@ export const courses = {
     toload: true,
     free: true,
     coursesAction: () =>
-      navigator.navMethods.openCourseFlowPageFromMain(
+      navigator.actions.openCourseFlowPageFromMain(
         "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0"
       ),
   },
@@ -52,7 +52,7 @@ export const courses = {
     toload: true,
     free: true,
     coursesAction: () =>
-      navigator.navMethods.openCourseFlowPageFromMain(
+      navigator.actions.openCourseFlowPageFromMain(
         "a3905595-437e-47f3-b749-28ea5362bd39"
       ),
   },
@@ -68,7 +68,7 @@ export const courses = {
     order: 3,
     toload: false,
     free: false,
-    coursesAction: () => navigator.navMethods.openCourseFlowPageFromMain("555"),
+    coursesAction: () => navigator.actions.openCourseFlowPageFromMain("555"),
   },
   777: {
     title: "Чемпионат",
@@ -82,6 +82,6 @@ export const courses = {
     order: 4,
     toload: false,
     free: false,
-    coursesAction: () => navigator.navMethods.openChampPage(),
+    coursesAction: () => navigator.actions.openChampPage(),
   },
 };

@@ -13,7 +13,7 @@ import {
   getTasksRecap,
   getTextBook,
   getRandomTasksForRepeat,
-} from "@/components/chapter/store/chapterTasksVM";
+} from "@/components/taskset/store/tasksetTasksVM";
 
 import { getChampTasks } from "@/components/champ/store/champVM";
 //
@@ -23,11 +23,11 @@ import { initials } from "./initialStates";
 
 //stores
 import navigator from "@/components/Navigator/store/navigator";
-import task from "@/components/chapter/taskrun/store/task";
-import chapter from "@/components/chapter/store/chapter";
+import task from "@/components/taskset/taskrun/store/task";
+import taskset from "@/components/taskset/store/taskset";
 import progressStore from "../../common/splash/progressdots/store";
 import user from "@/store/user";
-import flow from "@/components/course/store/course";
+import course from "@/components/course/store/course";
 import champ from "@/components/champ/store/champ";
 //
 
@@ -75,20 +75,20 @@ const useApp = () => {
       navigator.setAppState(initials.initialState.navigator);
     } else {
       CSP.navigator && navigator.setAppState(CSP.navigator);
-      CSP.chapter && chapter.updateState(CSP.chapter);
+      CSP.taskset && taskset.updateState(CSP.taskset);
       CSP.task && task.setCurrTask(CSP.task.currTaskId);
       CSP.user && user.setProgress(CSP.user.progress);
-      CSP.flow && flow.updateState(CSP.flow);
+      CSP.course && course.updateState(CSP.course);
       CSP.champ && champ.setChampId(CSP.champ.champid);
     }
     const page = CSP?.navigator?.page || "courses";
     if (page == "flow") {
       const coursePaid = await getDataFetch({
         type: "checkcoursepaid",
-        data: { courseid: CSP.flow.courseid, uid: user.userid },
+        data: { courseid: CSP.course.courseid, uid: user.userid },
       });
       if (coursePaid) {
-        await openAndRefreshFlowPage(CSP.flow.courseid);
+        await openAndRefreshFlowPage(CSP.course.courseid);
       } else {
         openAllCoursePage();
       }
@@ -107,20 +107,20 @@ const useApp = () => {
   const recoverTasks = async ({ nodemode, taskstage, CSP }) => {
     if (nodemode == "renewal") {
       const { tasksFetched } = await getRandomTasksForRepeat({
-        courseid: CSP.flow.courseid,
-        levelStart: CSP.chapter.level - 5,
-        levelEnd: CSP.chapter.level,
-        randomsaved: CSP.chapter.randomsaved,
+        courseid: CSP.course.courseid,
+        levelStart: CSP.taskset.level - 5,
+        levelEnd: CSP.taskset.level,
+        randomsaved: CSP.taskset.randomsaved,
       });
       return tasksFetched;
     }
     if (nodemode == "addhoc" || nodemode == "newtopic") {
       const tasks = await getAllTasksFromChapter(
-        CSP.chapter.chapterid,
-        CSP.flow.courseid
+        CSP.taskset.chapterid,
+        CSP.course.courseid
       );
       if (taskstage == "recap") {
-        const recapTasks = getTasksRecap(CSP.chapter.recapTasksIds, tasks);
+        const recapTasks = getTasksRecap(CSP.taskset.recapTasksIds, tasks);
         return recapTasks;
       } else return tasks;
     }
@@ -131,8 +131,7 @@ const useApp = () => {
       });
       const tasks = champTasks.data.tasks;
       if (taskstage == "recap") {
-        const recapTasks = getTasksRecap(CSP.chapter.recapTasksIds, tasks);
-        // chapter.setAllTasks(recapTasks, CSP.task.currTaskId);
+        const recapTasks = getTasksRecap(CSP.taskset.recapTasksIds, tasks);
         return recapTasks;
       } else return tasks;
     }
@@ -140,14 +139,14 @@ const useApp = () => {
     if (nodemode == "textbook") {
       const tasks = await getTextBook({
         userProgress: CSP.user.progress,
-        courseid: CSP.flow.courseid,
+        courseid: CSP.course.courseid,
       });
       return tasks;
     }
   };
 
   const recoverLessonInProgress = async ({ CSP }) => {
-    const { nodemode, pts, remainsum, taskstage } = chapter.state;
+    const { nodemode, pts, remainsum, taskstage } = taskset.state;
 
     // // //for recover purposes
     // navigator.updateAppState({ page: "testrun" });
@@ -161,10 +160,10 @@ const useApp = () => {
     }
 
     if (taskstage == "recap_suspended") {
-      CSP.chapter.nodemode == "renewal"
+      CSP.taskset.nodemode == "renewal"
         ? openCongratPage({ nodemode, pts, remainsum, success: false })
         : openRecapTasksPage({
-            chapter: { state: CSP.chapter, allTasks: tasks },
+            taskset: { state: CSP.taskset, allTasks: tasks },
           });
     }
 
@@ -173,7 +172,7 @@ const useApp = () => {
     }
 
     if (taskstage == "recap" || taskstage == "WIP") {
-      chapter.setAllTasks(tasks, CSP.task.currTaskId);
+      taskset.setAllTasks(tasks, CSP.task.currTaskId);
     }
   };
 

@@ -7,8 +7,7 @@ import { useState, useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
 import CachedIcon from "@mui/icons-material/Cached";
 import Box from "@mui/material/Box";
-import task from "@/components/chapter/taskrun/store/task";
-import chapter from "@/components/chapter/store/chapter";
+import task from "@/components/taskset/taskrun/store/task";
 import { reaction } from "mobx";
 import { observer } from "mobx-react-lite";
 

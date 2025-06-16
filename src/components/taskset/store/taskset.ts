@@ -1,21 +1,16 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { runInAction } from "mobx";
-import task from "@/components/chapter/taskrun/store/task";
+import task from "@/components/taskset/taskrun/store/task";
 import { updateSCP } from "@/db/localstorage";
 
 import { ETL } from "./ETl";
-import {
-  setRegularTasks,
-  setRandomTasksToRepeat,
-  setChampTasks,
-} from "@/components/chapter/store/chapterUtilsMobx";
 
 import {
   nextTaskOrCompleteTestRun,
   nextTask,
   prevTaskNoPts,
   errorCountDownPressed,
-} from "@/components/chapter/store/chapterNavigationMobx";
+} from "@/components/taskset/store/tasksetNavigationMobx";
 
 interface ITask {
   /**
@@ -26,41 +21,34 @@ interface ITask {
   // openAndRefreshFlowPage?: (courseid: string) => void;
 }
 
-class chapter {
+class taskset {
   allTasks: any = [];
   tasknum: number = -1;
-  actionsTsk: any = {
-    setRegularTasks,
-    setRandomTasksToRepeat,
-    setChampTasks,
+  actions: any = {
     nextTaskOrCompleteTestRun,
     nextTask,
     prevTaskNoPts,
     errorCountDownPressed,
   };
   state: any = { recapTasksIds: [] };
-  flow: any = {};
 
   updateState(data) {
     this.state = { ...this.state, ...data };
     updateSCP({
-      chapter: { ...this.state, ...data },
+      taskset: { ...this.state, ...data },
     });
   }
 
   eraseState() {
     this.state = {};
+    this.allTasks = [];
     updateSCP({
-      chapter: {},
+      taskset: {},
     });
   }
 
   setTaskMethods(methods: any) {
-    this.actionsTsk = methods;
-  }
-
-  setFlow(data) {
-    this.flow = data;
+    this.actions = methods;
   }
 
   async setAllTasks(tasks, currid) {
@@ -77,4 +65,4 @@ class chapter {
   }
 }
 
-export default new chapter();
+export default new taskset();

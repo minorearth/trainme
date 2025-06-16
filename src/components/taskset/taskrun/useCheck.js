@@ -1,7 +1,7 @@
 import { runCheckers, getErrorMessage } from "./taskCheckersUtils";
 import local from "@/globals/local";
-import task from "@/components/chapter/taskrun/store/task";
-import chapter from "@/components/chapter/store/chapter";
+import task from "@/components/taskset/taskrun/store/task";
+import taskset from "@/components/taskset/store/taskset";
 import { toJS } from "mobx";
 
 const useCheck = ({ runPythonCode }) => {
@@ -17,7 +17,7 @@ const useCheck = ({ runPythonCode }) => {
       forbiddenChecked
     );
     const isError = error != "";
-    await chapter.actionsTsk.nextTaskOrCompleteTestRun({
+    await taskset.actions.nextTaskOrCompleteTestRun({
       error: isError,
       errorMsg: error,
       code,

@@ -18,8 +18,7 @@ import { Tooltip } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import navigator from "@/components/Navigator/store/navigator";
 import user from "@/store/user";
-import chapter from "@/components/chapter/store/chapter";
-import flow from "@/components/course/store/course";
+import course from "@/components/course/store/course";
 
 const ICON_SIZE = "60px";
 const FlowPanel = observer(() => {
@@ -42,7 +41,7 @@ const FlowPanel = observer(() => {
             <HomeIcon
               sx={{ fontSize: ICON_SIZE }}
               onClick={() => {
-                navigator.navMethods.openAllCoursePage();
+                navigator.actions.openAllCoursePage();
               }}
             />
           </Tooltip>
@@ -65,9 +64,9 @@ const FlowPanel = observer(() => {
             <ImportContactsOutlinedIcon
               sx={{ fontSize: ICON_SIZE }}
               onClick={async () => {
-                navigator.navMethods.openLessonStartPage({
+                navigator.actions.openLessonStartPage({
                   nodemode: "textbook",
-                  courseid: flow.state.courseid,
+                  courseid: course.state.courseid,
                 });
               }}
             />
@@ -79,7 +78,7 @@ const FlowPanel = observer(() => {
             <LightbulbIcon
               sx={{ fontSize: ICON_SIZE }}
               onClick={() => {
-                navigator.navMethods.openTutorial();
+                navigator.actions.openTutorial();
               }}
             />
           </Tooltip>

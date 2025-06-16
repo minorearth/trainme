@@ -13,9 +13,9 @@ import Input from "@mui/material/Input";
 import { useState } from "react";
 import { updateSCP } from "@/db/localstorage";
 import navigator from "@/components/Navigator/store/navigator";
-import chapter from "@/components/chapter/store/chapter";
-import task from "@/components/chapter/taskrun/store/task";
-import flow from "@/components/course/store/course";
+import taskset from "@/components/taskset/store/taskset";
+import task from "@/components/taskset/taskrun/store/task";
+import course from "@/components/course/store/course";
 
 const AdminPanel = () => {
   const [inValue, setInValue] = useState(5000);
@@ -35,45 +35,45 @@ const AdminPanel = () => {
     <>
       <Button
         onClick={async () => {
-          const courseid = flow.state.courseid;
+          const courseid = course.state.courseid;
           await resetUseMetaData(
             courses[courseid].firstchapter,
             courseid,
             user.userid
           );
-          navigator.navMethods.openAndRefreshFlowPage(courseid);
+          navigator.actions.openAndRefreshFlowPage(courseid);
         }}
       >
         reset
       </Button>
       <Button
         onClick={async () => {
-          const courseid = flow.state.courseid;
+          const courseid = course.state.courseid;
           await unlockAll(
-            flow.flow.nodes
+            course.flow.nodes
               .filter((node) => node.id != -1)
               .map((node) => node.id),
             courses[courseid].firstchapter,
             courseid,
             user.userid
           );
-          navigator.navMethods.openAndRefreshFlowPage(courseid);
+          navigator.actions.openAndRefreshFlowPage(courseid);
         }}
       >
         unlockAll
       </Button>
       <Button
         onClick={async () => {
-          const courseid = flow.state.courseid;
+          const courseid = course.state.courseid;
           await unlockAndCompleteAll(
-            flow.flow.nodes
+            course.flow.nodes
               .filter((node) => node.id != -1)
               .map((node) => node.id),
             courses[courseid].firstchapter,
             courseid,
             user.userid
           );
-          navigator.navMethods.openAndRefreshFlowPage(courseid);
+          navigator.actions.openAndRefreshFlowPage(courseid);
         }}
       >
         CompleteAll
@@ -81,8 +81,8 @@ const AdminPanel = () => {
       <Button
         onClick={() => {
           load();
-          const courseid = flow.state.courseid;
-          navigator.navMethods.openAndRefreshFlowPage(courseid);
+          const courseid = course.state.courseid;
+          navigator.actions.openAndRefreshFlowPage(courseid);
         }}
       >
         load
@@ -102,16 +102,16 @@ const AdminPanel = () => {
       />
       <Button
         onClick={async () => {
-          const courseid = flow.state.courseid;
+          const courseid = course.state.courseid;
           await setMoney(courseid, user.userid, inValue);
-          navigator.navMethods.openAndRefreshFlowPage(courseid);
+          navigator.actions.openAndRefreshFlowPage(courseid);
         }}
       >
         money2
       </Button>
       <Button
         onClick={() => {
-          task.setCurrTask(chapter.allTasks.length - 1);
+          task.setCurrTask(taskset.allTasks.length - 1);
         }}
       >
         lasttask

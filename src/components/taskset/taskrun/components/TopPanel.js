@@ -1,7 +1,6 @@
 "use client";
-import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import LinearProgressWithLabel from "@/components/chapter/taskrun/components/LinearProgress";
+import LinearProgressWithLabel from "@/components/taskset/taskrun/components/LinearProgress";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import Animation from "@/components/common/lottieAnimation/Animation";
 import Typography from "@mui/material/Typography";
@@ -10,11 +9,14 @@ import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import { Tooltip } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import Grid from "@mui/material/Grid2";
-import navigator from "@/components/Navigator/store/navigator";
-import task from "@/components/chapter/taskrun/store/task";
-import chapter from "@/components/chapter/store/chapter";
+
 import { observer } from "mobx-react-lite";
-import flow from "@/components/course/store/course";
+
+//stores
+import navigator from "@/components/Navigator/store/navigator";
+import task from "@/components/taskset/taskrun/store/task";
+import taskset from "@/components/taskset/store/taskset";
+import course from "@/components/course/store/course";
 
 const TopPanel = observer(() => {
   return (
@@ -35,8 +37,8 @@ const TopPanel = observer(() => {
         >
           <Animation height={"80px"} width={"80px"} name={"sheep"} />
           <LinearProgressWithLabel
-            value={((task.currTaskId + 1) / chapter.tasknum) * 100}
-            label={`${task.currTaskId + 1}\\${chapter.tasknum}`}
+            value={((task.currTaskId + 1) / taskset.tasknum) * 100}
+            label={`${task.currTaskId + 1}\\${taskset.tasknum}`}
           />
         </Box>
       </Grid>
@@ -54,7 +56,7 @@ const TopPanel = observer(() => {
             variant="body2"
             sx={{ color: "text.secondary", fontSize: 22 }}
           >
-            {chapter.state.pts}
+            {taskset.state.pts}
           </Typography>
 
           <IconButtonNoRipple>
@@ -66,7 +68,7 @@ const TopPanel = observer(() => {
                   marginRight: "15px",
                 }}
                 onClick={() => {
-                  navigator.navMethods.openTutorial();
+                  navigator.actions.openTutorial();
                 }}
               />
             </Tooltip>
@@ -77,11 +79,11 @@ const TopPanel = observer(() => {
               <HomeIcon
                 sx={{ fontSize: "40px", marginRight: "15px" }}
                 onClick={() => {
-                  chapter.state.nodemode != "textbook" &&
-                    navigator.navMethods.openCongratPageInterrupted();
-                  chapter.state.nodemode == "textbook" &&
-                    navigator.navMethods.openAndRefreshFlowPage(
-                      flow.state.courseid
+                  taskset.state.nodemode != "textbook" &&
+                    navigator.actions.openCongratPageInterrupted();
+                  taskset.state.nodemode == "textbook" &&
+                    navigator.actions.openAndRefreshFlowPage(
+                      course.state.courseid
                     );
                 }}
               />

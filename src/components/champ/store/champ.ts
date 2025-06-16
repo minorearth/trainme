@@ -11,6 +11,16 @@ class champ {
   taskcount = 5;
   range = [1, 30];
 
+  eraseState() {
+    this.range = [1, 30];
+    this.taskcount = 5;
+    this.state = {};
+    this.champid = null;
+    updateSCP({
+      champ: {},
+    });
+  }
+
   setRange = (range) => {
     this.range = range;
   };

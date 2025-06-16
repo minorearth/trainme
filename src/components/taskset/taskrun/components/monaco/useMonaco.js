@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import task from "@/components/chapter/taskrun/store/task";
-import chapter from "@/components/chapter/store/chapter";
+import task from "@/components/taskset/taskrun/store/task";
 
 const useMonaco = () => {
   const [mounted, setMounted] = useState(false);

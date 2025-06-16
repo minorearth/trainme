@@ -35,10 +35,10 @@ const useChamps = () => {
       stn.collections.CHAMPS,
       champ.champid,
       (data) => {
-        if (data.status == "started" && navigator.as.page == "champ") {
+        if (data.status == "started" && navigator.state.page == "champ") {
           if (data.users[user.userid].persstatus == "joined") {
             countdowncircle.show(() => {
-              navigator.navMethods.openLessonStartPage({
+              navigator.actions.openLessonStartPage({
                 champid: champ.champid,
                 nodemode: "champ",
               });

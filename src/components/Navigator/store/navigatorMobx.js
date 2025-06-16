@@ -12,25 +12,26 @@ import { getUserProgress } from "@/components/Navigator/store/navigatorVM";
 import {
   getTextBook,
   finalizePts,
-} from "@/components/chapter/store/chapterTasksVM";
+} from "@/components/taskset/store/tasksetTasksVM";
 //
 
 //utils and constants
 import { encrypt2, decrypt2 } from "@/globals/utils/encryption";
 import { getReadyCourses } from "@/globals/courses";
+//TODO:remove ../
 import { initials } from "../hooks/initialStates";
 
 //stores
 import navigator from "@/components/Navigator/store/navigator";
-import task from "@/components/chapter/taskrun/store/task";
-import chapter from "@/components/chapter/store/chapter";
+import task from "@/components/taskset/taskrun/store/task";
+import taskset from "@/components/taskset/store/taskset";
 import progressStore from "../../common/splash/progressdots/store";
 import alertdialog from "@/components/common/dialog/store";
 import dialog from "@/components/common/dialog/store";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import user from "@/store/user";
 import tutorial from "@/components/tutorial/store";
-import flow from "@/components/course/store/course";
+import course from "@/components/course/store/course";
 import champ from "@/components/champ/store/champ";
 //
 import {
@@ -38,10 +39,14 @@ import {
   setRandomTasksToRepeat,
   setChampTasks,
   setRecapTasks,
-} from "@/components/chapter/store/chapterTasksMobx";
+} from "@/components/taskset/store/tasksetTasksMobx";
+
 export const openAllCoursePage = () => {
   navigator.setAppState({ ...initials.courses.navigator });
-  chapter.setAllTasks([], -1);
+  course.eraseState();
+  champ.eraseState();
+  taskset.eraseState();
+  task.eraseState();
 };
 
 export const openCourseFlowPageFromMain = async (courseid) => {
@@ -67,7 +72,7 @@ export const openCourseFlowPageFromMain = async (courseid) => {
 };
 
 export const openAndRefreshFlowPage = async (courseid) => {
-  flow.setFlow({});
+  course.setFlow({});
   const progress = await getUserProgress(courseid);
 
   const flowFetched = await setFlowNodes({
@@ -76,11 +81,10 @@ export const openAndRefreshFlowPage = async (courseid) => {
     openLessonStartPage,
     openAndRefreshFlowPage: async () => await openAndRefreshFlowPage(courseid),
   });
-  console.log("здеся2", courseid);
-  flow.setFlow(flowFetched);
-  flow.updateState({ courseid });
+  course.setFlow(flowFetched);
+  course.updateState({ courseid });
   navigator.updateAppState({ page: "flow" });
-  chapter.eraseState();
+  taskset.eraseState();
   task.eraseState();
   user.setProgress(progress);
 };
@@ -141,8 +145,8 @@ export const openLessonStartPage = async ({
 
 export const openTextBook = async ({ tasks }) => {
   if (tasks.length) {
-    chapter.setAllTasks(tasks, 0);
-    chapter.updateState({ ...initials.textBook.chapter });
+    taskset.setAllTasks(tasks, 0);
+    taskset.updateState({ ...initials.textBook.taskset });
     navigator.updateAppState({ ...initials.textBook.navigator });
   } else {
     alertdialog.showDialog(
@@ -174,12 +178,12 @@ export const openCongratPage = async ({
     remainsum,
   });
   navigator.updateAppState({ page: "congrat" });
-  chapter.updateState({ pts: ptsFinalized, success });
+  taskset.updateState({ pts: ptsFinalized, success });
 };
 
 export const closeCongratPage = async (success) => {
   const { chapterid, tobeunlocked, pts, tasklog, repeat, nodemode } =
-    chapter.state;
+    taskset.state;
   const { unlocked, completed, rating, lastunlocked } = user.progress;
   if (nodemode == "addhoc" || nodemode == "newtopic" || nodemode == "renewal") {
     try {
@@ -194,7 +198,7 @@ export const closeCongratPage = async (success) => {
         pts: rating + pts,
         uid: user.userid,
         tasklog: toJS(tasklog),
-        courseid: flow.state.courseid,
+        courseid: course.state.courseid,
         sum: (user.progress.stat[chapterid]?.sum ?? 0) + pts,
       };
 
@@ -213,7 +217,6 @@ export const closeCongratPage = async (success) => {
           ...common,
         };
       }
-      console.log("data", dataToEncrypt);
       const res = await setDataFetch({
         type: "setusermetadata",
         data: encrypt2(dataToEncrypt),
@@ -221,7 +224,7 @@ export const closeCongratPage = async (success) => {
       if (res == "error") {
         throw new Error("Server error");
       }
-      await openAndRefreshFlowPage(flow.state.courseid);
+      await openAndRefreshFlowPage(course.state.courseid);
       progressStore.setCloseProgress();
     } catch (e) {
       console.log(e);
@@ -243,7 +246,7 @@ export const closeCongratPage = async (success) => {
 };
 
 export const openCongratPageInterrupted = () => {
-  const { nodemode, pts, remainsum } = chapter.state;
+  const { nodemode, pts, remainsum } = taskset.state;
   let caption, text;
   if (nodemode == "renewal" || nodemode == "addhoc" || nodemode == "newtopic") {
     caption = "Завершить";
@@ -251,18 +254,18 @@ export const openCongratPageInterrupted = () => {
 
   if (
     (nodemode == "newtopic" || nodemode == "addhoc") &&
-    !chapter.state.repeat
+    !taskset.state.repeat
   ) {
     text =
       "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n2 монеты за каждую задачу вместо 10 монет";
   }
 
-  if (nodemode == "renewal" && !chapter.state.repeat) {
+  if (nodemode == "renewal" && !taskset.state.repeat) {
     text =
       "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n1 монету за каждую задачу вместо 2 монет";
   }
 
-  if (chapter.state.repeat) {
+  if (taskset.state.repeat) {
     text = "Завершить прохождение?";
   }
 
@@ -291,19 +294,18 @@ export const openTutorial = () => {
   tutorial.show();
 };
 
-export const openRecapTasksPage = ({ chapter }) => {
+export const openRecapTasksPage = ({ taskset }) => {
   dialog.showDialog(
     "Повторение",
     "Попробуй еще раз решить ошибочные задачи",
     1,
     () => {}
   );
-  setRecapTasks(chapter);
+  setRecapTasks(taskset);
 };
 
 export const openLoginPageSignOut = async () => {
   await signOutUserClient();
-  router.push(`/login/`);
 };
 
 // const openSupportPage = () => {
@@ -311,5 +313,8 @@ export const openLoginPageSignOut = async () => {
 // };
 
 export const openChampPage = () => {
+  course.eraseState();
+  taskset.eraseState();
+  task.eraseState();
   navigator.setAppState({ ...initials.champ.navigator });
 };

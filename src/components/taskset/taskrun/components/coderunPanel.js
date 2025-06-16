@@ -7,8 +7,8 @@ import { observer } from "mobx-react-lite";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import Animation from "@/components/common/lottieAnimation/Animation";
 import stn from "@/globals/settings";
-import chapter from "@/components/chapter/store/chapter";
-import task from "@/components/chapter/taskrun/store/task";
+import taskset from "@/components/taskset/store/taskset";
+import task from "@/components/taskset/taskrun/store/task";
 import navigator from "@/components/Navigator/store/navigator";
 
 const CodeRunPanel = observer(({ checkTask, runTask }) => {
@@ -48,11 +48,11 @@ const CodeRunPanel = observer(({ checkTask, runTask }) => {
           Проверить!
         </Button>
       )}
-      {(chapter.state.nodemode == "textbook" || stn.mode.DEV_MODE) && (
+      {(taskset.state.nodemode == "textbook" || stn.mode.DEV_MODE) && (
         <Button
           onClick={() => {
             task.editorRef.current.setValue("");
-            chapter.actionsTsk.prevTaskNoPts();
+            taskset.actions.prevTaskNoPts();
           }}
           variant="outlined"
           disabled={task.currTaskId <= 0}
@@ -64,10 +64,10 @@ const CodeRunPanel = observer(({ checkTask, runTask }) => {
         <Button
           onClick={() => {
             task.editorRef.current.setValue("");
-            chapter.actionsTsk.nextTask();
+            taskset.actions.nextTask();
           }}
           variant="outlined"
-          disabled={task.currTaskId >= chapter.tasknum - 1}
+          disabled={task.currTaskId >= taskset.tasknum - 1}
         >
           Продолжить
         </Button>
@@ -77,7 +77,7 @@ const CodeRunPanel = observer(({ checkTask, runTask }) => {
         <CountdownButton
           onClick={() => {
             task.editorRef.current.setValue("");
-            chapter.actionsTsk.errorCountDownPressed();
+            taskset.actions.errorCountDownPressed();
             countdownbutton.hideButton();
           }}
           variant="outlined"

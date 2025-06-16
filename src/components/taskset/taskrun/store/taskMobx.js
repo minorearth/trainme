@@ -1,7 +1,7 @@
 import alertdialog from "@/components/common/dialog/store";
 import local from "@/globals/local";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
-import task from "@/components/chapter/taskrun/store/task";
+import task from "@/components/taskset/taskrun/store/task";
 import { toJS } from "mobx";
 
 export const setEditorDisabled = (disabled) => {

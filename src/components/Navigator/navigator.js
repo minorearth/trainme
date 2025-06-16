@@ -2,9 +2,9 @@
 import Box from "@mui/material/Box";
 import Course from "../course/course";
 import { ReactFlowProvider } from "@xyflow/react";
-import CongratPage from "@/components/chapter/congrat";
-import Start from "@/components/chapter/start";
-import Task from "@/components/chapter/taskrun/task";
+import CongratPage from "@/components/taskset/congrat";
+import Start from "@/components/taskset/start";
+import Task from "@/components/taskset/taskrun/task";
 import useApp from "./hooks/loadApp";
 import Progress from "@/components/common/splash/progressdots/progressdots";
 import AlertDialog from "@/components/common/dialog/dialog";
@@ -21,14 +21,15 @@ import FloatMenu from "./floatMenu.js";
 import Tutorial from "../tutorial/tutorial";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import CountdownCircle from "@/components/common/countdown/CountdownCircle/CountdownCircle";
-import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
 import { Watcher } from "@/components/Navigator/watcher/watcher";
 import TawkToChat from "@/components/common/tawkto/tawkto.js";
-import navigator from "@/components/Navigator/store/navigator";
-import task from "@/components/chapter/taskrun/store/task";
-import chapter from "@/components/chapter/store/chapter";
 import { toJS } from "mobx";
-import flow from "@/components/course/store/course";
+
+//stores
+import navigator from "@/components/Navigator/store/navigator";
+import taskset from "@/components/taskset/store/taskset";
+import course from "@/components/course/store/course";
+import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
 
 const Navigator = observer(() => {
   const [showSplashTimeout, setShowSplashTimeout] = useState(true);
@@ -49,7 +50,8 @@ const Navigator = observer(() => {
             height: "100vh",
           }}
         >
-          {(navigator.as.page == "courses" || navigator.as.page == "champ") && (
+          {(navigator.state.page == "courses" ||
+            navigator.state.page == "champ") && (
             <>
               <FloatMenu />
               <DLSwitch
@@ -63,26 +65,25 @@ const Navigator = observer(() => {
           {stn.mode.DEV_MODE && <AdminPanel />}
           <Progress />
           <SplashAction name={"ok"} />
-          {navigator.as.page == "courses" && <Courses />}
+          {navigator.state.page == "courses" && <Courses />}
 
-          {navigator.as.page == "champ" && <Champ />}
+          {navigator.state.page == "champ" && <Champ />}
 
-          {navigator.as.page == "flow" &&
+          {navigator.state.page == "flow" &&
             //TODO: flow.state.courseid
-            !!flow.flow &&
-            flow.state.courseid && (
+            !!course.flow &&
+            course.state.courseid && (
               <ReactFlowProvider>
                 <Course />
               </ReactFlowProvider>
             )}
 
-          {navigator.as.page == "lessonStarted" && <Start />}
+          {navigator.state.page == "lessonStarted" && <Start />}
 
-          {navigator.as.page == "testrun" && chapter.allTasks.length != 0 && (
-            <Task pyodide={pyodide2} />
-          )}
+          {navigator.state.page == "testrun" &&
+            taskset.allTasks.length != 0 && <Task pyodide={pyodide2} />}
 
-          {navigator.as.page == "congrat" && <CongratPage />}
+          {navigator.state.page == "congrat" && <CongratPage />}
         </Box>
       )}
     </Box>

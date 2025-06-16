@@ -2,14 +2,14 @@
 //github.com/alankrantas/monaco-python-live-editor?tab=readme-ov-file
 // https://alankrantas.github.io/monaco-python-live-editor/
 import Editor from "@monaco-editor/react";
-import { EditorOptions } from "@/components/chapter/taskrun/components/monaco/MonacoEditorOptions";
-import useMonaco from "@/components/chapter/taskrun/components/monaco/useMonaco";
+import { EditorOptions } from "@/components/taskset/taskrun/components/monaco/MonacoEditorOptions";
+import useMonaco from "@/components/taskset/taskrun/components/monaco/useMonaco";
 import { useColorScheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import "./MonacoEditor.css";
 import IconButton from "@mui/material/IconButton";
 import CachedIcon from "@mui/icons-material/Cached";
-import task from "@/components/chapter/taskrun/store/task";
+import task from "@/components/taskset/taskrun/store/task";
 
 const MonacoEd = () => {
   const { mode } = useColorScheme();

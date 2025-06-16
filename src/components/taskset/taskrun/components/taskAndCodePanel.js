@@ -3,9 +3,9 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid2";
 import { Panel } from "@/components/common/panel";
 import MonacoEd from "./monaco/MonacoEd";
-import CodeRunPanel from "@/components/chapter/taskrun/components/coderunPanel";
+import CodeRunPanel from "@/components/taskset/taskrun/components/coderunPanel";
 import styled from "styled-components";
-import task from "@/components/chapter/taskrun/store/task";
+import task from "@/components/taskset/taskrun/store/task";
 import { observer } from "mobx-react-lite";
 
 const Wrapper = styled.div`
