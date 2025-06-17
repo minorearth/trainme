@@ -16,28 +16,28 @@ import {
   openChampPage,
 } from "@/components/Navigator/store/navigatorMobx";
 
-// interface INavMethods {
-//   openLessonStartPage?: () => void;
-//   openChampPage?: () => void;
-//   openAllCoursePage?: () => void;
-//   openCongratPage?: () => void;
-//   openLessonRunPage?: () => void;
-//   openCongratPageInterrupted?: () => void;
-//   /**
-//    * Open course flow page
-//    * @param courseid - course to show.
-//    * @returns nothing.
-//    */
-//   openAndRefreshFlowPage?: (courseid: string) => void;
-//   openRecapTasksPage?: () => void;
-//   openSpecChampPage?: () => void;
-//   openCourseFlowPageFromMain?: () => void;
-//   openLoginPageSignOut?: () => void;
-//   openSupportPage?: () => void;
-//   openTutorial?: () => void;
-//   runChamp?: () => void;
-//   closeCongratPage?: () => void;
-// }
+interface INavMethods {
+  //   openLessonStartPage?: () => void;
+  //   openChampPage?: () => void;
+  //   openAllCoursePage?: () => void;
+  //   openCongratPage?: () => void;
+  //   openLessonRunPage?: () => void;
+  //   openCongratPageInterrupted?: () => void;
+  //   /**
+  //    * Open course flow page
+  //    * @param courseid - course to show.
+  //    * @returns nothing.
+  //    */
+  //   openAndRefreshFlowPage?: (courseid: string) => void;
+  //   openRecapTasksPage?: () => void;
+  //   openSpecChampPage?: () => void;
+  //   openCourseFlowPageFromMain?: () => void;
+  //   openLoginPageSignOut?: () => void;
+  //   openSupportPage?: () => void;
+  //   openTutorial?: () => void;
+  //   runChamp?: () => void;
+  //   closeCongratPage?: () => void;
+}
 
 class navigator {
   actions: any = {
@@ -57,14 +57,14 @@ class navigator {
   };
   state = {};
 
-  setAppState(data) {
+  setState(data: any) {
     this.state = data;
     updateSCP({
       navigator: data,
     });
   }
 
-  updateAppState(data) {
+  updateState(data: any) {
     this.state = { ...this.state, ...data };
     updateSCP({
       navigator: { ...this.state, ...data },

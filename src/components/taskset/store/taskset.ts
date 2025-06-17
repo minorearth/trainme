@@ -32,7 +32,7 @@ class taskset {
   };
   state: any = { recapTasksIds: [] };
 
-  updateState(data) {
+  updateState(data: any) {
     this.state = { ...this.state, ...data };
     updateSCP({
       taskset: { ...this.state, ...data },
@@ -51,7 +51,7 @@ class taskset {
     this.actions = methods;
   }
 
-  async setAllTasks(tasks, currid) {
+  async setAllTasks(tasks: any, currid: any) {
     const tasksETL = await ETL(tasks);
     runInAction(() => {
       this.allTasks = tasksETL;

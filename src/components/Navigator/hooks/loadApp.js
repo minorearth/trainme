@@ -72,9 +72,9 @@ const useApp = () => {
     //TODO:load username
     const CSP = getCSP();
     if (!CSP) {
-      navigator.setAppState(initials.initialState.navigator);
+      navigator.setState(initials.initialState.navigator);
     } else {
-      CSP.navigator && navigator.setAppState(CSP.navigator);
+      CSP.navigator && navigator.setState(CSP.navigator);
       CSP.taskset && taskset.updateState(CSP.taskset);
       CSP.task && task.setCurrTask(CSP.task.currTaskId);
       CSP.user && user.setProgress(CSP.user.progress);
@@ -98,7 +98,7 @@ const useApp = () => {
     }
 
     if (!page || page == "courses" || page == "champ") {
-      navigator.setAppState(initials.initialState.navigator);
+      navigator.setState(initials.initialState.navigator);
     }
     setLoading(false);
     progressStore.setCloseProgress();

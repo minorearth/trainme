@@ -43,7 +43,7 @@ class task {
     }
   };
 
-  setCurrTaskData(data, id) {
+  setCurrTaskData(data: any, id: any) {
     this.currTask = data;
     this.currTaskId = id;
     updateSCP({ task: { currTaskId: id } });

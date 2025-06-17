@@ -14,14 +14,14 @@ class course {
     });
   }
 
-  updateState(data) {
+  updateState(data: any) {
     this.state = { ...this.state, ...data };
     updateSCP({
       course: { ...this.state, ...data },
     });
   }
 
-  setFlow(data) {
+  setFlow(data: any) {
     this.flow = data;
   }
 

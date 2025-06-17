@@ -42,7 +42,7 @@ import {
 } from "@/components/taskset/store/tasksetTasksMobx";
 
 export const openAllCoursePage = () => {
-  navigator.setAppState({ ...initials.courses.navigator });
+  navigator.setState({ ...initials.courses.navigator });
   course.eraseState();
   champ.eraseState();
   taskset.eraseState();
@@ -83,7 +83,7 @@ export const openAndRefreshFlowPage = async (courseid) => {
   });
   course.setFlow(flowFetched);
   course.updateState({ courseid });
-  navigator.updateAppState({ page: "flow" });
+  navigator.updateState({ page: "flow" });
   taskset.eraseState();
   task.eraseState();
   user.setProgress(progress);
@@ -147,7 +147,7 @@ export const openTextBook = async ({ tasks }) => {
   if (tasks.length) {
     taskset.setAllTasks(tasks, 0);
     taskset.updateState({ ...initials.textBook.taskset });
-    navigator.updateAppState({ ...initials.textBook.navigator });
+    navigator.updateState({ ...initials.textBook.navigator });
   } else {
     alertdialog.showDialog(
       "В учебнике нет отрытых тем",
@@ -162,7 +162,7 @@ export const openTextBook = async ({ tasks }) => {
 
 export const openLessonRunPage = async () => {
   progressStore.setShowProgress(true, false, "progressdots", 2000);
-  navigator.updateAppState({ ...initials.lessonRun.navigator });
+  navigator.updateState({ ...initials.lessonRun.navigator });
 };
 
 export const openCongratPage = async ({
@@ -177,7 +177,7 @@ export const openCongratPage = async ({
     pts,
     remainsum,
   });
-  navigator.updateAppState({ page: "congrat" });
+  navigator.updateState({ page: "congrat" });
   taskset.updateState({ pts: ptsFinalized, success });
 };
 
@@ -316,5 +316,5 @@ export const openChampPage = () => {
   course.eraseState();
   taskset.eraseState();
   task.eraseState();
-  navigator.setAppState({ ...initials.champ.navigator });
+  navigator.setState({ ...initials.champ.navigator });
 };

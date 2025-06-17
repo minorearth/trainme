@@ -21,17 +21,17 @@ class champ {
     });
   }
 
-  setRange = (range) => {
+  setRange = (range: any) => {
     this.range = range;
   };
 
-  setState(data) {
+  setState(data: any) {
     this.state = data;
   }
 
-  changeTaskCount = (e) => {};
+  changeTaskCount = (e: any) => {};
 
-  setTaskCount(taskcount) {
+  setTaskCount(taskcount: any) {
     if (/^\d{0,2}$/.test(taskcount)) this.taskcount = taskcount;
   }
 
@@ -39,12 +39,12 @@ class champ {
     return this.champid;
   }
 
-  setChampId(id) {
+  setChampId(id: any) {
     this.champid = id;
     updateSCP({ champ: { champid: id } });
   }
 
-  updateState(data) {
+  updateState(data: any) {
     this.state = { ...this.state, ...data };
   }
 

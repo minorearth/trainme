@@ -39,7 +39,7 @@ export const setRegularTasks = async ({
     nodemode,
     tobeunlocked,
   });
-  navigator.updateAppState({ ...initials.regularTasks.navigator });
+  navigator.updateState({ ...initials.regularTasks.navigator });
 };
 
 export const setRandomTasksToRepeat = async ({
@@ -72,7 +72,7 @@ export const setRandomTasksToRepeat = async ({
       randomsaved: tasksuuids,
     });
     course.updateState({ courseid });
-    navigator.updateAppState({ ...initials.regularTasks.navigator });
+    navigator.updateState({ ...initials.regularTasks.navigator });
   } catch (e) {
     console.log(e);
     console.error("some error");
@@ -85,7 +85,7 @@ export const setChampTasks = async ({ champid }) => {
   });
   taskset.setAllTasks(tasks.data.tasks, initials.champTasks.task.currTaskId);
   taskset.updateState({ ...initials.champTasks.taskset });
-  navigator.updateAppState({ ...initials.champTasks.navigator });
+  navigator.updateState({ ...initials.champTasks.navigator });
 };
 
 export const setRecapTasks = (tasksetState) => {
