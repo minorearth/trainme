@@ -3,6 +3,8 @@ import { useScript } from "@uidotdev/usehooks";
 import { stn } from "@/constants";
 const PYODIDE_VERSION = "0.26.4";
 
+//TODO: configurate  the source of pyodide
+
 // https://www.reddit.com/r/nextjs/comments/194r5jn/does_anyone_know_how_to_use_pyodide_with_nextjs/?rdt=49197
 
 class StdinHandler {
@@ -17,37 +19,14 @@ class StdinHandler {
   }
 }
 
-// function MyComponent() {
-//   const [pyodide, setPyodide] = useState(null);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const loadPyodide = async () => {
-//       // Загрузка скрипта pyodide.js из локальных файлов
-//       const script = document.createElement('script');
-//       script.src = '/pyodide/pyodide.js'; // путь к вашему файлу
-//       script.onload = async () => {
-//         // Инициализация pyodide
-//         const pyodideInstance = await window.loadPyodide({
-//           indexURL: '/pyodide/', // указываем папку с файлами
-//         });
-//         setPyodide(pyodideInstance);
-//         setLoading(false);
-//       };
-//       document.body.appendChild(script);
-//     };
-
-//     loadPyodide();
-//   }, []);
-
-//   if (loading) return <div>Загрузка Pyodide...</div>;
-
 function usePyodide() {
   const [pyodide2, setPyodide] = useState(null);
 
   const pyodideScriptStatus = useScript(
-    `http://localhost:3000/pyodide/pyodide.js`
+    `${process.env.NEXT_PUBLIC_DOMAIN}/pyodide/pyodide.js`
   );
+
+  console.log("rerender");
   useEffect(() => {
     if (pyodideScriptStatus === "ready" && !pyodide2) {
       (async () => {
@@ -87,3 +66,28 @@ export default usePyodide;
 //     pyodide2,
 //   };
 // }
+
+// function MyComponent() {
+//   const [pyodide, setPyodide] = useState(null);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     const loadPyodide = async () => {
+//       // Загрузка скрипта pyodide.js из локальных файлов
+//       const script = document.createElement('script');
+//       script.src = '/pyodide/pyodide.js'; // путь к вашему файлу
+//       script.onload = async () => {
+//         // Инициализация pyodide
+//         const pyodideInstance = await window.loadPyodide({
+//           indexURL: '/pyodide/', // указываем папку с файлами
+//         });
+//         setPyodide(pyodideInstance);
+//         setLoading(false);
+//       };
+//       document.body.appendChild(script);
+//     };
+
+//     loadPyodide();
+//   }, []);
+
+//   if (loading) return <div>Загрузка Pyodide...</div>;

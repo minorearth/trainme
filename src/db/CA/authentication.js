@@ -66,11 +66,8 @@ export const SignUpUser = async (auth, email, password, name) => {
 };
 
 export const signOutUser = async (auth) => {
-  await signOut(auth)
-    .then(() => {
-      logout();
-    })
-    .catch((error) => {});
+  await signOut(auth);
+  await logout();
 };
 
 // export async function signInStudent(pincode) {
