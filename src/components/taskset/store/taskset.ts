@@ -3,7 +3,7 @@ import { runInAction } from "mobx";
 import task from "@/components/taskset/taskrun/store/task";
 import { updateSCP } from "@/db/localstorage";
 
-import { ETL } from "./ETl";
+import { ETL } from "@/components/taskset/store/utils";
 
 import {
   nextTaskOrCompleteTestRun,
