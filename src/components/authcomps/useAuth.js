@@ -1,6 +1,7 @@
 import { logout } from "@/db/SA/session";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { da } from "@/components/common/dialog/dialogMacro";
 import {
   checkSignUpFields,
   checkResetPswFields,
@@ -15,15 +16,12 @@ import {
 
 import { cleanUpCSP } from "@/db/localstorage";
 
-import alertdialog from "@/components/common/dialog/store";
 import user from "@/store/user";
 import dialog from "@/components/common/dialog/store";
 import authForm from "@/components/authcomps/store";
 import local from "@/globals/local";
 import progressStore from "../common/splash/progressdots/store";
 import { getDataFetch } from "@/db/APIcalls/calls";
-
-import { getUseMetaData } from "@/db/SA/firebaseSA";
 
 export const useAuth = () => {
   const router = useRouter();
@@ -40,27 +38,12 @@ export const useAuth = () => {
     });
 
     if (uid == "notVerified") {
-      alertdialog.showDialog(
-        "email не верифицирован",
-        "На ваш почтовый ящик выслано письмо, \nперейдите по ссылке в письме для смены пароля",
-        1,
-        () => {
-          progressStore.setCloseProgress();
-        }
-      );
-
+      da.info.emailnotverified();
       return;
     }
 
     if (uid == "invalid") {
-      alertdialog.showDialog(
-        "Неверный логин или пароль",
-        "Перепроверьте все еще раз",
-        1,
-        () => {
-          progressStore.setCloseProgress();
-        }
-      );
+      da.info.wrongpsw();
       return;
     }
     //TODO:persist name
@@ -102,7 +85,7 @@ export const useAuth = () => {
     if (isValid) {
       cleanUpCSP();
       await authNow(email, password);
-      router.replace("/chapters"); // заменяет текущую страницу
+      // router.replace("/chapters"); // заменяет текущую страницу
     } else {
       progressStore.setCloseProgress();
     }
@@ -116,14 +99,7 @@ export const useAuth = () => {
 
     if (isValid) {
       resetPswClient(email);
-      alertdialog.showDialog(
-        local.ru.msg.alert.PSW_RECOVERY_TITLE,
-        local.ru.msg.alert.PSW_RECOVERY_TEXT,
-        1,
-        () => {
-          authForm.showSignIn();
-        }
-      );
+      da.info.resetpsw(authForm.showSignIn());
     }
   };
 
@@ -137,14 +113,7 @@ export const useAuth = () => {
 
     if (isValid) {
       const userC = await SignUpUserClient(email, password, name);
-      dialog.showDialog(
-        local.ru.msg.alert.PSW_ACOUNT_CREATED_TITLE,
-        local.ru.msg.alert.PSW_ACOUNT_CREATED_TEXT,
-        1,
-        () => {
-          authForm.showSignIn();
-        }
-      );
+      da.info.accountcreeated(() => authForm.showSignIn());
     }
   };
 

@@ -1,14 +1,40 @@
 import { getDocDataFromCollectionByIdClient } from "@/db/domain/domain";
 
-import alertdialog from "@/components/common/dialog/store";
 import { encrypt2 } from "@/globals/utils/encryption";
+import { setDataFetch } from "@/db/APIcalls/calls";
+import { toJS } from "mobx";
+import { da } from "@/components/common/dialog/dialogMacro";
+
+//stores
 import user from "@/store/user";
+import navigator from "@/components/Navigator/store/navigator";
+import course from "@/components/course/store/course";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import progressCircle from "@/components/common/splash/progressdots/store";
-import { setDataFetch } from "@/db/APIcalls/calls";
 
 export const getTargetsBySource = (src, edges) => {
   return edges.filter((edge) => edge.source == src).map((edge) => edge.target);
+};
+
+const buyChapter = async ({ unlockpts, id, uid }) => {
+  progressCircle.setShowProgress(true);
+  await setDataFetch({
+    type: "paychapter",
+    data: encrypt2({
+      pts: -unlockpts,
+      id,
+      uid,
+      lastunlocked: id,
+      courseid: course.state.courseid,
+    }),
+  });
+  // data.paid = true;
+  await navigator.actions.openAndRefreshFlowPage({
+    courseid: course.state.courseid,
+    refetchFlow: false,
+  });
+
+  progressCircle.setCloseProgress();
 };
 
 const nodeAction = (data) => {
@@ -20,93 +46,37 @@ const nodeAction = (data) => {
     level,
     id,
     unlockpts,
-    uid,
     overflow,
     remainsum,
-    openLessonStartPage,
-    openAndRefreshFlowPage,
-    courseid,
     rating,
     tobeunlocked,
   } = data;
-  if (!unlocked && !paid) {
-    alertdialog.showDialog(
-      "Заблокировано и не оплачено",
-      "Данный раздел пока заблокирован. \nВыполните задания предыдущего раздела,\nа потом оплатите монетками",
-      1,
-      () => {}
-    );
-  }
-  if (unlocked && !paid && rating < unlockpts) {
-    alertdialog.showDialog(
-      "Не  оплачен",
-      "Данный раздел не оплачен. Не хватает монет",
-      1,
-      () => {}
-    );
-  }
+  if (!unlocked && !paid) da.info.notpaidblocked();
+
+  if (unlocked && !paid && rating < unlockpts) da.info.nomoneytobuy();
+
   if (
     unlocked &&
     !paid &&
     rating >= unlockpts &&
     !progressCircle.state.showProgress
-  ) {
-    alertdialog.showDialog(
-      "Не  оплачен",
-      "Данный раздел не оплачен. Купить?",
-      2,
-      async () => {
-        progressCircle.setShowProgress(true);
-        await setDataFetch({
-          type: "paychapter",
-          data: encrypt2({
-            pts: -unlockpts,
-            id,
-            uid,
-            lastunlocked: id,
-            courseid,
-          }),
-        });
-        data.paid = true;
-        await openAndRefreshFlowPage(courseid);
-        progressCircle.setCloseProgress();
-      },
-      () => {}
-    );
-  }
-  if (!unlocked && paid && !completed) {
-    alertdialog.showDialog(
-      "Заблокировано",
-      "Данный раздел пока заблокирован. \nВыполните задания предыдущего раздела",
-      1,
-      () => {}
-    );
-  }
+  )
+    da.info.buy(buyChapter({ unlockpts, id, uid: user.userid }));
 
-  console.log(unlocked, paid, completed);
-  if (unlocked && paid && !completed) {
+  if (!unlocked && paid && !completed) da.info.blocked();
+
+  if (unlocked && paid) {
     countdownbutton.hideButton();
-    openLessonStartPage({
+    navigator.actions.openLessonStartPage({
       chapterid: id,
-      repeat: false,
+      //TODO:replace repeat on completed
+      repeat: completed,
       overflow,
       remainsum,
-      courseid,
+      courseid: course.state.courseid,
       nodemode,
       level,
-      tobeunlocked,
-    });
-  }
-  if (unlocked && paid && completed) {
-    openLessonStartPage({
-      chapterid: id,
-      repeat: true,
-      overflow,
-      remainsum,
-      courseid,
-      nodemode,
-      level,
-      tobeunlocked: [],
+      tobeunlocked: completed ? [] : tobeunlocked,
     });
   }
 };
@@ -120,16 +90,9 @@ const getRemainSum = ({ stat, node }) => {
   }
 };
 
-const fullFillProgess = (
-  progress,
-  chapterFlowNodes,
-  edges,
-  openLessonStartPage,
-  openAndRefreshFlowPage,
-  courseid
-) => {
+const enrichFlowWithUserPorgress = ({ nodes, edges, progress }) => {
   const { unlocked, completed, paid, rating, stat } = progress;
-  const full = chapterFlowNodes.map((node) => ({
+  const full = nodes.map((node) => ({
     ...node,
     data: {
       ...node.data,
@@ -143,14 +106,9 @@ const fullFillProgess = (
         ? stat[node.id].sum >= node.data.maxcoins
         : false,
       rating,
-      uid: user.userid,
       action: (data) =>
         nodeAction({
           ...data,
-          edges,
-          openLessonStartPage,
-          openAndRefreshFlowPage,
-          courseid,
           rating,
         }),
     },
@@ -158,22 +116,29 @@ const fullFillProgess = (
   return full;
 };
 
-export const setFlowNodes = async ({
-  courseid,
-  progress,
-  openLessonStartPage,
-  openAndRefreshFlowPage,
-}) => {
+const fetchFlow = async ({ courseid }) => {
   const data = await getDocDataFromCollectionByIdClient("chapters", courseid);
-  const edges = data.data.chapterFlowEdges;
-  const nodes = fullFillProgess(
-    progress,
-    data.data.chapterFlowNodes,
-    edges,
-    openLessonStartPage,
-    openAndRefreshFlowPage,
-    courseid
-  );
-  const flow = { edges, nodes };
+  const flow = {
+    nodes: data.data.chapterFlowNodes,
+    edges: data.data.chapterFlowEdges,
+  };
   return flow;
+};
+
+export const getInitialFlow = async ({ courseid, refetchFlow }) => {
+  const flow = refetchFlow ? await fetchFlow({ courseid }) : course.initialFlow;
+  course.setInitialFlow(flow);
+  return flow;
+};
+
+export const getFlow = async ({ courseid, refetchFlow }) => {
+  const progress = await user.actions.getUserCourseProgress(courseid);
+
+  const flow = await getInitialFlow({ courseid, refetchFlow });
+  console.log(toJS(flow));
+  const nodes = enrichFlowWithUserPorgress({
+    ...flow,
+    progress,
+  });
+  return { flow: { ...flow, nodes }, progress };
 };

@@ -41,7 +41,10 @@ const AdminPanel = () => {
             courseid,
             user.userid
           );
-          navigator.actions.openAndRefreshFlowPage(courseid);
+          navigator.actions.openAndRefreshFlowPage({
+            courseid,
+            refetchFlow: true,
+          });
         }}
       >
         reset
@@ -57,7 +60,10 @@ const AdminPanel = () => {
             courseid,
             user.userid
           );
-          navigator.actions.openAndRefreshFlowPage(courseid);
+          navigator.actions.openAndRefreshFlowPage({
+            courseid,
+            refetchFlow: true,
+          });
         }}
       >
         unlockAll
@@ -73,7 +79,10 @@ const AdminPanel = () => {
             courseid,
             user.userid
           );
-          navigator.actions.openAndRefreshFlowPage(courseid);
+          navigator.actions.openAndRefreshFlowPage({
+            courseid,
+            refetchFlow: true,
+          });
         }}
       >
         CompleteAll
@@ -82,7 +91,10 @@ const AdminPanel = () => {
         onClick={() => {
           load();
           const courseid = course.state.courseid;
-          navigator.actions.openAndRefreshFlowPage(courseid);
+          navigator.actions.openAndRefreshFlowPage({
+            courseid,
+            refetchFlow: true,
+          });
         }}
       >
         load
@@ -104,7 +116,10 @@ const AdminPanel = () => {
         onClick={async () => {
           const courseid = course.state.courseid;
           await setMoney(courseid, user.userid, inValue);
-          navigator.actions.openAndRefreshFlowPage(courseid);
+          navigator.actions.openAndRefreshFlowPage({
+            courseid,
+            refetchFlow: true,
+          });
         }}
       >
         money2

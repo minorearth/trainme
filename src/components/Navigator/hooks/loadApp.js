@@ -16,6 +16,7 @@ import {
 } from "@/components/taskset/store/tasksetTasksVM";
 
 import { getChampTasks } from "@/components/champ/store/champVM";
+import { getInitialFlow } from "@/components/course/store/courseFlowVM";
 //
 
 //utils and constants
@@ -88,18 +89,26 @@ const useApp = () => {
         data: { courseid: CSP.course.courseid, uid: user.userid },
       });
       if (coursePaid) {
-        await openAndRefreshFlowPage(CSP.course.courseid);
+        await openAndRefreshFlowPage({
+          courseid: CSP.course.courseid,
+          refetchFlow: true,
+        });
       } else {
         openAllCoursePage();
       }
     }
     if (page == "testrun" || page == "lessonStarted") {
-      recoverLessonInProgress({ CSP });
+      recoverTasksInProgress({ CSP });
     }
 
     if (!page || page == "courses" || page == "champ") {
       navigator.setState(initials.initialState.navigator);
     }
+
+    if (page == "congrat" || page == "testrun" || page == "lessonStarted") {
+      getInitialFlow({ courseid: CSP.course.courseid, refetchFlow: true });
+    }
+
     setLoading(false);
     progressStore.setCloseProgress();
   };
@@ -145,7 +154,7 @@ const useApp = () => {
     }
   };
 
-  const recoverLessonInProgress = async ({ CSP }) => {
+  const recoverTasksInProgress = async ({ CSP }) => {
     const { nodemode, pts, remainsum, taskstage } = taskset.state;
 
     // // //for recover purposes

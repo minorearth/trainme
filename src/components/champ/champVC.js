@@ -8,6 +8,8 @@ import {
   getDocDataFromCollectionByIdClient,
 } from "@/db/domain/domain";
 
+import { da } from "@/components/common/dialog/dialogMacro";
+
 import user from "@/store/user";
 import { generateString } from "@/globals/utils/utilsRandom";
 import stn from "@/globals/settings";
@@ -76,12 +78,7 @@ const useChamps = () => {
       courseid: "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0",
     });
     if (tasks.status == "error") {
-      alertdialog.showDialog(
-        "Ошибка",
-        `По выбранной сложности недостаточно задач. Доступное количество задач: ${tasks.count}. Измените уровень сложности.`,
-        1,
-        () => {}
-      );
+      da.info.notenoughttasks(tasks.count);
     } else {
       const champid = generateString(7);
       champ.setChampId(champid);
@@ -105,7 +102,7 @@ const useChamps = () => {
         champData.data.users[user.userid].persstatus == "joined"
       ) {
         setMonitoringStarted(true);
-        const res = await updateUsersInChampClient(
+        await updateUsersInChampClient(
           stn.collections.CHAMPS,
           {
             id: user.userid,
@@ -118,29 +115,14 @@ const useChamps = () => {
           champ.champid
         );
       } else if (champData.data.users[user.userid].persstatus == "champwip") {
-        alertdialog.showDialog(
-          "Ошибка",
-          "Ты вышел из чемпионата, обратно уже не зайти..",
-          1,
-          () => {}
-        );
+        da.info.champblocked();
       } else if (
         champData.data.users[user.userid].persstatus == "champisover"
       ) {
-        alertdialog.showDialog(
-          "Ошибка",
-          "Ты уже поучаствовал в этом чемпионате",
-          1,
-          () => {}
-        );
+        da.info.champover();
       }
     } catch (e) {
-      alertdialog.showDialog(
-        "Нет такого чемпионата",
-        "Перепроверьте все еще раз",
-        1,
-        () => {}
-      );
+      da.info.nochamp(e);
     }
   };
 

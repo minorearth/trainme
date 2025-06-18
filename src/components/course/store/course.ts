@@ -4,6 +4,7 @@ import { updateSCP } from "@/db/localstorage";
 
 class course {
   flow: any = [];
+  initialFlow: any = [];
   state: any = {};
 
   eraseState() {
@@ -23,6 +24,9 @@ class course {
 
   setFlow(data: any) {
     this.flow = data;
+  }
+  setInitialFlow(data: any) {
+    this.initialFlow = data;
   }
 
   constructor() {

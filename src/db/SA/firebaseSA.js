@@ -60,6 +60,7 @@ export const unlockAll = async (unlocked, lastunlocked, courseid, uid) => {
 
 // TODO:remade
 export const payChapter = async (data) => {
+  //pts is negative here
   const { pts, id, uid, lastunlocked, courseid } = decrypt2(data);
   const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({

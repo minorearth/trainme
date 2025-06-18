@@ -70,7 +70,6 @@ const Navigator = observer(() => {
           {navigator.state.page == "champ" && <Champ />}
 
           {navigator.state.page == "flow" &&
-            //TODO: flow.state.courseid
             !!course.flow &&
             course.state.courseid && (
               <ReactFlowProvider>

@@ -82,9 +82,10 @@ const TopPanel = observer(() => {
                   taskset.state.nodemode != "textbook" &&
                     navigator.actions.openCongratPageInterrupted();
                   taskset.state.nodemode == "textbook" &&
-                    navigator.actions.openAndRefreshFlowPage(
-                      course.state.courseid
-                    );
+                    navigator.actions.openAndRefreshFlowPage({
+                      courseid: course.state.courseid,
+                      refetchFlow: false,
+                    });
                 }}
               />
             </Tooltip>

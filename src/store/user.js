@@ -1,5 +1,6 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { updateSCP } from "@/db/localstorage";
+import { getUserCourseProgress } from "@/store/userMobx";
 
 class user {
   userid = "";
@@ -9,6 +10,7 @@ class user {
   avatarid = 0;
   nickname = "";
   nicknamechecked = false;
+  actions = { getUserCourseProgress };
 
   changeNickName(nickname) {
     //TODO: ё letter is forbidden somehow
