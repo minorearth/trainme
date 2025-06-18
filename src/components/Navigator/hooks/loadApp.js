@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 //data model
 import { getCSP } from "@/db/localstorage";
-import { setDataFetch, getDataFetch } from "@/db/APIcalls/calls";
+import { getDataFetch } from "@/db/APIcalls/calls";
 
 //
 import {
@@ -68,7 +68,6 @@ const useApp = () => {
     loadPTrek();
   }, [user]);
 
-  //Initial Load
   const loadPTrek = async () => {
     //TODO:load username
     const CSP = getCSP();
@@ -156,10 +155,6 @@ const useApp = () => {
 
   const recoverTasksInProgress = async ({ CSP }) => {
     const { nodemode, pts, remainsum, taskstage } = taskset.state;
-
-    // // //for recover purposes
-    // navigator.updateAppState({ page: "testrun" });
-    // // //
     const tasks = await recoverTasks({ nodemode, taskstage, CSP });
 
     if (nodemode == "textbook") {

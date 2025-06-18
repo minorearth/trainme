@@ -15,13 +15,12 @@ import {
 } from "@/db/domain/domain";
 
 import { cleanUpCSP } from "@/db/localstorage";
-
-import user from "@/store/user";
-import dialog from "@/components/common/dialog/store";
-import authForm from "@/components/authcomps/store";
-import local from "@/globals/local";
-import progressStore from "../common/splash/progressdots/store";
 import { getDataFetch } from "@/db/APIcalls/calls";
+
+// stores
+import user from "@/store/user";
+import authForm from "@/components/authcomps/store";
+import progressStore from "../common/splash/progressdots/store";
 
 export const useAuth = () => {
   const router = useRouter();

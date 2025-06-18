@@ -13,7 +13,6 @@ import { da } from "@/components/common/dialog/dialogMacro";
 import user from "@/store/user";
 import { generateString } from "@/globals/utils/utilsRandom";
 import stn from "@/globals/settings";
-import alertdialog from "@/components/common/dialog/store";
 import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
 import navigator from "@/components/Navigator/store/navigator";
 import champ from "@/components/champ/store/champ";

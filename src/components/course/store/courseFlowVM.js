@@ -81,6 +81,7 @@ const nodeAction = (data) => {
   }
 };
 
+//TODO: move to taskset store
 const getRemainSum = ({ stat, node }) => {
   if (!stat[node.id]?.sum) {
     return node.data.maxcoins;

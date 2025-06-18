@@ -22,8 +22,6 @@ import navigator from "@/components/Navigator/store/navigator";
 import task from "@/components/taskset/taskrun/store/task";
 import taskset from "@/components/taskset/store/taskset";
 import progressStore from "@/components/common/splash/progressdots/store";
-import alertdialog from "@/components/common/dialog/store";
-import dialog from "@/components/common/dialog/store";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import user from "@/store/user";
 import tutorial from "@/components/tutorial/store";

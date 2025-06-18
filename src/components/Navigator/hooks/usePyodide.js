@@ -66,28 +66,3 @@ export default usePyodide;
 //     pyodide2,
 //   };
 // }
-
-// function MyComponent() {
-//   const [pyodide, setPyodide] = useState(null);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const loadPyodide = async () => {
-//       // Загрузка скрипта pyodide.js из локальных файлов
-//       const script = document.createElement('script');
-//       script.src = '/pyodide/pyodide.js'; // путь к вашему файлу
-//       script.onload = async () => {
-//         // Инициализация pyodide
-//         const pyodideInstance = await window.loadPyodide({
-//           indexURL: '/pyodide/', // указываем папку с файлами
-//         });
-//         setPyodide(pyodideInstance);
-//         setLoading(false);
-//       };
-//       document.body.appendChild(script);
-//     };
-
-//     loadPyodide();
-//   }, []);
-
-//   if (loading) return <div>Загрузка Pyodide...</div>;

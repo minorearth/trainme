@@ -15,9 +15,7 @@ import TurboNode from "./components/TurboNode.js";
 import TurboEdge from "./components/TurboEdge.js";
 import AnimNode from "./components/AnimNode";
 import alertdialog from "@/components/common/dialog/store";
-import navigator from "@/components/Navigator/store/navigator";
 import user from "@/store/user";
-import { reaction } from "mobx";
 import course from "@/components/course/store/course";
 
 const nodeTypes = {
