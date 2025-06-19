@@ -6,6 +6,8 @@ import task from "@/components/taskset/taskrun/store/task";
 import taskset from "@/components/taskset/store/taskset";
 import splashCDStore from "@/components/common/splash/splashAction/store";
 import navigator from "@/components/Navigator/store/navigator";
+import countdownbutton from "@/components/common/countdown/CountdownButton/store";
+
 //
 
 import {
@@ -13,7 +15,7 @@ import {
   setTaskLog,
   setFixed,
   addErrorTaskToRecap,
-} from "@/components/taskset/store/tasksetUtilsMobx";
+} from "@/components/taskset/store/tasksetUtils";
 
 import {
   showRightCodeAfterError,
@@ -74,7 +76,7 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
       }
       return;
     case error:
-      showRightCodeAfterError({ errorMsg });
+      task.actions.showRightCodeAfterError({ errorMsg });
       if (taskstage == "WIP" && currTaskId != tasknum - 1) {
         addErrorTaskToRecap();
         updateSCP({
@@ -102,21 +104,19 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
 };
 
 export const nextTask = () => {
+  task.editorRef.current.setValue("");
   task.setCurrTask(task.currTaskId + 1);
 };
 
-export const prevTaskNoPts = () => {
+export const prevTaskNoPts_admin = () => {
+  task.editorRef.current.setValue("");
   task.setCurrTask(task.currTaskId - 1);
 };
 
-const ok = (action = () => {}) => {
-  splashCDStore.setShow(false, "ok", 500, () => action());
-};
-
 export const errorCountDownPressed = async () => {
+  task.editorRef.current.setValue("");
   task.updateCurrTask({ info: "", editordisabled: false });
-  task.editorRef.current.updateOptions({ lineNumbers: "on" });
-  setEditorDisabled(false);
+  task.actions.setEditorDisabled(false);
   const { nodemode, pts, remainsum, taskstage } = taskset.state;
 
   if (taskstage == "accomplished_suspended") {
@@ -146,4 +146,10 @@ export const errorCountDownPressed = async () => {
     task.setCurrTask(task.currTaskId + 1);
     return;
   }
+  countdownbutton.hideButton();
+};
+
+//UTILITIES
+const ok = (action = () => {}) => {
+  splashCDStore.setShow(false, "ok", 500, () => action());
 };

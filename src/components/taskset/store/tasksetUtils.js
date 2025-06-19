@@ -15,6 +15,22 @@ export const setFixed = (error) => {
   }
 };
 
+export const getRemainSum = ({ stat, node }) => {
+  if (!stat[node.id]?.sum) {
+    return node.data.maxcoins;
+  } else {
+    //TODO:
+    return node.data.maxcoins - stat[node.id].sum || 0;
+  }
+};
+
+export const finalizePts = ({ nodemode, pts, remainsum }) => {
+  if (nodemode == "addhoc" || nodemode == "newtopic" || nodemode == "renewal") {
+    return Math.min(pts, remainsum);
+  }
+  return pts;
+};
+
 export const setTaskLog = ({ code, error }) => {
   const tasklog = taskset.state.tasklog;
   const taskuuid = task.currTask.taskuuid;

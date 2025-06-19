@@ -3,12 +3,12 @@ import { runInAction } from "mobx";
 import task from "@/components/taskset/taskrun/store/task";
 import { updateSCP } from "@/db/localstorage";
 
-import { ETL } from "@/components/taskset/store/utils";
+import { ETL } from "@/components/taskset/store/tasksETL";
 
 import {
   nextTaskOrCompleteTestRun,
   nextTask,
-  prevTaskNoPts,
+  prevTaskNoPts_admin,
   errorCountDownPressed,
 } from "@/components/taskset/store/tasksetNavigationMobx";
 
@@ -27,7 +27,7 @@ class taskset {
   actions: any = {
     nextTaskOrCompleteTestRun,
     nextTask,
-    prevTaskNoPts,
+    prevTaskNoPts_admin,
     errorCountDownPressed,
   };
   state: any = { recapTasksIds: [] };

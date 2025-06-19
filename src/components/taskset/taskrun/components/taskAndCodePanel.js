@@ -39,7 +39,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const TaskAndCodePanel = observer(({ runTask, checkTask }) => {
+const TaskAndCodePanel = observer(() => {
   return (
     <Grid
       container
@@ -64,7 +64,7 @@ const TaskAndCodePanel = observer(({ runTask, checkTask }) => {
       <Grid size={{ xs: 1, md: 2 }}>
         <Panel label={"Редактор кода"}>
           <MonacoEd />
-          <CodeRunPanel runTask={runTask} checkTask={checkTask} />
+          <CodeRunPanel />
         </Panel>
       </Grid>
     </Grid>

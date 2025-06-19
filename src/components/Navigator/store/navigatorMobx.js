@@ -8,7 +8,7 @@ import { setDataFetch, getDataFetch } from "@/db/APIcalls/calls";
 //ViewModel
 import { getFlow } from "@/components/course/store/courseFlowVM";
 import { updateChampTaskLog } from "@/components/champ/store/champVM";
-import { finalizePts } from "@/components/taskset/store/tasksetTasksVM";
+import { finalizePts } from "@/components/taskset/store/tasksetUtils";
 //
 
 //utils and constants

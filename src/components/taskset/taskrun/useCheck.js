@@ -1,4 +1,4 @@
-import { runCheckers, getErrorMessage } from "./taskCheckersUtils";
+import { runCheckers, getErrorMessage } from "./store/taskCheckersUtils";
 import local from "@/globals/local";
 import task from "@/components/taskset/taskrun/store/task";
 import taskset from "@/components/taskset/store/taskset";
@@ -6,6 +6,8 @@ import { toJS } from "mobx";
 
 const useCheck = ({ runPythonCode }) => {
   const checkTask = async () => {
+    if (task.executing) return;
+
     const code = task.currTask.code;
     if (!code) return;
     const { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked } =

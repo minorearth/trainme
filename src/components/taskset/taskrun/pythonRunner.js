@@ -1,4 +1,5 @@
 import { stn } from "@/constants";
+import pyodide from "@/components/Navigator/store/pyodide";
 
 // https://www.reddit.com/r/nextjs/comments/194r5jn/does_anyone_know_how_to_use_pyodide_with_nextjs/?rdt=49197
 
@@ -25,9 +26,9 @@ const runCodeNoGLobals = async (pyodide, code) => {
   dict.destroy();
 };
 
-export default function usePythonRunner({ pyodide }) {
+export default function usePythonRunner() {
   const runPythonCode = async (code, stdIn) => {
-    if (pyodide) {
+    if (pyodide.pyodide) {
       let output = [];
       const stdout = (msg) => {
         output.push(msg);
@@ -39,11 +40,11 @@ export default function usePythonRunner({ pyodide }) {
       };
       try {
         const stdInSplitted = stdIn.split("\n");
-        pyodide.setStdin(new StdinHandler(stdInSplitted));
-        pyodide.setStdout({ batched: stdout });
+        pyodide.pyodide.setStdin(new StdinHandler(stdInSplitted));
+        pyodide.pyodide.setStdout({ batched: stdout });
 
-        if (pyodide) {
-          await runCodeNoGLobals(pyodide, code);
+        if (pyodide.pyodide) {
+          await runCodeNoGLobals(pyodide.pyodide, code);
           return { outputTxt: output.join("\n"), outputArr: output };
         }
       } catch (e) {

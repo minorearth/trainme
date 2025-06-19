@@ -3,30 +3,16 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid2";
 import { Panel } from "@/components/common/panel";
 import Input from "@mui/material/Input";
-import { useState, useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
 import CachedIcon from "@mui/icons-material/Cached";
 import Box from "@mui/material/Box";
 import task from "@/components/taskset/taskrun/store/task";
-import { reaction } from "mobx";
 import { observer } from "mobx-react-lite";
 
 const InOutPanel = observer(() => {
-  const [inValue, setInValue] = useState(task.currTask.input);
-
   const handleChange = (e) => {
-    task.currTask.input = e.target.value;
-    setInValue(e.target.value);
+    task.updateCurrTask({ input: e.target.value });
   };
-
-  useEffect(() => {
-    return reaction(
-      () => task.currTask.input,
-      (input) => {
-        setInValue(input);
-      }
-    );
-  }, []);
 
   return (
     <Grid
@@ -62,7 +48,7 @@ const InOutPanel = observer(() => {
             disableUnderline
             rows={7}
             onChange={(e) => handleChange(e)}
-            value={inValue}
+            value={task.currTask.input}
             sx={{
               display: "inline-block",
               whiteSpace: "pre-wrap",

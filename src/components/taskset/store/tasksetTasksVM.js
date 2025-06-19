@@ -1,13 +1,5 @@
 import { getDocDataFromSubCollectionByIdClient } from "@/db/domain/domain";
-
 import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
-
-export const finalizePts = ({ nodemode, pts, remainsum }) => {
-  if (nodemode == "addhoc" || nodemode == "newtopic" || nodemode == "renewal") {
-    return Math.min(pts, remainsum);
-  }
-  return pts;
-};
 
 export const getAllTasksFromChapter = async (chapterid, courseid) => {
   const tasks = await getDocDataFromSubCollectionByIdClient(

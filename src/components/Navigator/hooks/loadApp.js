@@ -1,7 +1,6 @@
 import { toJS } from "mobx";
 //react stuff
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 //data model
 import { getCSP } from "@/db/localstorage";
@@ -21,6 +20,10 @@ import { getInitialFlow } from "@/components/course/store/courseFlowVM";
 
 //utils and constants
 import { initials } from "./initialStates";
+import {
+  startListeners,
+  stopListeners,
+} from "@/components/Navigator/hooks/listeners";
 
 //stores
 import navigator from "@/components/Navigator/store/navigator";
@@ -41,31 +44,13 @@ import {
 } from "@/components/Navigator/store/navigatorMobx";
 const useApp = () => {
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
-    //TODO: uncomment
-    document.addEventListener("copy", (e) => {
-      e.clipboardData.setData("text/plain", "No Copying!");
-      e.preventDefault();
-    });
-
-    const handleBeforeUnload = (event) => {
-      const message = "Вы уверены, что хотите покинуть страницу?";
-      event.preventDefault();
-      event.returnValue = message;
-      return message;
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
-
-  useEffect(() => {
+    startListeners();
     loadPTrek();
+    return () => {
+      stopListeners();
+    };
   }, [user]);
 
   const loadPTrek = async () => {

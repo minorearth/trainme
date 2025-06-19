@@ -30,19 +30,20 @@ import navigator from "@/components/Navigator/store/navigator";
 import taskset from "@/components/taskset/store/taskset";
 import course from "@/components/course/store/course";
 import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
+import pyodide from "@/components/Navigator/store/pyodide";
 
 const Navigator = observer(() => {
   const [showSplashTimeout, setShowSplashTimeout] = useState(true);
   const { loading } = useApp();
-  const { pyodide2 } = usePyodide();
+  usePyodide();
   return (
     <Box>
-      {(loading || !pyodide2 || showSplashTimeout) && (
+      {(loading || !pyodide.pyodide || showSplashTimeout) && (
         <SplashTimeout action={setShowSplashTimeout} duration={4000} />
       )}
       <Watcher />
       {/* <TawkToChat /> */}
-      {!loading && pyodide2 && !showSplashTimeout && (
+      {!loading && pyodide.pyodide && !showSplashTimeout && (
         <Box
           id="human"
           sx={{
@@ -80,7 +81,8 @@ const Navigator = observer(() => {
           {navigator.state.page == "lessonStarted" && <Start />}
 
           {navigator.state.page == "testrun" &&
-            taskset.allTasks.length != 0 && <Task pyodide={pyodide2} />}
+            taskset.allTasks.length != 0 &&
+            pyodide.pyodide && <Task />}
 
           {navigator.state.page == "congrat" && <CongratPage />}
         </Box>

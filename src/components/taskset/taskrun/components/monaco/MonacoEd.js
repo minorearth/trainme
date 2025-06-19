@@ -3,18 +3,17 @@
 // https://alankrantas.github.io/monaco-python-live-editor/
 import Editor from "@monaco-editor/react";
 import { EditorOptions } from "@/components/taskset/taskrun/components/monaco/MonacoEditorOptions";
-import useMonaco from "@/components/taskset/taskrun/components/monaco/useMonaco";
 import { useColorScheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import "./MonacoEditor.css";
 import IconButton from "@mui/material/IconButton";
 import CachedIcon from "@mui/icons-material/Cached";
+
+//stores
 import task from "@/components/taskset/taskrun/store/task";
 
 const MonacoEd = () => {
   const { mode } = useColorScheme();
-  const { handleEditorDidMount, handleChangeContent, refreshEditor } =
-    useMonaco();
 
   return (
     <>
@@ -31,7 +30,7 @@ const MonacoEd = () => {
       <IconButton
         aria-label="toggle password visibility"
         onClick={() => {
-          refreshEditor();
+          task.actions.refreshEditor();
         }}
         sx={{
           position: "absolute",
@@ -52,12 +51,12 @@ const MonacoEd = () => {
         options={{ ...EditorOptions }}
         language="python"
         onChange={(value, e) =>
-          handleChangeContent({
+          task.actions.handleChangeContent({
             value,
           })
         }
         onMount={(editor, monaco) =>
-          handleEditorDidMount({
+          task.actions.handleEditorDidMount({
             editor,
             monaco,
             darkmode: mode == "dark" ? true : false,
@@ -69,40 +68,3 @@ const MonacoEd = () => {
 };
 
 export default MonacoEd;
-
-// editorRef?.current
-//   ?.getContainerDomNode()
-//   .addEventListener("touchmove", (e) => touchmove(e));
-// editorRef?.current
-//   ?.getContainerDomNode()
-//   .addEventListener("touchstart", (e) => touchstart(e));
-// editorRef?.current
-//   ?.getContainerDomNode()
-//   .addEventListener("touchend", (e) => touchend(e));
-// document
-//   .querySelector("body")
-//   .addEventListener("touchmove", (e) => touchmove(e));
-// document
-//   .querySelector("body")
-//   .addEventListener("touchstart", (e) => touchstart(e));
-// document
-//   .querySelector("body")
-//   .addEventListener("touchend", (e) => touchend(e));
-
-// var startX, startY;
-
-// function touchstart(e) {
-//   startX = e.touches[0].clientX;
-//   startY = e.touches[0].clientY;
-// }
-
-// function touchend(e) {
-//   startX = 0;
-//   startY = 0;
-// }
-
-// function touchmove(e) {
-//   var deltaX = e.touches[0].clientX - startX,
-//     deltaY = e.touches[0].clientY - startY;
-//   document.querySelector("body").scrollBy(0, -deltaY / 100);
-// }

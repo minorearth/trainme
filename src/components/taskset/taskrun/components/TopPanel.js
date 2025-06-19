@@ -79,6 +79,7 @@ const TopPanel = observer(() => {
               <HomeIcon
                 sx={{ fontSize: "40px", marginRight: "15px" }}
                 onClick={() => {
+                  //TODO: do
                   taskset.state.nodemode != "textbook" &&
                     navigator.actions.openCongratPageInterrupted();
                   taskset.state.nodemode == "textbook" &&

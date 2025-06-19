@@ -12,36 +12,12 @@ import {
 //
 
 import { initials } from "@/components/Navigator/hooks/initialStates";
+import { getChampTasks } from "@/components/champ/store/champVM";
 
 //stores
 import navigator from "@/components/Navigator/store/navigator";
 import taskset from "@/components/taskset/store/taskset";
-import course from "@/components/course/store/course";
 //
-
-export const setRegularTasks = ({
-  chapterid,
-  repeat,
-  overflow,
-  remainsum,
-  nodemode,
-  tobeunlocked,
-  tasks,
-}) => {
-  taskset.setAllTasks(tasks, initials.regularTasks.task.currTaskId);
-  taskset.updateState({
-    ...initials.regularTasks.taskset,
-    chapterid,
-    repeat,
-    overflow,
-    remainsum,
-    nodemode,
-    tobeunlocked,
-  });
-  navigator.updateState({ ...initials.regularTasks.navigator });
-};
-
-import { getChampTasks } from "@/components/champ/store/champVM";
 
 export const getTasks = async ({
   champid,
@@ -78,6 +54,28 @@ export const getTasks = async ({
     const tasks = await getAllTasksFromChapter(chapterid, courseid);
     return { tasks, tasksuuids: [] };
   }
+};
+
+export const setRegularTasks = ({
+  chapterid,
+  repeat,
+  overflow,
+  remainsum,
+  nodemode,
+  tobeunlocked,
+  tasks,
+}) => {
+  taskset.setAllTasks(tasks, initials.regularTasks.task.currTaskId);
+  taskset.updateState({
+    ...initials.regularTasks.taskset,
+    chapterid,
+    repeat,
+    overflow,
+    remainsum,
+    nodemode,
+    tobeunlocked,
+  });
+  navigator.updateState({ ...initials.regularTasks.navigator });
 };
 
 export const setRandomTasksToRepeat = async ({

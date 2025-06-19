@@ -6,41 +6,25 @@ const PYODIDE_VERSION = "0.26.4";
 //TODO: configurate  the source of pyodide
 
 // https://www.reddit.com/r/nextjs/comments/194r5jn/does_anyone_know_how_to_use_pyodide_with_nextjs/?rdt=49197
-
-class StdinHandler {
-  constructor(results, options) {
-    this.results = results;
-    this.idx = 0;
-    Object.assign(this, options);
-  }
-
-  stdin() {
-    return this.results[this.idx++];
-  }
-}
+import pyodide from "@/components/Navigator/store/pyodide";
 
 function usePyodide() {
-  const [pyodide2, setPyodide] = useState(null);
-
   const pyodideScriptStatus = useScript(
     `${process.env.NEXT_PUBLIC_DOMAIN}/pyodide/pyodide.js`
   );
 
-  console.log("rerender");
   useEffect(() => {
-    if (pyodideScriptStatus === "ready" && !pyodide2) {
+    if (pyodideScriptStatus === "ready" && !pyodide.pyodide) {
       (async () => {
         const loadedPyodide = await globalThis.loadPyodide({
           indexURL: `/pyodide/`,
         });
-        setPyodide(loadedPyodide);
+        pyodide.setPyodide(loadedPyodide);
       })();
     }
-  }, [pyodideScriptStatus, pyodide2]);
+  }, [pyodideScriptStatus]);
 
-  return {
-    pyodide2,
-  };
+  return {};
 }
 
 export default usePyodide;

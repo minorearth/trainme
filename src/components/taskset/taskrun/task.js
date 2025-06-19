@@ -11,39 +11,28 @@ import TaskAndCodePanel from "@/components/taskset/taskrun/components/taskAndCod
 import TopPanel from "@/components/taskset/taskrun/components/TopPanel";
 import "./custom.css";
 
-const Task = observer(({ pyodide }) => {
+const Task = observer(() => {
   const theme = useTheme();
-
-  const { runPythonCode } = usePythonRunner({
-    pyodide,
-  });
-
-  const { checkTask, runTask } = useCheck({
-    runPythonCode,
-  });
 
   useEffect(() => {
     progressStore.setCloseProgress();
   }, []);
 
   return (
-    pyodide && (
-      <Box
-        sx={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          backgroundColor: theme.palette.background.default,
-          padding: "6px",
-        }}
-      >
-        <TopPanel />
-
-        <TaskAndCodePanel checkTask={checkTask} runTask={runTask} />
-        <InOutPanel />
-      </Box>
-    )
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: theme.palette.background.default,
+        padding: "6px",
+      }}
+    >
+      <TopPanel />
+      <TaskAndCodePanel />
+      <InOutPanel />
+    </Box>
   );
 });
 

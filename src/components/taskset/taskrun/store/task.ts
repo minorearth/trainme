@@ -6,9 +6,20 @@ import { editor } from "monaco-editor";
 import { toJS } from "mobx";
 import { updateSCP } from "@/db/localstorage";
 import {
-  setRightCode,
-  setForbiddenCode,
+  setRightCode_admin,
+  setForbiddenCode_admin,
+  setEditorDisabled,
+  showRightCodeAfterError,
+  refreshEditor,
+  handleChangeContent,
+  setTaskCode,
+  handleEditorDidMount,
 } from "@/components/taskset/taskrun/store/taskMobx";
+
+import {
+  checkTask,
+  runTask,
+} from "@/components/taskset/taskrun/store/taskCheck";
 
 interface ITask {
   /**
@@ -26,7 +37,18 @@ class task {
   monacoRef: React.RefObject<Monaco | null> = React.createRef();
   editorRef: React.RefObject<editor.IStandaloneCodeEditor | null> =
     React.createRef();
-  actions: any = { setRightCode, setForbiddenCode };
+  actions: any = {
+    setRightCode_admin,
+    setForbiddenCode_admin,
+    setEditorDisabled,
+    showRightCodeAfterError,
+    refreshEditor,
+    handleChangeContent,
+    setTaskCode,
+    handleEditorDidMount,
+    checkTask,
+    runTask,
+  };
 
   setMonacoRefs(monacoRef: Monaco, editorRef: editor.IStandaloneCodeEditor) {
     this.monacoRef.current = monacoRef;
@@ -37,6 +59,7 @@ class task {
     if (id != taskset.allTasks.length) {
       this.currTask = taskset.allTasks[id];
       this.currTaskId = id;
+      setTaskCode(taskset.allTasks[id], this.editorRef.current);
       updateSCP({
         task: { currTaskId: id },
       });
@@ -46,6 +69,7 @@ class task {
   setCurrTaskData(data: any, id: any) {
     this.currTask = data;
     this.currTaskId = id;
+    setTaskCode(data, this.editorRef.current);
     updateSCP({ task: { currTaskId: id } });
   }
 
