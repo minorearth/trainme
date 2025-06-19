@@ -26,10 +26,9 @@ import {
 import { TreeItemIcon } from "@mui/x-tree-view/TreeItemIcon";
 import { TreeItemProvider } from "@mui/x-tree-view/TreeItemProvider";
 import { TreeItemLabelInput } from "@mui/x-tree-view/TreeItemLabelInput";
-import stat from "../../../store/stat";
-import usePivotReport from "../../reports/pivotreport/pivotVC";
+import stat from "@/components/manager/store/stat";
+import usePivotReport from "@/components/manager/components/reports/pivotreport/pivotVC";
 import { useUserReport } from "@/components/manager/components/reports/userreport/userReportVC";
-import { useGroups } from "../groupsVC";
 
 const CustomTreeItem = React.forwardRef(function CustomTreeItem(
   { id, itemId, label, disabled, children },

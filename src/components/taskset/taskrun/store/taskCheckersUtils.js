@@ -55,7 +55,6 @@ const checkCode = async (code, task, runPythonCode) => {
   const results = await Promise.all(
     task.inout.map(async (check) => {
       const { outputArr } = await runPythonCode(
-        //TODO: Join in LoadFilesData initially
         check.filesdata.join("\n") + code,
         check.inv.join("\n")
       );
@@ -111,5 +110,5 @@ export const getErrorMessage = (
   }
 };
 
-//TODO:
+//TODO: game(later)
 // https://www.taniarascia.com/sokoban-game/

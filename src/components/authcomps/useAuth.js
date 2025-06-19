@@ -20,7 +20,7 @@ import { getDataFetch } from "@/db/APIcalls/calls";
 // stores
 import user from "@/store/user";
 import authForm from "@/components/authcomps/store";
-import progressStore from "../common/splash/progressdots/store";
+import progressStore from "@/components/common/splash/progressdots/store";
 
 export const useAuth = () => {
   const router = useRouter();
@@ -45,8 +45,7 @@ export const useAuth = () => {
       da.info.wrongpsw();
       return;
     }
-    //TODO:persist name
-    user.setUser({ id: uid, name: allUserMeta.name });
+    user.setUserName(allUserMeta.name);
     router.push(`/chapters`);
   };
 

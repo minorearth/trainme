@@ -1,7 +1,7 @@
 // https://codesandbox.io/p/sandbox/github/gkoum/flowSvgImages/tree/main/?file=%2Fpackage.json
 // https://reactflow.dev/examples/styling/turbo-flow
 // https://uiverse.io/Spacious74/horrible-horse-4
-//TODO: Инерция
+//TODO: Инерция(later)
 "use client";
 import React from "react";
 import { ReactFlow } from "@xyflow/react";

@@ -58,7 +58,7 @@ export const unlockAll = async (unlocked, lastunlocked, courseid, uid) => {
 
 //USER ACTIONS
 
-// TODO:remade
+// TODO:remade(later)
 export const payChapter = async (data) => {
   //pts is negative here
   const { pts, id, uid, lastunlocked, courseid } = decrypt2(data);
@@ -100,7 +100,6 @@ export const setUseMetaData = async (data) => {
   } = decrypt2(data);
   const tasklogPrepared = prepareTaskLog(courseid, lastcompleted, tasklog);
   const userMetaRef = db.collection("usermeta").doc(uid);
-  //TODO: wrong condition for terminal task
   if (!repeat) {
     try {
       await userMetaRef.update({
@@ -131,7 +130,7 @@ export const setUseMetaData = async (data) => {
   }
 };
 
-// TODO:remade
+// TODO:remade(later)
 export const setUseMetaUnlockedAndCompleted = async (data) => {
   const { uid, lastcompleted, unlocked, courseid } = decrypt2(data);
   const userMetaRef = db.collection("usermeta").doc(uid);

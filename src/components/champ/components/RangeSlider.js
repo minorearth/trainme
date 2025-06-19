@@ -16,8 +16,7 @@ const RangeSlider = observer(() => {
         value={champ.range}
         onChange={(e) => champ.setRange(e.target.value)}
         valueLabelDisplay="auto"
-        //TODO: wtf
-        getAriaValueText={valuetext}
+        // getAriaValueText={valuetext}
         min={1}
         max={30}
       />

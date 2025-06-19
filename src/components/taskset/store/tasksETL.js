@@ -14,7 +14,6 @@ export const ETL = async (tasks) => {
     task.code = task.defaultcode;
     task.expectedOutput = task.defaultoutput.join("\n");
     task.maxlines = task.restrictions.maxlines;
-    //TODO:do
     task.filedata =
       task.inout[0].filesdata && task.inout[0].filesdata.join("\n");
     task.output = "";

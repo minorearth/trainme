@@ -98,8 +98,6 @@ const SortableList = ({ champid }) => {
       }}
     >
       <AnimatePresence>
-        {/* <button onClick={() => sortItems()}>asasdad</button> */}
-        {/* <motion.div layout> */}
         {items.map((item, id) => (
           <ListItem
             key={item.id}
@@ -109,7 +107,6 @@ const SortableList = ({ champid }) => {
             avatarid={item.avatarid}
           />
         ))}
-        {/* </motion.div> */}
       </AnimatePresence>
     </Box>
   );

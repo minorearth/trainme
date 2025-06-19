@@ -8,6 +8,8 @@ import Typography from "@mui/material/Typography";
 import "./MonacoEditor.css";
 import IconButton from "@mui/material/IconButton";
 import CachedIcon from "@mui/icons-material/Cached";
+import { Watcher } from "@/components/taskset/taskrun/components/monaco/watcher/watcher";
+import Box from "@mui/material/Box";
 
 //stores
 import task from "@/components/taskset/taskrun/store/task";
@@ -16,7 +18,12 @@ const MonacoEd = () => {
   const { mode } = useColorScheme();
 
   return (
-    <>
+    <Box
+      id="watchmonaco"
+      sx={{ display: "flex", flexDirection: "column", width: "100%" }}
+    >
+      <Watcher />
+
       {task.currTask.info && (
         <Typography sx={{ textAlign: "center", color: "#618B4E" }}>
           {task.currTask.info}
@@ -63,7 +70,7 @@ const MonacoEd = () => {
           })
         }
       />
-    </>
+    </Box>
   );
 };
 

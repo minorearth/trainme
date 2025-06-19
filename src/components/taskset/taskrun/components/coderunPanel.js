@@ -35,10 +35,8 @@ const CodeRunPanel = observer(() => {
 
       {!countdownbutton.state.visible && task.currTask.tasktype == "task" && (
         <Button
-          onClick={async (e) => {
-            //TODO: Не понимаю зачем делал это, закомментировал. Все правильно,  чтобы сбросить инпут перед провверкой
-            // refreshInput();
-            await task.actions.checkTask();
+          onClick={(e) => {
+            task.actions.checkTask();
           }}
           disabled={task.executing}
           variant="outlined"

@@ -9,11 +9,11 @@ import {
   openLessonRunPage,
   openCongratPage,
   closeCongratPage,
-  openCongratPageInterrupted,
   openTutorial,
   openRecapTasksPage,
   openLoginPageSignOut,
   openChampPage,
+  interruptTaskSet,
 } from "@/components/Navigator/store/navigatorMobx";
 
 interface INavMethods {
@@ -22,7 +22,6 @@ interface INavMethods {
   //   openAllCoursePage?: () => void;
   //   openCongratPage?: () => void;
   //   openLessonRunPage?: () => void;
-  //   openCongratPageInterrupted?: () => void;
   //   /**
   //    * Open course flow page
   //    * @param courseid - course to show.
@@ -49,11 +48,11 @@ class navigator {
     openLessonRunPage,
     openCongratPage,
     closeCongratPage,
-    openCongratPageInterrupted,
     openTutorial,
     openRecapTasksPage,
     openLoginPageSignOut,
     openChampPage,
+    interruptTaskSet,
   };
   state = {};
 

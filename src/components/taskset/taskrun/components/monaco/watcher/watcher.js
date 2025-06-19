@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 
-//TODO: wrap up monaco editor only
 export const Watcher = () => {
   //Hide python text block quotes in Monaco Editor
   useEffect(() => {
-    const targetNode = document.body;
+    const targetNode = document.getElementById("watchmonaco");
 
     const observer = new MutationObserver((mutationsList) => {
       for (const mutation of mutationsList) {

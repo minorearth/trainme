@@ -1,14 +1,16 @@
+import stn from "@/globals/settings";
+
 export const startListeners = () => {
-  //TODO: uncomment
-  document.addEventListener("copy", handleCopy);
+  if (!stn.mode.allowcopy) document.addEventListener("copy", handleCopy);
   window.addEventListener("beforeunload", handleBeforeUnload);
-  document.addEventListener("paste", handlePaste, true);
+  if (!stn.mode.allowpaste)
+    document.addEventListener("paste", handlePaste, true);
 };
 
 export const stopListeners = () => {
+  if (!stn.mode.allowcopy) document.removeEventListener("copy", handleCopy);
   window.removeEventListener("beforeunload", handleBeforeUnload);
-  document.removeEventListener("copy", handleCopy);
-  document.removeEventListener("paste", handlePaste);
+  if (!stn.mode.allowpaste) document.removeEventListener("paste", handlePaste);
 };
 
 const handleBeforeUnload = (event) => {
@@ -24,7 +26,6 @@ const handleCopy = (event) => {
 };
 
 const handlePaste = (event) => {
-  // TODO: uncomment
   event.preventDefault();
   event.stopPropagation();
 };

@@ -15,7 +15,7 @@ import {
   setTaskLog,
   setFixed,
   addErrorTaskToRecap,
-} from "@/components/taskset/store/tasksetUtils";
+} from "@/components/taskset/store/tasksetUtilsMobx";
 
 import {
   showRightCodeAfterError,
@@ -115,6 +115,7 @@ export const prevTaskNoPts_admin = () => {
 
 export const errorCountDownPressed = async () => {
   task.editorRef.current.setValue("");
+  countdownbutton.hideButton();
   task.updateCurrTask({ info: "", editordisabled: false });
   task.actions.setEditorDisabled(false);
   const { nodemode, pts, remainsum, taskstage } = taskset.state;
@@ -146,7 +147,6 @@ export const errorCountDownPressed = async () => {
     task.setCurrTask(task.currTaskId + 1);
     return;
   }
-  countdownbutton.hideButton();
 };
 
 //UTILITIES

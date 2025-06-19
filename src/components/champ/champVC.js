@@ -26,7 +26,8 @@ const useChamps = () => {
   };
 
   useEffect(() => {
-    user.changeNickName(user.name);
+    console.log("тут", user.username);
+    user.changeNickName(user.username);
   }, []);
 
   useEffect(() => {

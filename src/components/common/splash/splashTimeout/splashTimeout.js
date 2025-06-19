@@ -3,8 +3,7 @@ import React from "react";
 import { Box } from "@mui/material";
 import { useEffect } from "react";
 import { useTheme } from "@mui/material/styles";
-import Animation from "../../lottieAnimation/Animation";
-import Loader from "../CSSSplash";
+import Loader from "@/components/common/splash/CSSSplash";
 
 const SplashTimeout = ({ action, duration }) => {
   const theme = useTheme();
@@ -29,7 +28,6 @@ const SplashTimeout = ({ action, duration }) => {
         paddingLeft: "20px",
       }}
     >
-      {/* <Animation height={"400px"} width={"400px"} name={"logo"} /> */}
       <Loader />
     </Box>
   );

@@ -5,7 +5,6 @@ import { observer } from "mobx-react-lite";
 import local from "@/globals/local";
 import { useState } from "react";
 import authForm from "@/components/authcomps/store";
-import { useTheme } from "@mui/material/styles";
 import { Box, Button } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -36,9 +35,8 @@ const getProps = (type) => {
 };
 
 const AuthField = observer(({ type }) => {
-  const theme = useTheme();
   const [value, setValue] = useState("");
-  const [showPsw, setShowPsw] = useState(type == "password");
+  const [showPsw, hidePsw] = useState(type == "password");
 
   const handleChange = (e) => {
     setValue(e.target.value);
@@ -77,7 +75,7 @@ const AuthField = observer(({ type }) => {
                 <IconButton
                   aria-label="toggle password visibility"
                   onClick={() => {
-                    setShowPsw((state) => !state);
+                    hidePsw((state) => !state);
                   }}
                   edge="end"
                 >
@@ -105,9 +103,6 @@ const AuthField = observer(({ type }) => {
         error={authForm.state[type].error}
         helperText={authForm.state[type].helperText}
         color={authForm.state[type].error ? "error" : "primary"}
-
-        //   defaultValue={process.env.NEXT_DEFAULT_EMAIL}
-        //   defaultValue={process.env.NEXT_DEFAULT_PSW}
       />
     </Box>
   );

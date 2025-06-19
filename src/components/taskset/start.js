@@ -8,30 +8,7 @@ import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import navigator from "@/components/Navigator/store/navigator";
 import taskset from "@/components/taskset/store/taskset";
-
-const getIntro = () => {
-  if (taskset.state.nodemode == "textbook") {
-    return "Приветствуем вас в учебнике 📘 ! В учебнике доступна теория только по открытым темам";
-  }
-
-  if (taskset.state.nodemode == "champ") {
-    return "Удачи в чемпионате!";
-  }
-
-  if (!taskset.state.repeat) {
-    return "Постарайтесь решить задачу с первого раза, за это начисляются монеты, которые используются для открытия новых уроков";
-  }
-
-  if (taskset.state.overflow) {
-    return "Вы достигли лимита монет по этой главе😭, здесь вы уже их не заработаете🚫";
-  }
-  if (taskset.state.repeat) {
-    return "В режиме повторения начисляется гораздо меньше монет";
-  }
-  if (taskset.state.overflow) {
-    return "Вы достигли лимита монет по этой главе😭, здесь вы уже их не заработаете🚫";
-  }
-};
+import { getIntro } from "@/components/common/dialog/dialogMacro";
 
 export default function Start() {
   const theme = useTheme();
@@ -66,8 +43,11 @@ export default function Start() {
           marginTop: "20px",
         }}
       >
-        {/* //TODO:fd */}
-        {getIntro()}
+        {getIntro({
+          nodemode: taskset.state.nodemode,
+          completed: taskset.state.repeat,
+          overflow: taskset.state.overflow,
+        })}
       </Typography>
     </Box>
   );

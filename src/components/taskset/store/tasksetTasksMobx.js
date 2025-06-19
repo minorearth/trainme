@@ -7,7 +7,7 @@ import {
   getTasksRecap,
   getRandomTasksForRepeat,
   getTextBook,
-} from "@/components/taskset/store/tasksetTasksVM";
+} from "@/components/taskset/store/tasksetVM";
 
 //
 

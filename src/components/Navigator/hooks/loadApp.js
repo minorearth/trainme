@@ -12,7 +12,7 @@ import {
   getTasksRecap,
   getTextBook,
   getRandomTasksForRepeat,
-} from "@/components/taskset/store/tasksetTasksVM";
+} from "@/components/taskset/store/tasksetVM";
 
 import { getChampTasks } from "@/components/champ/store/champVM";
 import { getInitialFlow } from "@/components/course/store/courseFlowVM";
@@ -29,7 +29,7 @@ import {
 import navigator from "@/components/Navigator/store/navigator";
 import task from "@/components/taskset/taskrun/store/task";
 import taskset from "@/components/taskset/store/taskset";
-import progressStore from "../../common/splash/progressdots/store";
+import progressStore from "@/components/common/splash/progressdots/store";
 import user from "@/store/user";
 import course from "@/components/course/store/course";
 import champ from "@/components/champ/store/champ";
@@ -54,7 +54,6 @@ const useApp = () => {
   }, [user]);
 
   const loadPTrek = async () => {
-    //TODO:load username
     const CSP = getCSP();
     if (!CSP) {
       navigator.setState(initials.initialState.navigator);
@@ -62,7 +61,8 @@ const useApp = () => {
       CSP.navigator && navigator.setState(CSP.navigator);
       CSP.taskset && taskset.updateState(CSP.taskset);
       CSP.task && task.setCurrTask(CSP.task.currTaskId);
-      CSP.user && user.setProgress(CSP.user.progress);
+      CSP.user?.username && user.setUserNameNP(CSP.user.username);
+      CSP.user?.progress && user.setProgressNP(CSP.user.progress);
       CSP.course && course.updateState(CSP.course);
       CSP.champ && champ.setChampId(CSP.champ.champid);
     }

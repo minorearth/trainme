@@ -16,7 +16,6 @@ import { observer } from "mobx-react-lite";
 import navigator from "@/components/Navigator/store/navigator";
 import task from "@/components/taskset/taskrun/store/task";
 import taskset from "@/components/taskset/store/taskset";
-import course from "@/components/course/store/course";
 
 const TopPanel = observer(() => {
   return (
@@ -79,14 +78,7 @@ const TopPanel = observer(() => {
               <HomeIcon
                 sx={{ fontSize: "40px", marginRight: "15px" }}
                 onClick={() => {
-                  //TODO: do
-                  taskset.state.nodemode != "textbook" &&
-                    navigator.actions.openCongratPageInterrupted();
-                  taskset.state.nodemode == "textbook" &&
-                    navigator.actions.openAndRefreshFlowPage({
-                      courseid: course.state.courseid,
-                      refetchFlow: false,
-                    });
+                  navigator.actions.interruptTaskSet();
                 }}
               />
             </Tooltip>

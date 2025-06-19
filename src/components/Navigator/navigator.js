@@ -1,6 +1,6 @@
 "use client";
 import Box from "@mui/material/Box";
-import Course from "../course/course";
+import Course from "@/components/course/course";
 import { ReactFlowProvider } from "@xyflow/react";
 import CongratPage from "@/components/taskset/congrat";
 import Start from "@/components/taskset/start";
@@ -15,13 +15,13 @@ import SplashTimeout from "@/components/common/splash/splashTimeout/splashTimeou
 import SplashAction from "@/components/common/splash/splashAction/splashAction";
 import stn from "@/globals/settings";
 import usePyodide from "@/components/Navigator/hooks/usePyodide.js";
-import Courses from "../courses/courses";
-import Champ from "../champ/Champ";
-import FloatMenu from "./floatMenu.js";
-import Tutorial from "../tutorial/tutorial";
+import Courses from "@/components/courses/courses";
+import Champ from "@/components/champ/Champ";
+import FloatMenu from "@/components/Navigator/floatMenu";
+import Tutorial from "@/components/tutorial/tutorial";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import CountdownCircle from "@/components/common/countdown/CountdownCircle/CountdownCircle";
-import { Watcher } from "@/components/Navigator/watcher/watcher";
+
 import TawkToChat from "@/components/common/tawkto/tawkto.js";
 import { toJS } from "mobx";
 
@@ -41,7 +41,6 @@ const Navigator = observer(() => {
       {(loading || !pyodide.pyodide || showSplashTimeout) && (
         <SplashTimeout action={setShowSplashTimeout} duration={4000} />
       )}
-      <Watcher />
       {/* <TawkToChat /> */}
       {!loading && pyodide.pyodide && !showSplashTimeout && (
         <Box

@@ -1,12 +1,12 @@
 "use client";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import splashCDStore from "./store";
 import dynamic from "next/dynamic";
-import { reaction, action } from "mobx";
-import { getLottie } from "../../lottieAnimation/getLottie";
+import { reaction } from "mobx";
+import { getLottie } from "@/components/common/lottieAnimation/getLottie";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 

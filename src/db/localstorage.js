@@ -51,6 +51,10 @@ export const updateSCP = (data) => {
   const CSP = getCSP();
   setCSP({ ...CSP, ...data });
 };
+export const updateKeySCP = (data, key) => {
+  const CSP = getCSP();
+  setCSP({ ...CSP, [key]: { ...CSP[key], ...data } });
+};
 
 export const persistSetup = (state) => {
   localStorage.setItem("setup", JSON.stringify(state));

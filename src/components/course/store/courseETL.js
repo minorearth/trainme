@@ -10,7 +10,7 @@ import course from "@/components/course/store/course";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import progressCircle from "@/components/common/splash/progressdots/store";
 
-import { getRemainSum } from "@/components/taskset/store/tasksetUtils";
+import { getRemainSum } from "@/components/taskset/store/tasksetUtilsMobx";
 
 export const enrichFlowWithUserPorgress = ({ nodes, edges, progress }) => {
   const { unlocked, completed, paid, rating, stat } = progress;
@@ -70,7 +70,7 @@ const nodeAction = (data) => {
     countdownbutton.hideButton();
     navigator.actions.openLessonStartPage({
       chapterid: id,
-      //TODO:replace repeat on completed
+      //TODO:replace repeat on Reviewed
       repeat: completed,
       overflow,
       remainsum,

@@ -3,8 +3,6 @@ import * as React from "react";
 import { observer } from "mobx-react-lite";
 
 import { Box } from "@mui/material";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
 import DialogWrapper from "@/components/common/dialog/dialogWrapper";
 
 import { useTheme } from "@mui/material/styles";
@@ -36,14 +34,6 @@ const Tutorial = observer(() => {
         }}
         onClick={() => tutorial.hide()}
       >
-        {/* <Typography variant="h5" sx={{ textAlign: "center" }}>
-          Приветствуем в туториале!
-        </Typography>
-        <Typography sx={{}}>
-          Расскажем об основных фичах приложения. Курс состоит из тем.Для
-          успешного решения задач необходимо изучить теорию. За решения задач
-          начисляются монеты, которые используются для открытия некоторых тем.
-        </Typography> */}
         <SvgIcon2 />
         <SvgIcon1 />
       </Box>

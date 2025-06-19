@@ -2,7 +2,7 @@
 import { ThemeProvider } from "@mui/material/styles";
 import { useCustomTheme } from "@/app/theme";
 import { CssBaseline } from "@mui/material";
-import DashBoard from "../../components/manager/dashboard";
+import DashBoard from "@/components/manager/dashboard";
 import Box from "@mui/material/Box";
 
 export default function Page({ params }) {

@@ -1,11 +1,11 @@
 import { makeObservable, makeAutoObservable } from "mobx";
-import { updateSCP } from "@/db/localstorage";
+import { updateSCP, updateKeySCP } from "@/db/localstorage";
 import { getUserCourseProgress } from "@/store/userMobx";
 
 class user {
   userid = "";
   isa = false;
-  name = "";
+  username = "";
   progress = {};
   avatarid = 0;
   nickname = "";
@@ -13,31 +13,40 @@ class user {
   actions = { getUserCourseProgress };
 
   changeNickName(nickname) {
-    //TODO: ё letter is forbidden somehow
-    const correctNick = /^[А-яA-Za-z][А-яA-Za-z0-9 ]{0,25}$/.test(nickname);
+    const correctNick = /^[А-яёЁёA-Za-z][А-яёЁA-Za-z0-9 ]{0,25}$/.test(
+      nickname
+    );
     this.nicknamechecked = correctNick;
     this.nickname = nickname;
   }
-  setProgress(data) {
+
+  setProgress = (data) => {
     this.progress = data;
-    updateSCP({
-      user: { progress: data },
-    });
+    updateKeySCP({ progress: data }, "user");
+  };
+
+  setProgressNP(data) {
+    this.progress = data;
   }
 
   setUserid({ id }) {
     this.userid = id;
-    // this.isa = !!isadmin;
   }
 
   setAvatarId(id) {
     this.avatarid = id;
-    // this.isa = !!isadmin;
   }
 
-  setUser({ id, name }) {
-    this.userid = id;
-    this.name = name;
+  setUserName = (username) => {
+    this.username = username;
+    updateSCP({
+      user: { username },
+    });
+  };
+
+  setUserNameNP(name) {
+    console.log(name);
+    this.username = name;
   }
 
   constructor() {

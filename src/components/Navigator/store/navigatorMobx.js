@@ -3,19 +3,25 @@ import { da } from "@/components/common/dialog/dialogMacro";
 
 //data model
 import { signOutUserClient } from "@/db/domain/domain";
-import { setDataFetch, getDataFetch } from "@/db/APIcalls/calls";
+import { getDataFetch } from "@/db/APIcalls/calls";
 
 //ViewModel
-import { getFlow } from "@/components/course/store/courseFlowVM";
+import { getFlow, saveProgress } from "@/components/course/store/courseFlowVM";
 import { updateChampTaskLog } from "@/components/champ/store/champVM";
-import { finalizePts } from "@/components/taskset/store/tasksetUtils";
+import { finalizePts } from "@/components/taskset/store/tasksetUtilsMobx";
 //
 
+import {
+  setRegularTasks,
+  setRandomTasksToRepeat,
+  setChampTasks,
+  setRecapTasks,
+  getTasks,
+} from "@/components/taskset/store/tasksetTasksMobx";
+
 //utils and constants
-import { encrypt2 } from "@/globals/utils/encryption";
 import { getReadyCourses } from "@/globals/courses";
-//TODO:remove ../
-import { initials } from "../hooks/initialStates";
+import { initials } from "@/components/Navigator/hooks/initialStates";
 
 //stores
 import navigator from "@/components/Navigator/store/navigator";
@@ -28,13 +34,6 @@ import tutorial from "@/components/tutorial/store";
 import course from "@/components/course/store/course";
 import champ from "@/components/champ/store/champ";
 //
-import {
-  setRegularTasks,
-  setRandomTasksToRepeat,
-  setChampTasks,
-  setRecapTasks,
-  getTasks,
-} from "@/components/taskset/store/tasksetTasksMobx";
 
 export const openAllCoursePage = () => {
   navigator.setState({ ...initials.courses.navigator });
@@ -149,74 +148,60 @@ export const closeCongratPage = async (success) => {
   const { chapterid, tobeunlocked, pts, tasklog, repeat, nodemode } =
     taskset.state;
   const { unlocked, completed, rating, lastunlocked } = user.progress;
-  if (nodemode == "addhoc" || nodemode == "newtopic" || nodemode == "renewal") {
+  progressStore.setShowProgress(true);
+
+  if (nodemode == "addhoc" || nodemode == "newtopic" || nodemode == "renewal")
     try {
-      //TODO: После фейла запроса из-за отсуттвия интернета кнока сохранить не нажимается
-      progressStore.setShowProgress(true);
-      let dataToEncrypt;
-
-      //TODO: move to VM
-      const common = {
-        lastcompleted: chapterid,
-        repeat,
-        pts: rating + pts,
-        uid: user.userid,
-        tasklog: toJS(tasklog),
+      await saveProgress({
         courseid: course.state.courseid,
-        sum: (user.progress.stat[chapterid]?.sum ?? 0) + pts,
-      };
-
-      if (success) {
-        dataToEncrypt = {
-          completed: [...completed, chapterid],
-          unlocked: toJS(tobeunlocked),
-          allunlocked: [...unlocked, ...tobeunlocked],
-          ...common,
-        };
-      } else {
-        dataToEncrypt = {
-          completed,
-          unlocked: lastunlocked,
-          allunlocked: unlocked,
-          ...common,
-        };
-      }
-      const res = await setDataFetch({
-        type: "setusermetadata",
-        data: encrypt2(dataToEncrypt),
+        chapterid,
+        unlocked,
+        completed,
+        rating,
+        lastunlocked,
+        tobeunlocked,
+        pts,
+        repeat,
+        sum: user.progress.stat[chapterid]?.sum ?? 0,
+        success,
+        uid: user.userid,
+        tasklog,
       });
-      if (res == "error") {
-        throw new Error("Server error");
-      }
       await openAndRefreshFlowPage({
         courseid: course.state.courseid,
         refetchFlow: false,
       });
-      progressStore.setCloseProgress();
     } catch (e) {
       da.info.networkerror(e);
     }
-  }
 
   if (nodemode == "champ") {
     updateChampTaskLog({ tasklog, champid: champ.champid });
     openChampPage();
   }
+  progressStore.setCloseProgress();
 };
 
-export const openCongratPageInterrupted = () => {
+export const interruptTaskSet = () => {
   const { nodemode, pts, remainsum } = taskset.state;
-  da.info.tasksetinterrupt({
-    action: () =>
-      openCongratPage({
-        nodemode,
-        pts,
-        remainsum,
-        success: false,
-      }),
-    nodemode,
-    completed: taskset.state.repeat,
-  });
+  if (nodemode != "textbook") {
+    da.info.tasksetinterrupt({
+      action: () =>
+        openCongratPage({
+          nodemode,
+          pts,
+          remainsum,
+          success: false,
+        }),
+      nodemode,
+      completed: taskset.state.repeat,
+    });
+  } else {
+    openAndRefreshFlowPage({
+      courseid: course.state.courseid,
+      refetchFlow: false,
+    });
+  }
 };
 
 export const openTutorial = () => {
