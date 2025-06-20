@@ -57,3 +57,16 @@ export const getDataFetch = async (data) => {
   // https://www.reddit.com/r/nextjs/comments/1944xx3/server_actions_not_returning_an_answer/?rdt=59377
   // Yes, self deployed on google cloud. My solution at the time was to switch to api routes and that worked fine. Recently with the new updates of nextjs, I have tried server actions again and they work fine now.Yes, self deployed on google cloud. My solution at the time was to switch to api routes and that worked fine. Recently with the new updates of nextjs, I have tried server actions again and they work fine now.
 };
+
+export const fetchFile = async (fileUrl) => {
+  try {
+    const response = await fetch(fileUrl);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.text();
+    return data.replace(/\n/g, "\\n").replace(/\r/g, "\\r");
+  } catch (error) {
+    console.error("Ошибка:", error);
+  }
+};

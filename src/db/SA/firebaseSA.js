@@ -103,10 +103,12 @@ export const setUseMetaData = async (data) => {
   if (!repeat) {
     try {
       await userMetaRef.update({
+        //all completed chapters
         [`courses.${courseid}.completed`]: completed,
-        // FieldValue.arrayUnion(lastcompleted),
         [`courses.${courseid}.rating`]: pts,
+        //all unlocked chapters(more than completed by lastunlocked)
         [`courses.${courseid}.unlocked`]: allunlocked,
+        //next chapters after just completed
         [`courses.${courseid}.lastunlocked`]: unlocked,
         [`courses.${courseid}.stat.${lastcompleted}.sum`]: sum,
         ...tasklogPrepared,
@@ -168,7 +170,6 @@ export const setUseMetaDataIncrement = async (data) => {
     await userMetaRef.update({
       [`courses.${courseid}.rating`]: FieldValue.increment(pts),
       [`courses.${courseid}.completed`]:
-        //TODO: lastcompleted is not needed?
         FieldValue.arrayUnion(lastcompleted),
       [`courses.${courseid}.unlocked`]: FieldValue.arrayUnion(...unlocked),
       [`courses.${courseid}.lastunlocked`]: unlocked,

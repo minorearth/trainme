@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 //data model
 import { getCSP } from "@/db/localstorage";
 import { getDataFetch } from "@/db/APIcalls/calls";
+import { getTasks } from "@/components/taskset/store/services";
 
 //
 import {
@@ -12,7 +13,7 @@ import {
   getTasksRecap,
   getTextBook,
   getRandomTasksForRepeat,
-} from "@/components/taskset/store/tasksetVM";
+} from "@/components/taskset/store/repository";
 
 import { getChampTasks } from "@/components/champ/store/champVM";
 import { getInitialFlow } from "@/components/course/store/courseFlowVM";
@@ -82,14 +83,17 @@ const useApp = () => {
       }
     }
     if (page == "testrun" || page == "lessonStarted") {
-      recoverTasksInProgress({ CSP });
+      recoverTasksAndRoute({ CSP });
     }
 
     if (!page || page == "courses" || page == "champ") {
       navigator.setState(initials.initialState.navigator);
     }
 
-    if (page == "congrat" || page == "testrun" || page == "lessonStarted") {
+    if (
+      (page == "congrat" || page == "testrun" || page == "lessonStarted") &&
+      CSP.course.courseid
+    ) {
       getInitialFlow({ courseid: CSP.course.courseid, refetchFlow: true });
     }
 
@@ -97,51 +101,14 @@ const useApp = () => {
     progressStore.setCloseProgress();
   };
 
-  const recoverTasks = async ({ nodemode, taskstage, CSP }) => {
-    if (nodemode == "renewal") {
-      const { tasksFetched } = await getRandomTasksForRepeat({
-        courseid: CSP.course.courseid,
-        levelStart: CSP.taskset.level - 5,
-        levelEnd: CSP.taskset.level,
-        randomsaved: CSP.taskset.randomsaved,
-      });
-      return tasksFetched;
-    }
-    if (nodemode == "addhoc" || nodemode == "newtopic") {
-      const tasks = await getAllTasksFromChapter(
-        CSP.taskset.chapterid,
-        CSP.course.courseid
-      );
-      if (taskstage == "recap") {
-        const recapTasks = getTasksRecap(CSP.taskset.recapTasksIds, tasks);
-        return recapTasks;
-      } else return tasks;
-    }
-
-    if (nodemode == "champ") {
-      const champTasks = await getChampTasks({
-        champid: CSP.champ.champid,
-      });
-      const tasks = champTasks.data.tasks;
-      if (taskstage == "recap") {
-        const recapTasks = getTasksRecap(CSP.taskset.recapTasksIds, tasks);
-        return recapTasks;
-      } else return tasks;
-    }
-
-    if (nodemode == "textbook") {
-      const tasks = await getTextBook({
-        userProgress: CSP.user.progress,
-        courseid: CSP.course.courseid,
-      });
-      return tasks;
-    }
-  };
-
-  const recoverTasksInProgress = async ({ CSP }) => {
-    const { nodemode, pts, remainsum, taskstage } = taskset.state;
-    const tasks = await recoverTasks({ nodemode, taskstage, CSP });
-
+  const routeToSpecificAfterTaskRecover = ({
+    tasks,
+    CSP,
+    nodemode,
+    taskstage,
+    pts,
+    remainsum,
+  }) => {
     if (nodemode == "textbook") {
       openTextBook({
         tasks,
@@ -149,7 +116,7 @@ const useApp = () => {
     }
 
     if (taskstage == "recap_suspended") {
-      CSP.taskset.nodemode == "renewal"
+      nodemode == "renewal"
         ? openCongratPage({ nodemode, pts, remainsum, success: false })
         : openRecapTasksPage({
             taskset: { state: CSP.taskset, allTasks: tasks },
@@ -163,6 +130,40 @@ const useApp = () => {
     if (taskstage == "recap" || taskstage == "WIP") {
       taskset.setAllTasks(tasks, CSP.task.currTaskId);
     }
+  };
+
+  const recoverTasksAndRoute = async ({ CSP }) => {
+    const {
+      nodemode,
+      pts,
+      remainsum,
+      taskstage,
+      level,
+      recapTasksIds,
+      randomsaved,
+      chapterid,
+    } = CSP.taskset;
+    const { champid } = CSP.champ || {};
+    const { courseid } = CSP.course;
+    const { tasks } = await getTasks({
+      nodemode,
+      taskstage,
+      level,
+      randomsaved,
+      chapterid,
+      userProgress: CSP.user.progress,
+      courseid,
+      champid,
+      recapTasksIds,
+    });
+    routeToSpecificAfterTaskRecover({
+      tasks,
+      CSP,
+      nodemode,
+      taskstage,
+      pts,
+      remainsum,
+    });
   };
 
   return {

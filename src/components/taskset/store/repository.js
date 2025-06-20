@@ -1,5 +1,6 @@
 import { getDocDataFromSubCollectionByIdClient } from "@/db/domain/domain";
 import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
+import { fetchFile } from "@/db/APIcalls/calls";
 
 export const getAllTasksFromChapter = async (chapterid, courseid) => {
   const tasks = await getDocDataFromSubCollectionByIdClient(
@@ -74,4 +75,16 @@ export const getRandomTasksForRepeat = async ({
 export const getTasksRecap = (recapTasksIds, tasks) => {
   const filteredTasks = tasks.filter((test, id) => recapTasksIds.includes(id));
   return filteredTasks;
+};
+
+export const getTaskFilesData = async ({ filesAndUrls }) => {
+  await Promise.all(
+    Object.keys(filesAndUrls).map(async (file) => {
+      filesAndUrls[file] = {
+        fileurl: filesAndUrls[file].fileurl,
+        data: await fetchFile(filesAndUrls[file].fileurl),
+      };
+    })
+  );
+  return filesAndUrls;
 };

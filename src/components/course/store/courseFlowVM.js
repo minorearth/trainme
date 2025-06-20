@@ -18,7 +18,7 @@ export const getInitialFlow = async ({ courseid, refetchFlow }) => {
 
 export const getFlow = async ({ courseid, refetchFlow }) => {
   const progress = await user.actions.getUserCourseProgress(courseid);
-
+  //
   const flow = await getInitialFlow({ courseid, refetchFlow });
   const nodes = enrichFlowWithUserPorgress({
     ...flow,

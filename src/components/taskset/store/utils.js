@@ -95,3 +95,22 @@ export const setEarned = (error) => {
   taskset.updateState({ pts: pts + income });
   return pts;
 };
+
+export const extractFileNames = ({ tasks }) => {
+  const files = {};
+  tasks.forEach((task) => {
+    task.inout.forEach((inout) => {
+      inout.inv
+        .filter((item) => item.includes(".txt"))
+        .forEach(
+          (filename) =>
+            (files[filename] = {
+              fileurl:
+                "https://hog6lcngzkudsdma.public.blob.vercel-storage.com/a3905595-437e-47f3-b749-28ea5362bd39/d06b8c0d-4837-484a-ad85-9257e0e6af01/" +
+                filename,
+            })
+        );
+    });
+  });
+  return files;
+};

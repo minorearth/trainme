@@ -8,7 +8,7 @@ import { getDataFetch } from "@/db/APIcalls/calls";
 //ViewModel
 import { getFlow, saveProgress } from "@/components/course/store/courseFlowVM";
 import { updateChampTaskLog } from "@/components/champ/store/champVM";
-import { finalizePts } from "@/components/taskset/store/tasksetUtilsMobx";
+import { finalizePts } from "@/components/taskset/store/utils";
 //
 
 import {
@@ -17,7 +17,7 @@ import {
   setChampTasks,
   setRecapTasks,
   getTasks,
-} from "@/components/taskset/store/tasksetTasksMobx";
+} from "@/components/taskset/store/services";
 
 //utils and constants
 import { getReadyCourses } from "@/globals/courses";
@@ -88,6 +88,8 @@ export const openLessonStartPage = async ({
     level,
     chapterid,
     nodemode,
+    //TODO:-likely not needed
+    randomsaved: taskset.state.randomsaved,
   });
 
   const common = {

@@ -55,7 +55,7 @@ class taskset {
     const tasksETL = await ETL(tasks);
     runInAction(() => {
       this.allTasks = tasksETL;
-      task.setCurrTaskData(this.allTasks[currid], currid);
+      task.setCurrTaskData(tasksETL[currid], currid);
       this.tasknum = tasks.length;
     });
   }

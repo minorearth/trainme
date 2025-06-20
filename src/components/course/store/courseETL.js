@@ -10,7 +10,7 @@ import course from "@/components/course/store/course";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import progressCircle from "@/components/common/splash/progressdots/store";
 
-import { getRemainSum } from "@/components/taskset/store/tasksetUtilsMobx";
+import { getRemainSum } from "@/components/taskset/store/utils";
 
 export const enrichFlowWithUserPorgress = ({ nodes, edges, progress }) => {
   const { unlocked, completed, paid, rating, stat } = progress;

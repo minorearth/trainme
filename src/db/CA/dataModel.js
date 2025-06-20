@@ -107,8 +107,6 @@ export const updateChampStatus = async (db, collectionName, status, id) => {
 };
 
 export const getDocDataFromCollectionById = async (db, collectionName, id) => {
-  console.log("333", id);
-
   const docSnap = await getDoc(doc(db, collectionName, id));
   const data = docSnap.data();
   return { id: docSnap.id, data };

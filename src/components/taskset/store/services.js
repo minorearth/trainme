@@ -7,7 +7,7 @@ import {
   getTasksRecap,
   getRandomTasksForRepeat,
   getTextBook,
-} from "@/components/taskset/store/tasksetVM";
+} from "@/components/taskset/store/repository";
 
 //
 
@@ -26,12 +26,18 @@ export const getTasks = async ({
   level,
   chapterid,
   nodemode,
+  recapTasksIds = [],
+  taskstage = "",
+  randomsaved,
 }) => {
   if (nodemode == "champ") {
     const tasks = await getChampTasks({
       champid,
     });
-    return { tasks, tasksuuids: [] };
+    if (taskstage == "recap") {
+      const recapTasks = getTasksRecap(recapTasksIds, tasks.data.tasks);
+      return { tasks: recapTasks, tasksuuids: recapTasksIds };
+    } else return { tasks: tasks.data.tasks, tasksuuids: [] };
   }
 
   if (nodemode == "textbook") {
@@ -46,13 +52,16 @@ export const getTasks = async ({
       courseid,
       levelStart: level - 5,
       levelEnd: level,
-      randomsaved: taskset.state.randomsaved,
+      randomsaved,
     });
     return { tasks: tasksFetched, tasksuuids };
   }
   if (nodemode == "addhoc" || nodemode == "newtopic") {
     const tasks = await getAllTasksFromChapter(chapterid, courseid);
-    return { tasks, tasksuuids: [] };
+    if (taskstage == "recap") {
+      const recapTasks = getTasksRecap(recapTasksIds, tasks);
+      return { tasks: recapTasks, tasksuuids: recapTasksIds };
+    } else return { tasks, tasksuuids: [] };
   }
 };
 
@@ -109,7 +118,7 @@ export const setRandomTasksToRepeat = async ({
 };
 
 export const setChampTasks = async ({ tasks }) => {
-  taskset.setAllTasks(tasks.data.tasks, initials.champTasks.task.currTaskId);
+  taskset.setAllTasks(tasks, initials.champTasks.task.currTaskId);
   taskset.updateState({ ...initials.champTasks.taskset });
   navigator.updateState({ ...initials.champTasks.navigator });
 };

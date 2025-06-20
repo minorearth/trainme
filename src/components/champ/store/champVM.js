@@ -5,7 +5,7 @@ import {
   getDocDataFromSubCollectionByIdClient,
 } from "@/db/domain/domain";
 
-import { getRandomTasks } from "@/components/taskset/store/tasksetVM";
+import { getRandomTasks } from "@/components/taskset/store/repository";
 import user from "@/store/user";
 
 export const updateChampPoints = (pts, champid) => {
