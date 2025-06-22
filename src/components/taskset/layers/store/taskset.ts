@@ -10,7 +10,7 @@ import {
   nextTask,
   prevTaskNoPts_admin,
   errorCountDownPressed,
-} from "@/components/taskset/layers/services/tasksetNavigationMobx";
+} from "@/components/taskset/layers/services/tasknavigationServices";
 
 interface ITask {
   /**

@@ -4,7 +4,6 @@ import { updateSCP } from "@/db/localstorage";
 //stores
 import task from "@/components/taskset/taskrun/store/task";
 import taskset from "@/components/taskset/layers/store/taskset";
-import splashCDStore from "@/components/common/splash/splashAction/store";
 import navigator from "@/components/Navigator/store/navigator";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 
@@ -15,12 +14,8 @@ import {
   setTaskLog,
   setFixed,
   addErrorTaskToRecap,
+  setRecapTasks,
 } from "@/components/taskset/layers/services/utils";
-
-import {
-  showRightCodeAfterError,
-  setEditorDisabled,
-} from "@/components/taskset/taskrun/store/taskMobx";
 
 export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
   setEarned(error);
@@ -69,7 +64,7 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
               })
             )
           : ok(() =>
-              navigator.actions.setRecapTasks({
+              setRecapTasks({
                 tasksetState: {
                   state: taskset.state,
                   allTasks: taskset.allTasks,
@@ -82,6 +77,7 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
       task.actions.showRightCodeAfterError({ errorMsg });
       if (taskstage == "WIP" && currTaskId != tasknum - 1) {
         addErrorTaskToRecap();
+        //TODO: do via store
         updateSCP({
           task: { currTaskId: currTaskId + 1 },
         });
@@ -141,7 +137,7 @@ export const errorCountDownPressed = async () => {
           remainsum,
           success: false,
         })
-      : navigator.actions.setRecapTasks({
+      : setRecapTasks({
           tasksetState: { state: taskset.state, allTasks: taskset.allTasks },
         });
 
@@ -154,6 +150,3 @@ export const errorCountDownPressed = async () => {
 };
 
 //UTILITIES
-const ok = (action = () => {}) => {
-  splashCDStore.setShow(false, "ok", 500, () => action());
-};

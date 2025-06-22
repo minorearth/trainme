@@ -12,7 +12,7 @@ export const getAllTasksFromChapter = async (chapterid, courseid) => {
   return !tasks.data ? [] : await ETL(tasks.data.tasks);
 };
 
-export const getTextBook = async ({ completed, courseid }) => {
+export const getTextBookTasks = async ({ completed, courseid }) => {
   const tasks = await getDocDataFromSubCollectionByIdClient(
     "newtasks",
     courseid,
@@ -51,7 +51,7 @@ export const getRandomTasksForChamp = async ({
   return await ETL(filteredTasks.data);
 };
 
-export const getRandomTasksForRepeat = async ({
+export const getRandomTasksForRenewal = async ({
   courseid,
   levelStart,
   levelEnd,

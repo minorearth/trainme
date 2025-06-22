@@ -17,9 +17,7 @@ import {
 import {
   getTasks,
   setTasks,
-  setTasksetState,
-  navigateToProperPage,
-  getTasksetState,
+  updateTasksetState,
 } from "@/components/taskset/layers/services/services";
 
 //utils and constants
@@ -96,7 +94,8 @@ export const openLessonStartPage = async ({
   });
 
   setTasks({ nodemode, tasks, taskid: 0 });
-  const taskSetState = getTasksetState({
+
+  updateTasksetState({
     nodemode,
     chapterid,
     repeat,
@@ -107,15 +106,9 @@ export const openLessonStartPage = async ({
     tasksuuids,
   });
 
-  taskset.updateState(taskSetState);
-
-  const navigatorState = initials[nodemode].navigator;
-
-  navigateToProperPage({
-    nodemode,
-    tasknum: tasks.length,
-    state: navigatorState,
-  });
+  if (nodemode == "textbook" && !tasks.length) {
+    da.info.textbookblocked();
+  } else navigator.updateState(initials[nodemode].navigator);
 
   progressStore.setCloseProgress();
 };
@@ -203,15 +196,6 @@ export const interruptTaskSet = () => {
 
 export const openTutorial = () => {
   tutorial.show();
-};
-
-export const setRecapTasks = ({ tasksetState }) => {
-  // da.info.recap();
-  taskset.setAllTasks(
-    getTasksRecap(tasksetState.state.recapTasksIds, tasksetState.allTasks),
-    0
-  );
-  taskset.updateState({ taskstage: "recap" });
 };
 
 export const openLoginPageSignOut = async () => {

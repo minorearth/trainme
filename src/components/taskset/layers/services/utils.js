@@ -1,6 +1,8 @@
 import { toJS } from "mobx";
 
 import { updateChampPoints } from "@/components/champ/store/champVM";
+import splashCDStore from "@/components/common/splash/splashAction/store";
+import { initials } from "@/components/Navigator/hooks/initialStates";
 
 //stores
 import task from "@/components/taskset/taskrun/store/task";
@@ -99,4 +101,56 @@ export const setEarned = (error) => {
   }
   taskset.updateState({ pts: pts + income });
   return pts;
+};
+
+export const ok = (action = () => {}) => {
+  splashCDStore.setShow(false, "ok", 500, () => action());
+};
+
+export const getTasksetState = ({
+  nodemode,
+  chapterid,
+  repeat,
+  overflow,
+  remainsum,
+  tobeunlocked,
+  level,
+  tasksuuids,
+}) => {
+  if (nodemode == "champ" || nodemode == "textbook") {
+    return { ...initials[nodemode].taskset, nodemode };
+  }
+
+  if (nodemode == "addhoc" || nodemode == "newtopic")
+    return {
+      ...initials[nodemode].taskset,
+      chapterid,
+      repeat,
+      overflow,
+      remainsum,
+      nodemode,
+      tobeunlocked,
+    };
+
+  if (nodemode == "renewal")
+    return {
+      ...initials[nodemode].taskset,
+      chapterid,
+      repeat,
+      overflow,
+      nodemode,
+      level,
+      remainsum,
+      tobeunlocked,
+      randomsaved: tasksuuids,
+    };
+};
+
+export const setRecapTasks = ({ tasksetState }) => {
+  // da.info.recap();
+  taskset.setAllTasks(
+    getTasksRecap(tasksetState.state.recapTasksIds, tasksetState.allTasks),
+    0
+  );
+  taskset.updateState({ taskstage: "recap" });
 };
