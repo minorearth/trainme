@@ -4,10 +4,11 @@ import { toJS } from "mobx";
 //
 import {
   getAllTasksFromChapter,
-  getTasksRecap,
   getRandomTasksForRepeat,
   getTextBook,
-} from "@/components/taskset/store/repository";
+} from "@/components/taskset/layers/repository/repository";
+
+import { getTasksRecap } from "@/components/taskset/layers/services/utils";
 
 //
 
@@ -16,8 +17,10 @@ import { getChampTasks } from "@/components/champ/store/champVM";
 
 //stores
 import navigator from "@/components/Navigator/store/navigator";
-import taskset from "@/components/taskset/store/taskset";
+import taskset from "@/components/taskset/layers/store/taskset";
 //
+
+import { da } from "@/components/common/dialog/dialogMacro";
 
 export const getTasks = async ({
   champid,
@@ -34,7 +37,7 @@ export const getTasks = async ({
     const tasks = await getChampTasks({
       champid,
     });
-    if (taskstage == "recap") {
+    if (taskstage == "recap" || taskstage == "recap_suspended") {
       const recapTasks = getTasksRecap(recapTasksIds, tasks.data.tasks);
       return { tasks: recapTasks, tasksuuids: recapTasksIds };
     } else return { tasks: tasks.data.tasks, tasksuuids: [] };
@@ -42,7 +45,7 @@ export const getTasks = async ({
 
   if (nodemode == "textbook") {
     const tasks = await getTextBook({
-      userProgress,
+      completed: userProgress.completed,
       courseid,
     });
     return { tasks, tasksuuids: [] };
@@ -58,50 +61,62 @@ export const getTasks = async ({
   }
   if (nodemode == "addhoc" || nodemode == "newtopic") {
     const tasks = await getAllTasksFromChapter(chapterid, courseid);
-    if (taskstage == "recap") {
+    if (taskstage == "recap" || taskstage == "recap_suspended") {
       const recapTasks = getTasksRecap(recapTasksIds, tasks);
       return { tasks: recapTasks, tasksuuids: recapTasksIds };
     } else return { tasks, tasksuuids: [] };
   }
 };
 
-export const setRegularTasks = ({
-  chapterid,
-  repeat,
-  overflow,
-  remainsum,
-  nodemode,
-  tobeunlocked,
-  tasks,
-}) => {
-  taskset.setAllTasks(tasks, initials.regularTasks.task.currTaskId);
-  taskset.updateState({
-    ...initials.regularTasks.taskset,
-    chapterid,
-    repeat,
-    overflow,
-    remainsum,
-    nodemode,
-    tobeunlocked,
-  });
-  navigator.updateState({ ...initials.regularTasks.navigator });
+export const setTasks = ({ tasks, taskid }) => {
+  console.log("sdsad", tasks, taskid);
+  taskset.setAllTasks(tasks, taskid);
+  // if (nodemode == "champ") taskset.setAllTasks(tasks, taskid);
+
+  // if (nodemode == "addhoc" || nodemode == "newtopic")
+  //   taskset.setAllTasks(tasks, taskid);
+
+  // if (nodemode == "textbook") taskset.setAllTasks(tasks, taskid);
+
+  // if (nodemode == "renewal") taskset.setAllTasks(tasks, taskid);
 };
 
-export const setRandomTasksToRepeat = async ({
+export const navigateToProperPage = ({ nodemode, tasknum, state }) => {
+  if (nodemode == "textbook" && !tasknum) {
+    da.info.textbookblocked();
+    return;
+  }
+  navigator.updateState(state);
+};
+
+export const getTasksetState = ({
+  nodemode,
   chapterid,
   repeat,
   overflow,
-  nodemode,
-  level,
   remainsum,
   tobeunlocked,
-  tasks,
+  level,
   tasksuuids,
 }) => {
-  try {
-    taskset.setAllTasks(tasks, initials.regularTasks.task.currTaskId);
-    taskset.updateState({
-      ...initials.regularTasks.taskset,
+  if (nodemode == "champ" || nodemode == "textbook") {
+    return { ...initials[nodemode].taskset, nodemode };
+  }
+
+  if (nodemode == "addhoc" || nodemode == "newtopic")
+    return {
+      ...initials[nodemode].taskset,
+      chapterid,
+      repeat,
+      overflow,
+      remainsum,
+      nodemode,
+      tobeunlocked,
+    };
+
+  if (nodemode == "renewal")
+    return {
+      ...initials[nodemode].taskset,
       chapterid,
       repeat,
       overflow,
@@ -110,23 +125,5 @@ export const setRandomTasksToRepeat = async ({
       remainsum,
       tobeunlocked,
       randomsaved: tasksuuids,
-    });
-    navigator.updateState({ ...initials.regularTasks.navigator });
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-export const setChampTasks = async ({ tasks }) => {
-  taskset.setAllTasks(tasks, initials.champTasks.task.currTaskId);
-  taskset.updateState({ ...initials.champTasks.taskset });
-  navigator.updateState({ ...initials.champTasks.navigator });
-};
-
-export const setRecapTasks = (tasksetState) => {
-  taskset.setAllTasks(
-    getTasksRecap(tasksetState.state.recapTasksIds, tasksetState.allTasks),
-    0
-  );
-  taskset.updateState({ taskstage: "recap" });
+    };
 };

@@ -3,14 +3,14 @@ import { runInAction } from "mobx";
 import task from "@/components/taskset/taskrun/store/task";
 import { updateSCP } from "@/db/localstorage";
 
-import { ETL } from "@/components/taskset/store/tasksETL";
+import { ETL } from "@/components/taskset/layers/repository/ETL";
 
 import {
   nextTaskOrCompleteTestRun,
   nextTask,
   prevTaskNoPts_admin,
   errorCountDownPressed,
-} from "@/components/taskset/store/tasksetNavigationMobx";
+} from "@/components/taskset/layers/services/tasksetNavigationMobx";
 
 interface ITask {
   /**
@@ -52,10 +52,10 @@ class taskset {
   }
 
   async setAllTasks(tasks: any, currid: any) {
-    const tasksETL = await ETL(tasks);
+    // const tasksETL = tasks;
     runInAction(() => {
-      this.allTasks = tasksETL;
-      task.setCurrTaskData(tasksETL[currid], currid);
+      this.allTasks = tasks;
+      task.setCurrTaskData(tasks[currid], currid);
       this.tasknum = tasks.length;
     });
   }

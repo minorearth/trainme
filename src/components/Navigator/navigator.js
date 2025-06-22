@@ -27,7 +27,7 @@ import { toJS } from "mobx";
 
 //stores
 import navigator from "@/components/Navigator/store/navigator";
-import taskset from "@/components/taskset/store/taskset";
+import taskset from "@/components/taskset/layers/store/taskset";
 import course from "@/components/course/store/course";
 import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
 import pyodide from "@/components/Navigator/store/pyodide";

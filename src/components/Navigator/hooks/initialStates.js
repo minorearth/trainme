@@ -4,10 +4,12 @@ export const initials = {
     taskset: {},
     task: { currTaskId: -1 },
   },
-  champ: {
+
+  champlauncher: {
     navigator: { page: "champ" },
   },
-  champTasks: {
+
+  champ: {
     navigator: { page: "lessonStarted" },
     taskset: {
       recapTasksIds: [],
@@ -19,7 +21,7 @@ export const initials = {
     task: { currTaskId: 0 },
   },
   lessonRun: { navigator: { page: "testrun" } },
-  textBook: {
+  textbook: {
     navigator: { page: "lessonStarted" },
     taskset: { nodemode: "textbook" },
     task: { currTaskId: 0 },
@@ -27,7 +29,27 @@ export const initials = {
   courses: {
     navigator: { page: "courses" },
   },
-  regularTasks: {
+  addhoc: {
+    navigator: { page: "lessonStarted" },
+    taskset: {
+      recapTasksIds: [],
+      taskstage: "WIP",
+      pts: 0,
+      tasklog: {},
+    },
+    task: { currTaskId: 0 },
+  },
+  renewal: {
+    navigator: { page: "lessonStarted" },
+    taskset: {
+      recapTasksIds: [],
+      taskstage: "WIP",
+      pts: 0,
+      tasklog: {},
+    },
+    task: { currTaskId: 0 },
+  },
+  newtopic: {
     navigator: { page: "lessonStarted" },
     taskset: {
       recapTasksIds: [],

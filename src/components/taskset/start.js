@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import navigator from "@/components/Navigator/store/navigator";
-import taskset from "@/components/taskset/store/taskset";
+import taskset from "@/components/taskset/layers/store/taskset";
 import { getIntro } from "@/components/common/dialog/dialogMacro";
 
 export default function Start() {

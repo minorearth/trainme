@@ -5,12 +5,11 @@ import {
   openAndRefreshFlowPage,
   openCourseFlowPageFromMain,
   openLessonStartPage,
-  openTextBook,
   openLessonRunPage,
   openCongratPage,
   closeCongratPage,
   openTutorial,
-  openRecapTasksPage,
+  setRecapTasks,
   openLoginPageSignOut,
   openChampPage,
   interruptTaskSet,
@@ -28,7 +27,7 @@ interface INavMethods {
   //    * @returns nothing.
   //    */
   //   openAndRefreshFlowPage?: (courseid: string) => void;
-  //   openRecapTasksPage?: () => void;
+  //   setRecapTasks?: () => void;
   //   openSpecChampPage?: () => void;
   //   openCourseFlowPageFromMain?: () => void;
   //   openLoginPageSignOut?: () => void;
@@ -44,12 +43,11 @@ class navigator {
     openAndRefreshFlowPage,
     openCourseFlowPageFromMain,
     openLessonStartPage,
-    openTextBook,
     openLessonRunPage,
     openCongratPage,
     closeCongratPage,
     openTutorial,
-    openRecapTasksPage,
+    setRecapTasks,
     openLoginPageSignOut,
     openChampPage,
     interruptTaskSet,

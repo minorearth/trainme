@@ -16,7 +16,7 @@ import stn from "@/globals/settings";
 import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
 import navigator from "@/components/Navigator/store/navigator";
 import champ from "@/components/champ/store/champ";
-import { getRandomTasksForChamp } from "@/components/champ/store/champVM";
+import { getRandomTasksForChamp } from "@/components/taskset/layers/repository/repository";
 
 const useChamps = () => {
   const [monitoringStarted, setMonitoringStarted] = useState(false);
@@ -83,7 +83,7 @@ const useChamps = () => {
       champ.setChampId(champid);
       setDocInCollectionClient(
         stn.collections.CHAMPS,
-        { tasks: tasks.data, users: [], status: "created" },
+        { tasks, users: [], status: "created" },
         champid
       );
     }

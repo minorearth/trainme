@@ -1,7 +1,7 @@
 import { runCheckers, getErrorMessage } from "./store/taskCheckersUtils";
 import local from "@/globals/local";
 import task from "@/components/taskset/taskrun/store/task";
-import taskset from "@/components/taskset/store/taskset";
+import taskset from "@/components/taskset/layers/store/taskset";
 import { toJS } from "mobx";
 
 const useCheck = ({ runPythonCode }) => {

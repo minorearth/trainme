@@ -3,7 +3,7 @@ import { updateSCP } from "@/db/localstorage";
 
 //stores
 import task from "@/components/taskset/taskrun/store/task";
-import taskset from "@/components/taskset/store/taskset";
+import taskset from "@/components/taskset/layers/store/taskset";
 import splashCDStore from "@/components/common/splash/splashAction/store";
 import navigator from "@/components/Navigator/store/navigator";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
@@ -15,7 +15,7 @@ import {
   setTaskLog,
   setFixed,
   addErrorTaskToRecap,
-} from "@/components/taskset/store/utils";
+} from "@/components/taskset/layers/services/utils";
 
 import {
   showRightCodeAfterError,
@@ -69,8 +69,11 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
               })
             )
           : ok(() =>
-              navigator.actions.openRecapTasksPage({
-                taskset: { state: taskset.state, allTasks: taskset.allTasks },
+              navigator.actions.setRecapTasks({
+                tasksetState: {
+                  state: taskset.state,
+                  allTasks: taskset.allTasks,
+                },
               })
             );
       }
@@ -92,6 +95,7 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
       if (taskstage == "WIP" && currTaskId == tasknum - 1) {
         addErrorTaskToRecap();
         taskset.updateState({ taskstage: "recap_suspended" });
+        task.setCurrTaskCSPOnly(0);
       }
       if (taskstage == "recap" && currTaskId == tasknum - 1) {
         taskset.updateState({ taskstage: "accomplished_suspended" });
@@ -137,8 +141,8 @@ export const errorCountDownPressed = async () => {
           remainsum,
           success: false,
         })
-      : navigator.actions.openRecapTasksPage({
-          taskset: { state: taskset.state, allTasks: taskset.allTasks },
+      : navigator.actions.setRecapTasks({
+          tasksetState: { state: taskset.state, allTasks: taskset.allTasks },
         });
 
     return;

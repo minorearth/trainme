@@ -1,9 +1,15 @@
 import local from "@/globals/local";
-import { getTaskFilesData } from "@/components/taskset/store/repository";
-import { extractFileNames } from "@/components/taskset/store/utils";
-export const ETL = async (tasks) => {
-  await loadAllFiles(tasks);
+import { fetchFile } from "@/db/APIcalls/calls";
 
+export const ETL = async (tasks) => {
+  console.log("oo", tasks);
+  await supplyWithFilesData(tasks);
+  tranformData(tasks);
+  return tasks;
+};
+
+//Tranform Data
+const tranformData = (tasks) => {
   tasks.forEach((task) => {
     task.tasktext =
       task.task +
@@ -21,7 +27,6 @@ export const ETL = async (tasks) => {
     task.output = "";
     task.restrictErrors = "";
   });
-  return tasks;
 };
 
 const formatForbidden = (forbidden, maxlines, tasktype) => {
@@ -43,6 +48,14 @@ const formatForbidden = (forbidden, maxlines, tasktype) => {
   return res;
 };
 
+//Upload files data
+
+const supplyWithFilesData = async (tasks) => {
+  const filesAndUrls = extractFileNames({ tasks });
+  const filesAndFileContent = await getTaskFilesData({ filesAndUrls });
+  enrichTaskWithFileLoadCode({ tasks, filesAndFileContent });
+};
+
 const enrichTaskWithFileLoadCode = ({ tasks, filesAndFileContent }) => {
   tasks.forEach((task) => {
     task.inout.forEach((inouttest) => {
@@ -58,8 +71,36 @@ const enrichTaskWithFileLoadCode = ({ tasks, filesAndFileContent }) => {
   });
 };
 
-const loadAllFiles = async (tasks) => {
-  const filesAndUrls = extractFileNames({ tasks });
-  const filesAndFileContent = await getTaskFilesData({ filesAndUrls });
-  enrichTaskWithFileLoadCode({ tasks, filesAndFileContent });
+const getTaskFilesData = async ({ filesAndUrls }) => {
+  await Promise.all(
+    Object.keys(filesAndUrls).map(async (file) => {
+      filesAndUrls[file] = {
+        fileurl: filesAndUrls[file].fileurl,
+        data: await fetchFile(filesAndUrls[file].fileurl),
+      };
+    })
+  );
+  console.log("filesAndUrls", filesAndUrls);
+
+  return filesAndUrls;
+};
+
+const extractFileNames = ({ tasks }) => {
+  const files = {};
+  tasks.forEach((task) => {
+    task.inout.forEach((inout) => {
+      inout.inv
+        .filter((item) => item.includes(".txt"))
+        .forEach(
+          (filename) =>
+            (files[filename] = {
+              fileurl:
+                "http://localhost:3000/" +
+                // "https://hog6lcngzkudsdma.public.blob.vercel-storage.com/a3905595-437e-47f3-b749-28ea5362bd39/d06b8c0d-4837-484a-ad85-9257e0e6af01/" +
+                filename,
+            })
+        );
+    });
+  });
+  return files;
 };

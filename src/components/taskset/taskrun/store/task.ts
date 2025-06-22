@@ -1,5 +1,5 @@
 import { makeObservable, makeAutoObservable } from "mobx";
-import taskset from "@/components/taskset/store/taskset";
+import taskset from "@/components/taskset/layers/store/taskset";
 import { Monaco } from "@monaco-editor/react";
 import React from "react";
 import { editor } from "monaco-editor";
@@ -64,6 +64,12 @@ class task {
         task: { currTaskId: id },
       });
     }
+  };
+
+  setCurrTaskCSPOnly = (id: number) => {
+    updateSCP({
+      task: { currTaskId: id },
+    });
   };
 
   setCurrTaskData(data: any, id: any) {

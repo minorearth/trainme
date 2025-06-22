@@ -8,16 +8,19 @@ import { getDataFetch } from "@/db/APIcalls/calls";
 //ViewModel
 import { getFlow, saveProgress } from "@/components/course/store/courseFlowVM";
 import { updateChampTaskLog } from "@/components/champ/store/champVM";
-import { finalizePts } from "@/components/taskset/store/utils";
+import {
+  finalizePts,
+  getTasksRecap,
+} from "@/components/taskset/layers/services/utils";
 //
 
 import {
-  setRegularTasks,
-  setRandomTasksToRepeat,
-  setChampTasks,
-  setRecapTasks,
   getTasks,
-} from "@/components/taskset/store/services";
+  setTasks,
+  setTasksetState,
+  navigateToProperPage,
+  getTasksetState,
+} from "@/components/taskset/layers/services/services";
 
 //utils and constants
 import { getReadyCourses } from "@/globals/courses";
@@ -26,7 +29,7 @@ import { initials } from "@/components/Navigator/hooks/initialStates";
 //stores
 import navigator from "@/components/Navigator/store/navigator";
 import task from "@/components/taskset/taskrun/store/task";
-import taskset from "@/components/taskset/store/taskset";
+import taskset from "@/components/taskset/layers/store/taskset";
 import progressStore from "@/components/common/splash/progressdots/store";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import user from "@/store/user";
@@ -92,37 +95,29 @@ export const openLessonStartPage = async ({
     randomsaved: taskset.state.randomsaved,
   });
 
-  const common = {
+  setTasks({ nodemode, tasks, taskid: 0 });
+  const taskSetState = getTasksetState({
+    nodemode,
     chapterid,
     repeat,
     overflow,
-    nodemode,
     remainsum,
     tobeunlocked,
-    tasks,
-  };
+    level,
+    tasksuuids,
+  });
 
-  if (nodemode == "champ") setChampTasks({ tasks });
-  if (nodemode == "textbook") openTextBook({ tasks });
-  if (nodemode == "addhoc" || nodemode == "newtopic")
-    setRegularTasks({ ...common });
-  if (nodemode == "renewal") {
-    setRandomTasksToRepeat({
-      ...common,
-      level,
-      tasksuuids,
-    });
-  }
+  taskset.updateState(taskSetState);
+
+  const navigatorState = initials[nodemode].navigator;
+
+  navigateToProperPage({
+    nodemode,
+    tasknum: tasks.length,
+    state: navigatorState,
+  });
 
   progressStore.setCloseProgress();
-};
-
-export const openTextBook = async ({ tasks }) => {
-  if (tasks.length) {
-    taskset.setAllTasks(tasks, 0);
-    taskset.updateState({ ...initials.textBook.taskset });
-    navigator.updateState({ ...initials.textBook.navigator });
-  } else da.info.textbookblocked();
 };
 
 export const openLessonRunPage = async () => {
@@ -210,9 +205,13 @@ export const openTutorial = () => {
   tutorial.show();
 };
 
-export const openRecapTasksPage = ({ taskset }) => {
-  da.info.recap();
-  setRecapTasks(taskset);
+export const setRecapTasks = ({ tasksetState }) => {
+  // da.info.recap();
+  taskset.setAllTasks(
+    getTasksRecap(tasksetState.state.recapTasksIds, tasksetState.allTasks),
+    0
+  );
+  taskset.updateState({ taskstage: "recap" });
 };
 
 export const openLoginPageSignOut = async () => {
@@ -227,5 +226,5 @@ export const openChampPage = () => {
   course.eraseState();
   taskset.eraseState();
   task.eraseState();
-  navigator.setState({ ...initials.champ.navigator });
+  navigator.setState({ ...initials.champlauncher.navigator });
 };
