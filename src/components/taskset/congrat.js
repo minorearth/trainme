@@ -6,7 +6,7 @@ import ReplayIcon from "@mui/icons-material/Replay";
 import { useTheme } from "@mui/material/styles";
 import TextAnimated from "@/components/common/textAnimated/textAnimated";
 import { useEffect, useState } from "react";
-import navigator from "@/components/Navigator/store/navigator";
+import navigator from "@/components/Navigator/layers/store/navigator";
 import taskset from "@/components/taskset/layers/store/taskset";
 
 import { observer } from "mobx-react-lite";

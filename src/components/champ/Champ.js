@@ -11,11 +11,10 @@ import SortableList from "@/components/champ/components/ChampUsersList/ChampUser
 import StepByStep from "@/components/champ/components/Stepper";
 import AvatarSelector from "@/components/champ/components/avatar/avatar";
 
-import champ from "@/components/champ/store/champ";
-import user from "@/store/user";
+import champ from "@/components/champ/layers/store/champ";
+import user from "@/userlayers/store/user";
 
 const Champ = observer(() => {
-  const { createChamp, joinChamp, startChamp } = useChamps();
   const [activeStep, setActiveStep] = useState(0);
   const [createMode, setCreateMode] = useState();
 
@@ -151,7 +150,7 @@ const Champ = observer(() => {
             <Button
               disabled={!champ.taskcount}
               onClick={() => {
-                createChamp();
+                champ.actions.createChamp();
                 setActiveStep(2);
                 setCreateMode(true);
               }}
@@ -166,7 +165,7 @@ const Champ = observer(() => {
             )}
             <Button
               disabled={!champ.champid}
-              onClick={() => startChamp(champ.champid)}
+              onClick={() => champ.actions.startChamp(champ.champid)}
               variant="outlined"
               fullWidth
             >
@@ -176,7 +175,7 @@ const Champ = observer(() => {
               disabled={!champ.champid}
               variant="outlined"
               onClick={() => {
-                joinChamp();
+                champ.actions.joinChamp();
               }}
               fullWidth
             >
@@ -207,7 +206,7 @@ const Champ = observer(() => {
               id="outlined-basic"
               label="Номер чемпионата"
               variant="outlined"
-              onChange={(e) => champ.setChampId(e.target.value)}
+              onChange={(e) => champ.setChampIdP(e.target.value)}
               value={champ.champid}
               fullWidth
             />
@@ -215,7 +214,7 @@ const Champ = observer(() => {
             <Button
               disabled={!champ.champid}
               variant="outlined"
-              onClick={() => joinChamp()}
+              onClick={() => champ.actions.joinChamp()}
               fullWidth
             >
               Присоединиться

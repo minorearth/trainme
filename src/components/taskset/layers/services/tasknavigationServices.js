@@ -2,9 +2,9 @@
 import { updateSCP } from "@/db/localstorage";
 
 //stores
-import task from "@/components/taskset/taskrun/store/task";
+import task from "@/components/taskset/taskrun/layers/store/task";
 import taskset from "@/components/taskset/layers/store/taskset";
-import navigator from "@/components/Navigator/store/navigator";
+import navigator from "@/components/Navigator/layers/store/navigator";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 
 //
@@ -15,6 +15,7 @@ import {
   setFixed,
   addErrorTaskToRecap,
   setRecapTasks,
+  ok,
 } from "@/components/taskset/layers/services/utils";
 
 export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
@@ -54,7 +55,7 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
         );
       }
       if (recapTaskNum != 0 && taskstage == "WIP") {
-        taskset.state.nodemode == "renewal"
+        taskset.state.nodemode == "exam"
           ? ok(() =>
               navigator.actions.openCongratPage({
                 nodemode,
@@ -90,11 +91,11 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
       }
       if (taskstage == "WIP" && currTaskId == tasknum - 1) {
         addErrorTaskToRecap();
-        taskset.updateState({ taskstage: "recap_suspended" });
+        taskset.updateStateP({ taskstage: "recap_suspended" });
         task.setCurrTaskCSPOnly(0);
       }
       if (taskstage == "recap" && currTaskId == tasknum - 1) {
-        taskset.updateState({ taskstage: "accomplished_suspended" });
+        taskset.updateStateP({ taskstage: "accomplished_suspended" });
       }
       return;
 
@@ -105,12 +106,12 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
 
 export const nextTask = () => {
   task.editorRef.current.setValue("");
-  task.setCurrTask(task.currTaskId + 1);
+  task.setCurrTaskP(task.currTaskId + 1);
 };
 
 export const prevTaskNoPts_admin = () => {
   task.editorRef.current.setValue("");
-  task.setCurrTask(task.currTaskId - 1);
+  task.setCurrTaskP(task.currTaskId - 1);
 };
 
 export const errorCountDownPressed = async () => {
@@ -130,7 +131,7 @@ export const errorCountDownPressed = async () => {
     return;
   }
   if (taskstage == "recap_suspended") {
-    nodemode == "renewal"
+    nodemode == "exam"
       ? navigator.actions.openCongratPage({
           nodemode,
           pts,
@@ -144,7 +145,7 @@ export const errorCountDownPressed = async () => {
     return;
   }
   if (task.currTaskId != taskset.allTasks.length) {
-    task.setCurrTask(task.currTaskId + 1);
+    task.setCurrTaskP(task.currTaskId + 1);
     return;
   }
 };

@@ -9,7 +9,7 @@ import {
   setDocInSubCollectionClient,
 } from "@/db/domain/domain";
 
-import user from "@/store/user";
+import user from "@/userlayers/store/user";
 
 import {
   getGroupUsersObj,

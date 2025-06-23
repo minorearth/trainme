@@ -3,7 +3,7 @@ import { toJS } from "mobx";
 //
 import {
   getAllTasksFromChapter,
-  getRandomTasksForRenewal,
+  getRandomTasksForExam,
   getTextBookTasks,
 } from "@/components/taskset/layers/repository/repository";
 
@@ -13,7 +13,7 @@ import {
 } from "@/components/taskset/layers/services/utils";
 //
 
-import { getChampTasks } from "@/components/champ/store/champVM";
+import { getChampTasks } from "@/components/champ/layers/repository/repository";
 
 //stores
 import taskset from "@/components/taskset/layers/store/taskset";
@@ -47,8 +47,8 @@ export const getTasks = async ({
     });
     return { tasks, tasksuuids: [] };
   }
-  if (nodemode == "renewal") {
-    const { tasksuuids, tasksFetched } = await getRandomTasksForRenewal({
+  if (nodemode == "exam") {
+    const { tasksuuids, tasksFetched } = await getRandomTasksForExam({
       courseid,
       levelStart: level - 5,
       levelEnd: level,
@@ -74,5 +74,5 @@ export const updateTasksetState = (props) => {
     ...props,
   });
 
-  taskset.updateState(taskSetState);
+  taskset.updateStateP(taskSetState);
 };

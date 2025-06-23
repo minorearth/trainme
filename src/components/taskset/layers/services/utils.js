@@ -1,19 +1,19 @@
 import { toJS } from "mobx";
 
-import { updateChampPoints } from "@/components/champ/store/champVM";
+import { updateChampPoints } from "@/components/champ/layers/repository/repository";
 import splashCDStore from "@/components/common/splash/splashAction/store";
-import { initials } from "@/components/Navigator/hooks/initialStates";
+import { initials } from "@/components/Navigator/layers/store/initialStates";
 
 //stores
-import task from "@/components/taskset/taskrun/store/task";
+import task from "@/components/taskset/taskrun/layers/store/task";
 import taskset from "@/components/taskset/layers/store/taskset";
-import champ from "@/components/champ/store/champ";
+import champ from "@/components/champ/layers/store/champ";
 //
 
 export const setFixed = (error) => {
   const fixed = taskset.state.fixed;
   if (taskset.state.taskstage == "recap" && !error) {
-    taskset.updateState({ fixed: fixed ? fixed + 1 : 1 });
+    taskset.updateStateP({ fixed: fixed ? fixed + 1 : 1 });
   }
 };
 
@@ -26,7 +26,7 @@ export const getRemainSum = ({ stat, node }) => {
 };
 
 export const finalizePts = ({ nodemode, pts, remainsum }) => {
-  if (nodemode == "addhoc" || nodemode == "newtopic" || nodemode == "renewal") {
+  if (nodemode == "addhoc" || nodemode == "newtopic" || nodemode == "exam") {
     return Math.min(pts, remainsum);
   }
   return pts;
@@ -40,6 +40,7 @@ export const setTaskLog = ({ code, error }) => {
   const prevTasklogdata = Object.keys(tasklog).includes(taskuuid)
     ? tasklog[taskuuid]
     : {};
+  //TODO: use object custom function
   const newChapterState = {
     ...taskset.state,
     tasklog: {
@@ -50,12 +51,12 @@ export const setTaskLog = ({ code, error }) => {
       },
     },
   };
-  taskset.updateState(newChapterState);
+  taskset.updateStateP(newChapterState);
 };
 
 export const addErrorTaskToRecap = () => {
   const recapTasksIds = [...taskset.state.recapTasksIds, task.currTaskId];
-  taskset.updateState({ recapTasksIds });
+  taskset.updateStateP({ recapTasksIds });
 };
 
 export const getTasksRecap = (recapTasksIds, tasks) => {
@@ -70,24 +71,24 @@ export const setEarned = (error) => {
     return pts;
   }
   if (!error) {
-    if (taskstage == "WIP" && !repeat && nodemode != "renewal") {
+    if (taskstage == "WIP" && !repeat && nodemode != "exam") {
       income = 10;
     }
-    if (taskstage == "WIP" && !repeat && nodemode == "renewal") {
+    if (taskstage == "WIP" && !repeat && nodemode == "exam") {
       income = 2;
     }
-    if (taskstage == "WIP" && repeat && nodemode != "renewal") {
+    if (taskstage == "WIP" && repeat && nodemode != "exam") {
       income = 2;
     }
-    if (taskstage == "WIP" && repeat && nodemode == "renewal") {
+    if (taskstage == "WIP" && repeat && nodemode == "exam") {
       income = 1;
     }
 
-    if (taskstage == "recap" && !repeat && nodemode != "renewal") {
+    if (taskstage == "recap" && !repeat && nodemode != "exam") {
       income = 2;
     }
 
-    if (taskstage == "recap" && !repeat && nodemode == "renewal") {
+    if (taskstage == "recap" && !repeat && nodemode == "exam") {
       income = 1;
     }
 
@@ -99,7 +100,7 @@ export const setEarned = (error) => {
       updateChampPoints(income, champ.champid);
     }
   }
-  taskset.updateState({ pts: pts + income });
+  taskset.updateStateP({ pts: pts + income });
   return pts;
 };
 
@@ -132,7 +133,7 @@ export const getTasksetState = ({
       tobeunlocked,
     };
 
-  if (nodemode == "renewal")
+  if (nodemode == "exam")
     return {
       ...initials[nodemode].taskset,
       chapterid,
@@ -152,5 +153,5 @@ export const setRecapTasks = ({ tasksetState }) => {
     getTasksRecap(tasksetState.state.recapTasksIds, tasksetState.allTasks),
     0
   );
-  taskset.updateState({ taskstage: "recap" });
+  taskset.updateStateP({ taskstage: "recap" });
 };

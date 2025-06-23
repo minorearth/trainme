@@ -51,7 +51,7 @@ export const getRandomTasksForChamp = async ({
   return await ETL(filteredTasks.data);
 };
 
-export const getRandomTasksForRenewal = async ({
+export const getRandomTasksForExam = async ({
   courseid,
   levelStart,
   levelEnd,

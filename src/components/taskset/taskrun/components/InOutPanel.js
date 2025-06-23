@@ -6,7 +6,7 @@ import Input from "@mui/material/Input";
 import IconButton from "@mui/material/IconButton";
 import CachedIcon from "@mui/icons-material/Cached";
 import Box from "@mui/material/Box";
-import task from "@/components/taskset/taskrun/store/task";
+import task from "@/components/taskset/taskrun/layers/store/task";
 import { observer } from "mobx-react-lite";
 
 const InOutPanel = observer(() => {

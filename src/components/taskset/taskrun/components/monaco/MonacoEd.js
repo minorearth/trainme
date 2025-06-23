@@ -12,7 +12,7 @@ import { Watcher } from "@/components/taskset/taskrun/components/monaco/watcher/
 import Box from "@mui/material/Box";
 
 //stores
-import task from "@/components/taskset/taskrun/store/task";
+import task from "@/components/taskset/taskrun/layers/store/task";
 
 const MonacoEd = () => {
   const { mode } = useColorScheme();
@@ -29,9 +29,9 @@ const MonacoEd = () => {
           {task.currTask.info}
         </Typography>
       )}
-      {task.currTask.maxlineserror && !task.currTask.editordisabled && (
+      {task.currTask.errorMessage && !task.currTask.editordisabled && (
         <Typography sx={{ textAlign: "center", color: "#FF5549" }}>
-          {task.currTask.maxlineserror}
+          {task.currTask.errorMessage}
         </Typography>
       )}
       <IconButton

@@ -80,8 +80,6 @@ const getTaskFilesData = async ({ filesAndUrls }) => {
       };
     })
   );
-  console.log("filesAndUrls", filesAndUrls);
-
   return filesAndUrls;
 };
 

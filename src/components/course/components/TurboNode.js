@@ -48,7 +48,7 @@ const Wrapper = styled.div(({ theme, data }) => ({
     overflow: "hidden",
     display: "flex",
     padding: "2px",
-    // padding: data.nodemode == "renewal" ? "6px" : "2px",
+    // padding: data.nodemode == "exam" ? "6px" : "2px",
     position: "relative",
     borderRadius: "12px",
     flexGrow: 1,
@@ -226,7 +226,7 @@ const TurboNode = memo(({ data }) => {
                   </span>
                 </div>
 
-                {data.unlockpts && !data.paid && data.nodemode != "renewal" && (
+                {data.unlockpts && !data.paid && data.nodemode != "exam" && (
                   <div className="cost">
                     <BiCoinStack />
                     <p>{data.unlockpts}</p>

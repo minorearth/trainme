@@ -15,8 +15,9 @@ import TurboNode from "./components/TurboNode.js";
 import TurboEdge from "./components/TurboEdge.js";
 import AnimNode from "./components/AnimNode";
 import alertdialog from "@/components/common/dialog/store";
-import user from "@/store/user";
-import course from "@/components/course/store/course";
+import user from "@/userlayers/store/user";
+import course from "@/components/course/layers/store/course";
+import { reaction } from "mobx";
 
 const nodeTypes = {
   turbo: TurboNode,
@@ -40,6 +41,16 @@ const useFlow = () => {
   useEffect(() => {
     setEdges(course.flow.edges);
     setNodes(course.flow.nodes);
+    return reaction(
+      () => course.flow,
+      () => {
+        setEdges(course.flow.edges);
+        setNodes(course.flow.nodes);
+      }
+    );
+
+    // setEdges(course.flow.edges);
+    // setNodes(course.flow.nodes);
   }, []);
 
   useEffect(() => {

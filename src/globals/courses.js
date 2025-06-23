@@ -6,7 +6,7 @@ import {
 } from "@/components/admin/chaptersFlowData";
 import { testsall1 } from "@/components/admin/course1";
 import { testsall2 } from "@/components/admin/course2";
-import navigator from "@/components/Navigator/store/navigator";
+import navigator from "@/components/Navigator/layers/store/navigator";
 
 export const getReadyCourses = () => {
   return Object.keys(courses).filter((courseId) => courses[courseId].completed);

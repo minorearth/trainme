@@ -1,139 +1,25 @@
-import { toJS } from "mobx";
-import { da } from "@/components/common/dialog/dialogMacro";
-
 //react stuff
 import { useEffect, useState } from "react";
 
-//data model
-import { getCSP } from "@/db/localstorage";
-import { getDataFetch } from "@/db/APIcalls/calls";
-import {
-  getTasks,
-  setTasks,
-} from "@/components/taskset/layers/services/services";
-import { getInitialFlow } from "@/components/course/store/courseFlowVM";
-//
-
 //utils and constants
-import { initials } from "./initialStates";
-import {
-  startListeners,
-  stopListeners,
-} from "@/components/Navigator/hooks/listeners";
+import { startListeners, stopListeners } from "@/globals/listeners/listeners";
+import { loadPTrek } from "@/components/Navigator/layers/services/loadApp";
 
 //stores
-import navigator from "@/components/Navigator/store/navigator";
-import task from "@/components/taskset/taskrun/store/task";
-import taskset from "@/components/taskset/layers/store/taskset";
-import progressStore from "@/components/common/splash/progressdots/store";
-import user from "@/store/user";
-import course from "@/components/course/store/course";
-import champ from "@/components/champ/store/champ";
+import user from "@/userlayers/store/user";
 //
 
-import {
-  openAllCoursePage,
-  openAndRefreshFlowPage,
-  openCongratPage,
-  setRecapTasks,
-} from "@/components/Navigator/store/navigatorMobx";
 const useApp = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     startListeners();
     loadPTrek();
+    setLoading(false);
     return () => {
       stopListeners();
     };
   }, [user]);
-
-  const loadPTrek = async () => {
-    const CSP = getCSP();
-    if (!CSP) {
-      navigator.setState(initials.initialState.navigator);
-    } else {
-      CSP.navigator && navigator.setState(CSP.navigator);
-      CSP.taskset && taskset.updateState(CSP.taskset);
-      CSP.task && task.setCurrTask(CSP.task.currTaskId);
-      CSP.user?.username && user.setUserNameNP(CSP.user.username);
-      CSP.user?.progress && user.setProgressNP(CSP.user.progress);
-      CSP.course && course.updateState(CSP.course);
-      CSP.champ && champ.setChampId(CSP.champ.champid);
-    }
-
-    const page = CSP?.navigator?.page || "courses";
-
-    if (page == "flow") {
-      const coursePaid = await getDataFetch({
-        type: "checkcoursepaid",
-        data: { courseid: CSP.course.courseid, uid: user.userid },
-      });
-      if (coursePaid) {
-        await openAndRefreshFlowPage({
-          courseid: CSP.course.courseid,
-          refetchFlow: true,
-        });
-      } else {
-        openAllCoursePage();
-      }
-    }
-
-    if (page == "testrun" || page == "lessonStarted") {
-      const { nodemode, taskstage, pts, remainsum } = CSP.taskset;
-      if (taskstage == "accomplished_suspended") {
-        openCongratPage({ nodemode, pts, remainsum, success: false });
-      }
-      if (taskstage == "recap_suspended" && nodemode == "renewal") {
-        openCongratPage({ nodemode, pts, remainsum, success: false });
-      } else {
-        recoverTasks({ CSP });
-      }
-    }
-
-    if (!page || page == "courses" || page == "champ") {
-      navigator.setState(initials.initialState.navigator);
-    }
-
-    if (
-      (page == "congrat" || page == "testrun" || page == "lessonStarted") &&
-      CSP.course.courseid
-    ) {
-      getInitialFlow({ courseid: CSP.course.courseid, refetchFlow: true });
-    }
-
-    setLoading(false);
-    progressStore.setCloseProgress();
-  };
-
-  const recoverTasks = async ({ CSP }) => {
-    const {
-      nodemode,
-      taskstage,
-      level,
-      recapTasksIds,
-      randomsaved,
-      chapterid,
-    } = CSP.taskset;
-    const { champid } = CSP.champ || {};
-    const { courseid } = CSP.course;
-    const { tasks } = await getTasks({
-      nodemode,
-      taskstage,
-      level,
-      randomsaved,
-      chapterid,
-      userProgress: CSP.user.progress,
-      courseid,
-      champid,
-      recapTasksIds,
-    });
-    setTasks({ nodemode, tasks, taskid: CSP.task.currTaskId });
-    if (taskstage == "recap_suspended" && nodemode != "renewal") {
-      da.info.recap();
-      taskset.updateState({ taskstage: "recap" });
-    }
-  };
 
   return {
     loading,

@@ -11,8 +11,9 @@ import "@xyflow/react/dist/base.css";
 import "./styles.css";
 import FlowPanel from "./components/FlowPanel.js";
 import useFlow from "./useFlow";
+import { observer } from "mobx-react-lite";
 
-const Course = () => {
+const Course = observer(() => {
   const theme = useTheme();
   const flowOptions = useFlow();
 
@@ -39,6 +40,6 @@ const Course = () => {
       </ReactFlow>
     </Box>
   );
-};
+});
 
 export default Course;

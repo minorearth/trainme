@@ -3,7 +3,7 @@ import { Box, IconButton } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { avatars } from "./allavatars";
-import user from "@/store/user";
+import user from "@/userlayers/store/user";
 import { observer } from "mobx-react-lite";
 
 const AvatarSelector = observer(() => {
@@ -12,7 +12,7 @@ const AvatarSelector = observer(() => {
   };
 
   const handlePrevious = () => {
-    user.setAvatarId(user.avatarid - 1 + avatars.length) % avatars.length;
+    user.setAvatarId((user.avatarid - 1 + avatars.length) % avatars.length);
   };
 
   return (

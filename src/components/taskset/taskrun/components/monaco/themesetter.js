@@ -1,4 +1,4 @@
-import task from "@/components/taskset/taskrun/store/task";
+import task from "@/components/taskset/taskrun/layers/store/task";
 
 export const defineTheme = (monaco, darkmode) => {
   monaco.editor.defineTheme("dark", {

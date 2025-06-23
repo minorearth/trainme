@@ -155,7 +155,7 @@ export const da = {
 
 const getTaskSetInterruptedInfo = (completed, nodemode) => {
   let caption, text;
-  if (nodemode == "renewal" || nodemode == "addhoc" || nodemode == "newtopic") {
+  if (nodemode == "exam" || nodemode == "addhoc" || nodemode == "newtopic") {
     caption = "Завершить";
   }
 
@@ -164,7 +164,7 @@ const getTaskSetInterruptedInfo = (completed, nodemode) => {
       "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n2 монеты за каждую задачу вместо 10 монет";
   }
 
-  if (nodemode == "renewal" && !completed) {
+  if (nodemode == "exam" && !completed) {
     text =
       "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n1 монету за каждую задачу вместо 2 монет";
   }
@@ -190,7 +190,7 @@ export const getIntro = ({ nodemode, completed, overflow }) => {
     return "Удачи в чемпионате!";
   }
 
-  if (nodemode == "renewal")
+  if (nodemode == "exam")
     return "В режиме челлендж нет повторения и все задачи должны быть решены с первого раза";
 
   if (nodemode == "addhoc" || nodemode == "newtopic") {

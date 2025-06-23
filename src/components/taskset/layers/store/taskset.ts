@@ -1,6 +1,6 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { runInAction } from "mobx";
-import task from "@/components/taskset/taskrun/store/task";
+import task from "@/components/taskset/taskrun/layers/store/task";
 import { updateSCP } from "@/db/localstorage";
 
 import { ETL } from "@/components/taskset/layers/repository/ETL";
@@ -32,14 +32,18 @@ class taskset {
   };
   state: any = { recapTasksIds: [] };
 
-  updateState(data: any) {
+  updateStateP(data: any) {
     this.state = { ...this.state, ...data };
     updateSCP({
       taskset: { ...this.state, ...data },
     });
   }
 
-  eraseState() {
+  updateState(data: any) {
+    this.state = { ...this.state, ...data };
+  }
+
+  eraseStateP() {
     this.state = {};
     this.allTasks = [];
     updateSCP({
@@ -55,7 +59,7 @@ class taskset {
     // const tasksETL = tasks;
     runInAction(() => {
       this.allTasks = tasks;
-      task.setCurrTaskData(tasks[currid], currid);
+      task.setCurrTaskDataP(tasks[currid], currid);
       this.tasknum = tasks.length;
     });
   }

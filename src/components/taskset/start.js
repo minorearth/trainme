@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import navigator from "@/components/Navigator/store/navigator";
+import navigator from "@/components/Navigator/layers/store/navigator";
 import taskset from "@/components/taskset/layers/store/taskset";
 import { getIntro } from "@/components/common/dialog/dialogMacro";
 

@@ -2,7 +2,7 @@ import FabAnimated from "@/components/common/fabAnimated/fabAnimated";
 import stn from "@/globals/settings";
 import { motion } from "framer-motion";
 import Box from "@mui/material/Box";
-import navigator from "./store/navigator";
+import navigator from "./layers/store/navigator";
 import { useRouter } from "next/navigation";
 
 const RIGHT = 16;

@@ -9,7 +9,7 @@ import stn from "@/globals/settings";
 //stores
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import taskset from "@/components/taskset/layers/store/taskset";
-import task from "@/components/taskset/taskrun/store/task";
+import task from "@/components/taskset/taskrun/layers/store/task";
 
 const CodeRunPanel = observer(() => {
   return (

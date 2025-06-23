@@ -13,8 +13,8 @@ import Grid from "@mui/material/Grid2";
 import { observer } from "mobx-react-lite";
 
 //stores
-import navigator from "@/components/Navigator/store/navigator";
-import task from "@/components/taskset/taskrun/store/task";
+import navigator from "@/components/Navigator/layers/store/navigator";
+import task from "@/components/taskset/taskrun/layers/store/task";
 import taskset from "@/components/taskset/layers/store/taskset";
 
 const TopPanel = observer(() => {

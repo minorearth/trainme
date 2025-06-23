@@ -5,7 +5,7 @@ import { Panel } from "@/components/common/panel";
 import MonacoEd from "./monaco/MonacoEd";
 import CodeRunPanel from "@/components/taskset/taskrun/components/coderunPanel";
 import styled from "styled-components";
-import task from "@/components/taskset/taskrun/store/task";
+import task from "@/components/taskset/taskrun/layers/store/task";
 import { observer } from "mobx-react-lite";
 
 const Wrapper = styled.div`

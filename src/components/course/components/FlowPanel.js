@@ -16,9 +16,9 @@ import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButtonNoRipple";
 import { Tooltip } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import navigator from "@/components/Navigator/store/navigator";
-import user from "@/store/user";
-import course from "@/components/course/store/course";
+import navigator from "@/components/Navigator/layers/store/navigator";
+import user from "@/userlayers/store/user";
+import course from "@/components/course/layers/store/course";
 
 const ICON_SIZE = "60px";
 const FlowPanel = observer(() => {

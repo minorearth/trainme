@@ -4,7 +4,7 @@ import {
   getDocDataFromSubCollectionByIdClient,
 } from "@/db/domain/domain";
 import { v4 as uuidv4 } from "uuid";
-import user from "@/store/user";
+import user from "@/userlayers/store/user";
 import { reaction } from "mobx";
 
 import { groupsArrToObject, groupsObjectToArr } from "./utils";

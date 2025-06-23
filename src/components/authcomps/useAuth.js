@@ -18,7 +18,7 @@ import { cleanUpCSP } from "@/db/localstorage";
 import { getDataFetch } from "@/db/APIcalls/calls";
 
 // stores
-import user from "@/store/user";
+import user from "@/userlayers/store/user";
 import authForm from "@/components/authcomps/store";
 import progressStore from "@/components/common/splash/progressdots/store";
 
@@ -45,7 +45,7 @@ export const useAuth = () => {
       da.info.wrongpsw();
       return;
     }
-    user.setUserName(allUserMeta.name);
+    user.setUserNameP(allUserMeta.name);
     router.push(`/chapters`);
   };
 

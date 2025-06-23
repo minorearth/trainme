@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { updateUserInGroupClient } from "@/db/domain/domain";
 
-import user from "@/store/user";
+import user from "@/userlayers/store/user";
 
 const useJoinGroup = ({ groupid, manager }) => {
   const [firstName, setFirstName] = useState("");

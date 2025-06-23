@@ -14,7 +14,7 @@ import AdminPanel from "@/components/admin/adminpanel";
 import SplashTimeout from "@/components/common/splash/splashTimeout/splashTimeout";
 import SplashAction from "@/components/common/splash/splashAction/splashAction";
 import stn from "@/globals/settings";
-import usePyodide from "@/components/Navigator/hooks/usePyodide.js";
+import usePyodide from "@/components/pyodide/usePyodide.js";
 import Courses from "@/components/courses/courses";
 import Champ from "@/components/champ/Champ";
 import FloatMenu from "@/components/Navigator/floatMenu";
@@ -26,11 +26,11 @@ import TawkToChat from "@/components/common/tawkto/tawkto.js";
 import { toJS } from "mobx";
 
 //stores
-import navigator from "@/components/Navigator/store/navigator";
+import navigator from "@/components/Navigator/layers/store/navigator";
 import taskset from "@/components/taskset/layers/store/taskset";
-import course from "@/components/course/store/course";
+import course from "@/components/course/layers/store/course";
 import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
-import pyodide from "@/components/Navigator/store/pyodide";
+import pyodide from "@/components/pyodide/pyodide";
 
 const Navigator = observer(() => {
   const [showSplashTimeout, setShowSplashTimeout] = useState(true);

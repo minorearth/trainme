@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { initializeFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import user from "@/store/user";
+import user from "@/userlayers/store/user";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,

@@ -7,15 +7,15 @@ import {
   setMoney,
 } from "@/db/SA/firebaseSA";
 import { load } from "@/components/admin/adminutils";
-import user from "@/store/user";
+import user from "@/userlayers/store/user";
 import { courses } from "@/globals/courses";
 import Input from "@mui/material/Input";
 import { useState } from "react";
 import { updateSCP } from "@/db/localstorage";
-import navigator from "@/components/Navigator/store/navigator";
+import navigator from "@/components/Navigator/layers/store/navigator";
 import taskset from "@/components/taskset/layers/store/taskset";
-import task from "@/components/taskset/taskrun/store/task";
-import course from "@/components/course/store/course";
+import task from "@/components/taskset/taskrun/layers/store/task";
+import course from "@/components/course/layers/store/course";
 
 const AdminPanel = () => {
   const [inValue, setInValue] = useState(5000);
@@ -126,7 +126,7 @@ const AdminPanel = () => {
       </Button>
       <Button
         onClick={() => {
-          task.setCurrTask(taskset.allTasks.length - 1);
+          task.setCurrTaskP(taskset.allTasks.length - 1);
         }}
       >
         lasttask
