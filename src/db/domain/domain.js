@@ -18,6 +18,7 @@ import {
   getMultipleDocs,
   setDocInSubCollection,
   getDocDataFromSubCollectionById,
+  updateDocByid,
 } from "@/db/CA/dataModel";
 
 import {
@@ -86,6 +87,10 @@ export const getDocDataFromCollectionByIdClient = async (
   return await getDocDataFromCollectionById(db, collectionName, id);
 };
 
+export const updateDocByidClient = async (collectionName, id, data) => {
+  return await updateDocByid(db, collectionName, id, data);
+};
+
 export const getDocDataFromSubCollectionByIdClient = async (
   collectionName1,
   id1,
@@ -108,8 +113,6 @@ export const getDocFromCollectionByIdClient = async (collectionName, id) => {
 export const getMultipleDocsClient = async (collectionName, ids) => {
   return await getMultipleDocs(db, collectionName, ids);
 };
-
-getMultipleDocs;
 
 export const getDocFromCollectionByIdRealtimeClient = async (
   collectionName,

@@ -1,19 +1,19 @@
-"use client";
-import { useState, useEffect } from "react";
-import {
-  getDocFromCollectionByIdRealtimeClient,
-  setDocInCollectionClient,
-  updateUsersInChampClient,
-  updateChampStatusClient,
-  getDocDataFromCollectionByIdClient,
-} from "@/db/domain/domain";
-
 import { getRandomTasksForChamp } from "@/components/taskset/layers/repository/repository";
+import { ObjtoArr } from "@/globals/utils/objectUtils";
+
+import {
+  subscribeOnChamp,
+  updateUserInChamp,
+  getUserChampStatus,
+  createNewChamp,
+  setChampStarted,
+} from "@/components/champ/layers/repository/repository";
+
+import { sortItems2 } from "@/components/champ/layers/services/utils";
 
 import { da } from "@/components/common/dialog/dialogMacro";
 
 import { generateString } from "@/globals/utils/utilsRandom";
-import stn from "@/globals/settings";
 import user from "@/userlayers/store/user";
 import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
 import navigator from "@/components/Navigator/layers/store/navigator";
@@ -31,29 +31,21 @@ export const createChamp = async () => {
   } else {
     const champid = generateString(7);
     champ.setChampIdP(champid);
-    setDocInCollectionClient(
-      stn.collections.CHAMPS,
-      { tasks, users: [], status: "created" },
-      champid
-    );
+    createNewChamp({ tasks, champid });
   }
 };
 
 export const joinChamp = async () => {
   try {
-    const champData = await getDocDataFromCollectionByIdClient(
-      stn.collections.CHAMPS,
-      champ.champid
-    );
-    champData;
-    if (
-      !champData.data.users[user.userid]?.persstatus ||
-      champData.data.users[user.userid].persstatus == "joined"
-    ) {
-      champ.setMonitoringStarted(true);
-      await updateUsersInChampClient(
-        stn.collections.CHAMPS,
-        {
+    const persstatus = await getUserChampStatus({
+      userid: user.userid,
+      champid: champ.champid,
+    });
+
+    if (persstatus == "joined" || persstatus == "undefined") {
+      champ.setCapturingChampstart(true);
+      updateUserInChamp({
+        data: {
           id: user.userid,
           name: user.nickname,
           change: 0,
@@ -61,13 +53,11 @@ export const joinChamp = async () => {
           persstatus: "joined",
           avatarid: user.avatarid,
         },
-        champ.champid
-      );
-    } else if (champData.data.users[user.userid].persstatus == "champwip") {
-      da.info.champblocked();
-    } else if (champData.data.users[user.userid].persstatus == "champisover") {
-      da.info.champover();
+        champid: champ.champid,
+      });
     }
+    if (persstatus == "champwip") da.info.champblocked();
+    if (persstatus == "champisover") da.info.champover();
   } catch (e) {
     da.info.nochamp(e);
   }
@@ -78,5 +68,56 @@ export const startChamp = async (champid) => {
     `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard/${champid}`,
     "_blank"
   );
-  updateChampStatusClient(stn.collections.CHAMPS, "started", champid);
+  await setChampStarted({ champid });
+};
+
+const launchChamp = (champdoc) => {
+  if (
+    champdoc.status == "started" &&
+    champdoc.users[user.userid]?.persstatus == "joined"
+  ) {
+    countdowncircle.show(() => {
+      navigator.actions.openLessonStartPage({
+        champid: champ.champid,
+        nodemode: "champ",
+      });
+      updateUserInChamp({
+        data: {
+          id: user.userid,
+          name: user.nickname,
+          change: 0,
+          pts: 0,
+          persstatus: "champwip",
+          avatarid: user.avatarid,
+        },
+        champid: champ.champid,
+      });
+      champ.setCapturingChampstart(false);
+    });
+  }
+};
+
+export const captureAndLaunchChamp = async () => {
+  await subscribeOnChamp({
+    champid: champ.champid,
+    action: launchChamp,
+  });
+};
+
+const setUsersAndsmth = (champdoc) => {
+  const usersArr = ObjtoArr(champdoc?.users);
+  const usersSorted = sortItems2({
+    users: usersArr,
+    items: champ.users,
+    champstarted: champdoc?.status == "started" ? true : false,
+  });
+  champ.setUsers(usersSorted);
+  champ.setChampStarted(champdoc?.status == "started" ? true : false);
+};
+
+export const captureUsersJoined = async () => {
+  await subscribeOnChamp({
+    champid: champ.champid,
+    action: setUsersAndsmth,
+  });
 };

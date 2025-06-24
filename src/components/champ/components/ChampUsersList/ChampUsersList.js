@@ -3,6 +3,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import UserCard from "@/components/champ/components/userCard";
 import useDashboard from "@/components/champ/components/ChampUsersList/dashboardVC";
 import Box from "@mui/material/Box";
+import champ from "@/components/champ/layers/store/champ";
+import { observer } from "mobx-react-lite";
+import { toJS } from "mobx";
 
 const ListItem = ({ key, name, pts, change, avatarid }) => (
   <motion.div
@@ -21,57 +24,24 @@ const ListItem = ({ key, name, pts, change, avatarid }) => (
   </motion.div>
 );
 
-const SortableList = ({ champid }) => {
-  const { rows, started } = useDashboard({ champid });
-
-  const rows2 = [
-    { id: 1, name: "Тест 1", pts: 0, change: 0 },
-    { id: 2, name: "Тест 2", pts: 0, change: 0 },
-    { id: 3, name: "Тест 3", pts: 0, change: 0 },
-    { id: 4, name: "Тест 4", pts: 20, change: 0 },
-    { id: 5, name: "Тест 5", pts: 21, change: 0 },
-    { id: 6, name: "Тест 6", pts: 0, change: 0 },
-    { id: 7, name: "Тест 7", pts: 10, change: 0 },
-    { id: 8, name: "Тест 8", pts: 0, change: 0 },
-    { id: 9, name: "Тест 9", pts: 0, change: 0 },
-    { id: 10, name: "Тестsdfa faf 1", pts: 12, change: 0 },
-    { id: 11, name: "Тест adfasdfa  1", pts: 0, change: 0 },
-    { id: 12, name: "Тестsdf 1", pts: 0, change: 0 },
-    { id: 13, name: "Тестsdf 1", pts: 0, change: 0 },
-    { id: 14, name: "Тестs 1", pts: 0, change: 0 },
-    { id: 15, name: "Тест 1sdf", pts: 0, change: 0 },
-    { id: 16, name: "Тест 1sdf", pts: 0, change: 0 },
-  ];
-  const [items, setItems] = useState(rows);
-
-  const sortItems = () => {
-    const sortedItems = [...rows].sort((a, b) => b.pts - a.pts);
-
-    const getItemOldPos = (item, id) => {
-      if (!started || item.pts == 0) {
-        return 0;
-      }
-      for (let i = 0; i < items.length; i++) {
-        if (items[i].id == item.id) {
-          return i - id == 0 ? items[i].change : i - id;
-        }
-      }
-      return 0;
-    };
-
-    setItems(
-      sortedItems.map((item, id) => ({
-        ...item,
-        change: getItemOldPos(item, id),
-      }))
-    );
-  };
+const SortableList = observer(({ champid }) => {
+  useDashboard({ champid });
 
   useEffect(() => {
-    sortItems();
-  }, [rows]);
+    // return reaction(
+    //   () => champ.users,
+    //   () => {
+    //     sortItems({
+    //       users: champ.users,
+    //       setItems,
+    //       items,
+    //       champstarted: champ.champstarted,
+    //     });
+    //   }
+    // );
+  }, []);
 
-  if (!items.length)
+  if (!champ.users.length)
     return (
       <Box
         sx={{
@@ -98,7 +68,7 @@ const SortableList = ({ champid }) => {
       }}
     >
       <AnimatePresence>
-        {items.map((item, id) => (
+        {champ.users.map((item, id) => (
           <ListItem
             key={item.id}
             name={item.name}
@@ -110,6 +80,6 @@ const SortableList = ({ champid }) => {
       </AnimatePresence>
     </Box>
   );
-};
+});
 
 export default SortableList;

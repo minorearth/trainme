@@ -1,41 +1,12 @@
-"use client";
 import { useState, useEffect } from "react";
-import { getDocFromCollectionByIdRealtimeClient } from "@/db/domain/domain";
+import champ from "@/components/champ/layers/store/champ";
 
-import { ObjtoArr } from "@/globals/utils/objectUtils";
-import stn from "@/globals/settings";
-
-const useDashboard = ({ champid }) => {
-  const [rows, setRowsx] = useState([]);
-  const [started, setStarted] = useState(false);
-
+const useDashboard = () => {
   useEffect(() => {
-    if (!champid) return;
-    getDocFromCollectionByIdRealtimeClient(
-      stn.collections.CHAMPS,
-      champid,
-      (data) => {
-        setRowsx(ObjtoArr(data?.users));
-        setStarted(data?.status == "started" ? true : false);
-      }
-    ).then((docData) => {
-      setInterval(() => {
-        docData.unsubscribe();
-      }, 1000 * 60 * 30);
-      setRowsx(ObjtoArr(docData?.data?.users));
-      setStarted(docData?.data?.status == "started" ? true : false);
-    });
-    return () => {
-      console.log("grid unmounted");
-    };
-    // }, [surveyid, survey.showSurvey]);
-  }, [champid]);
+    champ.actions.captureUsersJoined();
+  }, []);
 
-  return {
-    rows,
-    setRowsx,
-    started,
-  };
+  return {};
 };
 
 export default useDashboard;

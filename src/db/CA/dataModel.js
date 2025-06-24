@@ -106,6 +106,11 @@ export const updateChampStatus = async (db, collectionName, status, id) => {
   });
 };
 
+export const updateDocByid = async (db, collectionName, id, data) => {
+  const ref = doc(db, collectionName, id);
+  const feed = await updateDoc(ref, data);
+};
+
 export const getDocDataFromCollectionById = async (db, collectionName, id) => {
   const docSnap = await getDoc(doc(db, collectionName, id));
   const data = docSnap.data();
@@ -136,15 +141,15 @@ export const getDocFromCollectionByIdRealtime = async (
   db,
   collectionName,
   id,
-  refreshdata
+  onChangeAction
 ) => {
   const docRef = doc(db, collectionName, id);
   const unsubscribe = onSnapshot(docRef, (doc) => {
-    refreshdata(doc.data());
+    onChangeAction(doc.data());
   });
   const docSnap = await getDoc(docRef);
-  const data = docSnap.data();
-  return { data: { id: docSnap.id, ...data }, unsubscribe };
+  // const data = docSnap.data();
+  return unsubscribe;
 };
 
 export const addDocInCollection = async (db, collectionName, data) => {

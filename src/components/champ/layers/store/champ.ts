@@ -4,6 +4,7 @@ import {
   createChamp,
   joinChamp,
   startChamp,
+  captureUsersJoined,
 } from "@/components/champ/layers/services/services";
 
 class champ {
@@ -11,12 +12,15 @@ class champ {
     createChamp,
     joinChamp,
     startChamp,
+    captureUsersJoined,
   };
   champid = null;
   state = {};
   taskcount = 5;
   range = [1, 30];
-  monitoringStarted = false;
+  capturingChampstart = false;
+  champstarted = false;
+  users = [];
 
   eraseStateP() {
     this.range = [1, 30];
@@ -32,8 +36,17 @@ class champ {
     this.range = range;
   };
 
-  setMonitoringStarted = (started: any) => {
-    this.monitoringStarted = started;
+  setCapturingChampstart = (started: any) => {
+    this.capturingChampstart = started;
+  };
+
+  setChampStarted = (started: any) => {
+    this.champstarted = started;
+  };
+
+  setUsers = (users: any) => {
+    console.log("here", users);
+    this.users = users;
   };
 
   setState(data: any) {

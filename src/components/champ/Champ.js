@@ -17,6 +17,7 @@ import user from "@/userlayers/store/user";
 const Champ = observer(() => {
   const [activeStep, setActiveStep] = useState(0);
   const [createMode, setCreateMode] = useState();
+  useChamps();
 
   return (
     <Box

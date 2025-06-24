@@ -95,7 +95,7 @@ const recoverTasks = async ({ CSP }) => {
     level,
     randomsaved,
     chapterid,
-    userProgress: CSP.user.progress,
+    userProgress: CSP.user?.progress,
     courseid,
     champid,
     recapTasksIds,
