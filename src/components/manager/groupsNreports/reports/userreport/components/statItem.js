@@ -16,15 +16,12 @@ import {
 } from "@mui/x-tree-view/TreeItem";
 import { TreeItemIcon } from "@mui/x-tree-view/TreeItemIcon";
 import { TreeItemProvider } from "@mui/x-tree-view/TreeItemProvider";
-import { useUserReport } from "@/components/manager/components/reports/userreport/userReportVC";
-
+import stat from "@/components/manager/groupsNreports/store/stat";
 const CustomStatItem = React.forwardRef(function CustomStatItem(
   { id, itemId, label, disabled, children },
   ref
 ) {
   const item = useTreeItemModel(itemId);
-
-  const { showCode } = useUserReport();
 
   const {
     getContextProviderProps,
@@ -52,7 +49,7 @@ const CustomStatItem = React.forwardRef(function CustomStatItem(
             {...getLabelProps()}
             toggleItemEditing={interactions.toggleItemEditing}
             // isGroup={item.isFolder}
-            showCode={() => showCode(item.code)}
+            showCode={() => stat.actions.showCode(item.code)}
             type={item.type}
           />
         </TreeItemContent>

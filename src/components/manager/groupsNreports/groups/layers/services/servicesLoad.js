@@ -1,0 +1,29 @@
+import { getReadyCourses } from "@/globals/courses";
+import {
+  getAllTasksData,
+  getGroupsObj,
+  getChaptersObjdata,
+} from "@/components/manager/groupsNreports/groups/layers/repository/repository";
+import stat from "@/components/manager/groupsNreports/store/stat";
+import user from "@/userlayers/store/user";
+
+export const getAllCoursesTasks = async () => {
+  const readyCourses = getReadyCourses();
+  let allCoursesTasks = {};
+  await Promise.all(
+    readyCourses.map(async (courseid) => {
+      allCoursesTasks[courseid] = await getAllTasksData(courseid);
+    })
+  );
+  stat.setAllCoursesTasks(allCoursesTasks);
+};
+
+export const getGroups = async () => {
+  const groupsObj = await getGroupsObj(user.userid);
+  stat.setGroupData(groupsObj);
+};
+
+export const getChaptersObj = async () => {
+  const chaptersObj = await getChaptersObjdata();
+  stat.setChaptersObj(chaptersObj);
+};

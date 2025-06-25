@@ -3,7 +3,7 @@
 
 import Box from "@mui/material/Box";
 import { observer } from "mobx-react-lite";
-import stat from "@/components/manager/store/stat";
+import stat from "@/components/manager/groupsNreports/store/stat";
 import Typography from "@mui/material/Typography";
 
 const CodeViewer = observer(() => {

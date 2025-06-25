@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import UserCard from "@/components/champ/components/userCard";
-import useDashboard from "@/components/champ/components/ChampUsersList/dashboardVC";
 import Box from "@mui/material/Box";
 import champ from "@/components/champ/layers/store/champ";
 import { observer } from "mobx-react-lite";
@@ -24,23 +23,7 @@ const ListItem = ({ key, name, pts, change, avatarid }) => (
   </motion.div>
 );
 
-const SortableList = observer(({ champid }) => {
-  useDashboard({ champid });
-
-  useEffect(() => {
-    // return reaction(
-    //   () => champ.users,
-    //   () => {
-    //     sortItems({
-    //       users: champ.users,
-    //       setItems,
-    //       items,
-    //       champstarted: champ.champstarted,
-    //     });
-    //   }
-    // );
-  }, []);
-
+const SortableList = observer(() => {
   if (!champ.users.length)
     return (
       <Box

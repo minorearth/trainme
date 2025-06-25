@@ -1,15 +1,12 @@
 import Box from "@mui/material/Box";
-import PivotTable from "./pivot";
-import stat from "@/components/manager/store/stat";
+import PivotTable from "./components/pivot";
+import stat from "@/components/manager/groupsNreports/store/stat";
 import { observer } from "mobx-react-lite";
-import usePivotReport from "./pivotVC";
 import { IconButton } from "@mui/material";
 import MonochromePhotosOutlinedIcon from "@mui/icons-material/MonochromePhotosOutlined";
 import RefreshOutlinedIcon from "@mui/icons-material/RefreshOutlined";
 
 const PivotReports = observer(() => {
-  const { makeSnapshot, showReport } = usePivotReport();
-
   if (stat.reportvisible)
     return (
       <Box sx={{ overflow: "scroll" }}>
@@ -25,7 +22,7 @@ const PivotReports = observer(() => {
             <IconButton
               size="small"
               onClick={() => {
-                showReport(stat.groupSelected);
+                stat.actions.showReport(stat.groupSelected);
               }}
               sx={{ color: "text.secondary" }}
             >
@@ -33,7 +30,7 @@ const PivotReports = observer(() => {
             </IconButton>
             <IconButton
               size="small"
-              onClick={() => makeSnapshot()}
+              onClick={() => stat.actions.makeSnapshot()}
               sx={{ color: "text.secondary" }}
             >
               <MonochromePhotosOutlinedIcon fontSize="small" />

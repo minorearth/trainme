@@ -2,7 +2,6 @@
 import { Box } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { Button } from "@mui/material";
-import useChamps from "./champVC";
 import { useState } from "react";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -17,7 +16,6 @@ import user from "@/userlayers/store/user";
 const Champ = observer(() => {
   const [activeStep, setActiveStep] = useState(0);
   const [createMode, setCreateMode] = useState();
-  useChamps();
 
   return (
     <Box
@@ -243,7 +241,7 @@ const Champ = observer(() => {
             alignItems: "center",
           }}
         >
-          <SortableList champid={champ.champid} />
+          <SortableList />
         </Box>
       )}
     </Box>

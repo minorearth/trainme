@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import champ from "@/components/champ/layers/store/champ";
 
-const useDashboard = () => {
+const useDashboard = ({ champid }) => {
   useEffect(() => {
-    champ.actions.captureUsersJoined();
+    champ.actions.captureUsersJoined({ champid });
   }, []);
-
-  return {};
 };
 
 export default useDashboard;

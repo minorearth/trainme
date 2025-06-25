@@ -9,7 +9,7 @@ import {
   setChampStarted,
 } from "@/components/champ/layers/repository/repository";
 
-import { sortItems2 } from "@/components/champ/layers/services/utils";
+import { sortItems } from "@/components/champ/layers/services/utils";
 
 import { da } from "@/components/common/dialog/dialogMacro";
 
@@ -31,6 +31,7 @@ export const createChamp = async () => {
   } else {
     const champid = generateString(7);
     champ.setChampIdP(champid);
+    champ.setUsers([]);
     createNewChamp({ tasks, champid });
   }
 };
@@ -41,9 +42,13 @@ export const joinChamp = async () => {
       userid: user.userid,
       champid: champ.champid,
     });
-
+    console.log("persstatus", persstatus, champ.champid);
     if (persstatus == "joined" || persstatus == "undefined") {
       champ.setCapturingChampstart(true);
+      if (champ.champid != champ.subscribedChampid) {
+        captureUsersJoined({ champid: champ.champid });
+        captureChampStart({ champid: champ.champid });
+      }
       updateUserInChamp({
         data: {
           id: user.userid,
@@ -97,27 +102,29 @@ const launchChamp = (champdoc) => {
   }
 };
 
-export const captureAndLaunchChamp = async () => {
+export const captureChampStart = async ({ champid }) => {
   await subscribeOnChamp({
-    champid: champ.champid,
+    champid,
     action: launchChamp,
   });
 };
 
 const setUsersAndsmth = (champdoc) => {
   const usersArr = ObjtoArr(champdoc?.users);
-  const usersSorted = sortItems2({
-    users: usersArr,
-    items: champ.users,
-    champstarted: champdoc?.status == "started" ? true : false,
+  const champstarted = champdoc?.status == "started" ? true : false;
+  const usersSorted = sortItems({
+    newusers: usersArr,
+    oldusers: champ.users,
+    champstarted,
   });
   champ.setUsers(usersSorted);
-  champ.setChampStarted(champdoc?.status == "started" ? true : false);
+  champ.setChampStarted(champstarted);
 };
 
-export const captureUsersJoined = async () => {
+export const captureUsersJoined = async ({ champid }) => {
+  champ.setSubscribedChampid(champid);
   await subscribeOnChamp({
-    champid: champ.champid,
+    champid,
     action: setUsersAndsmth,
   });
 };

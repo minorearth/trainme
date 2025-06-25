@@ -1,6 +1,7 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { updateSCP, updateKeySCP } from "@/db/localstorage";
 import { getUserCourseProgress } from "@/userlayers/repository/repository";
+import { checkNickName } from "@/components/champ/layers/services/utils";
 
 class user {
   userid = "";
@@ -13,10 +14,7 @@ class user {
   actions = { getUserCourseProgress };
 
   changeNickName(nickname) {
-    const correctNick = /^[А-яёЁёA-Za-z][А-яёЁA-Za-z0-9 ]{0,25}$/.test(
-      nickname
-    );
-    this.nicknamechecked = correctNick;
+    this.nicknamechecked = checkNickName(nickname);
     this.nickname = nickname;
   }
 
@@ -47,6 +45,7 @@ class user {
   setUserName = (username) => {
     this.username = username;
     this.nickname = username;
+    this.nicknamechecked = checkNickName(username);
   };
 
   // setUserName(name) {

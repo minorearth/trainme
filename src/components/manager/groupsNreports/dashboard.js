@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
-import UserReport from "@/components/manager/components/reports/userreport/userReport";
+import UserReport from "@/components/manager/groupsNreports/reports/userreport/userReport";
 import { observer } from "mobx-react-lite";
-import PivotReports from "@/components/manager/components/reports/pivotreport/reports";
-import Groups from "@/components/manager/components/groups/groups";
+import PivotReports from "@/components/manager/groupsNreports/reports/pivotreport/reports";
+import Groups from "@/components/manager/groupsNreports/groups/groups";
 
 const DashBoard = observer(() => {
   return (

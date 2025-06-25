@@ -3,27 +3,24 @@ import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import { IconButton } from "@mui/material";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import RefreshOutlinedIcon from "@mui/icons-material/RefreshOutlined";
-import { useGroups } from "./groupsVC";
-import CustomTreeItem from "@/components/manager/components/groups/groupItem/groupItem";
-import stat from "@/components/manager/store/stat";
+import CustomTreeItem from "@/components/manager/groupsNreports/groups/components/groupItem";
+import stat from "@/components/manager/groupsNreports/store/stat";
 import { observer } from "mobx-react-lite";
 
 const Groups = observer(() => {
-  const { changeLabel, addNewGroup, fetchGroupsData } = useGroups();
-
   return (
     <Box sx={{ flexDirection: "column", display: "flex", minWidth: "350px" }}>
       <Box sx={{ flexDirection: "row", display: "flex" }}>
         <IconButton
           size="small"
-          onClick={addNewGroup}
+          onClick={stat.actions.addNewGroup}
           sx={{ color: "text.secondary" }}
         >
           <GroupAddOutlinedIcon fontSize="small" />
         </IconButton>
         <IconButton
           size="small"
-          onClick={fetchGroupsData}
+          onClick={stat.actions.getGroups}
           sx={{ color: "text.secondary" }}
         >
           <RefreshOutlinedIcon fontSize="small" />
@@ -34,7 +31,9 @@ const Groups = observer(() => {
         slots={{ item: CustomTreeItem }}
         items={stat.groupsdata}
         isItemEditable
-        onItemLabelChange={(itemId, label) => changeLabel({ itemId, label })}
+        onItemLabelChange={(itemId, label) =>
+          stat.actions.changeLabel({ itemId, label })
+        }
       />
     </Box>
   );

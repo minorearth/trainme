@@ -26,9 +26,7 @@ import {
 import { TreeItemIcon } from "@mui/x-tree-view/TreeItemIcon";
 import { TreeItemProvider } from "@mui/x-tree-view/TreeItemProvider";
 import { TreeItemLabelInput } from "@mui/x-tree-view/TreeItemLabelInput";
-import stat from "@/components/manager/store/stat";
-import usePivotReport from "@/components/manager/components/reports/pivotreport/pivotVC";
-import { useUserReport } from "@/components/manager/components/reports/userreport/userReportVC";
+import stat from "@/components/manager/groupsNreports/store/stat";
 
 const CustomTreeItem = React.forwardRef(function CustomTreeItem(
   { id, itemId, label, disabled, children },
@@ -46,15 +44,6 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
     getLabelInputProps,
     status,
   } = useTreeItem({ id, itemId, label, disabled, children, rootRef: ref });
-
-  const { showReport } = usePivotReport();
-  const { showUserReport } = useUserReport();
-
-  const copyGroupLink = (itemId) => {
-    navigator.clipboard.writeText(
-      `${process.env.NEXT_PUBLIC_DOMAIN}/joingroup/${itemId}/${user.userid}`
-    );
-  };
 
   const { interactions } = useTreeItemUtils({
     itemId,
@@ -76,13 +65,13 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
           ) : (
             <CustomLabel
               {...getLabelProps()}
-              copyGroupLink={() => copyGroupLink(itemId)}
+              copyGroupLink={() => stat.actions.copyGroupLink(itemId)}
               toggleItemEditing={interactions.toggleItemEditing}
               isGroup={item.isFolder}
-              showUserMeta={() => showUserReport(item.uid)}
+              showUserMeta={() => stat.actions.showUserReport(item.uid)}
               showReport={() => {
                 stat.setGroupSelected(itemId);
-                showReport(itemId);
+                stat.actions.showReport(itemId);
               }}
             />
           )}

@@ -3,8 +3,8 @@ const stn = {
   mode: {
     needCt: false,
     DEV_MODE: process.env.NEXT_PUBLIC_DEV_MODE == "YES",
-    allowcopy: false,
-    allowpaste: false,
+    allowcopy: true,
+    allowpaste: true,
     pyodideCDN: false,
   },
 

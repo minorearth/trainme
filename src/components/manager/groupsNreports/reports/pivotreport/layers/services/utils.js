@@ -1,0 +1,8 @@
+export const chaptersObjToArray = (chapters) => {
+  const res = Object.keys(chapters).map((chapterId) => ({
+    chapterId,
+    order: chapters[chapterId].order,
+    maxcoins: chapters[chapterId].maxcoins,
+  }));
+  return res.sort((a, b) => a.order - b.order);
+};

@@ -21,6 +21,7 @@ class champ {
   capturingChampstart = false;
   champstarted = false;
   users = [];
+  subscribedChampid = "";
 
   eraseStateP() {
     this.range = [1, 30];
@@ -45,7 +46,6 @@ class champ {
   };
 
   setUsers = (users: any) => {
-    console.log("here", users);
     this.users = users;
   };
 
@@ -70,6 +70,10 @@ class champ {
 
   setChampId(id: any) {
     this.champid = id;
+  }
+
+  setSubscribedChampid(champid: any) {
+    this.subscribedChampid = champid;
   }
 
   updateState(data: any) {

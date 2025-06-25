@@ -1,17 +1,5 @@
 import { courses } from "@/globals/courses";
 
-const prepareStatTaskCode = (task, text) => {
-  let res = `${text}\n\n`;
-  if (task.code) {
-    res += `Засчитанный код:\n${task.code}`;
-    res += "\n\n";
-  }
-  if (task.errorcode) {
-    res += `Последний неправильный код:\n${task.errorcode}`;
-  }
-  return res;
-};
-
 export const getReportTree = (userstat, chaptersobj, allCoursesTasks) => {
   const res = Object.keys(userstat).map((courseId) => ({
     id: courseId,
@@ -52,5 +40,17 @@ export const getReportTree = (userstat, chaptersobj, allCoursesTasks) => {
       },
     ],
   }));
+  return res;
+};
+
+const prepareStatTaskCode = (task, text) => {
+  let res = `${text}\n\n`;
+  if (task.code) {
+    res += `Засчитанный код:\n${task.code}`;
+    res += "\n\n";
+  }
+  if (task.errorcode) {
+    res += `Последний неправильный код:\n${task.errorcode}`;
+  }
   return res;
 };
