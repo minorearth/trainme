@@ -2,11 +2,6 @@ import { logout } from "@/db/SA/session";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { da } from "@/components/common/dialog/dialogMacro";
-import {
-  checkSignUpFields,
-  checkResetPswFields,
-  checkSignInFields,
-} from "@/components/authcomps/authUtils";
 
 import {
   SignUpUserClient,
@@ -21,6 +16,7 @@ import { getDataFetch } from "@/db/APIcalls/calls";
 import user from "@/userlayers/store/user";
 import authForm from "@/components/authcomps/store";
 import progressStore from "@/components/common/splash/progressdots/store";
+import txtField from "@/components/authcomps/components/textfield/store";
 
 export const useAuth = () => {
   const router = useRouter();
@@ -49,40 +45,12 @@ export const useAuth = () => {
     router.push(`/chapters`);
   };
 
-  const validateResetPswInputs = (email) => {
-    const errors = checkResetPswFields({ email });
-    Object.keys(errors.errors).forEach((key) =>
-      authForm.setState(key, errors.errors[key])
-    );
-    return errors.isValid;
-  };
-
-  const validateSignInInputs = (email, password) => {
-    const errors = checkSignInFields({ email, password });
-    Object.keys(errors.errors).forEach((key) =>
-      authForm.setState(key, errors.errors[key])
-    );
-    return errors.isValid;
-  };
-
-  const validateSignUpInputs = (email, password, name) => {
-    const errors = checkSignUpFields({ email, password, name });
-    Object.keys(errors.errors).forEach((key) =>
-      authForm.setState(key, errors.errors[key])
-    );
-    return errors.isValid;
-  };
-
   const handleSignInSubmit = async (event) => {
     event.preventDefault();
     progressStore.setShowProgress(true);
-    const data = new FormData(event.currentTarget);
-    const email = data.get("email");
-    const password = data.get("password");
-    const isValid = validateSignInInputs(email, password);
-    if (isValid) {
+    if (txtField.validate(["email", "password"])) {
       cleanUpCSP();
-      await authNow(email, password);
+      await authNow(txtField.state.email.value, txtField.state.password.value);
       // router.replace("/chapters"); // заменяет текущую страницу
     } else {
       progressStore.setCloseProgress();
@@ -91,26 +59,20 @@ export const useAuth = () => {
 
   const handleForgetPswSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get("email");
-    const isValid = validateResetPswInputs(email);
-
-    if (isValid) {
-      resetPswClient(email);
+    if (txtField.validate(["email"])) {
+      resetPswClient(txtField.state.email.value);
       da.info.resetpsw(authForm.showSignIn());
     }
   };
 
   const handleSignUpSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get("email");
-    const password = data.get("password");
-    const name = data.get("name");
-    const isValid = validateSignUpInputs(email, password, name);
-
-    if (isValid) {
-      const userC = await SignUpUserClient(email, password, name);
+    if (txtField.validate(["email", "password", "name"])) {
+      await SignUpUserClient(
+        txtField.state.email.value,
+        txtField.state.password.value,
+        txtField.state.name.value
+      );
       da.info.accountcreeated(() => authForm.showSignIn());
     }
   };

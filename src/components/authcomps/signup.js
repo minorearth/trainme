@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import AlertDialog from "@/components/common/dialog/dialog";
 import local from "@/globals/local";
 import { HasAcc } from "@/components/authcomps/components/navigation/HasAcc";
-import AuthField from "@/components/authcomps/components/authField";
+import AuthField from "@/components/authcomps/components/textfield/authField";
 import { useAuth } from "@/components/authcomps/useAuth";
 
 const SignUp = () => {
@@ -30,7 +30,7 @@ const SignUp = () => {
         <AuthField type={"email"} />
         <AuthField type={"password"} />
       </FormControl>
-      <Button type="submit" fullWidth variant="contained">
+      <Button onClick={handleSignUpSubmit} fullWidth variant="contained">
         {local.ru.caption.AUTH_SIGNUP}
       </Button>
       <HasAcc />

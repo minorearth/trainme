@@ -57,3 +57,5 @@ export const getGroupUsersObj = (itemId) => {
   );
   return users;
 };
+
+// TODO:PivotReportIcon must be disabled for empty groups

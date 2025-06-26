@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid2";
 import { observer } from "mobx-react-lite";
 import AlertDialog from "@/components/common/dialog/dialog";
 import local from "@/globals/local";
-import AuthField from "@/components/authcomps/components/authField";
+import AuthField from "@/components/authcomps/components/textfield/authField";
 import { useAuth } from "@/components/authcomps/useAuth";
 import { ForgetPsw } from "@/components/authcomps/components/navigation/ForgetPsw";
 import { ShowSignUp } from "@/components/authcomps/components/navigation/ShowSignUp";

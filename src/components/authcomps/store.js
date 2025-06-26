@@ -1,34 +1,18 @@
 import { makeObservable, makeAutoObservable } from "mobx";
+import txtField from "@/components/authcomps/components/textfield/store";
 class authForm {
   signUp = false;
   signIn = true;
   pswReset = false;
-  state = {
-    email: { error: false, value: "", helperText: "" },
-    name: { error: false, value: "", helperText: "" },
-    password: { error: false, value: "", helperText: "" },
-  };
-
-  setState(type, value) {
-    this.state[type] = { ...this.state[type], ...value };
-  }
-
-  resetState() {
-    this.state = {
-      email: { error: false, value: "", helperText: "" },
-      name: { error: false, value: "", helperText: "" },
-      password: { error: false, value: "", helperText: "" },
-    };
-  }
 
   showSignUp() {
-    this.resetState();
+    txtField.resetState();
     this.signUp = true;
     this.signIn = false;
     this.pswReset = false;
   }
   showSignIn() {
-    this.resetState();
+    txtField.resetState();
     this.signIn = true;
     this.signUp = false;
     this.pswReset = false;

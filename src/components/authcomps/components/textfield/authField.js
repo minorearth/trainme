@@ -2,7 +2,6 @@
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import { observer } from "mobx-react-lite";
-import local from "@/globals/local";
 import { useState } from "react";
 import authForm from "@/components/authcomps/store";
 import { Box, Button } from "@mui/material";
@@ -10,38 +9,34 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import { textFieldProps } from "@/components/authcomps/components/textfield/setup";
 
-const getProps = (type) => {
-  switch (true) {
-    case type == "email":
-      return { auto: "email", label: local.ru.caption.AUTH_ENTER_EMAIL };
-    case type == "password":
-      return {
-        auto: "current-password",
-        label: local.ru.caption.AUTH_ENTER_PSW,
-      };
-    case type == "name":
-      return {
-        auto: "name",
-        label: local.ru.caption.AUTH_ENTER_NAME,
-      };
+import txtField from "@/components/authcomps/components/textfield/store";
 
-    default:
-      return {
-        auto: null,
-        label: "",
-      };
-  }
+const PswHideShow = ({ hidePsw, showPsw }) => {
+  return (
+    <InputAdornment position="end">
+      <IconButton
+        aria-label="toggle password visibility"
+        onClick={() => {
+          hidePsw((state) => !state);
+        }}
+        edge="end"
+      >
+        {showPsw ? <RemoveRedEyeOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
+      </IconButton>
+    </InputAdornment>
+  );
 };
 
 const AuthField = observer(({ type }) => {
-  const [value, setValue] = useState("");
+  // const [value, setValue] = useState("");
   const [showPsw, hidePsw] = useState(type == "password");
 
-  const handleChange = (e) => {
-    setValue(e.target.value);
-    authForm.setState(type, { value: e.target.value });
-  };
+  // const handleChange = (e) => {
+  //   setValue(e.target.value);
+  //   authForm.setState(type, { value: e.target.value });
+  // };
 
   return (
     <Box
@@ -71,38 +66,24 @@ const AuthField = observer(({ type }) => {
           inputLabel: { shrink: true },
           input: {
             endAdornment: type == "password" && (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={() => {
-                    hidePsw((state) => !state);
-                  }}
-                  edge="end"
-                >
-                  {showPsw ? (
-                    <RemoveRedEyeOutlinedIcon />
-                  ) : (
-                    <VisibilityOffOutlinedIcon />
-                  )}
-                </IconButton>
-              </InputAdornment>
+              <PswHideShow hidePsw={hidePsw} showPsw={showPsw} />
             ),
           },
         }}
         margin="normal"
-        value={value}
+        value={txtField.state[type].value}
         required
         fullWidth
         id={type}
-        label={getProps(type).label}
+        label={textFieldProps[type].label}
         name={type}
-        autoComplete={getProps(type).auto}
+        autoComplete={textFieldProps[type].auto}
         autoFocus={type == "email" ? true : false}
         type={showPsw ? "password" : null}
-        onChange={(e) => handleChange(e)}
-        error={authForm.state[type].error}
-        helperText={authForm.state[type].helperText}
-        color={authForm.state[type].error ? "error" : "primary"}
+        onChange={(e) => txtField.handleChange2(e.target.value, type)}
+        error={txtField.state[type].error}
+        helperText={txtField.state[type].helperText}
+        color={txtField.state[type].error ? "error" : "primary"}
       />
     </Box>
   );

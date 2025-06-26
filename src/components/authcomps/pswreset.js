@@ -7,7 +7,7 @@ import AlertDialog from "@/components/common/dialog/dialog";
 import local from "@/globals/local";
 import { RecallPsw } from "@/components/authcomps/components/navigation/RecalPsw";
 import { useAuth } from "@/components/authcomps/useAuth";
-import AuthField from "@/components/authcomps/components/authField";
+import AuthField from "@/components/authcomps/components/textfield/authField";
 
 const PswReset = observer(() => {
   const { handleForgetPswSubmit } = useAuth();
