@@ -3,7 +3,6 @@ import * as React from "react";
 import TextField from "@mui/material/TextField";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
-import authForm from "@/components/authcomps/store";
 import { Box, Button } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -29,7 +28,7 @@ const PswHideShow = ({ hidePsw, showPsw }) => {
   );
 };
 
-const AuthField = observer(({ type }) => {
+const AuthField = observer(({ type, sx, stateChanger = () => {} }) => {
   // const [value, setValue] = useState("");
   const [showPsw, hidePsw] = useState(type == "password");
 
@@ -49,6 +48,7 @@ const AuthField = observer(({ type }) => {
     >
       <TextField
         sx={{
+          ...sx,
           "&:-webkit-autofill": {
             // WebkitBoxShadow: `0 0 0 100px ${theme.palette.background.default.toString()} inset`,
             WebkitBoxShadow: `0 0 0 100px #fff inset `,
@@ -80,7 +80,10 @@ const AuthField = observer(({ type }) => {
         autoComplete={textFieldProps[type].auto}
         autoFocus={type == "email" ? true : false}
         type={showPsw ? "password" : null}
-        onChange={(e) => txtField.handleChange2(e.target.value, type)}
+        onChange={(e) => {
+          txtField.handleChange2(e.target.value, type);
+          stateChanger(e.target.value);
+        }}
         error={txtField.state[type].error}
         helperText={txtField.state[type].helperText}
         color={txtField.state[type].error ? "error" : "primary"}

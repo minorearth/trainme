@@ -18,12 +18,13 @@ import user from "@/userlayers/store/user";
 import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import champ from "@/components/champ/layers/store/champ";
+import txtField from "@/components/authcomps/components/textfield/store";
 
 export const createChamp = async () => {
   const tasks = await getRandomTasksForChamp({
     levelStart: champ.range[0],
     levelEnd: champ.range[1],
-    taskCount: champ.taskcount,
+    taskCount: txtField.state.tasknum.value,
     courseid: "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0",
   });
   if (tasks.status == "error") {
@@ -49,10 +50,11 @@ export const joinChamp = async () => {
         captureUsersJoined({ champid: champ.champid });
         captureChampStart({ champid: champ.champid });
       }
+      //TODO:to repostory
       updateUserInChamp({
         data: {
           id: user.userid,
-          name: user.nickname,
+          name: txtField.state.nickname.value,
           change: 0,
           pts: 0,
           persstatus: "joined",
@@ -89,7 +91,7 @@ const launchChamp = (champdoc) => {
       updateUserInChamp({
         data: {
           id: user.userid,
-          name: user.nickname,
+          name: txtField.state.nickname.value,
           change: 0,
           pts: 0,
           persstatus: "champwip",

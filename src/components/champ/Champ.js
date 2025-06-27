@@ -9,9 +9,11 @@ import RangeSlider from "./components/RangeSlider";
 import SortableList from "@/components/champ/components/ChampUsersList/ChampUsersList";
 import StepByStep from "@/components/champ/components/Stepper";
 import AvatarSelector from "@/components/champ/components/avatar/avatar";
+import AuthField from "@/components/authcomps/components/textfield/authField";
 
 import champ from "@/components/champ/layers/store/champ";
 import user from "@/userlayers/store/user";
+import txtField from "@/components/authcomps/components/textfield/store";
 
 const Champ = observer(() => {
   const [activeStep, setActiveStep] = useState(0);
@@ -50,14 +52,7 @@ const Champ = observer(() => {
               gap: "30px",
             }}
           >
-            <TextField
-              id="outlined-basic"
-              label="Введите имя"
-              variant="outlined"
-              onChange={(e) => user.changeNickName(e.target.value)}
-              value={user.nickname}
-              fullWidth
-            />
+            <AuthField type={"nickname"} />
             <AvatarSelector />
 
             <Button
@@ -65,7 +60,7 @@ const Champ = observer(() => {
               onClick={() => {
                 setActiveStep(1);
               }}
-              disabled={!user.nicknamechecked}
+              disabled={txtField.state.nickname.error}
               variant="outlined"
               fullWidth
             >
@@ -130,24 +125,18 @@ const Champ = observer(() => {
               <Typography>Сложность</Typography>
               <RangeSlider />
             </>
-
-            <TextField
-              id="outlined-basic"
-              label="Количество задач"
-              variant="outlined"
+            <AuthField
+              type={"tasknum"}
               sx={{
                 "& .MuiInputBase-input": {
                   textAlign: "center",
                   fontSize: "24px",
                 },
               }}
-              onChange={(e) => champ.setTaskCount(e.target.value)}
-              value={champ.taskcount}
-              width="30%"
             />
 
             <Button
-              disabled={!champ.taskcount}
+              disabled={txtField.state.tasknum.error}
               onClick={() => {
                 champ.actions.createChamp();
                 setActiveStep(2);
@@ -201,13 +190,9 @@ const Champ = observer(() => {
               gap: "30px",
             }}
           >
-            <TextField
-              id="outlined-basic"
-              label="Номер чемпионата"
-              variant="outlined"
-              onChange={(e) => champ.setChampIdP(e.target.value)}
-              value={champ.champid}
-              fullWidth
+            <AuthField
+              type={"champid"}
+              stateChanger={(value) => champ.setChampIdP(value)}
             />
 
             <Button

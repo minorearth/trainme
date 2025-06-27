@@ -16,7 +16,6 @@ class champ {
   };
   champid = null;
   state = {};
-  taskcount = 5;
   range = [1, 30];
   capturingChampstart = false;
   champstarted = false;
@@ -25,7 +24,6 @@ class champ {
 
   eraseStateP() {
     this.range = [1, 30];
-    this.taskcount = 5;
     this.state = {};
     this.champid = null;
     updateSCP({
@@ -54,10 +52,6 @@ class champ {
   }
 
   changeTaskCount = (e: any) => {};
-
-  setTaskCount(taskcount: any) {
-    if (/^\d{0,2}$/.test(taskcount)) this.taskcount = taskcount;
-  }
 
   getChampId() {
     return this.champid;

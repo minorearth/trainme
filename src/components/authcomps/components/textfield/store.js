@@ -1,10 +1,16 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { textFieldProps } from "@/components/authcomps/components/textfield/setup";
+
+const DEFAULT = { error: true, value: "", helperText: "" };
+
 class txtField {
   state = {
-    email: { error: false, value: "", helperText: "" },
-    name: { error: false, value: "", helperText: "" },
-    password: { error: false, value: "", helperText: "" },
+    email: DEFAULT,
+    name: DEFAULT,
+    password: DEFAULT,
+    nickname: DEFAULT,
+    tasknum: { error: false, value: "5", helperText: "" },
+    champid: DEFAULT,
   };
 
   setState(type, value) {
@@ -12,21 +18,22 @@ class txtField {
   }
 
   resetState() {
-    Object.keys(this.state).forEach(
-      (field) =>
-        (this.state[field] = { error: false, value: "", helperText: "" })
-    );
+    Object.keys(this.state).forEach((field) => (this.state[field] = DEFAULT));
   }
 
-  handleChange(value, type) {
-    console.log(value, type);
-    const error = textFieldProps[type].validator(value);
-    const helperText = error ? textFieldProps[type].helperText : "";
-    this.state[type] = { error, value, helperText };
-  }
+  //   handleChange(value, type) {
+  //     if (textFieldProps[type].instantValidation)
+  // {    const error = textFieldProps[type].validator(value);
+  //     const helperText = error ? textFieldProps[type].helperText : "";
+  //     this.state[type] = { error, value, helperText };}
+  //   }
 
   handleChange2(value, type) {
-    this.state[type] = { ...this.state[type], value };
+    if (textFieldProps[type].instantValidation) {
+      const error = textFieldProps[type].validator(value);
+      const helperText = error ? textFieldProps[type].helperText : "";
+      this.state[type] = { error, value, helperText };
+    } else this.state[type] = { ...this.state[type], value };
   }
 
   validate(types) {
@@ -36,7 +43,6 @@ class txtField {
       this.state[type] = { ...this.state[type], error, helperText };
       return !error;
     });
-    console.log("res", res);
     return res.every(Boolean);
   }
 

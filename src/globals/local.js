@@ -66,6 +66,9 @@ const local = {
       AUTH_RESETPSW: "ВОССТАНОВИТЬ ПАРОЛЬ",
       AUTH_SIGNIN: "Войти",
       AUTH_ENTER_EMAIL: "Введите email",
+      AUTH_ENTER_NICKNAME: "Введите имя",
+      AUTH_ENTER_TASKNUM: "Количество задач",
+      AUTH_ENTER_CHAMPID: "Номер чемпионата",
       AUTH_ENTER_PSW: "Введите пароль",
       AUTH_ENTER_NAME: "Введите имя",
       AUTH_ENTER_COMPANY: "Введите организацию",
@@ -93,6 +96,10 @@ const local = {
         WRONG_EXT: "Файл не поддерживается, возможно нужно добавить расширение",
 
         AUTH_ENTER_VALID_EMAIL: "Введите правильный email",
+        AUTH_ENTER_VALID_NICKNAME: "Введите имя для таблицы результатов",
+        AUTH_ENTER_VALID_TASKNUM: "Введите количество задач до 99",
+        AUTH_ENTER_VALID_CHAMPID: "Введите номер чемпионата",
+
         // AUTH_ENTER_VALID_EMAIL: "Please enter a valid email address.",
         AUTH_ENTER_VALID_PSW: "Password must be at least 6 characters long.",
         // AUTH_ENTER_VALID_PSW: "Пароль должен быть более 5 символов",
