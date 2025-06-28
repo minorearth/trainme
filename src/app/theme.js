@@ -9,6 +9,12 @@ const myFont = localFont({
 
 export const useCustomTheme = () => {
   const customTheme = createTheme({
+    palette: {
+      mode: "light", // указываем режим
+      error: {
+        main: "#AA5733",
+      },
+    },
     typography: {
       body1: {
         fontFamily: myFont.style.fontFamily,
@@ -50,6 +56,25 @@ export const useCustomTheme = () => {
           },
         },
       },
+      // MuiTextField: {
+      //   styleOverrides: {
+      //     root: {
+      //       backgroundColor: "white",
+      //     },
+      //   },
+      // },
+      // MuiTextField: {
+      //   styleOverrides: {
+      //     root: {
+      //       "& .Mui-error": {
+      //         color: "green",
+      //       },
+      //       "& .MuiFormHelperText-root": {
+      //         color: "green",
+      //       },
+      //     },
+      //   },
+      // },
       MuiInputBase: {
         // https://github.com/mui/material-ui/issues/14427
         input: {

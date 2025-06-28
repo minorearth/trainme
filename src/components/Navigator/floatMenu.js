@@ -35,8 +35,7 @@ const FloatMenu = () => {
         tooltip={"Выйти"}
         icon="close"
         action={() => {
-          navigator.actions.openLoginPageSignOut();
-          router.push(`/login/`);
+          navigator.actions.openLoginPageSignOut(router);
         }}
         position={{ top: TOP, right: RIGHT }}
       />

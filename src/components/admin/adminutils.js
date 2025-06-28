@@ -1,7 +1,7 @@
 import {
   setDocInCollectionClient,
   setDocInSubCollectionClient,
-} from "@/db/domain/domain";
+} from "@/db/CA/interface";
 
 import { getCoursesToLoad, courses } from "@/globals/courses";
 

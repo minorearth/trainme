@@ -15,21 +15,6 @@ import {
   documentId,
 } from "firebase/firestore";
 
-export const updateDocFieldsInCollectionById = async (
-  db,
-  collectionName,
-  id,
-  data
-) => {
-  await updateDoc(doc(db, collectionName, id), data);
-};
-
-export const getDocsKeyValue = async (db, collectionName, key, value) => {
-  const q = query(collection(db, collectionName), where(key, "==", value));
-  const docs = await getDocs(q);
-  return docs;
-};
-
 export const setDocInCollection = async (db, collectionName, data, id) => {
   await setDoc(doc(db, collectionName, id), data);
 };
@@ -45,76 +30,13 @@ export const setDocInSubCollection = async (
   await setDoc(doc(db, collectionName1, id1, collectionName2, id2), data);
 };
 
-export const updateUsersInChamp = async (db, collectionName, data, id) => {
-  const ref = doc(db, collectionName, id);
-  try {
-    const feed = await updateDoc(ref, {
-      [`users.${data.id}`]: {
-        id: data.id,
-        name: data.name,
-        pts: 0,
-        change: 0,
-        persstatus: data.persstatus,
-        avatarid: data.avatarid,
-      },
-    });
-  } catch (e) {
-    return "error";
-  }
-};
-
-export const updateUserInGroup = async (db, collectionName, data, id) => {
-  const ref = doc(db, collectionName, id);
-  try {
-    await updateDoc(ref, {
-      [`${data.groupid}.children.${data.groupid + data.uid}`]: {
-        uid: data.uid,
-        label: `${data.secondName} ${data.firstName}`,
-        isFolder: false,
-      },
-    });
-  } catch (e) {
-    return "error";
-  }
-};
-
-export const updatePoinsInChamp = async (db, collectionName, data, id) => {
-  const ref = doc(db, collectionName, id);
-
-  const feed = await updateDoc(ref, {
-    [`users.${data.id}.pts`]: increment(data.pts),
-  });
-};
-
-export const setTaskLogInChamp = async (db, collectionName, data, id) => {
-  // const docSnap = await getDoc(doc(db, collectionName, id));
-
-  const ref = doc(db, collectionName, id);
-
-  const feed = await updateDoc(ref, {
-    [`users.${data.id}.tasklog`]: data.tasklog,
-    [`users.${data.id}.persstatus`]: "champisover",
-  });
-};
-
-export const updateChampStatus = async (db, collectionName, status, id) => {
-  // const docSnap = await getDoc(doc(db, collectionName, id));
-  const ref = doc(db, collectionName, id);
-
-  const feed = await updateDoc(ref, {
-    status,
-  });
-};
-
 export const updateDocByid = async (db, collectionName, id, data) => {
-  const ref = doc(db, collectionName, id);
-  const feed = await updateDoc(ref, data);
+  await updateDoc(doc(db, collectionName, id), data);
 };
 
 export const getDocDataFromCollectionById = async (db, collectionName, id) => {
   const docSnap = await getDoc(doc(db, collectionName, id));
-  const data = docSnap.data();
-  return { id: docSnap.id, data };
+  return { id: docSnap.id, data: docSnap.data() };
 };
 
 export const getDocDataFromSubCollectionById = async (
@@ -127,8 +49,7 @@ export const getDocDataFromSubCollectionById = async (
   const docSnap = await getDoc(
     doc(db, collectionName1, id1, collectionName2, id2)
   );
-  const data = docSnap.data();
-  return { id: docSnap.id, data };
+  return { id: docSnap.id, data: docSnap.data() };
 };
 
 export const getDocFromCollectionById = async (db, collectionName, id) => {
@@ -143,12 +64,9 @@ export const getDocFromCollectionByIdRealtime = async (
   id,
   onChangeAction
 ) => {
-  const docRef = doc(db, collectionName, id);
-  const unsubscribe = onSnapshot(docRef, (doc) => {
+  const unsubscribe = onSnapshot(doc(db, collectionName, id), (doc) => {
     onChangeAction(doc.data());
   });
-  const docSnap = await getDoc(docRef);
-  // const data = docSnap.data();
   return unsubscribe;
 };
 
@@ -188,6 +106,12 @@ const multipleDocsToObject = (docs) => {
   });
   return ret;
 };
+
+// export const getDocsKeyValue = async (db, collectionName, key, value) => {
+//   const q = query(collection(db, collectionName), where(key, "==", value));
+//   const docs = await getDocs(q);
+//   return docs;
+// };
 
 // export const updateDocFieldsInCollectionById2 = async (path, data) => {
 //   await updateDoc(doc(db, path), data);

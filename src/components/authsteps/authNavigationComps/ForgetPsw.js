@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography";
-import LinkStyled from "@/components/authcomps/components/navigation/link";
-import authForm from "@/components/authcomps/store";
+import LinkStyled from "@/components/authsteps/authNavigationComps/components/link";
+import authForm from "@/components/authsteps/layers/store/store";
 import local from "@/globals/local";
 
 export const ForgetPsw = () => {
@@ -8,7 +8,7 @@ export const ForgetPsw = () => {
     <Typography sx={{ textAlign: "center" }}>
       <LinkStyled
         action={() => {
-          authForm.showResetPsw(authForm.state["email"].value);
+          authForm.showResetPsw();
         }}
         title={local.ru.text.AUTH_FORGOT}
       />

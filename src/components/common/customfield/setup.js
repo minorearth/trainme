@@ -5,10 +5,26 @@ import {
   checkNickName,
   checkTasknum,
   checkChampid,
-} from "@/components/authcomps/components/textfield/validators";
+  checkFirstName,
+  checkSecondName,
+} from "@/components/common/customfield/validators";
 import local from "@/globals/local";
 
 export const textFieldProps = {
+  firstname: {
+    auto: null,
+    label: local.ru.caption.AUTH_ENTER_FIRSTNAME,
+    helperText: local.ru.msg.snack.AUTH_ENTER_VALID_FIRSTNAME,
+    validator: checkFirstName,
+    instantValidation: true,
+  },
+  secondname: {
+    auto: null,
+    label: local.ru.caption.AUTH_ENTER_SECONDNAME,
+    helperText: local.ru.msg.snack.AUTH_ENTER_VALID_SECONDNAME,
+    validator: checkSecondName,
+    instantValidation: true,
+  },
   champid: {
     auto: null,
     label: local.ru.caption.AUTH_ENTER_CHAMPID,

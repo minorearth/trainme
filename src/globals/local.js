@@ -69,6 +69,9 @@ const local = {
       AUTH_ENTER_NICKNAME: "Введите имя",
       AUTH_ENTER_TASKNUM: "Количество задач",
       AUTH_ENTER_CHAMPID: "Номер чемпионата",
+      AUTH_ENTER_FIRSTNAME: "Введите имя",
+      AUTH_ENTER_SECONDNAME: "Введите фамилию",
+
       AUTH_ENTER_PSW: "Введите пароль",
       AUTH_ENTER_NAME: "Введите имя",
       AUTH_ENTER_COMPANY: "Введите организацию",
@@ -99,6 +102,8 @@ const local = {
         AUTH_ENTER_VALID_NICKNAME: "Введите имя для таблицы результатов",
         AUTH_ENTER_VALID_TASKNUM: "Введите количество задач до 99",
         AUTH_ENTER_VALID_CHAMPID: "Введите номер чемпионата",
+        AUTH_ENTER_VALID_FIRSTNAME: "Имя с большой буквы",
+        AUTH_ENTER_VALID_SECONDNAME: "Фамилия с большой буквы",
 
         // AUTH_ENTER_VALID_EMAIL: "Please enter a valid email address.",
         AUTH_ENTER_VALID_PSW: "Password must be at least 6 characters long.",

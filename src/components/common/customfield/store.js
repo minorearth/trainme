@@ -1,5 +1,5 @@
 import { makeObservable, makeAutoObservable } from "mobx";
-import { textFieldProps } from "@/components/authcomps/components/textfield/setup";
+import { textFieldProps } from "@/components/common/customfield/setup";
 
 const DEFAULT = { error: true, value: "", helperText: "" };
 
@@ -11,6 +11,8 @@ class txtField {
     nickname: DEFAULT,
     tasknum: { error: false, value: "5", helperText: "" },
     champid: DEFAULT,
+    firstname: DEFAULT,
+    secondname: DEFAULT,
   };
 
   setState(type, value) {

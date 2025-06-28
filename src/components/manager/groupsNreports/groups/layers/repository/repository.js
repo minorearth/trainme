@@ -2,7 +2,8 @@ import {
   setDocInCollectionClient,
   getDocDataFromCollectionByIdClient,
   getDocDataFromSubCollectionByIdClient,
-} from "@/db/domain/domain";
+  updateDocByidClient,
+} from "@/db/CA/interface";
 
 import {
   allTasksArrToObj,
@@ -40,4 +41,20 @@ export const addNewGroupDB = async (data, userid) => {
 
 export const updateNodeLabelDB = async (newdata, userid) => {
   await setDocInCollectionClient("groups", groupsArrToObject(newdata), userid);
+};
+
+export const addUserToGroup = async ({
+  groupid,
+  secondName,
+  firstName,
+  manager,
+  uid,
+}) => {
+  await updateDocByidClient("groups", manager, {
+    [`${groupid}.children.${groupid + uid}`]: {
+      uid,
+      label: `${secondName} ${firstName}`,
+      isFolder: false,
+    },
+  });
 };

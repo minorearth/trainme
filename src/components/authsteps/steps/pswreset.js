@@ -5,18 +5,16 @@ import Button from "@mui/material/Button";
 import { observer } from "mobx-react-lite";
 import AlertDialog from "@/components/common/dialog/dialog";
 import local from "@/globals/local";
-import { RecallPsw } from "@/components/authcomps/components/navigation/RecalPsw";
-import { useAuth } from "@/components/authcomps/useAuth";
-import AuthField from "@/components/authcomps/components/textfield/authField";
+import { RecallPsw } from "@/components/authsteps/authNavigationComps/RecalPsw";
+import CustomField from "@/components/common/customfield/customField";
+import { handleForgetPswSubmit } from "@/components/authsteps/layers/services/services";
 
 const PswReset = observer(() => {
-  const { handleForgetPswSubmit } = useAuth();
-
   return (
     <Box
       component="form"
       noValidate
-      onSubmit={handleForgetPswSubmit}
+      onSubmit={(event) => handleForgetPswSubmit(event)}
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -26,7 +24,7 @@ const PswReset = observer(() => {
       }}
     >
       <AlertDialog />
-      <AuthField type={"email"} />
+      <CustomField type={"email"} />
       <Button type="submit" fullWidth variant="contained">
         {local.ru.caption.AUTH_RESETPSW}
       </Button>

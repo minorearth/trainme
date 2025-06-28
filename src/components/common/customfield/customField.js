@@ -8,9 +8,9 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-import { textFieldProps } from "@/components/authcomps/components/textfield/setup";
+import { textFieldProps } from "@/components/common/customfield/setup";
 
-import txtField from "@/components/authcomps/components/textfield/store";
+import txtField from "@/components/common/customfield/store";
 
 const PswHideShow = ({ hidePsw, showPsw }) => {
   return (
@@ -28,7 +28,7 @@ const PswHideShow = ({ hidePsw, showPsw }) => {
   );
 };
 
-const AuthField = observer(({ type, sx, stateChanger = () => {} }) => {
+const CustomField = observer(({ type, sx, stateChanger = () => {} }) => {
   // const [value, setValue] = useState("");
   const [showPsw, hidePsw] = useState(type == "password");
 
@@ -63,7 +63,7 @@ const AuthField = observer(({ type, sx, stateChanger = () => {} }) => {
         // }}
 
         slotProps={{
-          inputLabel: { shrink: true },
+          // inputLabel: { shrink: true },
           input: {
             endAdornment: type == "password" && (
               <PswHideShow hidePsw={hidePsw} showPsw={showPsw} />
@@ -86,10 +86,10 @@ const AuthField = observer(({ type, sx, stateChanger = () => {} }) => {
         }}
         error={txtField.state[type].error}
         helperText={txtField.state[type].helperText}
-        color={txtField.state[type].error ? "error" : "primary"}
+        // color={txtField.state[type].error ? "error" : "green"}
       />
     </Box>
   );
 });
 
-export default AuthField;
+export default CustomField;

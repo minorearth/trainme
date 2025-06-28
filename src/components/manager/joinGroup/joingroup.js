@@ -2,21 +2,13 @@
 import { Box } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { Button } from "@mui/material";
-import TextField from "@mui/material/TextField";
 import useJoinGroup from "./joinGroupVC";
 import Typography from "@mui/material/Typography";
+import CustomField from "@/components/common/customfield/customField";
+import txtField from "@/components/common/customfield/store";
 
 const Joingroup = observer(({ groupid, manager }) => {
-  const {
-    joinGroup,
-    changeFirstName,
-    changeSecondName,
-    firstName,
-    secondName,
-    firstNameChecked,
-    secondNameChecked,
-    inviteAccepted,
-  } = useJoinGroup({ groupid, manager });
+  const { joinGroup, inviteAccepted } = useJoinGroup();
 
   return (
     <Box
@@ -50,29 +42,21 @@ const Joingroup = observer(({ groupid, manager }) => {
               gap: "30px",
             }}
           >
-            <TextField
-              helperText="Имя с большой буквы"
-              id="outlined-basic"
-              label="Введите имя"
-              variant="outlined"
-              onChange={(e) => changeFirstName(e)}
-              value={firstName}
-              fullWidth
-            />
-            <TextField
-              helperText="Фамилия с большой буквы"
-              id="outlined-basic"
-              label="Введите Фамилию"
-              variant="outlined"
-              onChange={(e) => changeSecondName(e)}
-              value={secondName}
-              fullWidth
-            />
+            <CustomField type={"firstname"} />
+            <CustomField type={"secondname"} />
             <Button
               variant="outlined"
-              disabled={!firstNameChecked || !secondNameChecked}
+              disabled={
+                txtField.state["firstname"].error ||
+                txtField.state["secondname"].error
+              }
               onClick={() => {
-                joinGroup();
+                joinGroup({
+                  groupid,
+                  manager,
+                  secondName: txtField.state["firstname"].value,
+                  firstName: txtField.state["secondname"].value,
+                });
               }}
               fullWidth
             >

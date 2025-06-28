@@ -9,11 +9,11 @@ import RangeSlider from "./components/RangeSlider";
 import SortableList from "@/components/champ/components/ChampUsersList/ChampUsersList";
 import StepByStep from "@/components/champ/components/Stepper";
 import AvatarSelector from "@/components/champ/components/avatar/avatar";
-import AuthField from "@/components/authcomps/components/textfield/authField";
+import CustomField from "@/components/common/customfield/customField";
 
 import champ from "@/components/champ/layers/store/champ";
 import user from "@/userlayers/store/user";
-import txtField from "@/components/authcomps/components/textfield/store";
+import txtField from "@/components/common/customfield/store";
 
 const Champ = observer(() => {
   const [activeStep, setActiveStep] = useState(0);
@@ -52,7 +52,7 @@ const Champ = observer(() => {
               gap: "30px",
             }}
           >
-            <AuthField type={"nickname"} />
+            <CustomField type={"nickname"} />
             <AvatarSelector />
 
             <Button
@@ -125,7 +125,7 @@ const Champ = observer(() => {
               <Typography>Сложность</Typography>
               <RangeSlider />
             </>
-            <AuthField
+            <CustomField
               type={"tasknum"}
               sx={{
                 "& .MuiInputBase-input": {
@@ -190,7 +190,7 @@ const Champ = observer(() => {
               gap: "30px",
             }}
           >
-            <AuthField
+            <CustomField
               type={"champid"}
               stateChanger={(value) => champ.setChampIdP(value)}
             />

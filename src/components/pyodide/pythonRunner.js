@@ -1,4 +1,4 @@
-import { stn } from "@/constants";
+import { stn } from "@/globals/constants";
 import pyodide from "@/components/pyodide/pyodide";
 
 // https://www.reddit.com/r/nextjs/comments/194r5jn/does_anyone_know_how_to_use_pyodide_with_nextjs/?rdt=49197

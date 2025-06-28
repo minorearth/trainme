@@ -1,6 +1,5 @@
-import { allUsersMetaToObject } from "@/components/manager/groupsNreports/reports/pivotreport/layers/services/utils";
-import stat from "@/components/manager/groupsNreports/store/stat";
 import { chaptersObjToArray } from "@/components/manager/groupsNreports/reports/pivotreport/layers/services/utils";
+
 export const prepareReport = ({
   allCoursesChapters,
   usersMetaObj,

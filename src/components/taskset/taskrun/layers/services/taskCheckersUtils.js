@@ -1,4 +1,4 @@
-import { stn } from "@/constants";
+import { stn } from "@/globals/constants";
 
 const eqArrays = (a, b) => {
   return (

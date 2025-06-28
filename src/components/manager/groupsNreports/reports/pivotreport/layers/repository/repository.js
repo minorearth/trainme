@@ -3,7 +3,7 @@ import {
   getDocDataFromCollectionByIdClient,
   getMultipleDocsClient,
   setDocInSubCollectionClient,
-} from "@/db/domain/domain";
+} from "@/db/CA/interface";
 
 import { allUsersMetaToObject } from "@/components/manager/groupsNreports/reports/pivotreport/layers/repository/ETL";
 

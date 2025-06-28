@@ -1,11 +1,7 @@
 "use client";
 
 import stat from "@/components/manager/groupsNreports/store/stat";
-
-import {
-  getDocDataFromCollectionByIdClient,
-  getMultipleDocsClient,
-} from "@/db/domain/domain";
+import user from "@/userlayers/store/user";
 
 import {
   saveSnapshot,
@@ -14,8 +10,6 @@ import {
 } from "@/components/manager/groupsNreports/reports/pivotreport/layers/repository/repository";
 
 import { getGroupUsersObj } from "@/components/manager/groupsNreports/groups/layers/services/servicesTree";
-
-import user from "@/userlayers/store/user";
 
 import { prepareReport } from "@/components/manager/groupsNreports/reports/pivotreport/layers/services/reportUtils";
 

@@ -7,7 +7,7 @@ import {
 } from "@/components/course/layers/repository/repostory";
 
 //data model
-import { signOutUserClient } from "@/db/domain/domain";
+import { signOutUser } from "@/userlayers/services/authentication";
 
 //
 import { getFlow } from "@/components/course/layers/services/course";
@@ -50,7 +50,7 @@ export const openAllCoursePage = () => {
 export const openCourseFlowPageFromMain = async (courseid) => {
   progressStore.setShowProgress(true, false, "progressdots", 2000);
 
-  const coursePaid = await checkCoursePaid({ courseid });
+  const coursePaid = await checkCoursePaid({ courseid, uid: user.userid });
   const courseReady = checkCourseReady({ courseid });
 
   if (!coursePaid || !courseReady) {
@@ -62,7 +62,10 @@ export const openCourseFlowPageFromMain = async (courseid) => {
 };
 
 export const openAndRefreshFlowPage = async ({ courseid, refetchFlow }) => {
-  const progress = await user.actions.getUserCourseProgress(courseid);
+  const progress = await user.actions.getUserCourseProgress(
+    courseid,
+    user.userid
+  );
   getFlow({ courseid, refetchFlow, progress });
   setFlowPageState({ courseid, progress });
 };
@@ -151,6 +154,7 @@ export const closeCongratPage = async (success) => {
     updateChampTaskLog({
       tasklog: taskset.state.tasklog,
       champid: champ.champid,
+      userid: user.userid,
     });
     openChampPage();
   }
@@ -183,9 +187,9 @@ export const openTutorial = () => {
   tutorial.show();
 };
 
-export const openLoginPageSignOut = async () => {
+export const openLoginPageSignOut = async (router) => {
   //TODO: move method from domain
-  await signOutUserClient();
+  await signOutUser(router);
 };
 
 export const openChampPage = () => {

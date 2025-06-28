@@ -1,5 +1,12 @@
-import { getRandomTasksForChamp } from "@/components/taskset/layers/repository/repository";
+import { da } from "@/components/common/dialog/dialogMacro";
+
+// utils
 import { ObjtoArr } from "@/globals/utils/objectUtils";
+import { sortItems } from "@/components/champ/layers/services/utils";
+import { generateString } from "@/globals/utils/utilsRandom";
+
+//repository
+import { getRandomTasksForChamp } from "@/components/taskset/layers/repository/repository";
 
 import {
   subscribeOnChamp,
@@ -9,16 +16,12 @@ import {
   setChampStarted,
 } from "@/components/champ/layers/repository/repository";
 
-import { sortItems } from "@/components/champ/layers/services/utils";
-
-import { da } from "@/components/common/dialog/dialogMacro";
-
-import { generateString } from "@/globals/utils/utilsRandom";
+//stores
 import user from "@/userlayers/store/user";
 import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import champ from "@/components/champ/layers/store/champ";
-import txtField from "@/components/authcomps/components/textfield/store";
+import txtField from "@/components/common/customfield/store";
 
 export const createChamp = async () => {
   const tasks = await getRandomTasksForChamp({
@@ -50,8 +53,8 @@ export const joinChamp = async () => {
         captureUsersJoined({ champid: champ.champid });
         captureChampStart({ champid: champ.champid });
       }
-      //TODO:to repostory
-      updateUserInChamp({
+      await updateUserInChamp({
+        userid: user.userid,
         data: {
           id: user.userid,
           name: txtField.state.nickname.value,
@@ -89,6 +92,7 @@ const launchChamp = (champdoc) => {
         nodemode: "champ",
       });
       updateUserInChamp({
+        userid: user.userid,
         data: {
           id: user.userid,
           name: txtField.state.nickname.value,
@@ -105,6 +109,7 @@ const launchChamp = (champdoc) => {
 };
 
 export const captureChampStart = async ({ champid }) => {
+  console.log("тутат");
   await subscribeOnChamp({
     champid,
     action: launchChamp,

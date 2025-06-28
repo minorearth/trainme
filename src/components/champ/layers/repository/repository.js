@@ -1,23 +1,23 @@
 import {
   getDocDataFromCollectionByIdClient,
-  updatePoinsInChampClient,
-  setTaskLogInChampClient,
   getDocFromCollectionByIdRealtimeClient,
-  updateUsersInChampClient,
   updateDocByidClient,
   setDocInCollectionClient,
-} from "@/db/domain/domain";
+} from "@/db/CA/interface";
 
 import stn from "@/globals/settings";
 
-import user from "@/userlayers/store/user";
-
-export const updateChampPoints = (pts, champid) => {
-  updatePoinsInChampClient("champs", { id: user.userid, pts }, champid);
+export const updateChampPoints = ({ pts, champid, userid }) => {
+  updateDocByidClient("champs", champid, {
+    [`users.${userid}.pts`]: pts,
+  });
 };
 
-export const updateChampTaskLog = ({ tasklog, champid }) => {
-  setTaskLogInChampClient("champs", { id: user.userid, tasklog }, champid);
+export const updateChampTaskLog = ({ tasklog, champid, userid }) => {
+  updateDocByidClient("champs", champid, {
+    [`users.${userid}.tasklog`]: tasklog,
+    [`users.${userid}.persstatus`]: "champisover",
+  });
 };
 
 export const getChampTasks = async ({ champid }) => {
@@ -39,8 +39,10 @@ export const subscribeOnChamp = async ({ champid, action }) => {
   }, 1000 * 60 * 30);
 };
 
-export const updateUserInChamp = async ({ data, champid }) => {
-  await updateUsersInChampClient(stn.collections.CHAMPS, data, champid);
+export const updateUserInChamp = async ({ data, champid, userid }) => {
+  await updateDocByidClient("champs", champid, {
+    [`users.${userid}`]: data,
+  });
 };
 
 export const getUserChampStatus = async ({ userid, champid }) => {

@@ -1,11 +1,17 @@
-import { getDataFetch, setDataFetch } from "@/db/APIcalls/calls";
-import user from "@/userlayers/store/user";
+import { getDataFetch, setDataFetch } from "@/apicalls/apicalls";
 import { ETLUserProgress } from "@/userlayers/repository/ETL";
 import { encrypt2 } from "@/globals/utils/encryption";
+import { getInitalDataForFreeCourses } from "@/userlayers/repository/ETL";
 
-export const getUserCourseProgress = async (courseid) => {
+import { setDocInCollection } from "@/db/CA/firebaseCA";
+import { db } from "@/db/CA/firebaseappClient";
+
+import stn from "@/globals/settings";
+import { courses, getFreeCourses } from "@/globals/courses";
+
+export const getUserCourseProgress = async (courseid, uid) => {
   const allUserMeta = await getDataFetch({
-    data: { uid: user.userid },
+    data: { uid },
     type: "getusermetadata",
   });
   //TODO:keep only keys needed(later)
@@ -21,4 +27,15 @@ export const saveUserMeta = async (dataToEncrypt) => {
   if (res == "error") {
     throw new Error("Server error");
   }
+};
+
+export const createNewUserMeta = async (userId, name) => {
+  const freeCourses = getFreeCourses();
+  const data = {
+    name,
+    userId,
+    paidcourses: freeCourses,
+    courses: getInitalDataForFreeCourses(freeCourses, courses),
+  };
+  await setDocInCollection(db, stn.collections.USER_META, data, userId);
 };

@@ -1,4 +1,4 @@
-import { getDocDataFromSubCollectionByIdClient } from "@/db/domain/domain";
+import { getDocDataFromSubCollectionByIdClient } from "@/db/CA/interface";
 import { getRandomTasks } from "@/components/taskset/layers/repository/utils";
 import { ETL } from "@/components/taskset/layers/repository/ETL";
 

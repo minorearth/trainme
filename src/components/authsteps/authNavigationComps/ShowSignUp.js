@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography";
-import LinkStyled from "@/components/authcomps/components/navigation/link";
-import authForm from "@/components/authcomps/store";
+import LinkStyled from "@/components/authsteps/authNavigationComps/components/link";
+import authForm from "@/components/authsteps/layers/store/store";
 import local from "@/globals/local";
 
 export const ShowSignUp = () => {

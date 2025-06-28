@@ -48,6 +48,7 @@ export const loadPTrek = async () => {
     if (page == "flow") {
       const coursePaid = await checkCoursePaid({
         courseid: CSP.course.courseid,
+        uid: user.userid,
       });
       if (coursePaid) {
         await openAndRefreshFlowPage({

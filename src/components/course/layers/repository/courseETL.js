@@ -1,5 +1,5 @@
 import { encrypt2 } from "@/globals/utils/encryption";
-import { setDataFetch } from "@/db/APIcalls/calls";
+import { setDataFetch } from "@/apicalls/apicalls";
 import { toJS } from "mobx";
 import { da } from "@/components/common/dialog/dialogMacro";
 

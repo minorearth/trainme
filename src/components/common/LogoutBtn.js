@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
-import { signOutUserClient } from "@/db/domain/domain";
+import { signOutUser } from "@/components/authsteps/layers/services/services";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 
 const LogoutBtn = () => {
@@ -11,8 +11,7 @@ const LogoutBtn = () => {
       <button
         className="Btn"
         onClick={async () => {
-          await signOutUserClient();
-          router.push(`/login/`);
+          await signOutUser(router);
         }}
       >
         <div className="sign">

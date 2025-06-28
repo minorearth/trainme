@@ -1,14 +1,12 @@
-import { getDataFetch } from "@/db/APIcalls/calls";
+import { getDataFetch } from "@/apicalls/apicalls";
 import { getReadyCourses } from "@/globals/courses";
-import { getDocDataFromCollectionByIdClient } from "@/db/domain/domain";
+import { getDocDataFromCollectionByIdClient } from "@/db/CA/interface";
 import { enrichFlowWithUserPorgress } from "@/components/course/layers/repository/courseETL";
 
-import user from "@/userlayers/store/user";
-
-export const checkCoursePaid = async ({ courseid }) => {
+export const checkCoursePaid = async ({ courseid, uid }) => {
   const coursePaid = await getDataFetch({
     type: "checkcoursepaid",
-    data: { courseid, uid: user.userid },
+    data: { courseid, uid },
   });
   return coursePaid;
 };

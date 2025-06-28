@@ -1,9 +1,13 @@
 import { makeObservable, makeAutoObservable } from "mobx";
-import txtField from "@/components/authcomps/components/textfield/store";
+import { logout } from "@/db/SA/session";
+
+import txtField from "@/components/common/customfield/store";
+
 class authForm {
   signUp = false;
   signIn = true;
   pswReset = false;
+  actions = {};
 
   showSignUp() {
     txtField.resetState();
@@ -11,6 +15,7 @@ class authForm {
     this.signIn = false;
     this.pswReset = false;
   }
+
   showSignIn() {
     txtField.resetState();
     this.signIn = true;
@@ -18,7 +23,7 @@ class authForm {
     this.pswReset = false;
   }
 
-  showResetPsw(email) {
+  showResetPsw() {
     // this.resetState();
     this.pswReset = true;
     this.signIn = false;
@@ -27,6 +32,14 @@ class authForm {
 
   constructor() {
     makeAutoObservable(this);
+  }
+
+  initialize() {
+    this.logout();
+  }
+
+  logout() {
+    logout();
   }
 }
 

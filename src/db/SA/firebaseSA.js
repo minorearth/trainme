@@ -1,14 +1,14 @@
 "use server";
 import { getFirestore, FieldValue } from "firebase-admin/firestore";
 // import "server-only";
-import { initAdmin } from "./firebaseAdmin";
+import { initAdmin } from "./firebaseappAdmin";
 import { encrypt2, decrypt2 } from "./encryption";
-import { db } from "./firebaseAdmin";
+import { db } from "./firebaseappAdmin";
 
 // await initAdmin();
 
 //ADMIN ACTIONS
-export const resetUseMetaData = async (lastunlocked, courseid, uid) => {
+export const resetUserMetaData = async (lastunlocked, courseid, uid) => {
   const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
     [`courses.${courseid}`]: {
@@ -47,6 +47,7 @@ export const unlockAndCompleteAll = async (
     [`courses.${courseid}.paid`]: unlocked,
   });
 };
+
 export const unlockAll = async (unlocked, lastunlocked, courseid, uid) => {
   const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
@@ -77,7 +78,7 @@ export const getUseMetaData = async ({ uid }) => {
   return snapshot.data();
 };
 
-export const checkCoursePaid = async (data) => {
+export const checkCoursePaidSA = async (data) => {
   const { courseid, uid } = data;
   const userMetaRef = db.collection("usermeta").doc(uid);
   const snapshot = await userMetaRef.get();
@@ -158,33 +159,4 @@ const prepareTaskLog = (courseid, lastcompleted, tasklog) => {
     (taskuuid) => (res[`${dest}.${taskuuid}`] = tasklog[taskuuid])
   );
   return res;
-};
-
-//LEGACY due to network cache
-export const setUseMetaDataIncrement = async (data) => {
-  const { uid, pts, lastcompleted, unlocked, courseid, tasklog } =
-    decrypt2(data);
-  const tasklogPrepared = prepareTaskLog(courseid, lastcompleted, tasklog);
-  const userMetaRef = db.collection("usermeta").doc(uid);
-  if (unlocked.length != 0) {
-    await userMetaRef.update({
-      [`courses.${courseid}.rating`]: FieldValue.increment(pts),
-      [`courses.${courseid}.completed`]:
-        FieldValue.arrayUnion(lastcompleted),
-      [`courses.${courseid}.unlocked`]: FieldValue.arrayUnion(...unlocked),
-      [`courses.${courseid}.lastunlocked`]: unlocked,
-      [`courses.${courseid}.stat.${lastcompleted}.sum`]:
-        FieldValue.increment(pts),
-      ...tasklogPrepared,
-    });
-  } else {
-    userMetaRef.update({
-      [`courses.${courseid}.rating`]: FieldValue.increment(pts),
-      // [`courses.${courseid}.completed`]:
-      //   FieldValue.arrayUnion(lastcompleted),
-      [`courses.${courseid}.stat.${lastcompleted}.sum`]:
-        FieldValue.increment(pts),
-      ...tasklogPrepared,
-    });
-  }
 };

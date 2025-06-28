@@ -1,43 +1,14 @@
-import { db, auth } from "./firebaseapp";
+import { db, auth } from "./firebaseappClient";
 
 import {
-  updateDocFieldsInCollectionById,
   setDocInCollection,
-  getDocDataFromCollectionById,
-  getDocFromCollectionById,
-  getDocFromCollectionByIdRealtime,
-  addDocInCollection,
-  getAllDocs,
-  deleteDocFromCollection,
-  copyDoc,
-  updateUsersInChamp,
-  updateChampStatus,
-  updatePoinsInChamp,
-  setTaskLogInChamp,
-  updateUserInGroup,
-  getMultipleDocs,
   setDocInSubCollection,
+  getDocDataFromCollectionById,
+  getMultipleDocs,
   getDocDataFromSubCollectionById,
+  getDocFromCollectionByIdRealtime,
   updateDocByid,
-} from "@/db/CA/dataModel";
-
-import {
-  setPersistenceDB,
-  signIn,
-  resetPsw,
-  SignUpUser,
-  signOutUser,
-} from "@/db/CA/authentication";
-
-import { createNewUser } from "@/db/CA/profile";
-
-export const updateDocFieldsInCollectionByIdClient = async (
-  collectionName,
-  id,
-  data
-) => {
-  await updateDocFieldsInCollectionById(db, collectionName, id, data);
-};
+} from "@/db/CA/firebaseCA";
 
 export const setDocInCollectionClient = async (collectionName, data, id) => {
   await setDocInCollection(db, collectionName, data, id);
@@ -58,26 +29,6 @@ export const setDocInSubCollectionClient = async (
     id2,
     data
   );
-};
-
-export const updateUsersInChampClient = async (collectionName, data, id) => {
-  return await updateUsersInChamp(db, collectionName, data, id);
-};
-
-export const updateUserInGroupClient = async (collectionName, data, id) => {
-  return await updateUserInGroup(db, collectionName, data, id);
-};
-
-export const updatePoinsInChampClient = async (collectionName, data, id) => {
-  await updatePoinsInChamp(db, collectionName, data, id);
-};
-
-export const setTaskLogInChampClient = async (collectionName, data, id) => {
-  await setTaskLogInChamp(db, collectionName, data, id);
-};
-
-export const updateChampStatusClient = async (collectionName, status, id) => {
-  await updateChampStatus(db, collectionName, status, id);
 };
 
 export const getDocDataFromCollectionByIdClient = async (
@@ -106,10 +57,6 @@ export const getDocDataFromSubCollectionByIdClient = async (
   );
 };
 
-export const getDocFromCollectionByIdClient = async (collectionName, id) => {
-  return await getDocFromCollectionById(db, collectionName, id);
-};
-
 export const getMultipleDocsClient = async (collectionName, ids) => {
   return await getMultipleDocs(db, collectionName, ids);
 };
@@ -127,45 +74,25 @@ export const getDocFromCollectionByIdRealtimeClient = async (
   );
 };
 
-export const addDocInCollectionClient = async (collectionName, data) => {
-  return await addDocInCollection(db, collectionName, data);
-};
+// export const getDocFromCollectionByIdClient = async (collectionName, id) => {
+//   return await getDocFromCollectionById(db, collectionName, id);
+// };
 
-export const getAllDocsClient = async (collectionName) => {
-  return await getAllDocs(db, collectionName);
-};
+// export const addDocInCollectionClient = async (collectionName, data) => {
+//   return await addDocInCollection(db, collectionName, data);
+// };
 
-export const deleteDocFromCollectionClient = async (collectionName, id) => {
-  await deleteDocFromCollection(db, collectionName, id);
-};
+// export const getAllDocsClient = async (collectionName) => {
+//   return await getAllDocs(db, collectionName);
+// };
 
-export const createNewUserClient = async (userId, name) => {
-  return await createNewUser(db, userId, name);
-};
+// export const сopyDocClient = async (collection, oldindex, newindex) => {
+//   await copyDoc(db, collection, oldindex, newindex);
+// };
 
-export const сopyDocClient = async (collection, oldindex, newindex) => {
-  await copyDoc(db, collection, oldindex, newindex);
-};
-
-export const signInClient = async (email, password) => {
-  return await signIn(auth, email, password);
-};
-
-export const resetPswClient = (email) => {
-  auth.languageCode = "ru";
-  resetPsw(auth, email);
-};
-
-export const SignUpUserClient = async (email, password, name) => {
-  // https://github.com/firebase/firebaseui-web/blob/master/LANGUAGES.md
-  auth.languageCode = "ru";
-  // auth.useDeviceLanguage();
-  await SignUpUser(auth, email, password, name);
-};
-
-export const signOutUserClient = async () => {
-  await signOutUser(auth);
-};
+// export const deleteDocFromCollectionClient = async (collectionName, id) => {
+//   await deleteDocFromCollection(db, collectionName, id);
+// };
 
 // import {
 //   UploadFile,

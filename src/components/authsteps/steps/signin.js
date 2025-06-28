@@ -6,20 +6,20 @@ import Grid from "@mui/material/Grid2";
 import { observer } from "mobx-react-lite";
 import AlertDialog from "@/components/common/dialog/dialog";
 import local from "@/globals/local";
-import AuthField from "@/components/authcomps/components/textfield/authField";
-import { useAuth } from "@/components/authcomps/useAuth";
-import { ForgetPsw } from "@/components/authcomps/components/navigation/ForgetPsw";
-import { ShowSignUp } from "@/components/authcomps/components/navigation/ShowSignUp";
+import CustomField from "@/components/common/customfield/customField";
+import { ForgetPsw } from "@/components/authsteps/authNavigationComps/ForgetPsw";
+import { ShowSignUp } from "@/components/authsteps/authNavigationComps/ShowSignUp";
+import { useRouter } from "next/navigation";
+import { handleSignInSubmit } from "@/components/authsteps/layers/services/services";
 
 const SignIn = observer(() => {
-  const { handleSignInSubmit } = useAuth();
-
+  const router = useRouter();
   return (
     <>
       <Box
         component="form"
         noValidate
-        onSubmit={handleSignInSubmit}
+        onSubmit={(e) => handleSignInSubmit(e, router)}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -29,8 +29,8 @@ const SignIn = observer(() => {
         }}
       >
         <AlertDialog />
-        <AuthField type={"email"} />
-        <AuthField type={"password"} />
+        <CustomField type={"email"} />
+        <CustomField type={"password"} />
         <Button
           type="submit"
           fullWidth

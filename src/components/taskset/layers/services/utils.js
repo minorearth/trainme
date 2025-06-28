@@ -8,6 +8,7 @@ import { initials } from "@/components/Navigator/layers/store/initialStates";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import taskset from "@/components/taskset/layers/store/taskset";
 import champ from "@/components/champ/layers/store/champ";
+import user from "@/userlayers/store/user";
 //
 
 export const setFixed = (error) => {
@@ -97,7 +98,11 @@ export const setEarned = (error) => {
     }
     if (nodemode == "champ") {
       //In order to save champ points on every task execution
-      updateChampPoints(income, champ.champid);
+      updateChampPoints({
+        pts: pts + income,
+        champid: champ.champid,
+        userid: user.userid,
+      });
     }
   }
   taskset.updateStateP({ pts: pts + income });

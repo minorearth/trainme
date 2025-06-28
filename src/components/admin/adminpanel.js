@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@mui/material";
 import {
-  resetUseMetaData,
+  resetUserMetaData,
   unlockAll,
   unlockAndCompleteAll,
   setMoney,
@@ -36,7 +36,7 @@ const AdminPanel = () => {
       <Button
         onClick={async () => {
           const courseid = course.state.courseid;
-          await resetUseMetaData(
+          await resetUserMetaData(
             courses[courseid].firstchapter,
             courseid,
             user.userid

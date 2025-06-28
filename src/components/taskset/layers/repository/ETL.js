@@ -1,5 +1,5 @@
 import local from "@/globals/local";
-import { fetchFile } from "@/db/APIcalls/calls";
+import { fetchFile } from "@/apicalls/apicalls";
 
 export const ETL = async (tasks) => {
   console.log("oo", tasks);
