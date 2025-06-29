@@ -48,12 +48,12 @@ export const unlockAndCompleteAll_admin = async (
   });
 };
 
-export const unlockAll_admin = async (
+export const unlockAll_admin = async ({
   unlocked,
   lastunlocked,
   courseid,
-  uid
-) => {
+  uid,
+}) => {
   const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
     [`courses.${courseid}.completed`]: [],

@@ -1,35 +1,30 @@
 import { toJS } from "mobx";
 import { da } from "@/components/common/dialog/dialogMacro";
 
-import {
-  checkCoursePaid,
-  checkCourseReady,
-} from "@/components/course/layers/repository/repostory";
+//repository
+import { checkCoursePaid } from "@/components/course/layers/repository/repostory";
+import { checkCourseReady } from "@/components/courses/layers/repository/repository";
+import { updateChampTaskLog } from "@/components/champ/layers/repository/repository";
 
-//data model
+//services
 import { signOutUser } from "@/userlayers/services/authentication";
-
-//
 import { getFlow } from "@/components/course/layers/services/course";
 import { saveProgress } from "@/userlayers/services/services";
-
-import { updateChampTaskLog } from "@/components/champ/layers/repository/repository";
-import { finalizePts } from "@/components/taskset/layers/services/utils";
-//
-
-import {
-  setChampPageState,
-  setFlowPageState,
-  setAllCoursePageState,
-} from "@/components/Navigator/layers/services/utils";
-
 import {
   getTasks,
   setTasks,
   updateTasksetState,
 } from "@/components/taskset/layers/services/services";
 
-//utils and constants
+//serice utils
+import { finalizePts } from "@/components/taskset/layers/services/utils";
+import {
+  setChampPageState,
+  setFlowPageState,
+  setAllCoursePageState,
+} from "@/components/Navigator/layers/services/utils";
+
+//constants
 import { initials } from "@/components/Navigator/layers/store/initialStates";
 
 //stores
@@ -90,7 +85,6 @@ export const openLessonStartPage = async ({
     level,
     chapterid,
     nodemode,
-    //TODO:-likely not needed
     randomsaved: taskset.state.randomsaved,
   });
 

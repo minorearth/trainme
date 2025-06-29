@@ -6,16 +6,16 @@ import {
   unlockAndCompleteAll_admin,
   setMoney_admin,
 } from "@/db/SA/firebaseSA";
-import { load } from "@/components/admin/adminutils";
-import user from "@/userlayers/store/user";
+import { load } from "@/components/admin/layers/services/services";
 import { courses } from "@/globals/courses";
 import Input from "@mui/material/Input";
 import { useState } from "react";
-import { updateSCP } from "@/db/localstorage";
+
 import navigator from "@/components/Navigator/layers/store/navigator";
 import taskset from "@/components/taskset/layers/store/taskset";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import course from "@/components/course/layers/store/course";
+import user from "@/userlayers/store/user";
 
 const AdminPanel = () => {
   const [inValue, setInValue] = useState(5000);
@@ -52,14 +52,15 @@ const AdminPanel = () => {
       <Button
         onClick={async () => {
           const courseid = course.state.courseid;
-          await unlockAll_admin(
-            course.flow.nodes
+          await unlockAll_admin({
+            //TODO: remade unclocked
+            unlocked: course.flow.nodes
               .filter((node) => node.id != -1)
               .map((node) => node.id),
-            courses[courseid].firstchapter,
+            lastunlocked: courses[courseid].firstchapter,
             courseid,
-            user.userid
-          );
+            uid: user.userid,
+          });
           navigator.actions.openAndRefreshFlowPage({
             courseid,
             refetchFlow: true,

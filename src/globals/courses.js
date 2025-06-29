@@ -3,22 +3,10 @@ import {
   chapterFlowEdges1,
   chapterFlowNodes2,
   chapterFlowEdges2,
-} from "@/components/admin/chaptersFlowData";
-import { testsall1 } from "@/components/admin/course1";
-import { testsall2 } from "@/components/admin/course2";
+} from "@/components/admin/data/chaptersFlowData";
+import { testsall1 } from "@/components/admin/data/course1";
+import { testsall2 } from "@/components/admin/data/course2";
 import navigator from "@/components/Navigator/layers/store/navigator";
-
-export const getReadyCourses = () => {
-  return Object.keys(courses).filter((courseId) => courses[courseId].completed);
-};
-
-export const getCoursesToLoad = () => {
-  return Object.keys(courses).filter((courseId) => courses[courseId].toload);
-};
-
-export const getFreeCourses = () => {
-  return Object.keys(courses).filter((courseId) => courses[courseId].free);
-};
 
 export const courses = {
   "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0": {

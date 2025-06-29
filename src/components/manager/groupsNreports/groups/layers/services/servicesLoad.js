@@ -1,9 +1,12 @@
-import { getReadyCourses } from "@/globals/courses";
+//repository
+import { getReadyCourses } from "@/components/courses/layers/repository/repository";
 import {
   getAllTasksData,
   getGroupsObj,
   getChaptersObjdata,
 } from "@/components/manager/groupsNreports/groups/layers/repository/repository";
+
+//stores
 import stat from "@/components/manager/groupsNreports/store/stat";
 import user from "@/userlayers/store/user";
 
