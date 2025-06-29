@@ -8,7 +8,7 @@ import { db } from "./firebaseappAdmin";
 // await initAdmin();
 
 //ADMIN ACTIONS
-export const resetUserMetaData = async (lastunlocked, courseid, uid) => {
+export const resetUserMetaData_admin = async (lastunlocked, courseid, uid) => {
   const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
     [`courses.${courseid}`]: {
@@ -21,19 +21,19 @@ export const resetUserMetaData = async (lastunlocked, courseid, uid) => {
     },
   });
 };
-export const getMoney = async (courseid, uid) => {
+export const getMoney_admin = async (courseid, uid) => {
   const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
     [`courses.${courseid}.rating`]: 5000,
   });
 };
-export const setMoney = async (courseid, uid, money) => {
+export const setMoney_admin = async (courseid, uid, money) => {
   const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
     [`courses.${courseid}.rating`]: Number(money),
   });
 };
-export const unlockAndCompleteAll = async (
+export const unlockAndCompleteAll_admin = async (
   unlocked,
   lastunlocked,
   courseid,
@@ -48,7 +48,12 @@ export const unlockAndCompleteAll = async (
   });
 };
 
-export const unlockAll = async (unlocked, lastunlocked, courseid, uid) => {
+export const unlockAll_admin = async (
+  unlocked,
+  lastunlocked,
+  courseid,
+  uid
+) => {
   const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
     [`courses.${courseid}.completed`]: [],
@@ -86,50 +91,15 @@ export const checkCoursePaidSA = async (data) => {
   return profile.paidcourses.includes(courseid);
 };
 
-export const setUseMetaData = async (data) => {
-  const {
-    uid,
-    pts,
-    lastcompleted,
-    unlocked,
-    allunlocked,
-    courseid,
-    tasklog,
-    sum,
-    completed,
-    repeat,
-  } = decrypt2(data);
-  const tasklogPrepared = prepareTaskLog(courseid, lastcompleted, tasklog);
+export const setUseMetaData = async (dataencrypted) => {
+  const datadecrypted = decrypt2(dataencrypted);
+  const { data, uid } = datadecrypted;
   const userMetaRef = db.collection("usermeta").doc(uid);
-  if (!repeat) {
-    try {
-      await userMetaRef.update({
-        //all completed chapters
-        [`courses.${courseid}.completed`]: completed,
-        [`courses.${courseid}.rating`]: pts,
-        //all unlocked chapters(more than completed by lastunlocked)
-        [`courses.${courseid}.unlocked`]: allunlocked,
-        //next chapters after just completed
-        [`courses.${courseid}.lastunlocked`]: unlocked,
-        [`courses.${courseid}.stat.${lastcompleted}.sum`]: sum,
-        ...tasklogPrepared,
-      });
-
-      return "ok";
-    } catch (error) {
-      return "error";
-    }
-  } else {
-    try {
-      await userMetaRef.update({
-        [`courses.${courseid}.rating`]: pts,
-        [`courses.${courseid}.stat.${lastcompleted}.sum`]: sum,
-        ...tasklogPrepared,
-      });
-      return "ok";
-    } catch (e) {
-      return "error";
-    }
+  try {
+    await userMetaRef.update(data);
+    return "ok";
+  } catch (error) {
+    return "error";
   }
 };
 
@@ -151,12 +121,50 @@ export const setUseMetaUnlockedAndCompleted = async (data) => {
   return "ok";
 };
 
-//UTILITIES
-const prepareTaskLog = (courseid, lastcompleted, tasklog) => {
-  let res = {};
-  const dest = `courses.${courseid}.stat.${lastcompleted}.tasks`;
-  Object.keys(tasklog).forEach(
-    (taskuuid) => (res[`${dest}.${taskuuid}`] = tasklog[taskuuid])
-  );
-  return res;
-};
+// export const setUseMetaData = async (data) => {
+//   const {
+//     uid,
+//     pts,
+//     lastcompleted,
+//     unlocked,
+//     allunlocked,
+//     courseid,
+//     tasklog,
+//     sum,
+//     completed,
+//     repeat,
+//   } = decrypt2(data);
+
+//   const tasklogPrepared = prepareTaskLog(courseid, lastcompleted, tasklog);
+//   const userMetaRef = db.collection("usermeta").doc(uid);
+//   if (!repeat) {
+//     try {
+//       await userMetaRef.update({
+//         //all completed chapters
+//         [`courses.${courseid}.completed`]: completed,
+//         [`courses.${courseid}.rating`]: pts,
+//         //all unlocked chapters(more than completed by lastunlocked)
+//         [`courses.${courseid}.unlocked`]: allunlocked,
+//         //next chapters after just completed
+//         [`courses.${courseid}.lastunlocked`]: unlocked,
+//         [`courses.${courseid}.stat.${lastcompleted}.sum`]: sum,
+//         ...tasklogPrepared,
+//       });
+
+//       return "ok";
+//     } catch (error) {
+//       return "error";
+//     }
+//   } else {
+//     try {
+//       await userMetaRef.update({
+//         [`courses.${courseid}.rating`]: pts,
+//         [`courses.${courseid}.stat.${lastcompleted}.sum`]: sum,
+//         ...tasklogPrepared,
+//       });
+//       return "ok";
+//     } catch (e) {
+//       return "error";
+//     }
+//   }
+// };

@@ -1,10 +1,10 @@
 "use client";
 import { Button } from "@mui/material";
 import {
-  resetUserMetaData,
-  unlockAll,
-  unlockAndCompleteAll,
-  setMoney,
+  resetUserMetaData_admin,
+  unlockAll_admin,
+  unlockAndCompleteAll_admin,
+  setMoney_admin,
 } from "@/db/SA/firebaseSA";
 import { load } from "@/components/admin/adminutils";
 import user from "@/userlayers/store/user";
@@ -36,7 +36,7 @@ const AdminPanel = () => {
       <Button
         onClick={async () => {
           const courseid = course.state.courseid;
-          await resetUserMetaData(
+          await resetUserMetaData_admin(
             courses[courseid].firstchapter,
             courseid,
             user.userid
@@ -52,7 +52,7 @@ const AdminPanel = () => {
       <Button
         onClick={async () => {
           const courseid = course.state.courseid;
-          await unlockAll(
+          await unlockAll_admin(
             course.flow.nodes
               .filter((node) => node.id != -1)
               .map((node) => node.id),
@@ -71,7 +71,7 @@ const AdminPanel = () => {
       <Button
         onClick={async () => {
           const courseid = course.state.courseid;
-          await unlockAndCompleteAll(
+          await unlockAndCompleteAll_admin(
             course.flow.nodes
               .filter((node) => node.id != -1)
               .map((node) => node.id),
@@ -115,7 +115,7 @@ const AdminPanel = () => {
       <Button
         onClick={async () => {
           const courseid = course.state.courseid;
-          await setMoney(courseid, user.userid, inValue);
+          await setMoney_admin(courseid, user.userid, inValue);
           navigator.actions.openAndRefreshFlowPage({
             courseid,
             refetchFlow: true,

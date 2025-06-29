@@ -101,7 +101,7 @@ const buyChapter = async ({ unlockpts, id, uid }) => {
   // data.paid = true;
   await navigator.actions.openAndRefreshFlowPage({
     courseid: course.state.courseid,
-    refetchFlow: false,
+    refetchFlow: true,
   });
 
   progressCircle.setCloseProgress();

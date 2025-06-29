@@ -3,38 +3,42 @@ import user from "@/userlayers/store/user";
 import taskset from "@/components/taskset/layers/store/taskset";
 import course from "@/components/course/layers/store/course";
 
+const prepareTaskLog = (courseid, lastcompleted, tasklog) => {
+  let res = {};
+  const dest = `courses.${courseid}.stat.${lastcompleted}.tasks`;
+  Object.keys(tasklog).forEach(
+    (taskuuid) => (res[`${dest}.${taskuuid}`] = tasklog[taskuuid])
+  );
+  return res;
+};
+
 export const saveProgress = async ({ success }) => {
   const { chapterid, tobeunlocked, pts, tasklog, repeat } = taskset.state;
-  const { unlocked, completed, rating, lastunlocked } = user.progress;
+  const { unlocked, completed, rating } = user.progress;
   //TODO: После фейла запроса из-за отсутвия интернета кнопка сохранить не нажимается(later)
   let dataToEncrypt;
-  const common = {
-    lastcompleted: chapterid,
-    repeat,
-    pts: rating + pts,
-    uid: user.userid,
-    tasklog,
-    courseid: course.state.courseid,
-    sum: (user.progress.stat[chapterid]?.sum ?? 0) + pts,
-  };
+  const courseid = course.state.courseid;
+  const tasklogPrepared = prepareTaskLog(courseid, chapterid, tasklog);
 
-  if (success) {
+  dataToEncrypt = {
+    [`courses.${courseid}.rating`]: rating + pts,
+    [`courses.${courseid}.stat.${chapterid}.sum`]:
+      (user.progress.stat[chapterid]?.sum ?? 0) + pts,
+    ...tasklogPrepared,
+  };
+  if (!repeat && success) {
     dataToEncrypt = {
-      completed: [...completed, chapterid],
-      unlocked: tobeunlocked,
-      allunlocked: [...unlocked, ...tobeunlocked],
-      ...common,
-    };
-  } else {
-    dataToEncrypt = {
-      completed,
-      unlocked: lastunlocked,
-      allunlocked: unlocked,
-      ...common,
+      ...dataToEncrypt,
+      [`courses.${courseid}.completed`]: [...completed, chapterid],
+      //all unlocked chapters(more than completed by lastunlocked)
+      [`courses.${courseid}.unlocked`]: [...unlocked, ...tobeunlocked],
+      //next chapters after just completed
+      [`courses.${courseid}.lastunlocked`]: tobeunlocked,
     };
   }
+
   try {
-    await saveUserMeta(dataToEncrypt);
+    await saveUserMeta({ data: dataToEncrypt, uid: user.userid });
   } catch (e) {
     throw new Error("Server error");
   }

@@ -144,7 +144,7 @@ export const closeCongratPage = async (success) => {
       await saveProgress({ success });
       await openAndRefreshFlowPage({
         courseid: course.state.courseid,
-        refetchFlow: false,
+        refetchFlow: true,
       });
     } catch (e) {
       da.info.networkerror(e);
