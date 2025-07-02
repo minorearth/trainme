@@ -1,8 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-/admin
+/admin/
 /src/app/admin
-/src/app/admin/page.js
 
 # dependencies
 /node_modules
