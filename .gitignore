@@ -2,6 +2,8 @@
 
 /admin
 /src/app/admin
+/src/app/admin/page.js
+
 # dependencies
 /node_modules
 
