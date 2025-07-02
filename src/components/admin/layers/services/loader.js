@@ -1,5 +1,3 @@
-import { coursesToLoad } from "@/app/admin/courses";
-
 import {
   uploadCourseChapters,
   uploadAllCourseTasks,
@@ -14,12 +12,12 @@ import {
   getChapterTasks,
 } from "@/components/admin/layers/services/utils";
 
-export const load = async () => {
+export const load = async (coursesToLoad) => {
   let chapterCourseObjectModel = {};
-  const coursesToLoad = getCoursesToLoad();
+  const coursesToLoadIds = Object.keys(coursesToLoad);
 
   await Promise.all(
-    coursesToLoad.map(async (courseid) => {
+    coursesToLoadIds.map(async (courseid) => {
       const { chapterFlowNodes, chapterFlowEdges, tasksall } =
         coursesToLoad[courseid];
       await uploadCourseChapters({
@@ -50,10 +48,4 @@ export const load = async () => {
   );
 
   await uploadChapterCourseObjectModel(chapterCourseObjectModel);
-};
-
-const getCoursesToLoad = () => {
-  return Object.keys(coursesToLoad).filter(
-    (courseId) => coursesToLoad[courseId].toload
-  );
 };
