@@ -24,3 +24,10 @@ export const fetchAndEnrichFlow = async ({ courseid, progress }) => {
 
   return enrichedflow;
 };
+
+export const fetchChapterIds = async ({ courseid }) => {
+  const data = await getDocDataFromCollectionByIdClient("chapters", courseid);
+  return data.data.course.chapterFlowNodes
+    .filter((node) => node.id != -1)
+    .map((node) => node.id);
+};

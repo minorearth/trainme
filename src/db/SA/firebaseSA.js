@@ -8,7 +8,11 @@ import { db } from "./firebaseappAdmin";
 // await initAdmin();
 
 //ADMIN ACTIONS
-export const resetUserMetaData_admin = async (lastunlocked, courseid, uid) => {
+export const resetUserMetaData_admin = async ({
+  lastunlocked,
+  courseid,
+  uid,
+}) => {
   const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
     [`courses.${courseid}`]: {
@@ -27,18 +31,18 @@ export const getMoney_admin = async (courseid, uid) => {
     [`courses.${courseid}.rating`]: 5000,
   });
 };
-export const setMoney_admin = async (courseid, uid, money) => {
+export const setMoney_admin = async ({ courseid, uid, money }) => {
   const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
     [`courses.${courseid}.rating`]: Number(money),
   });
 };
-export const unlockAndCompleteAll_admin = async (
+export const unlockAndCompleteAllCourseChapters_admin = async ({
   unlocked,
   lastunlocked,
   courseid,
-  uid
-) => {
+  uid,
+}) => {
   const userMetaRef = db.collection("usermeta").doc(uid);
   userMetaRef.update({
     [`courses.${courseid}.completed`]: unlocked,
@@ -48,7 +52,7 @@ export const unlockAndCompleteAll_admin = async (
   });
 };
 
-export const unlockAll_admin = async ({
+export const unlockAllCourseChapters_admin = async ({
   unlocked,
   lastunlocked,
   courseid,

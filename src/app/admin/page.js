@@ -1,25 +1,24 @@
 "use client";
-import Navigator from "@/components/Navigator/navigator";
-import user from "@/userlayers/store/user";
-import { observer } from "mobx-react-lite";
-import { ThemeProvider } from "@mui/material/styles";
-import { useCustomTheme } from "@/app/theme";
-import { CssBaseline } from "@mui/material";
-import AdminPanel from "@/components/admin/adminpanel";
+import { Button } from "@mui/material";
+import { load } from "@/components/admin/layers/services/loader";
+import progressStore from "@/components/common/splash/progressdots/store";
+import Progress from "@/components/common/splash/progressdots/progressdots";
 
-const Page = observer(({ params }) => {
-  const { customTheme } = useCustomTheme();
-
+const Page = ({ params }) => {
   return (
     <>
-      <ThemeProvider theme={customTheme}>
-        <CssBaseline />
-        {/* <Navigator> */}
-        {/* <AdminPanel flow={flow}  tasks={tasks} /> */}
-        {/* </Navigator> */}
-      </ThemeProvider>
+      <Progress />
+      <Button
+        onClick={async () => {
+          progressStore.setShowProgress(true);
+          await load();
+          progressStore.setCloseProgress();
+        }}
+      >
+        load
+      </Button>
     </>
   );
-});
+};
 
 export default Page;

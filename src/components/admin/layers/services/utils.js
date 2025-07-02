@@ -5,6 +5,7 @@ const getChaptersLevels = (chapters) => {
   );
 };
 
+//TODO: lottie animations can be in, check
 export const getChaptersIds = (chapterFlowNodes) => {
   const chapters = chapterFlowNodes.map((chapter) => chapter.id);
   return [...chapters, "textbook"];

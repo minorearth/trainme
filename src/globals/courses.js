@@ -3,9 +3,9 @@ import {
   chapterFlowEdges1,
   chapterFlowNodes2,
   chapterFlowEdges2,
-} from "@/components/admin/data/chaptersFlowData";
-import { testsall1 } from "@/components/admin/data/course1";
-import { testsall2 } from "@/components/admin/data/course2";
+} from "@/app/admin/data/chaptersFlowData";
+import { testsall1 } from "@/app/admin/data/course1";
+import { testsall2 } from "@/app/admin/data/course2";
 import navigator from "@/components/Navigator/layers/store/navigator";
 
 export const courses = {

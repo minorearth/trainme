@@ -1,59 +1,94 @@
 import { courses } from "@/globals/courses";
 
-import { getCoursesToLoad } from "@/components/courses/layers/repository/repository";
 import {
-  uploadCourseChapters,
-  uploadAllCourseTasks,
-  uploadChapterTasks,
-  uploadChapterCourseObjectModel,
-} from "@/components/admin/layers/repository/repository";
+  resetUserMetaData_admin,
+  unlockAllCourseChapters_admin,
+  unlockAndCompleteAllCourseChapters_admin,
+  setMoney_admin,
+} from "@/db/SA/firebaseSA";
 
-import {
-  prepareObjectModel,
-  supplyTasksWithChapterLevel,
-  getChaptersIds,
-  getChapterTasks,
-} from "@/components/admin/layers/services/utils";
+import { fetchChapterIds } from "@/components/course/layers/repository/repostory";
+import { load } from "@/components/admin/layers/services/loader";
+
+import navigator from "@/components/Navigator/layers/store/navigator";
+import course from "@/components/course/layers/store/course";
+import user from "@/userlayers/store/user";
+import taskset from "@/components/taskset/layers/store/taskset";
+import task from "@/components/taskset/taskrun/layers/store/task";
 
 import progressStore from "@/components/common/splash/progressdots/store";
 
-export const load = async () => {
+export const uploadEverything = async () => {
   progressStore.setShowProgress(true);
-
-  let chapterCourseObjectModel = {};
-  const coursesToLoad = getCoursesToLoad();
-
-  await Promise.all(
-    coursesToLoad.map(async (courseid) => {
-      const { chapterFlowNodes, chapterFlowEdges, tasksall } =
-        courses[courseid];
-      await uploadCourseChapters({
-        chapterFlowNodes,
-        chapterFlowEdges,
-        courseid,
-      });
-
-      // LoadTasks
-      const allTasksWithLevels = supplyTasksWithChapterLevel({
-        tasksall,
-        chapterFlowNodes,
-      });
-
-      await uploadAllCourseTasks({ courseid, allTasksWithLevels });
-      const chaptersIds = getChaptersIds(chapterFlowNodes);
-
-      await Promise.all(
-        chaptersIds.map(async (chapterid) => {
-          const chapterTasks = getChapterTasks({ chapterid, tasksall });
-          chapterTasks.length != 0 &&
-            (await uploadChapterTasks({ courseid, chapterid, chapterTasks }));
-        })
-      );
-
-      chapterCourseObjectModel[courseid] = prepareObjectModel(chapterFlowNodes);
-    })
-  );
-
-  await uploadChapterCourseObjectModel(chapterCourseObjectModel);
+  await load();
+  navigator.actions.openAndRefreshFlowPage({
+    courseid: course.state.courseid,
+    refetchFlow: true,
+  });
   progressStore.setCloseProgress();
 };
+
+export const resetCurrentUser = async () => {
+  const courseid = course.state.courseid;
+  await resetUserMetaData_admin({
+    lastunlocked: courses[courseid].firstchapter,
+    courseid,
+    uid: user.userid,
+  });
+  navigator.actions.openAndRefreshFlowPage({
+    courseid,
+    refetchFlow: true,
+  });
+};
+
+export const unlockAllChapters = async () => {
+  const courseid = course.state.courseid;
+  const chaptersIds = await fetchChapterIds(courseid);
+  await unlockAllCourseChapters_admin({
+    //TODO: remade unlocked
+    unlocked: chaptersIds,
+    lastunlocked: courses[courseid].firstchapter,
+    courseid,
+    uid: user.userid,
+  });
+  navigator.actions.openAndRefreshFlowPage({
+    courseid,
+    refetchFlow: true,
+  });
+};
+
+export const completeAllChapters = async () => {
+  const courseid = course.state.courseid;
+  const chaptersIds = await fetchChapterIds(courseid);
+  await unlockAndCompleteAllCourseChapters_admin({
+    unlocked: chaptersIds,
+    lastunlocked: courses[courseid].firstchapter,
+    courseid,
+    uid: user.userid,
+  });
+
+  navigator.actions.openAndRefreshFlowPage({
+    courseid,
+    refetchFlow: true,
+  });
+};
+
+export const setMoney = async (inValue) => {
+  const courseid = course.state.courseid;
+  await setMoney_admin({ courseid, uid: user.userid, money: inValue });
+  navigator.actions.openAndRefreshFlowPage({
+    courseid,
+    refetchFlow: true,
+  });
+};
+
+export const gotoLastTask = () => {
+  task.setCurrTaskP(taskset.allTasks.length - 1);
+};
+
+//DO NOT DEELETE
+// resetUserMetaData_admin(
+//   courses["6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0"].firstchapter,
+//   "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0",
+//   user.userid
+// );
