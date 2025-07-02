@@ -2,7 +2,7 @@
 import { Button } from "@mui/material";
 
 import {
-  uploadEverything,
+  // uploadEverything,
   resetCurrentUser,
   unlockAllChapters,
   completeAllChapters,
@@ -26,7 +26,7 @@ const AdminPanel = () => {
       <Button onClick={() => resetCurrentUser()}>reset</Button>
       <Button onClick={() => unlockAllChapters()}>unlockAll</Button>
       <Button onClick={() => completeAllChapters()}>CompleteAll</Button>
-      <Button onClick={() => uploadEverything()}>load</Button>
+      {/* <Button onClick={() => uploadEverything()}>load</Button> */}
       <Input
         id="standard-multiline-flexible"
         // height="100%"

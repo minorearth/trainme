@@ -1,6 +1,5 @@
-import { courses } from "@/globals/courses";
+import { coursesToLoad } from "@/app/admin/courses";
 
-import { getCoursesToLoad } from "@/components/courses/layers/repository/repository";
 import {
   uploadCourseChapters,
   uploadAllCourseTasks,
@@ -22,7 +21,7 @@ export const load = async () => {
   await Promise.all(
     coursesToLoad.map(async (courseid) => {
       const { chapterFlowNodes, chapterFlowEdges, tasksall } =
-        courses[courseid];
+        coursesToLoad[courseid];
       await uploadCourseChapters({
         chapterFlowNodes,
         chapterFlowEdges,
@@ -51,4 +50,10 @@ export const load = async () => {
   );
 
   await uploadChapterCourseObjectModel(chapterCourseObjectModel);
+};
+
+const getCoursesToLoad = () => {
+  return Object.keys(coursesToLoad).filter(
+    (courseId) => coursesToLoad[courseId].toload
+  );
 };

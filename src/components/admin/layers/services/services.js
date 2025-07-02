@@ -18,15 +18,15 @@ import task from "@/components/taskset/taskrun/layers/store/task";
 
 import progressStore from "@/components/common/splash/progressdots/store";
 
-export const uploadEverything = async () => {
-  progressStore.setShowProgress(true);
-  await load();
-  navigator.actions.openAndRefreshFlowPage({
-    courseid: course.state.courseid,
-    refetchFlow: true,
-  });
-  progressStore.setCloseProgress();
-};
+// export const uploadEverything = async () => {
+//   progressStore.setShowProgress(true);
+//   await load();
+//   navigator.actions.openAndRefreshFlowPage({
+//     courseid: course.state.courseid,
+//     refetchFlow: true,
+//   });
+//   progressStore.setCloseProgress();
+// };
 
 export const resetCurrentUser = async () => {
   const courseid = course.state.courseid;
@@ -43,7 +43,7 @@ export const resetCurrentUser = async () => {
 
 export const unlockAllChapters = async () => {
   const courseid = course.state.courseid;
-  const chaptersIds = await fetchChapterIds(courseid);
+  const chaptersIds = await fetchChapterIds({ courseid });
   await unlockAllCourseChapters_admin({
     //TODO: remade unlocked
     unlocked: chaptersIds,
@@ -59,7 +59,7 @@ export const unlockAllChapters = async () => {
 
 export const completeAllChapters = async () => {
   const courseid = course.state.courseid;
-  const chaptersIds = await fetchChapterIds(courseid);
+  const chaptersIds = await fetchChapterIds({ courseid });
   await unlockAndCompleteAllCourseChapters_admin({
     unlocked: chaptersIds,
     lastunlocked: courses[courseid].firstchapter,

@@ -7,7 +7,9 @@ import { setDocInCollection } from "@/db/CA/firebaseCA";
 import { db } from "@/db/CA/firebaseappClient";
 
 import stn from "@/globals/settings";
-import { courses, getFreeCourses } from "@/globals/courses";
+import { getFreeCourses } from "@/components/courses/layers/repository/repository";
+
+import { courses } from "@/globals/courses";
 
 export const getUserCourseProgress = async (courseid, uid) => {
   const allUserMeta = await getDataFetch({
