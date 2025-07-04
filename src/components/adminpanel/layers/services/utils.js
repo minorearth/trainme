@@ -28,15 +28,15 @@ export const supplyTasksWithChapterLevel = ({ tasksall, chapterFlowNodes }) => {
 
 export const prepareObjectModel = (chapterFlowNodes) => {
   return chapterFlowNodes
-    .filter((item) => item.data.lottie == "no")
+    .filter((chapter) => chapter.data.lottie == "no")
     .reduce(
-      (acc, item) => ({
+      (acc, chapter) => ({
         ...acc,
-        [item.id]: {
-          title: item.data.title,
-          maxcoins: item.data.maxcoins,
-          nodemode: item.data.nodemode,
-          order: item.data.order,
+        [chapter.id]: {
+          title: chapter.data.title,
+          maxcoins: chapter.data.maxcoins,
+          nodemode: chapter.data.nodemode,
+          order: chapter.data.order,
         },
       }),
       {}

@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CountdownButton from "@/components/common/countdown/CountdownButton/CountdownButton";
 import { observer } from "mobx-react-lite";
-import Animation from "@/components/common/lottieAnimation/Animation";
+import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
 import stn from "@/globals/settings";
 
 //stores
@@ -41,7 +41,7 @@ const CodeRunPanel = observer(() => {
           disabled={task.executing}
           variant="outlined"
         >
-          <Animation height={"30px"} width={"30px"} name={"coins"} />
+          <AnimationLottie height={"30px"} width={"30px"} name={"coins"} />
           Проверить!
         </Button>
       )}

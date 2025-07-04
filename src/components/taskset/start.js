@@ -28,7 +28,7 @@ export default function Start() {
     >
       <Button
         onClick={() => {
-          navigator.actions.openLessonRunPage();
+          navigator.actions.openTaskSetPage();
         }}
         variant="outlined"
       >

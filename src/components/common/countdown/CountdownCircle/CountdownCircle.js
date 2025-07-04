@@ -16,7 +16,7 @@ const CountdownCircle = observer(() => {
     }
 
     const interval = setInterval(() => {
-      if (valueRef.current == 0) {
+      if (valueRef.current <= 0) {
         countdowncircle.close();
       } else
         setValue((prevState) => {
@@ -29,6 +29,8 @@ const CountdownCircle = observer(() => {
       clearInterval(interval);
     };
   }, [countdowncircle.state.visible]);
+
+  if (!countdowncircle.state.visible) return <></>;
 
   return (
     <Box

@@ -20,7 +20,7 @@ export const initials = {
     },
     task: { currTaskId: 0 },
   },
-  lessonRun: { navigator: { page: "testrun" } },
+  tasksetpage: { navigator: { page: "testrun" } },
   textbook: {
     navigator: { page: "lessonStarted" },
     taskset: { nodemode: "textbook" },

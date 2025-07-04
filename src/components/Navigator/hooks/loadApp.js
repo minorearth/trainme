@@ -7,23 +7,22 @@ import { loadPTrek } from "@/components/Navigator/layers/services/loadApp";
 
 //stores
 import user from "@/userlayers/store/user";
+import navigator from "../layers/store/navigator";
 //
 
 const useApp = () => {
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
-    startListeners();
-    loadPTrek();
-    setLoading(false);
+    const startApp = async () => {
+      startListeners();
+      await loadPTrek();
+      navigator.setDataloaded(true);
+    };
+    startApp();
+
     return () => {
       stopListeners();
     };
   }, [user]);
-
-  return {
-    loading,
-  };
 };
 
 export default useApp;

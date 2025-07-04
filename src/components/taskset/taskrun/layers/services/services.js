@@ -1,8 +1,13 @@
+import { da } from "@/components/common/dialog/dialogMacro";
+
+import { toJS } from "mobx";
+import { defineTheme } from "@/components/taskset/taskrun/components/monaco/themesetter";
+
+//stores
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import task from "@/components/taskset/taskrun/layers/store/task";
-import { toJS } from "mobx";
-import { da } from "@/components/common/dialog/dialogMacro";
-import { defineTheme } from "@/components/taskset/taskrun/components/monaco/themesetter";
+
+//
 import { checkOnChangeErrors } from "@/components/taskset/taskrun/layers/services/taskCheck";
 
 export const refreshEditor = () => {
@@ -25,13 +30,13 @@ export const setTaskCode = (currTask, taskeditor) => {
     : taskeditor.updateOptions({ lineNumbers: "on" });
 };
 
-export const handleEditorDidMount = ({ editor, monaco, darkmode }) => {
+export const handleMonacoDidMount = ({ editor, monaco, darkmode }) => {
   task.setMonacoRefs(monaco, editor);
   defineTheme(monaco, darkmode);
   setTaskCode(task.currTask, editor);
 };
 
-export const handleChangeContent = ({ value }) => {
+export const handleChangeMonacoContent = ({ value }) => {
   const model = task.editorRef.current.getModel();
   const errorMessage = checkOnChangeErrors({ lineCount: model.getLineCount() });
   task.updateCurrTask({

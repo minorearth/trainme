@@ -1,7 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Animation from "@/components/common/lottieAnimation/Animation";
+import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
 import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
 import ArrowCircleDownOutlinedIcon from "@mui/icons-material/ArrowCircleDownOutlined";
 import { GoDash } from "react-icons/go";
@@ -62,7 +62,7 @@ const UserCard = ({ name, pts, change, avatarid }) => {
         >
           <Typography variant="h6">{`${pts}`}</Typography>
 
-          <Animation height={"25px"} width={"25px"} name={"coins"} />
+          <AnimationLottie height={"25px"} width={"25px"} name={"coins"} />
         </Box>
         <Box
           sx={{

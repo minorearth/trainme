@@ -41,9 +41,7 @@ export const uploadChapterTasks = async ({
   });
 };
 
-export const uploadChapterCourseObjectModel = async (
-  chapterCourseObjectModel
-) => {
+export const uploadCourseChaptersObject = async (chapterCourseObjectModel) => {
   await setDocInCollectionClient(
     "views",
     chapterCourseObjectModel,

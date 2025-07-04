@@ -5,10 +5,7 @@ import { initials } from "@/components/Navigator/layers/store/initialStates";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import taskset from "@/components/taskset/layers/store/taskset";
-import progressStore from "@/components/common/splash/progressdots/store";
-import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import user from "@/userlayers/store/user";
-import tutorial from "@/components/tutorial/store";
 import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";
 //

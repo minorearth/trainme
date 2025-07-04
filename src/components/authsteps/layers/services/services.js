@@ -5,12 +5,12 @@ import { resetPsw } from "@/userlayers/repository/authrepository";
 
 // stores
 import authForm from "@/components/authsteps/layers/store/store";
-import progressStore from "@/components/common/splash/progressdots/store";
+import splash from "@/components/common/splash/store";
 import txtField from "@/components/common/customfield/store";
 
 export const handleSignInSubmit = async (event, router) => {
   event.preventDefault();
-  progressStore.setShowProgress(true);
+  splash.setShowProgress();
   if (txtField.validate(["email", "password"])) {
     cleanUpCSP();
     await signInNow(
@@ -20,7 +20,7 @@ export const handleSignInSubmit = async (event, router) => {
     );
     // router.replace("/chapters"); // заменяет текущую страницу
   } else {
-    progressStore.setCloseProgress();
+    splash.closeProgress();
   }
 };
 

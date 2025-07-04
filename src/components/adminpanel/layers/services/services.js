@@ -8,25 +8,12 @@ import {
 } from "@/db/SA/firebaseSA";
 
 import { fetchChapterIds } from "@/components/course/layers/repository/repostory";
-import { load } from "@/components/admin/layers/services/loader";
 
 import navigator from "@/components/Navigator/layers/store/navigator";
 import course from "@/components/course/layers/store/course";
 import user from "@/userlayers/store/user";
 import taskset from "@/components/taskset/layers/store/taskset";
 import task from "@/components/taskset/taskrun/layers/store/task";
-
-import progressStore from "@/components/common/splash/progressdots/store";
-
-// export const uploadEverything = async () => {
-//   progressStore.setShowProgress(true);
-//   await load();
-//   navigator.actions.openAndRefreshFlowPage({
-//     courseid: course.state.courseid,
-//     refetchFlow: true,
-//   });
-//   progressStore.setCloseProgress();
-// };
 
 export const resetCurrentUser = async () => {
   const courseid = course.state.courseid;

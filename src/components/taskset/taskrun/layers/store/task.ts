@@ -11,9 +11,9 @@ import {
   setEditorDisabled,
   showRightCodeAfterError,
   refreshEditor,
-  handleChangeContent,
+  handleChangeMonacoContent,
   setTaskCode,
-  handleEditorDidMount,
+  handleMonacoDidMount,
 } from "@/components/taskset/taskrun/layers/services/services";
 
 import {
@@ -43,9 +43,9 @@ class task {
     setEditorDisabled,
     showRightCodeAfterError,
     refreshEditor,
-    handleChangeContent,
+    handleChangeContent: handleChangeMonacoContent,
     setTaskCode,
-    handleEditorDidMount,
+    handleEditorDidMount: handleMonacoDidMount,
     checkTask,
     runTask,
   };

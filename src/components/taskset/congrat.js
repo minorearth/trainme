@@ -1,7 +1,7 @@
 "use client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Animation from "@/components/common/lottieAnimation/Animation";
+import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { useTheme } from "@mui/material/styles";
 import TextAnimated from "@/components/common/textAnimated/textAnimated";
@@ -31,7 +31,7 @@ const CongratPage = observer(() => {
       }}
     >
       {taskset.state.success && (
-        <Animation width={"700px"} height={"700px"} name={"success"} />
+        <AnimationLottie width={"700px"} height={"700px"} name={"success"} />
       )}
       <Box sx={{}}></Box>
       {taskset.state.pts != 0 && (

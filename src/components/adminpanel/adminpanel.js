@@ -8,7 +8,7 @@ import {
   completeAllChapters,
   setMoney,
   gotoLastTask,
-} from "@/components/admin/layers/services/services";
+} from "@/components/adminpanel/layers/services/services";
 
 //react stuff
 import Input from "@mui/material/Input";

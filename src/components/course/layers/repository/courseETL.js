@@ -8,7 +8,7 @@ import user from "@/userlayers/store/user";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import course from "@/components/course/layers/store/course";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
-import progressCircle from "@/components/common/splash/progressdots/store";
+import progressCircle from "@/components/common/splash/store";
 
 import { getRemainSum } from "@/components/taskset/layers/services/utils";
 
@@ -87,7 +87,7 @@ const getTargetsBySource = (src, edges) => {
 };
 
 const buyChapter = async ({ unlockpts, id, uid }) => {
-  progressCircle.setShowProgress(true);
+  progressCircle.setShowProgress();
   await setDataFetch({
     type: "paychapter",
     data: encrypt2({
@@ -104,5 +104,5 @@ const buyChapter = async ({ unlockpts, id, uid }) => {
     refetchFlow: true,
   });
 
-  progressCircle.setCloseProgress();
+  progressCircle.closeProgress();
 };

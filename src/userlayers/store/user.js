@@ -31,6 +31,13 @@ class user {
     this.userid = id;
   }
 
+  // import { startListeners, stopListeners } from "@/globals/listeners/listeners";
+  // import { loadPTrek } from "@/components/Navigator/layers/services/loadApp";
+
+  // startListeners();
+  // loadPTrek();
+  // setLoading(false);
+
   setAvatarId(id) {
     this.avatarid = id;
   }

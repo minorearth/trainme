@@ -2,7 +2,7 @@
 import Box from "@mui/material/Box";
 import LinearProgressWithLabel from "@/components/taskset/taskrun/components/LinearProgress";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
-import Animation from "@/components/common/lottieAnimation/Animation";
+import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
 import Typography from "@mui/material/Typography";
 import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButtonNoRipple";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
@@ -34,7 +34,7 @@ const TopPanel = observer(() => {
             justifyContent: "center",
           }}
         >
-          <Animation height={"80px"} width={"80px"} name={"sheep"} />
+          <AnimationLottie height={"80px"} width={"80px"} name={"sheep"} />
           <LinearProgressWithLabel
             value={((task.currTaskId + 1) / taskset.tasknum) * 100}
             label={`${task.currTaskId + 1}\\${taskset.tasknum}`}
@@ -50,7 +50,7 @@ const TopPanel = observer(() => {
             justifyContent: "center",
           }}
         >
-          <Animation height={"50px"} width={"50px"} name={"coins"} />
+          <AnimationLottie height={"50px"} width={"50px"} name={"coins"} />
           <Typography
             variant="body2"
             sx={{ color: "text.secondary", fontSize: 22 }}

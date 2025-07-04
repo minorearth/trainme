@@ -1,8 +1,10 @@
 import React, { memo } from "react";
-import Animation from "@/components/common/lottieAnimation/Animation.js";
+import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie.js";
 
 const AnimNode = memo(({ data }) => {
-  return <Animation width={"200px"} height={"200px"} name={data.lottie} />;
+  return (
+    <AnimationLottie width={"200px"} height={"200px"} name={data.lottie} />
+  );
 });
 AnimNode.displayName = "AnimNode";
 export default AnimNode;

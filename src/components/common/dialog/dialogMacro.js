@@ -1,5 +1,5 @@
 import alertdialog from "@/components/common/dialog/store";
-import progressStore from "@/components/common/splash/progressdots/store";
+import splash from "@/components/common/splash/store";
 import local from "@/globals/local";
 
 export const da = {
@@ -10,7 +10,7 @@ export const da = {
         "Перепроверьте все еще раз",
         1,
         () => {
-          progressStore.setCloseProgress();
+          splash.closeProgress();
         }
       ),
     emailnotverified: () =>
@@ -19,7 +19,7 @@ export const da = {
         "На ваш почтовый ящик выслано письмо, \nперейдите по ссылке в письме для смены пароля",
         1,
         () => {
-          progressStore.setCloseProgress();
+          splash.closeProgress();
         }
       ),
     accountcreeated: (action) =>
@@ -71,7 +71,7 @@ export const da = {
         "Данный курс пока недоступен",
         1,
         () => {
-          progressStore.setCloseProgress();
+          splash.closeProgress();
         }
       );
     },
@@ -81,7 +81,7 @@ export const da = {
         "Темы в учебнике открываются по мере проходжения курса",
         1,
         () => {
-          progressStore.setCloseProgress();
+          splash.closeProgress();
         }
       ),
     networkerror: (e) =>
@@ -91,7 +91,7 @@ export const da = {
         1,
         () => {
           console.log(e);
-          progressStore.setCloseProgress();
+          splash.closeProgress();
         }
       ),
     tasksetinterrupt: ({ action, completed, nodemode }) => {

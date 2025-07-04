@@ -5,5 +5,5 @@ export default function Home() {
   const router = useRouter();
 
   router.push("/login");
-  return <>Loading</>;
+  return <>Loading2</>;
 }

@@ -1,13 +1,13 @@
 "use client";
 import * as React from "react";
 import { observer } from "mobx-react-lite";
-import Progress from "@/components/common/splash/progressdots/progressdots";
+import Splash from "@/components/common/splash/splash";
 import AuthSteps from "@/components/authsteps/authsteps";
 
 const Page = observer(() => {
   return (
     <React.Fragment>
-      <Progress />
+      <Splash />
       <AuthSteps />
     </React.Fragment>
   );

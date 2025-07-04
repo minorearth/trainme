@@ -30,7 +30,7 @@ import { initials } from "@/components/Navigator/layers/store/initialStates";
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
 import taskset from "@/components/taskset/layers/store/taskset";
-import progressStore from "@/components/common/splash/progressdots/store";
+import splash from "@/components/common/splash/store";
 import countdownbutton from "@/components/common/countdown/CountdownButton/store";
 import user from "@/userlayers/store/user";
 import tutorial from "@/components/tutorial/store";
@@ -43,7 +43,7 @@ export const openAllCoursePage = () => {
 };
 
 export const openCourseFlowPageFromMain = async (courseid) => {
-  progressStore.setShowProgress(true, false, "progressdots", 2000);
+  splash.setShowProgress(false, "progressdots", 2000);
 
   const coursePaid = await checkCoursePaid({ courseid, uid: user.userid });
   const courseReady = checkCourseReady({ courseid });
@@ -53,7 +53,7 @@ export const openCourseFlowPageFromMain = async (courseid) => {
     return;
   }
   await openAndRefreshFlowPage({ courseid, refetchFlow: true });
-  progressStore.setCloseProgress();
+  splash.closeProgress();
 };
 
 export const openAndRefreshFlowPage = async ({ courseid, refetchFlow }) => {
@@ -76,7 +76,7 @@ export const openLessonStartPage = async ({
   level,
   tobeunlocked,
 }) => {
-  progressStore.setShowProgress(true);
+  splash.setShowProgress();
 
   const { tasks, tasksuuids } = await getTasks({
     champid,
@@ -105,12 +105,13 @@ export const openLessonStartPage = async ({
     da.info.textbookblocked();
   } else navigator.updateStateP(initials[nodemode].navigator);
 
-  progressStore.setCloseProgress();
+  splash.closeProgress();
 };
 
-export const openLessonRunPage = async () => {
-  progressStore.setShowProgress(true, false, "progressdots", 2000);
-  navigator.updateStateP({ ...initials.lessonRun.navigator });
+export const openTaskSetPage = async () => {
+  splash.setShowProgress(false, "progressdots", 2000);
+  navigator.updateStateP({ ...initials.tasksetpage.navigator });
+  splash.closeProgress();
 };
 
 export const openCongratPage = async ({
@@ -131,7 +132,7 @@ export const openCongratPage = async ({
 
 export const closeCongratPage = async (success) => {
   const nodemode = taskset.state.nodemode;
-  progressStore.setShowProgress(true);
+  splash.setShowProgress();
 
   if (nodemode == "addhoc" || nodemode == "newtopic" || nodemode == "exam")
     try {
@@ -152,7 +153,7 @@ export const closeCongratPage = async (success) => {
     });
     openChampPage();
   }
-  progressStore.setCloseProgress();
+  splash.closeProgress();
 };
 
 export const interruptTaskSet = () => {

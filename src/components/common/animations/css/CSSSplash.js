@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useTheme } from "@mui/material/styles";
 
-const Loader = () => {
+const CSSLoader = () => {
   const theme = useTheme();
 
   return (
@@ -97,4 +97,4 @@ const StyledWrapper = styled.div(({ theme }) => ({
   },
 }));
 
-export default Loader;
+export default CSSLoader;

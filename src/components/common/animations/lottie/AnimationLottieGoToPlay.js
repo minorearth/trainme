@@ -2,12 +2,27 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { getLottie } from "./getLottie";
+import { useEffect, useRef } from "react";
+import splash from "@/components/common/splash/store";
 
 import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
-const Animation = ({ height, width, name, onClick = () => {} }) => {
+const AnimationLottieGoToPlay = ({
+  height,
+  width,
+  name,
+  onCompleteAction = () => {},
+}) => {
+  const ref = useRef();
+
+  useEffect(() => {
+    if (ref.current && splash.state.play == "start") {
+      ref.current?.goToAndPlay(0);
+    }
+  }, [splash.state.play, ref.current]);
+
   return (
     <Box
       sx={{
@@ -15,17 +30,18 @@ const Animation = ({ height, width, name, onClick = () => {} }) => {
         justifyContent: "center",
         alignItems: "center",
       }}
-      onClick={() => onClick()}
     >
       <Lottie
+        lottieRef={ref}
         style={{ height, width }}
         animationData={getLottie(name)}
-        loop={true}
         autoPlay={false}
+        loop={false}
         renderer={"svg"}
+        onComplete={() => onCompleteAction()}
       ></Lottie>
     </Box>
   );
 };
 
-export default Animation;
+export default AnimationLottieGoToPlay;

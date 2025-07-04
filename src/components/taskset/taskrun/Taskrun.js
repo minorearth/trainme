@@ -1,19 +1,13 @@
 "use client";
 import { useTheme } from "@mui/material/styles";
-import { useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import { observer } from "mobx-react-lite";
-import progressStore from "@/components/common/splash/progressdots/store";
 import InOutPanel from "@/components/taskset/taskrun/components/InOutPanel";
 import TaskAndCodePanel from "@/components/taskset/taskrun/components/taskAndCodePanel";
 import TopPanel from "@/components/taskset/taskrun/components/TopPanel";
 
-const Task = observer(() => {
+const Taskrun = observer(() => {
   const theme = useTheme();
-
-  useEffect(() => {
-    progressStore.setCloseProgress();
-  }, []);
 
   return (
     <Box
@@ -33,4 +27,4 @@ const Task = observer(() => {
   );
 });
 
-export default Task;
+export default Taskrun;

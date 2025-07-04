@@ -10,7 +10,7 @@ import { BsUnlock } from "react-icons/bs";
 import { useTheme } from "@mui/material/styles";
 import localFont from "next/font/local";
 import { RxLayers } from "react-icons/rx";
-import Animation from "@/components/common/lottieAnimation/Animation";
+import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
 
 const myFont = localFont({
   src: "../../../app/Monaco.ttf",
@@ -222,7 +222,11 @@ const TurboNode = memo(({ data }) => {
                   <span
                     style={{ display: "inline-block", verticalAlign: "sub" }}
                   >
-                    <Animation height={"15px"} width={"15px"} name={"coins"} />
+                    <AnimationLottie
+                      height={"15px"}
+                      width={"15px"}
+                      name={"coins"}
+                    />
                   </span>
                 </div>
 
