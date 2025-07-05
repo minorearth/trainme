@@ -1,6 +1,11 @@
 import { da } from "@/components/common/dialog/dialogMacro";
+
 import { cleanUpCSP } from "@/db/localstorage";
-import { SignUpUser, signInNow } from "@/userlayers/services/authentication";
+
+//services
+import { signUpUser, signInNow } from "@/userlayers/services/authentication";
+
+//repository
 import { resetPsw } from "@/userlayers/repository/authrepository";
 
 // stores
@@ -8,7 +13,7 @@ import authForm from "@/components/authsteps/layers/store/store";
 import splash from "@/components/common/splash/store";
 import txtField from "@/components/common/customfield/store";
 
-export const handleSignInSubmit = async (event, router) => {
+export const signInSubmit = async (event, router) => {
   event.preventDefault();
   splash.setShowProgress();
   if (txtField.validate(["email", "password"])) {
@@ -24,7 +29,7 @@ export const handleSignInSubmit = async (event, router) => {
   }
 };
 
-export const handleForgetPswSubmit = (event) => {
+export const recoverPswSubmit = (event) => {
   event.preventDefault();
   if (txtField.validate(["email"])) {
     resetPsw(txtField.state.email.value);
@@ -32,10 +37,10 @@ export const handleForgetPswSubmit = (event) => {
   }
 };
 
-export const handleSignUpSubmit = async (event) => {
+export const signUpSubmit = async (event) => {
   event.preventDefault();
   if (txtField.validate(["email", "password", "name"])) {
-    await SignUpUser(
+    await signUpUser(
       txtField.state.email.value,
       txtField.state.password.value,
       txtField.state.name.value

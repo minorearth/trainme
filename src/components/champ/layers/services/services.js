@@ -18,10 +18,10 @@ import {
 
 //stores
 import user from "@/userlayers/store/user";
-import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import champ from "@/components/champ/layers/store/champ";
 import txtField from "@/components/common/customfield/store";
+import splash from "@/components/common/splash/store";
 
 export const createChamp = async () => {
   const tasks = await getRandomTasksForChamp({
@@ -81,38 +81,40 @@ export const startChamp = async (champid) => {
   await setChampStarted({ champid });
 };
 
-const launchChamp = (champdoc) => {
+const captureAndlaunchChamp = (champdoc) => {
   if (
     champdoc.status == "started" &&
     champdoc.users[user.userid]?.persstatus == "joined"
   ) {
-    countdowncircle.show(() => {
-      navigator.actions.openLessonStartPage({
-        champid: champ.champid,
-        nodemode: "champ",
-      });
-      updateUserInChamp({
-        userid: user.userid,
-        data: {
-          id: user.userid,
-          name: txtField.state.nickname.value,
-          change: 0,
-          pts: 0,
-          persstatus: "champwip",
-          avatarid: user.avatarid,
-        },
-        champid: champ.champid,
-      });
-      champ.setCapturingChampstart(false);
-    });
+    splash.showCountDown(false, () => launchChamp());
   }
+};
+
+const launchChamp = () => {
+  navigator.actions.openLessonStartPage({
+    champid: champ.champid,
+    nodemode: "champ",
+  });
+  updateUserInChamp({
+    userid: user.userid,
+    data: {
+      id: user.userid,
+      name: txtField.state.nickname.value,
+      change: 0,
+      pts: 0,
+      persstatus: "champwip",
+      avatarid: user.avatarid,
+    },
+    champid: champ.champid,
+  });
+  champ.setCapturingChampstart(false);
 };
 
 export const captureChampStart = async ({ champid }) => {
   console.log("тутат");
   await subscribeOnChamp({
     champid,
-    action: launchChamp,
+    action: captureAndlaunchChamp,
   });
 };
 

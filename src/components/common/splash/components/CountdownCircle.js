@@ -3,7 +3,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { observer } from "mobx-react-lite";
-import countdowncircle from "@/components/common/countdown/CountdownCircle/store";
+import splash from "@/components/common/splash/store";
 
 const sec = 5 * 1000;
 const speed = 5;
@@ -11,13 +11,14 @@ const CountdownCircle = observer(() => {
   const [value, setValue] = useState(sec);
   const valueRef = useRef({});
   useEffect(() => {
-    if (!countdowncircle.state.visible) {
+    if (!splash.state.showProgress) {
       return;
     }
 
     const interval = setInterval(() => {
       if (valueRef.current <= 0) {
-        countdowncircle.close();
+        // countdowncircle.close();
+        splash.state.onCompleteAction();
       } else
         setValue((prevState) => {
           valueRef.current = prevState - sec / speed;
@@ -28,9 +29,9 @@ const CountdownCircle = observer(() => {
     return () => {
       clearInterval(interval);
     };
-  }, [countdowncircle.state.visible]);
+  }, [splash.state.showProgress]);
 
-  if (!countdowncircle.state.visible) return <></>;
+  if (!splash.state.showProgress) return <></>;
 
   return (
     <Box

@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import RangeSlider from "./components/RangeSlider";
 import SortableList from "@/components/champ/components/ChampUsersList/ChampUsersList";
 import StepByStep from "@/components/champ/components/Stepper";
-import AvatarSelector from "@/components/champ/components/avatar/avatar";
+import AvatarSelector from "@/components/champ/components/Avatar/Avatar";
 import CustomField from "@/components/common/customfield/customField";
 
 import champ from "@/components/champ/layers/store/champ";

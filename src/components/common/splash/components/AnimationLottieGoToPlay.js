@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Box } from "@mui/material";
-import { getLottie } from "./getLottie";
+import { getLottie } from "../../animations/lottie/getLottie";
 import { useEffect, useRef } from "react";
 import splash from "@/components/common/splash/store";
 

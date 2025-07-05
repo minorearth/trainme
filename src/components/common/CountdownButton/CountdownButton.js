@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import countdownbutton from "@/components/common/countdown/CountdownButton/store";
+import countdownbutton from "@/components/common/CountdownButton/store";
 import Button from "@mui/material/Button";
 
 const sec = 20 * 1000;

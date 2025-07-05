@@ -69,13 +69,9 @@ class navigator {
     });
   }
 
-  setNavigationMethods(methods) {
-    this.actions = methods;
-  }
-
   constructor() {
     makeAutoObservable(this);
-    splash.showAppLoader();
+    splash.showAppLoader(true);
     this.disposer = autorun(() => {
       if (this.pyodideloaded && this.dataloaded) {
         splash.closeProgress();

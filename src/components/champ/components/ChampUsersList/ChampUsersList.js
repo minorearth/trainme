@@ -1,6 +1,6 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import UserCard from "@/components/champ/components/userCard";
+import UserCard from "@/components/champ/components/UserCard";
 import Box from "@mui/material/Box";
 import champ from "@/components/champ/layers/store/champ";
 import { observer } from "mobx-react-lite";

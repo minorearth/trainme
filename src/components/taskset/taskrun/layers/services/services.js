@@ -4,7 +4,7 @@ import { toJS } from "mobx";
 import { defineTheme } from "@/components/taskset/taskrun/components/monaco/themesetter";
 
 //stores
-import countdownbutton from "@/components/common/countdown/CountdownButton/store";
+import countdownbutton from "@/components/common/CountdownButton/store";
 import task from "@/components/taskset/taskrun/layers/store/task";
 
 //

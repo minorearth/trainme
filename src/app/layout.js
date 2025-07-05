@@ -1,5 +1,3 @@
-// "use client";
-import "./globals.css";
 import local from "@/globals/local";
 
 export const metadata = {

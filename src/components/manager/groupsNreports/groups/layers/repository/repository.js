@@ -43,6 +43,7 @@ export const updateNodeLabelDB = async (newdata, userid) => {
   await setDocInCollectionClient("groups", groupsArrToObject(newdata), userid);
 };
 
+//TODO: remove
 export const addUserToGroup = async ({
   groupid,
   secondName,

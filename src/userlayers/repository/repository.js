@@ -13,7 +13,7 @@ import { courses } from "@/globals/courses";
 
 export const getUserCourseProgress = async (courseid, uid) => {
   const allUserMeta = await getDataFetch({
-    data: { uid },
+    data: { id: uid },
     type: "getusermetadata",
   });
   //TODO:keep only keys needed(later)

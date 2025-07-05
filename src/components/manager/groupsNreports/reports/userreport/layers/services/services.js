@@ -1,10 +1,10 @@
 import { getReportTree } from "./utils";
 import stat from "@/components/manager/groupsNreports/store/stat";
-import { getUserMetaData } from "@/components/manager/groupsNreports/reports/userreport/layers/repository/repository";
+import { getUserMetaDataCA } from "@/components/manager/groupsNreports/reports/userreport/layers/repository/repository";
 import { toJS } from "mobx";
 
 export const showUserReport = async (uid) => {
-  const userMeta = await getUserMetaData(uid);
+  const userMeta = await getUserMetaDataCA(uid);
   const treeRepresent = getReportTree(
     userMeta.courses,
     stat.chaptersobj,

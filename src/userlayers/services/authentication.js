@@ -1,15 +1,20 @@
+import { da } from "@/components/common/dialog/dialogMacro";
+
+//repository
 import {
   signInUser,
   launchAuthStateChangeMonitor,
   createUser,
   signOutUserRep,
 } from "@/userlayers/repository/authrepository";
+import { createNewUserMeta } from "@/userlayers/repository/repository";
 
+//api calls
 import { getDataFetch } from "@/apicalls/apicalls";
 import user from "@/userlayers/store/user";
 
-import { login, logout } from "@/db/SA/session";
-import { createNewUserMeta } from "@/userlayers/repository/repository";
+//server functions
+import { logout } from "@/db/SA/session";
 
 export const signIn = async (email, password) => {
   await logout();
@@ -19,7 +24,7 @@ export const signIn = async (email, password) => {
   return uid;
 };
 
-export const SignUpUser = async (email, password, name) => {
+export const signUpUser = async (email, password, name) => {
   try {
     const user = await createUser(email, password);
     const userid = user.uid;

@@ -4,9 +4,9 @@ import { Button } from "@mui/material";
 import {
   // uploadEverything,
   resetCurrentUser,
-  unlockAllChapters,
-  completeAllChapters,
-  setMoney,
+  unlockAllChaptersCurrentUser,
+  completeAllChaptersCurrentUser,
+  setMoneyCurrentUser,
   gotoLastTask,
 } from "@/components/adminpanel/layers/services/services";
 
@@ -24,8 +24,10 @@ const AdminPanel = () => {
   return (
     <>
       <Button onClick={() => resetCurrentUser()}>reset</Button>
-      <Button onClick={() => unlockAllChapters()}>unlockAll</Button>
-      <Button onClick={() => completeAllChapters()}>CompleteAll</Button>
+      <Button onClick={() => unlockAllChaptersCurrentUser()}>unlockAll</Button>
+      <Button onClick={() => completeAllChaptersCurrentUser()}>
+        CompleteAll
+      </Button>
       {/* <Button onClick={() => uploadEverything()}>load</Button> */}
       <Input
         id="standard-multiline-flexible"
@@ -40,7 +42,7 @@ const AdminPanel = () => {
           width: "50px",
         }}
       />
-      <Button onClick={() => setMoney(inValue)}>money</Button>
+      <Button onClick={() => setMoneyCurrentUser(inValue)}>money</Button>
       <Button onClick={() => gotoLastTask()}>lasttask</Button>
     </>
   );

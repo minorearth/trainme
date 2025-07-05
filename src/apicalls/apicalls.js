@@ -10,10 +10,6 @@ export const wakeUp = () => {
     .catch((err) => console.error("Ping failed", err));
 };
 
-setInterval(() => {
-  //  wakeUp
-}, 30000); // каждые 45 секунд
-
 export const setDataFetch = async (data) => {
   wakeUp();
   const res = await new Promise((resolve) => {

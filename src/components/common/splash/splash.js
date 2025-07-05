@@ -5,12 +5,13 @@ import AnimationLottie from "@/components/common/animations/lottie/AnimationLott
 import splash from "./store";
 import { observer } from "mobx-react-lite";
 import CSSLoader from "@/components/common/animations/css/CSSSplash";
-import AnimationLottieGoToPlay from "@/components/common/animations/lottie/AnimationLottieGoToPlay";
+import AnimationLottieGoToPlay from "@/components/common/splash/components/AnimationLottieGoToPlay";
+import CountdownCircle from "@/components/common/splash/components/CountdownCircle";
 
 const Splash = observer(() => {
   return (
     <Backdrop
-      sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
+      sx={(theme) => ({ color: "#121212", zIndex: theme.zIndex.drawer + 1 })}
       open={!splash.state.timeelapsed || splash.state.showProgress}
     >
       <Box
@@ -23,7 +24,7 @@ const Splash = observer(() => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: splash.state.background ? "black" : "transparent",
+          backgroundColor: splash.state.background ? "#121212" : "transparent",
         }}
       ></Box>
       {splash.state.animationtype == "lottie" && (
@@ -43,6 +44,7 @@ const Splash = observer(() => {
       )}
 
       {splash.state.animationtype == "css" && <CSSLoader />}
+      {splash.state.animationtype == "countdown" && <CountdownCircle />}
     </Backdrop>
   );
 });

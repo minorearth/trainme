@@ -17,7 +17,6 @@ class splash {
   }
 
   closeProgress() {
-    console.log("closed launced");
     this.state = {
       ...this.state,
       showProgress: false,
@@ -73,6 +72,19 @@ class splash {
       animation,
       onCompleteAction: () => {
         this.state = { ...this.state, play: "", showProgress: false };
+        action();
+      },
+    };
+  }
+
+  showCountDown(background = false, action = () => {}) {
+    this.state = {
+      ...this.state,
+      animationtype: "countdown",
+      showProgress: true,
+      background,
+      onCompleteAction: () => {
+        this.state = { ...this.state, showProgress: false };
         action();
       },
     };

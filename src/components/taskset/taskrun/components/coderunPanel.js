@@ -1,13 +1,13 @@
 "use client";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import CountdownButton from "@/components/common/countdown/CountdownButton/CountdownButton";
+import CountdownButton from "@/components/common/CountdownButton/CountdownButton";
 import { observer } from "mobx-react-lite";
 import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
 import stn from "@/globals/settings";
 
 //stores
-import countdownbutton from "@/components/common/countdown/CountdownButton/store";
+import countdownbutton from "@/components/common/CountdownButton/store";
 import taskset from "@/components/taskset/layers/store/taskset";
 import task from "@/components/taskset/taskrun/layers/store/task";
 

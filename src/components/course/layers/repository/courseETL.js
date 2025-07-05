@@ -7,7 +7,7 @@ import { da } from "@/components/common/dialog/dialogMacro";
 import user from "@/userlayers/store/user";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import course from "@/components/course/layers/store/course";
-import countdownbutton from "@/components/common/countdown/CountdownButton/store";
+import countdownbutton from "@/components/common/CountdownButton/store";
 import progressCircle from "@/components/common/splash/store";
 
 import { getRemainSum } from "@/components/taskset/layers/services/utils";
@@ -62,7 +62,7 @@ const nodeAction = (data) => {
     rating >= unlockpts &&
     !progressCircle.state.showProgress
   )
-    da.info.buy(buyChapter({ unlockpts, id, uid: user.userid }));
+    da.info.buy(() => buyChapter({ unlockpts, id, uid: user.userid }));
 
   if (!unlocked && paid && !completed) da.info.blocked();
 
@@ -88,17 +88,19 @@ const getTargetsBySource = (src, edges) => {
 
 const buyChapter = async ({ unlockpts, id, uid }) => {
   progressCircle.setShowProgress();
+  const courseid = course.state.courseid;
+  const { rating, paid } = user.progress;
   await setDataFetch({
     type: "paychapter",
     data: encrypt2({
-      pts: -unlockpts,
-      id,
-      uid,
-      lastunlocked: id,
-      courseid: course.state.courseid,
+      data: {
+        [`courses.${courseid}.rating`]: rating - unlockpts,
+        [`courses.${courseid}.lastunlocked`]: [id],
+        [`courses.${courseid}.paid`]: [...paid, id],
+      },
+      id: uid,
     }),
   });
-  // data.paid = true;
   await navigator.actions.openAndRefreshFlowPage({
     courseid: course.state.courseid,
     refetchFlow: true,

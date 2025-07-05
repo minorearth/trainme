@@ -6,7 +6,6 @@ import {
 } from "@/components/adminpanel/layers/repository/repository";
 
 import {
-  prepareObjectModel,
   supplyTasksWithChapterLevel,
   getChaptersIds,
   getChapterTasks,

@@ -1,14 +1,12 @@
 import { courses } from "@/globals/courses";
 
-import {
-  resetUserMetaData_admin,
-  unlockAllCourseChapters_admin,
-  unlockAndCompleteAllCourseChapters_admin,
-  setMoney_admin,
-} from "@/db/SA/firebaseSA";
+import { updateDocSA } from "@/db/SA/firebaseSA";
+
+import { encrypt2 } from "@/globals/utils/encryption";
 
 import { fetchChapterIds } from "@/components/course/layers/repository/repostory";
 
+//stores
 import navigator from "@/components/Navigator/layers/store/navigator";
 import course from "@/components/course/layers/store/course";
 import user from "@/userlayers/store/user";
@@ -17,42 +15,62 @@ import task from "@/components/taskset/taskrun/layers/store/task";
 
 export const resetCurrentUser = async () => {
   const courseid = course.state.courseid;
-  await resetUserMetaData_admin({
-    lastunlocked: courses[courseid].firstchapter,
-    courseid,
-    uid: user.userid,
-  });
+  await resetUser({ courseid, uid: user.userid });
   navigator.actions.openAndRefreshFlowPage({
     courseid,
     refetchFlow: true,
   });
 };
 
-export const unlockAllChapters = async () => {
+export const resetUser = async ({ courseid, uid }) => {
+  const data = {
+    data: {
+      [`courses.${courseid}`]: {
+        completed: [],
+        unlocked: [courses[courseid].firstchapter],
+        lastunlocked: [courses[courseid].firstchapter],
+        paid: [],
+        stat: {},
+        rating: 0,
+      },
+    },
+    id: uid,
+  };
+  await updateDocSA("usermeta", encrypt2(data));
+};
+
+export const unlockAllChaptersCurrentUser = async () => {
   const courseid = course.state.courseid;
   const chaptersIds = await fetchChapterIds({ courseid });
-  await unlockAllCourseChapters_admin({
-    //TODO: remade unlocked
-    unlocked: chaptersIds,
-    lastunlocked: courses[courseid].firstchapter,
-    courseid,
-    uid: user.userid,
-  });
+  //TODO: remade unlocked(remove llottie chapters)
+  const data = {
+    data: {
+      [`courses.${courseid}.completed`]: [],
+      [`courses.${courseid}.unlocked`]: chaptersIds,
+      [`courses.${courseid}.lastunlocked`]: [courses[courseid].firstchapter],
+    },
+    id: user.userid,
+  };
+  await updateDocSA("usermeta", encrypt2(data));
   navigator.actions.openAndRefreshFlowPage({
     courseid,
     refetchFlow: true,
   });
 };
 
-export const completeAllChapters = async () => {
+export const completeAllChaptersCurrentUser = async () => {
   const courseid = course.state.courseid;
   const chaptersIds = await fetchChapterIds({ courseid });
-  await unlockAndCompleteAllCourseChapters_admin({
-    unlocked: chaptersIds,
-    lastunlocked: courses[courseid].firstchapter,
-    courseid,
-    uid: user.userid,
-  });
+  const data = {
+    data: {
+      [`courses.${courseid}.completed`]: chaptersIds,
+      [`courses.${courseid}.unlocked`]: chaptersIds,
+      [`courses.${courseid}.lastunlocked`]: [courses[courseid].firstchapter],
+      [`courses.${courseid}.paid`]: chaptersIds,
+    },
+    id: user.userid,
+  };
+  await updateDocSA("usermeta", encrypt2(data));
 
   navigator.actions.openAndRefreshFlowPage({
     courseid,
@@ -60,9 +78,14 @@ export const completeAllChapters = async () => {
   });
 };
 
-export const setMoney = async (inValue) => {
+export const setMoneyCurrentUser = async (inValue) => {
   const courseid = course.state.courseid;
-  await setMoney_admin({ courseid, uid: user.userid, money: inValue });
+  const data = {
+    data: { [`courses.${courseid}.rating`]: Number(inValue) },
+    id: user.userid,
+  };
+  await updateDocSA("usermeta", encrypt2(data));
+
   navigator.actions.openAndRefreshFlowPage({
     courseid,
     refetchFlow: true,
@@ -74,8 +97,3 @@ export const gotoLastTask = () => {
 };
 
 //DO NOT DEELETE
-// resetUserMetaData_admin(
-//   courses["6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0"].firstchapter,
-//   "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0",
-//   user.userid
-// );

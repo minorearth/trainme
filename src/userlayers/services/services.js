@@ -38,7 +38,7 @@ export const saveProgress = async ({ success }) => {
   }
 
   try {
-    await saveUserMeta({ data: dataToEncrypt, uid: user.userid });
+    await saveUserMeta({ data: dataToEncrypt, id: user.userid });
   } catch (e) {
     throw new Error("Server error");
   }

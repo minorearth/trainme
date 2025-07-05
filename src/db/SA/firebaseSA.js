@@ -1,88 +1,21 @@
 "use server";
-import { getFirestore, FieldValue } from "firebase-admin/firestore";
-// import "server-only";
-import { initAdmin } from "./firebaseappAdmin";
-import { encrypt2, decrypt2 } from "./encryption";
+import { decrypt2 } from "./encryption";
 import { db } from "./firebaseappAdmin";
 
-// await initAdmin();
-
-//ADMIN ACTIONS
-export const resetUserMetaData_admin = async ({
-  lastunlocked,
-  courseid,
-  uid,
-}) => {
-  const userMetaRef = db.collection("usermeta").doc(uid);
-  userMetaRef.update({
-    [`courses.${courseid}`]: {
-      completed: [],
-      unlocked: [lastunlocked],
-      lastunlocked: [lastunlocked],
-      paid: [],
-      stat: {},
-      rating: 0,
-    },
-  });
-};
-export const getMoney_admin = async (courseid, uid) => {
-  const userMetaRef = db.collection("usermeta").doc(uid);
-  userMetaRef.update({
-    [`courses.${courseid}.rating`]: 5000,
-  });
-};
-export const setMoney_admin = async ({ courseid, uid, money }) => {
-  const userMetaRef = db.collection("usermeta").doc(uid);
-  userMetaRef.update({
-    [`courses.${courseid}.rating`]: Number(money),
-  });
-};
-export const unlockAndCompleteAllCourseChapters_admin = async ({
-  unlocked,
-  lastunlocked,
-  courseid,
-  uid,
-}) => {
-  const userMetaRef = db.collection("usermeta").doc(uid);
-  userMetaRef.update({
-    [`courses.${courseid}.completed`]: unlocked,
-    [`courses.${courseid}.unlocked`]: unlocked,
-    [`courses.${courseid}.lastunlocked`]: [lastunlocked],
-    [`courses.${courseid}.paid`]: unlocked,
-  });
+export const updateDocSA = async (collection, dataencrypted) => {
+  const { data, id } = decrypt2(dataencrypted);
+  const userMetaRef = db.collection(collection).doc(id);
+  try {
+    await userMetaRef.update(data);
+    return "ok";
+  } catch (error) {
+    return "error";
+  }
 };
 
-export const unlockAllCourseChapters_admin = async ({
-  unlocked,
-  lastunlocked,
-  courseid,
-  uid,
-}) => {
-  const userMetaRef = db.collection("usermeta").doc(uid);
-  userMetaRef.update({
-    [`courses.${courseid}.completed`]: [],
-    [`courses.${courseid}.unlocked`]: unlocked,
-    [`courses.${courseid}.lastunlocked`]: [lastunlocked],
-  });
-};
-
-//USER ACTIONS
-
-// TODO:remade(later)
-export const payChapter = async (data) => {
-  //pts is negative here
-  const { pts, id, uid, lastunlocked, courseid } = decrypt2(data);
-  const userMetaRef = db.collection("usermeta").doc(uid);
-  userMetaRef.update({
-    [`courses.${courseid}.rating`]: FieldValue.increment(pts),
-    [`courses.${courseid}.lastunlocked`]: [lastunlocked],
-    [`courses.${courseid}.paid`]: FieldValue.arrayUnion(id),
-  });
-  return "ok";
-};
-
-export const getUseMetaData = async ({ uid }) => {
-  const userMetaRef = db.collection("usermeta").doc(uid);
+export const getDocSA = async (collection, data) => {
+  const { id } = data;
+  const userMetaRef = db.collection(collection).doc(id);
   const snapshot = await userMetaRef.get();
   return snapshot.data();
 };
@@ -93,36 +26,6 @@ export const checkCoursePaidSA = async (data) => {
   const snapshot = await userMetaRef.get();
   const profile = snapshot.data();
   return profile.paidcourses.includes(courseid);
-};
-
-export const setUseMetaData = async (dataencrypted) => {
-  const datadecrypted = decrypt2(dataencrypted);
-  const { data, uid } = datadecrypted;
-  const userMetaRef = db.collection("usermeta").doc(uid);
-  try {
-    await userMetaRef.update(data);
-    return "ok";
-  } catch (error) {
-    return "error";
-  }
-};
-
-// TODO:remade(later)
-export const setUseMetaUnlockedAndCompleted = async (data) => {
-  const { uid, lastcompleted, unlocked, courseid } = decrypt2(data);
-  const userMetaRef = db.collection("usermeta").doc(uid);
-  if (unlocked.length != 0) {
-    userMetaRef.update({
-      [`courses.${courseid}.completed`]: FieldValue.arrayUnion(lastcompleted),
-      [`courses.${courseid}.unlocked`]: FieldValue.arrayUnion(...unlocked),
-      [`courses.${courseid}.lastunlocked`]: unlocked,
-    });
-  } else {
-    userMetaRef.update({
-      [`courses.${courseid}.completed`]: FieldValue.arrayUnion(lastcompleted),
-    });
-  }
-  return "ok";
 };
 
 // export const setUseMetaData = async (data) => {
@@ -171,4 +74,21 @@ export const setUseMetaUnlockedAndCompleted = async (data) => {
 //       return "error";
 //     }
 //   }
+// };
+
+// export const setUseMetaUnlockedAndCompleted = async (data) => {
+//   const { uid, lastcompleted, unlocked, courseid } = decrypt2(data);
+//   const userMetaRef = db.collection("usermeta").doc(uid);
+//   if (unlocked.length != 0) {
+//     userMetaRef.update({
+//       [`courses.${courseid}.completed`]: FieldValue.arrayUnion(lastcompleted),
+//       [`courses.${courseid}.unlocked`]: FieldValue.arrayUnion(...unlocked),
+//       [`courses.${courseid}.lastunlocked`]: unlocked,
+//     });
+//   } else {
+//     userMetaRef.update({
+//       [`courses.${courseid}.completed`]: FieldValue.arrayUnion(lastcompleted),
+//     });
+//   }
+//   return "ok";
 // };
