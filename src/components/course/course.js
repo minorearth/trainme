@@ -8,10 +8,16 @@ import { ReactFlow } from "@xyflow/react";
 import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import "@xyflow/react/dist/base.css";
-import "./styles.css";
-import FlowPanel from "./components/FlowPanel.js";
-import useFlow from "./useFlow";
 import { observer } from "mobx-react-lite";
+
+//styles
+import "./css/styles.css";
+
+//components
+import FlowPanel from "./components/FlowPanel.js";
+
+//hooks
+import useFlow from "./hooks/useFlow";
 
 const Course = observer(() => {
   const theme = useTheme();

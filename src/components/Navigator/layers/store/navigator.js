@@ -74,6 +74,8 @@ class navigator {
     splash.showAppLoader(true);
     this.disposer = autorun(() => {
       if (this.pyodideloaded && this.dataloaded) {
+        console.log("unreached");
+
         splash.closeProgress();
         this.apploaded = true;
         this.disposer();

@@ -1,22 +1,28 @@
 import { toJS } from "mobx";
 
-//
+//repository(external)
+import { saveUserMeta } from "@/userlayers/repository/repositoryUserMeta";
+import { getChampTasks } from "@/components/champ/layers/repository/repository";
+
+//repository(local)
 import {
   getAllTasksFromChapter,
   getRandomTasksForExam,
   getTextBookTasks,
 } from "@/components/taskset/layers/repository/repository";
 
+//service helpers(local)
 import {
   getTasksRecap,
   getTasksetState,
-} from "@/components/taskset/layers/services/utils";
+} from "@/components/taskset/layers/services/servicesHelpers";
 //
-
-import { getChampTasks } from "@/components/champ/layers/repository/repository";
 
 //stores
 import taskset from "@/components/taskset/layers/store/taskset";
+import user from "@/userlayers/store/user";
+import course from "@/components/course/layers/store/course";
+
 //
 
 export const getTasks = async ({
@@ -75,4 +81,48 @@ export const updateTasksetState = (props) => {
   });
 
   taskset.updateStateP(taskSetState);
+};
+
+const prepareTaskLog = (courseid, lastcompleted, tasklog) => {
+  let res = {};
+  const dest = `courses.${courseid}.stat.${lastcompleted}.tasks`;
+  Object.keys(tasklog).forEach(
+    (taskuuid) => (res[`${dest}.${taskuuid}`] = tasklog[taskuuid])
+  );
+  return res;
+};
+
+export const saveProgress = async ({ success }) => {
+  const { chapterid, tobeunlocked, pts, tasklog, completed } = taskset.state;
+  const { unlocked, rating } = user.progress;
+  //TODO: После фейла запроса из-за отсутвия интернета кнопка сохранить не нажимается(later)
+  let dataToEncrypt;
+  const courseid = course.state.courseid;
+  const tasklogPrepared = prepareTaskLog(courseid, chapterid, tasklog);
+
+  dataToEncrypt = {
+    [`courses.${courseid}.rating`]: rating + pts,
+    [`courses.${courseid}.stat.${chapterid}.sum`]:
+      (user.progress.stat[chapterid]?.sum ?? 0) + pts,
+    ...tasklogPrepared,
+  };
+  if (!completed && success) {
+    dataToEncrypt = {
+      ...dataToEncrypt,
+      [`courses.${courseid}.completed`]: [
+        ...user.progress.completed,
+        chapterid,
+      ],
+      //all unlocked chapters(more than completed by lastunlocked)
+      [`courses.${courseid}.unlocked`]: [...unlocked, ...tobeunlocked],
+      //next chapters after just completed
+      [`courses.${courseid}.lastunlocked`]: tobeunlocked,
+    };
+  }
+
+  try {
+    await saveUserMeta({ data: dataToEncrypt, id: user.userid });
+  } catch (e) {
+    throw new Error("Server error");
+  }
 };

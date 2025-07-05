@@ -6,16 +6,23 @@ import { Panel } from "@xyflow/react";
 import { Box } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import { Tooltip } from "@mui/material";
+import { observer } from "mobx-react-lite";
 
+//css
 import "@xyflow/react/dist/base.css";
+
+//icons
 import { BiCoinStack } from "react-icons/bi";
-import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import ImportContactsOutlinedIcon from "@mui/icons-material/ImportContactsOutlined";
 import HomeIcon from "@mui/icons-material/Home";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButtonNoRipple";
-import { Tooltip } from "@mui/material";
-import { observer } from "mobx-react-lite";
+
+//components
+import DLSwitch from "@/components/common/themeswitch/themeSwitch";
+
+//stores
 import navigator from "@/components/Navigator/layers/store/navigator";
 import user from "@/userlayers/store/user";
 import course from "@/components/course/layers/store/course";

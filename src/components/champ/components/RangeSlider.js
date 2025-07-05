@@ -1,8 +1,10 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import champ from "@/components/champ/layers/store/champ";
 import { observer } from "mobx-react-lite";
+
+//stores
+import champ from "@/components/champ/layers/store/champ";
 
 function valuetext(value) {
   return `${value}°C`;

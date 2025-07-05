@@ -2,12 +2,15 @@ import { da } from "@/components/common/dialog/dialogMacro";
 
 // utils
 import { ObjtoArr } from "@/globals/utils/objectUtils";
-import { sortItems } from "@/components/champ/layers/services/utils";
 import { generateString } from "@/globals/utils/utilsRandom";
 
-//repository
+//service helpers
+import { sortItems } from "@/components/champ/layers/services/servicesHelpers";
+
+//repository(external)
 import { getRandomTasksForChamp } from "@/components/taskset/layers/repository/repository";
 
+//repository(local)
 import {
   subscribeOnChamp,
   updateUserInChamp,

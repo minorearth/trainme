@@ -1,7 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
-import LockIcon from "@mui/icons-material/Lock";
 
 interface cardProps {
   title: string;

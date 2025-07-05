@@ -1,14 +1,18 @@
 //data model
 import { updateSCP } from "@/db/localstorage";
 
+//repository(external)
+import { updateChampPoints } from "@/components/champ/layers/repository/repository";
+
 //stores
 import task from "@/components/taskset/taskrun/layers/store/task";
 import taskset from "@/components/taskset/layers/store/taskset";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import countdownbutton from "@/components/common/CountdownButton/store";
+import champ from "@/components/champ/layers/store/champ";
+import user from "@/userlayers/store/user";
 
-//
-
+// service helpers
 import {
   setEarned,
   setTaskLog,
@@ -16,18 +20,26 @@ import {
   addErrorTaskToRecap,
   setRecapTasks,
   ok,
-} from "@/components/taskset/layers/services/utils";
+} from "@/components/taskset/layers/services/servicesHelpers";
 
 export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
   const pts = setEarned(error);
   const tasklog = setTaskLog({ error, code });
   const fixed = setTaskNumErrorFixed(error);
+  const { taskstage, nodemode } = taskset.state;
+
+  if (nodemode == "champ" && !error)
+    //In order to save champ points on every task execution
+    await updateChampPoints({
+      pts,
+      champid: champ.champid,
+      userid: user.userid,
+    });
   taskset.updateStateP({ fixed, tasklog, pts });
 
   const tasknum = taskset.allTasks.length;
   const recapTaskNum = taskset.state.recapTasksIds.length;
   const currTaskId = task.currTaskId;
-  const { taskstage } = taskset.state;
 
   switch (true) {
     case currTaskId != tasknum - 1 && !error:
@@ -110,7 +122,7 @@ export const errorCountDownPressed = async () => {
   countdownbutton.hideButton();
   task.updateCurrTask({ info: "", editordisabled: false });
   task.actions.setEditorDisabled(false);
-  const { nodemode, pts, remainsum, taskstage } = taskset.state;
+  const { nodemode, taskstage } = taskset.state;
 
   if (taskstage == "accomplished_suspended") {
     navigator.actions.openCongratPage({

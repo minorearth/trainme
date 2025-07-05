@@ -2,14 +2,16 @@ import { toJS } from "mobx";
 import { da } from "@/components/common/dialog/dialogMacro";
 
 //repository
-import { checkCoursePaid } from "@/components/course/layers/repository/repostory";
-import { checkCourseReady } from "@/components/courses/layers/repository/repository";
-import { updateChampTaskLog } from "@/components/champ/layers/repository/repository";
+import {
+  checkCourseReady,
+  checkCoursePaid,
+} from "@/components/courses/layers/repository/repository";
+import { saveChampUserTaskLog } from "@/components/champ/layers/repository/repository";
 
-//services
+//services(external)
 import { signOutUser } from "@/userlayers/services/servicesAuth";
-import { getFlow } from "@/components/course/layers/services/course";
-import { saveProgress } from "@/userlayers/services/services";
+import { getFlow } from "@/components/course/layers/services/services";
+import { saveProgress } from "@/components/taskset/layers/services/services";
 import {
   getTasks,
   setTasks,
@@ -135,7 +137,7 @@ export const closeCongratPage = async (success) => {
     }
 
   if (nodemode == "champ") {
-    updateChampTaskLog({
+    saveChampUserTaskLog({
       tasklog: taskset.state.tasklog,
       champid: champ.champid,
       userid: user.userid,

@@ -1,14 +1,10 @@
 "use client";
 import Grid from "@mui/material/Grid2";
-import Card from "./course";
-import { courses } from "@/globals/courses";
+import Card from "./courseCard";
+import { getCoursesSorted } from "@/components/courses/layers/repository/repository";
 
 const Courses = () => {
-  const coursesData = Object.keys(courses)
-    .map((id) => ({
-      ...courses[id],
-    }))
-    .sort((a, b) => a.order - b.order);
+  const coursesData = getCoursesSorted();
 
   return (
     <>

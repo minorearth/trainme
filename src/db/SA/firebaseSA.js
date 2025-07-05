@@ -21,8 +21,8 @@ export const getDocSA = async (collection, data) => {
 };
 
 export const checkCoursePaidSA = async (data) => {
-  const { courseid, uid } = data;
-  const userMetaRef = db.collection("usermeta").doc(uid);
+  const { courseid, id } = data;
+  const userMetaRef = db.collection("usermeta").doc(id);
   const snapshot = await userMetaRef.get();
   const profile = snapshot.data();
   return profile.paidcourses.includes(courseid);

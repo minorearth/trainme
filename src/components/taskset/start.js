@@ -2,7 +2,7 @@
 //github.com/alankrantas/monaco-python-live-editor?tab=readme-ov-file
 // https://alankrantas.github.io/monaco-python-live-editor/
 
-//reactstuff
+//react stuff
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useTheme } from "@mui/material/styles";

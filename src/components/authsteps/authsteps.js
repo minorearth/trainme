@@ -25,7 +25,6 @@ const Authsteps = observer(() => {
     <React.Fragment>
       <Splash />
       <AlertDialog />
-
       {authForm.signIn && <SignIn />}
       {authForm.signUp && <SignUp />}
       {authForm.pswReset && <PswRest />}

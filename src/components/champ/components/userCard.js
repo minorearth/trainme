@@ -5,6 +5,8 @@ import AnimationLottie from "@/components/common/animations/lottie/AnimationLott
 import ArrowCircleUpOutlinedIcon from "@mui/icons-material/ArrowCircleUpOutlined";
 import ArrowCircleDownOutlinedIcon from "@mui/icons-material/ArrowCircleDownOutlined";
 import { GoDash } from "react-icons/go";
+
+//components
 import { avatars } from "@/components/champ/components/Avatar/allavatars";
 
 const UserCard = ({ name, pts, change, avatarid }) => {

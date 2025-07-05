@@ -13,20 +13,3 @@ export const ETLUserProgress = (data) => {
     stat,
   };
 };
-
-export const getInitalDataForFreeCourses = (freeCourses, courses) => {
-  return freeCourses.reduce(
-    (acc, item, id) => ({
-      ...acc,
-      [item]: {
-        lastunlocked: [courses[freeCourses[id]].firstchapter],
-        unlocked: [courses[freeCourses[id]].firstchapter],
-        completed: [],
-        paid: [],
-        stat: {},
-        rating: 0,
-      },
-    }),
-    {}
-  );
-};

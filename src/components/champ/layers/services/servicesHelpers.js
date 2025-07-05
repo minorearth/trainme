@@ -18,7 +18,3 @@ export const sortItems = ({ newusers, champstarted, oldusers }) => {
     change: getChange(item, id),
   }));
 };
-
-export const checkNickName = (name) => {
-  return /^[А-яёЁёA-Za-z][А-яёЁA-Za-z0-9 ]{0,25}$/.test(name);
-};

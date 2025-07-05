@@ -12,7 +12,7 @@ import { CustomLink } from "@/components/authsteps/components/customLink";
 //globals
 import local from "@/globals/local";
 
-//services
+//services(local)
 import { signUpSubmit } from "@/components/authsteps/layers/services/services";
 
 // stores

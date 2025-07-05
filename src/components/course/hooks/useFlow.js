@@ -10,14 +10,17 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/base.css";
-import "./styles.css";
-import TurboNode from "./components/TurboNode.js";
-import TurboEdge from "./components/TurboEdge.js";
-import AnimNode from "./components/AnimNode";
-import alertdialog from "@/components/common/dialog/store";
+import { reaction } from "mobx";
+
+//components
+import TurboNode from "../components/TurboNode.js";
+import TurboEdge from "../components/TurboEdge.js";
+import AnimNode from "../components/AnimNode";
+
+// stores
 import user from "@/userlayers/store/user";
 import course from "@/components/course/layers/store/course";
-import { reaction } from "mobx";
+import alertdialog from "@/components/common/dialog/store";
 
 const nodeTypes = {
   turbo: TurboNode,

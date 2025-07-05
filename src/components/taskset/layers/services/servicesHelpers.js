@@ -1,13 +1,10 @@
 import { toJS } from "mobx";
 
-import { updateChampPoints } from "@/components/champ/layers/repository/repository";
 import { initials } from "@/components/Navigator/layers/store/initialStates";
 
 //stores
 import task from "@/components/taskset/taskrun/layers/store/task";
 import taskset from "@/components/taskset/layers/store/taskset";
-import champ from "@/components/champ/layers/store/champ";
-import user from "@/userlayers/store/user";
 import splash from "@/components/common/splash/store";
 //
 
@@ -16,14 +13,6 @@ export const setTaskNumErrorFixed = (error) => {
   if (taskset.state.taskstage == "recap" && !error) return fixed + 1;
   if (taskset.state.taskstage == "recap" && error) return fixed;
   return null;
-};
-
-export const getRemainSum = ({ stat, node }) => {
-  if (!stat[node.id]?.sum) {
-    return node.data.maxcoins;
-  } else {
-    return node.data.maxcoins - stat[node.id].sum || 0;
-  }
 };
 
 export const setTaskLog = ({ code, error }) => {
@@ -57,7 +46,6 @@ export const setEarned = (error) => {
   const { taskstage, completed, overflow, nodemode, pts, remainsum } =
     taskset.state;
   let income = 0;
-  console.log();
   if (overflow) {
     return pts;
   }
@@ -90,12 +78,6 @@ export const setEarned = (error) => {
       return Math.min(pts + income, remainsum);
     }
     if (nodemode == "champ") {
-      //In order to save champ points on every task execution
-      updateChampPoints({
-        pts: pts + income,
-        champid: champ.champid,
-        userid: user.userid,
-      });
       return pts + income;
     }
   } else {

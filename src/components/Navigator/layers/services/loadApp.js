@@ -5,16 +5,16 @@ import { initials } from "@/components/Navigator/layers/store/initialStates";
 
 //repository
 import { getPersistedState } from "@/components/Navigator/layers/repository/repository";
-import { checkCoursePaid } from "@/components/course/layers/repository/repostory";
+import { checkCoursePaid } from "@/components/courses/layers/repository/repository";
 
-//external services
-import { getFlow } from "@/components/course/layers/services/course";
+//services(external)
+import { getFlow } from "@/components/course/layers/services/services";
 import {
   getTasks,
   setTasks,
 } from "@/components/taskset/layers/services/services";
 
-//services
+//services(local)
 import {
   openAllCoursePage,
   openAndRefreshFlowPage,

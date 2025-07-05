@@ -7,7 +7,7 @@ import {
   createUser,
   signOutUserRep,
 } from "@/userlayers/repository/repositoryAuth";
-import { createNewUserMeta } from "@/userlayers/repository/repository";
+import { createNewUserMeta } from "@/userlayers/repository/repositoryUserMeta";
 
 //api calls
 import { getDataFetch } from "@/apicalls/apicalls";
@@ -49,9 +49,11 @@ export const signInNow = async (email, password, router) => {
 
   //TODO:to repository
   const allUserMeta = await getDataFetch({
-    data: { uid },
+    data: { id: uid },
     type: "getusermetadata",
   });
+
+  console.log("allUserMeta", allUserMeta);
 
   user.setUserNameP(allUserMeta.name);
   router.push(`/chapters`);
@@ -61,12 +63,3 @@ export const signOutUser = async (router) => {
   await signOutUserRep();
   router.push(`/login/`);
 };
-
-// export async function signInStudent(pincode) {
-//   const zz = await checkIfUniqueExistAndReturnDocDM("myusers", {
-//     login: pincode,
-//   });
-
-//   const allow = zz != "multiple" && zz != "none";
-//   allow && login("student");
-// }

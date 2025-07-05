@@ -1,4 +1,4 @@
-import { db, auth } from "@/db/CA/firebaseappClient";
+import { auth } from "@/db/CA/firebaseappClient";
 
 import {
   signInWithEmailAndPassword,
@@ -26,6 +26,7 @@ export const signInUser = async (email, password) => {
   }
 };
 
+//TODO:remade
 export const launchAuthStateChangeMonitor = async () => {
   const getid = new Promise((resolved, rejected) => {
     onAuthStateChanged(auth, async (user) => {
@@ -53,7 +54,6 @@ export const createUser = async (email, password) => {
     password
   );
   sendEmailVerification(userCredential.user).then(() => {});
-
   return userCredential.user;
 };
 

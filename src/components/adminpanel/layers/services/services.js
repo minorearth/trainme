@@ -4,7 +4,7 @@ import { updateDocSA } from "@/db/SA/firebaseSA";
 
 import { encrypt2 } from "@/globals/utils/encryption";
 
-import { fetchChapterIds } from "@/components/course/layers/repository/repostory";
+import { fetchChapterIds } from "@/components/course/layers/repository/repository";
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";

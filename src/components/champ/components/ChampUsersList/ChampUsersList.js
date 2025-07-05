@@ -1,10 +1,14 @@
+import { toJS } from "mobx";
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import UserCard from "@/components/champ/components/UserCard";
 import Box from "@mui/material/Box";
-import champ from "@/components/champ/layers/store/champ";
 import { observer } from "mobx-react-lite";
-import { toJS } from "mobx";
+
+//components
+import UserCard from "@/components/champ/components/UserCard";
+
+//stores
+import champ from "@/components/champ/layers/store/champ";
 
 const ListItem = ({ key, name, pts, change, avatarid }) => (
   <motion.div

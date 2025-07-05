@@ -1,17 +1,25 @@
-import { getDataFetch, setDataFetch } from "@/apicalls/apicalls";
-import { ETLUserProgress } from "@/userlayers/repository/ETL";
-import { encrypt2 } from "@/globals/utils/encryption";
-import { getInitalDataForFreeCourses } from "@/userlayers/repository/ETL";
-
-import { setDocInCollection } from "@/db/CA/firebaseCA";
 import { db } from "@/db/CA/firebaseappClient";
 
+//globals
 import stn from "@/globals/settings";
+
+//api calls
+import { getDataFetch, setDataFetch } from "@/apicalls/apicalls";
+//DB
+import { setDocInCollection } from "@/db/CA/firebaseCA";
+//repository
 import { getFreeCourses } from "@/components/courses/layers/repository/repository";
 
-import { courses } from "@/globals/courses";
+//services
+import { getInitalDataForFreeCourses } from "@/components/courses/layers/services/services";
 
-export const getUserCourseProgress = async (courseid, uid) => {
+//ETL
+import { ETLUserProgress } from "@/userlayers/repository/ETL";
+
+//utils
+import { encrypt2 } from "@/globals/utils/encryption";
+
+export const getUserMetaCourseProgress = async (courseid, uid) => {
   const allUserMeta = await getDataFetch({
     data: { id: uid },
     type: "getusermetadata",
@@ -32,12 +40,13 @@ export const saveUserMeta = async (dataToEncrypt) => {
 };
 
 export const createNewUserMeta = async (userId, name) => {
-  const freeCourses = getFreeCourses();
+  const paidcourses = getFreeCourses();
+  const courses = getInitalDataForFreeCourses();
   const data = {
     name,
     userId,
-    paidcourses: freeCourses,
-    courses: getInitalDataForFreeCourses(freeCourses, courses),
+    paidcourses,
+    courses,
   };
   await setDocInCollection(db, stn.collections.USER_META, data, userId);
 };

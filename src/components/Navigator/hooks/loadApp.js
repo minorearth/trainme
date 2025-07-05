@@ -1,13 +1,13 @@
 //react stuff
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-//utils and constants
+//services
 import { startListeners, stopListeners } from "@/globals/listeners/listeners";
 import { loadPTrek } from "@/components/Navigator/layers/services/loadApp";
 
 //stores
 import user from "@/userlayers/store/user";
-import navigator from "../layers/store/navigator";
+import navigator from "@/components/Navigator/layers/store/navigator";
 //
 
 const useApp = () => {

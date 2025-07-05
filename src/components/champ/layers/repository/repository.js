@@ -1,3 +1,6 @@
+import stn from "@/globals/settings";
+
+//DB
 import {
   getDocDataFromCollectionByIdClient,
   getDocFromCollectionByIdRealtimeClient,
@@ -5,15 +8,13 @@ import {
   setDocInCollectionClient,
 } from "@/db/CA/interface";
 
-import stn from "@/globals/settings";
-
-export const updateChampPoints = ({ pts, champid, userid }) => {
-  updateDocByidClient("champs", champid, {
+export const updateChampPoints = async ({ pts, champid, userid }) => {
+  await updateDocByidClient("champs", champid, {
     [`users.${userid}.pts`]: pts,
   });
 };
 
-export const updateChampTaskLog = ({ tasklog, champid, userid }) => {
+export const saveChampUserTaskLog = ({ tasklog, champid, userid }) => {
   updateDocByidClient("champs", champid, {
     [`users.${userid}.tasklog`]: tasklog,
     [`users.${userid}.persstatus`]: "champisover",

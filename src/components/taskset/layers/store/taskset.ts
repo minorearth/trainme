@@ -11,7 +11,7 @@ import {
   nextTask,
   prevTaskNoPts_admin,
   errorCountDownPressed,
-} from "@/components/taskset/layers/services/tasknavigationServices";
+} from "@/components/taskset/layers/services/servicesNavigation";
 
 interface ITask {
   /**

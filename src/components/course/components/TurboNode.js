@@ -1,16 +1,21 @@
 import React, { memo } from "react";
+
 import { Handle, Position } from "@xyflow/react";
+import styled from "@emotion/styled";
+import localFont from "next/font/local";
+import { useTheme } from "@mui/material/styles";
+
+//components
+import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
+
+//icons
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from "@mui/icons-material/Lock";
 import CheckIcon from "@mui/icons-material/Check";
 import { BiCoinStack } from "react-icons/bi";
 import { GoArrowRight } from "react-icons/go";
-import styled from "@emotion/styled";
-import { BsUnlock } from "react-icons/bs";
-import { useTheme } from "@mui/material/styles";
-import localFont from "next/font/local";
 import { RxLayers } from "react-icons/rx";
-import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
+import { BsUnlock } from "react-icons/bs";
 
 const myFont = localFont({
   src: "../../../app/Monaco.ttf",

@@ -1,11 +1,12 @@
 import { da } from "@/components/common/dialog/dialogMacro";
 
+//DB direct call
 import { cleanUpCSP } from "@/db/localstorage";
 
-//services
+//services(external)
 import { signUpUser, signInNow } from "@/userlayers/services/servicesAuth";
 
-//repository
+//repository(external)
 import { resetPsw } from "@/userlayers/repository/repositoryAuth";
 
 // stores
@@ -15,17 +16,17 @@ import txtField from "@/components/common/customfield/store";
 
 export const signInSubmit = async (event, router) => {
   event.preventDefault();
-  splash.setShowProgress();
   if (txtField.validate(["email", "password"])) {
+    splash.setShowProgress();
     cleanUpCSP();
     await signInNow(
       txtField.state.email.value,
       txtField.state.password.value,
       router
     );
+    splash.closeProgress();
     // router.replace("/chapters"); // заменяет текущую страницу
   } else {
-    splash.closeProgress();
   }
 };
 

@@ -4,17 +4,19 @@ import { observer } from "mobx-react-lite";
 import { Button } from "@mui/material";
 import { useState } from "react";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
+
+//components
 import RangeSlider from "./components/RangeSlider";
 import SortableList from "@/components/champ/components/ChampUsersList/ChampUsersList";
 import StepByStep from "@/components/champ/components/Stepper";
 import AvatarSelector from "@/components/champ/components/Avatar/Avatar";
 import CustomField from "@/components/common/customfield/customField";
 
+//stores
 import champ from "@/components/champ/layers/store/champ";
-import user from "@/userlayers/store/user";
 import txtField from "@/components/common/customfield/store";
 
+//TODO: break to steps
 const Champ = observer(() => {
   const [activeStep, setActiveStep] = useState(0);
   const [createMode, setCreateMode] = useState();
