@@ -1,19 +1,25 @@
 import { da } from "@/components/common/dialog/dialogMacro";
 
-//utils and constants
+//globals
+import { initials } from "@/components/Navigator/layers/store/initialStates";
+
+//repository
+import { getPersistedState } from "@/components/Navigator/layers/repository/repository";
+import { checkCoursePaid } from "@/components/course/layers/repository/repostory";
+
+//external services
 import { getFlow } from "@/components/course/layers/services/course";
 import {
   getTasks,
   setTasks,
 } from "@/components/taskset/layers/services/services";
-import { getPersistedState } from "@/components/Navigator/layers/repository/repository";
-import { checkCoursePaid } from "@/components/course/layers/repository/repostory";
+
+//services
 import {
   openAllCoursePage,
   openAndRefreshFlowPage,
   openCongratPage,
 } from "@/components/Navigator/layers/services/services";
-import { initials } from "@/components/Navigator/layers/store/initialStates";
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
@@ -60,12 +66,12 @@ export const loadPTrek = async () => {
     if (page == "testrun" || page == "lessonStarted") {
       const { nodemode, taskstage, pts, remainsum } = CSP.taskset;
       if (taskstage == "accomplished_suspended") {
-        openCongratPage({ nodemode, pts, remainsum, success: false });
+        openCongratPage({ success: false });
       }
       if (taskstage == "recap_suspended" && nodemode == "exam") {
-        openCongratPage({ nodemode, pts, remainsum, success: false });
+        openCongratPage({ success: false });
       } else {
-        recoverTasks({ CSP });
+        await recoverTasks({ CSP });
       }
     }
 
@@ -98,7 +104,7 @@ const recoverTasks = async ({ CSP }) => {
     champid,
     recapTasksIds,
   });
-  setTasks({ nodemode, tasks, taskid: CSP.task.currTaskId });
+  setTasks({ tasks, taskid: CSP.task.currTaskId });
   if (taskstage == "recap_suspended" && nodemode != "exam") {
     da.info.recap();
     taskset.updateStateP({ taskstage: "recap" });

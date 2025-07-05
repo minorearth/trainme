@@ -12,21 +12,22 @@ import countdownbutton from "@/components/common/CountdownButton/store";
 import {
   setEarned,
   setTaskLog,
-  setFixed,
+  setTaskNumErrorFixed,
   addErrorTaskToRecap,
   setRecapTasks,
   ok,
 } from "@/components/taskset/layers/services/utils";
 
 export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
-  setEarned(error);
-  setTaskLog({ error, code });
-  setFixed(error);
+  const pts = setEarned(error);
+  const tasklog = setTaskLog({ error, code });
+  const fixed = setTaskNumErrorFixed(error);
+  taskset.updateStateP({ fixed, tasklog, pts });
 
   const tasknum = taskset.allTasks.length;
   const recapTaskNum = taskset.state.recapTasksIds.length;
   const currTaskId = task.currTaskId;
-  const { nodemode, pts, remainsum, taskstage } = taskset.state;
+  const { taskstage } = taskset.state;
 
   switch (true) {
     case currTaskId != tasknum - 1 && !error:
@@ -37,19 +38,13 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
       if (taskstage == "recap") {
         ok(() =>
           navigator.actions.openCongratPage({
-            nodemode,
-            pts,
-            remainsum,
-            success: recapTaskNum == taskset.state.fixed,
+            success: recapTaskNum == fixed,
           })
         );
       }
       if (recapTaskNum == 0 && taskstage == "WIP") {
         ok(() =>
           navigator.actions.openCongratPage({
-            nodemode,
-            pts,
-            remainsum,
             success: true,
           })
         );
@@ -58,9 +53,6 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
         taskset.state.nodemode == "exam"
           ? ok(() =>
               navigator.actions.openCongratPage({
-                nodemode,
-                pts,
-                remainsum,
                 success: false,
               })
             )
@@ -78,7 +70,6 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
       task.actions.showRightCodeAfterError({ errorMsg });
       if (taskstage == "WIP" && currTaskId != tasknum - 1) {
         addErrorTaskToRecap();
-        //TODO: do via store
         updateSCP({
           task: { currTaskId: currTaskId + 1 },
         });
@@ -123,9 +114,6 @@ export const errorCountDownPressed = async () => {
 
   if (taskstage == "accomplished_suspended") {
     navigator.actions.openCongratPage({
-      nodemode,
-      pts,
-      remainsum,
       success: false,
     });
     return;
@@ -133,9 +121,6 @@ export const errorCountDownPressed = async () => {
   if (taskstage == "recap_suspended") {
     nodemode == "exam"
       ? navigator.actions.openCongratPage({
-          nodemode,
-          pts,
-          remainsum,
           success: false,
         })
       : setRecapTasks({

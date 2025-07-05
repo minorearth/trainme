@@ -2,13 +2,15 @@
 //github.com/alankrantas/monaco-python-live-editor?tab=readme-ov-file
 // https://alankrantas.github.io/monaco-python-live-editor/
 
+//reactstuff
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useTheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+
+//stores
 import navigator from "@/components/Navigator/layers/store/navigator";
 import taskset from "@/components/taskset/layers/store/taskset";
-import { getIntro } from "@/components/common/dialog/dialogMacro";
 
 export default function Start() {
   const theme = useTheme();
@@ -32,7 +34,7 @@ export default function Start() {
         }}
         variant="outlined"
       >
-        {taskset.state.repeat ? "Повторяем урок" : "Начать"}
+        {"Начать"}
       </Button>
       <Typography
         variant="body1"
@@ -43,11 +45,7 @@ export default function Start() {
           marginTop: "20px",
         }}
       >
-        {getIntro({
-          nodemode: taskset.state.nodemode,
-          completed: taskset.state.repeat,
-          overflow: taskset.state.overflow,
-        })}
+        {taskset.startPageIntro()}
       </Typography>
     </Box>
   );

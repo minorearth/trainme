@@ -6,18 +6,16 @@ import {
   launchAuthStateChangeMonitor,
   createUser,
   signOutUserRep,
-} from "@/userlayers/repository/authrepository";
+} from "@/userlayers/repository/repositoryAuth";
 import { createNewUserMeta } from "@/userlayers/repository/repository";
 
 //api calls
 import { getDataFetch } from "@/apicalls/apicalls";
+
+//stores
 import user from "@/userlayers/store/user";
 
-//server functions
-import { logout } from "@/db/SA/session";
-
 export const signIn = async (email, password) => {
-  await logout();
   const res = await signInUser(email, password);
   const uid =
     res == "wrongpsw" ? "wrongpsw" : await launchAuthStateChangeMonitor();
@@ -49,6 +47,7 @@ export const signInNow = async (email, password, router) => {
     return;
   }
 
+  //TODO:to repository
   const allUserMeta = await getDataFetch({
     data: { uid },
     type: "getusermetadata",

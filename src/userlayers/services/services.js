@@ -13,8 +13,8 @@ const prepareTaskLog = (courseid, lastcompleted, tasklog) => {
 };
 
 export const saveProgress = async ({ success }) => {
-  const { chapterid, tobeunlocked, pts, tasklog, repeat } = taskset.state;
-  const { unlocked, completed, rating } = user.progress;
+  const { chapterid, tobeunlocked, pts, tasklog, completed } = taskset.state;
+  const { unlocked, rating } = user.progress;
   //TODO: После фейла запроса из-за отсутвия интернета кнопка сохранить не нажимается(later)
   let dataToEncrypt;
   const courseid = course.state.courseid;
@@ -26,10 +26,13 @@ export const saveProgress = async ({ success }) => {
       (user.progress.stat[chapterid]?.sum ?? 0) + pts,
     ...tasklogPrepared,
   };
-  if (!repeat && success) {
+  if (!completed && success) {
     dataToEncrypt = {
       ...dataToEncrypt,
-      [`courses.${courseid}.completed`]: [...completed, chapterid],
+      [`courses.${courseid}.completed`]: [
+        ...user.progress.completed,
+        chapterid,
+      ],
       //all unlocked chapters(more than completed by lastunlocked)
       [`courses.${courseid}.unlocked`]: [...unlocked, ...tobeunlocked],
       //next chapters after just completed

@@ -15,6 +15,8 @@ import {
 import { login, logout } from "@/db/SA/session";
 
 export const signInUser = async (email, password) => {
+  await logout();
+
   await setPersistence(auth, browserLocalPersistence);
 
   try {

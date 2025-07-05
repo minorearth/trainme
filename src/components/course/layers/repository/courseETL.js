@@ -70,8 +70,7 @@ const nodeAction = (data) => {
     countdownbutton.hideButton();
     navigator.actions.openLessonStartPage({
       chapterid: id,
-      //TODO:replace repeat on Reviewed
-      repeat: completed,
+      completed,
       overflow,
       remainsum,
       courseid: course.state.courseid,

@@ -2,6 +2,7 @@ import { makeObservable, makeAutoObservable } from "mobx";
 import { runInAction } from "mobx";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import { updateSCP } from "@/db/localstorage";
+import { getStarPageIntro } from "@/components/common/dialog/dialogMacro";
 
 import { ETL } from "@/components/taskset/layers/repository/ETL";
 
@@ -31,6 +32,15 @@ class taskset {
     errorCountDownPressed,
   };
   state: any = { recapTasksIds: [] };
+
+  startPageIntro() {
+    const { nodemode, completed, overflow } = this.state;
+    return getStarPageIntro({
+      nodemode,
+      completed,
+      overflow,
+    });
+  }
 
   updateStateP(data: any) {
     this.state = { ...this.state, ...data };

@@ -11,11 +11,11 @@ import user from "@/userlayers/store/user";
 import splash from "@/components/common/splash/store";
 //
 
-export const setFixed = (error) => {
+export const setTaskNumErrorFixed = (error) => {
   const fixed = taskset.state.fixed;
-  if (taskset.state.taskstage == "recap" && !error) {
-    taskset.updateStateP({ fixed: fixed ? fixed + 1 : 1 });
-  }
+  if (taskset.state.taskstage == "recap" && !error) return fixed + 1;
+  if (taskset.state.taskstage == "recap" && error) return fixed;
+  return null;
 };
 
 export const getRemainSum = ({ stat, node }) => {
@@ -26,13 +26,6 @@ export const getRemainSum = ({ stat, node }) => {
   }
 };
 
-export const finalizePts = ({ nodemode, pts, remainsum }) => {
-  if (nodemode == "addhoc" || nodemode == "newtopic" || nodemode == "exam") {
-    return Math.min(pts, remainsum);
-  }
-  return pts;
-};
-
 export const setTaskLog = ({ code, error }) => {
   const tasklog = taskset.state.tasklog;
   const taskuuid = task.currTask.taskuuid;
@@ -41,18 +34,13 @@ export const setTaskLog = ({ code, error }) => {
   const prevTasklogdata = Object.keys(tasklog).includes(taskuuid)
     ? tasklog[taskuuid]
     : {};
-  //TODO: use object custom function
-  const newChapterState = {
-    ...taskset.state,
-    tasklog: {
-      ...tasklog,
-      [taskuuid]: {
-        ...prevTasklogdata,
-        ...tasklogdata,
-      },
+  return {
+    ...tasklog,
+    [taskuuid]: {
+      ...prevTasklogdata,
+      ...tasklogdata,
     },
   };
-  taskset.updateStateP(newChapterState);
 };
 
 export const addErrorTaskToRecap = () => {
@@ -66,35 +54,40 @@ export const getTasksRecap = (recapTasksIds, tasks) => {
 };
 
 export const setEarned = (error) => {
-  const { taskstage, repeat, overflow, nodemode, pts } = taskset.state;
+  const { taskstage, completed, overflow, nodemode, pts, remainsum } =
+    taskset.state;
   let income = 0;
+  console.log();
   if (overflow) {
     return pts;
   }
   if (!error) {
-    if (taskstage == "WIP" && !repeat && nodemode != "exam") {
+    if (taskstage == "WIP" && !completed && nodemode != "exam") {
       income = 10;
     }
-    if (taskstage == "WIP" && !repeat && nodemode == "exam") {
+    if (taskstage == "WIP" && !completed && nodemode == "exam") {
       income = 2;
     }
-    if (taskstage == "WIP" && repeat && nodemode != "exam") {
+    if (taskstage == "WIP" && completed && nodemode != "exam") {
       income = 2;
     }
-    if (taskstage == "WIP" && repeat && nodemode == "exam") {
+    if (taskstage == "WIP" && completed && nodemode == "exam") {
       income = 1;
     }
 
-    if (taskstage == "recap" && !repeat && nodemode != "exam") {
+    if (taskstage == "recap" && !completed && nodemode != "exam") {
       income = 2;
     }
 
-    if (taskstage == "recap" && !repeat && nodemode == "exam") {
+    if (taskstage == "recap" && !completed && nodemode == "exam") {
       income = 1;
     }
 
-    if (taskstage == "recap" && repeat) {
+    if (taskstage == "recap" && completed) {
       income = 1;
+    }
+    if (nodemode == "addhoc" || nodemode == "newtopic" || nodemode == "exam") {
+      return Math.min(pts + income, remainsum);
     }
     if (nodemode == "champ") {
       //In order to save champ points on every task execution
@@ -103,10 +96,11 @@ export const setEarned = (error) => {
         champid: champ.champid,
         userid: user.userid,
       });
+      return pts + income;
     }
+  } else {
+    return pts;
   }
-  taskset.updateStateP({ pts: pts + income });
-  return pts;
 };
 
 export const ok = (action = () => {}) => {
@@ -116,7 +110,7 @@ export const ok = (action = () => {}) => {
 export const getTasksetState = ({
   nodemode,
   chapterid,
-  repeat,
+  completed,
   overflow,
   remainsum,
   tobeunlocked,
@@ -131,7 +125,7 @@ export const getTasksetState = ({
     return {
       ...initials[nodemode].taskset,
       chapterid,
-      repeat,
+      completed,
       overflow,
       remainsum,
       nodemode,
@@ -142,7 +136,7 @@ export const getTasksetState = ({
     return {
       ...initials[nodemode].taskset,
       chapterid,
-      repeat,
+      completed,
       overflow,
       nodemode,
       level,
@@ -153,7 +147,6 @@ export const getTasksetState = ({
 };
 
 export const setRecapTasks = ({ tasksetState }) => {
-  // da.info.recap();
   taskset.setAllTasks(
     getTasksRecap(tasksetState.state.recapTasksIds, tasksetState.allTasks),
     0

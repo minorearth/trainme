@@ -57,13 +57,10 @@ export const getDataFetch = async (data) => {
 export const fetchFile = async (fileUrl) => {
   try {
     const response = await fetch(fileUrl);
-    console.log(fileUrl);
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-    console.log("start response", fileUrl);
     const data = await response.text();
-    console.log("end response", fileUrl);
     return data.replace(/\n/g, "\\n").replace(/\r/g, "\\r");
   } catch (error) {
     console.error("Ошибка:", error);

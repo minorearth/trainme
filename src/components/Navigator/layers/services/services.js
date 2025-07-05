@@ -7,7 +7,7 @@ import { checkCourseReady } from "@/components/courses/layers/repository/reposit
 import { updateChampTaskLog } from "@/components/champ/layers/repository/repository";
 
 //services
-import { signOutUser } from "@/userlayers/services/authentication";
+import { signOutUser } from "@/userlayers/services/servicesAuth";
 import { getFlow } from "@/components/course/layers/services/course";
 import { saveProgress } from "@/userlayers/services/services";
 import {
@@ -16,13 +16,12 @@ import {
   updateTasksetState,
 } from "@/components/taskset/layers/services/services";
 
-//serice utils
-import { finalizePts } from "@/components/taskset/layers/services/utils";
+//service helpers
 import {
   setChampPageState,
   setFlowPageState,
   setAllCoursePageState,
-} from "@/components/Navigator/layers/services/utils";
+} from "@/components/Navigator/layers/services/servicesHelpers";
 
 //constants
 import { initials } from "@/components/Navigator/layers/store/initialStates";
@@ -69,7 +68,7 @@ export const openLessonStartPage = async ({
   courseid,
   chapterid,
   champid,
-  repeat,
+  completed,
   overflow,
   remainsum,
   nodemode,
@@ -93,7 +92,7 @@ export const openLessonStartPage = async ({
   updateTasksetState({
     nodemode,
     chapterid,
-    repeat,
+    completed,
     overflow,
     remainsum,
     tobeunlocked,
@@ -114,20 +113,10 @@ export const openTaskSetPage = async () => {
   splash.closeProgress();
 };
 
-export const openCongratPage = async ({
-  nodemode,
-  pts,
-  remainsum,
-  success,
-}) => {
+export const openCongratPage = async ({ success }) => {
   countdownbutton.hideButton();
-  const ptsFinalized = finalizePts({
-    nodemode,
-    pts,
-    remainsum,
-  });
   navigator.updateStateP({ page: "congrat" });
-  taskset.updateStateP({ pts: ptsFinalized, success });
+  taskset.updateStateP({ success });
 };
 
 export const closeCongratPage = async (success) => {
@@ -162,13 +151,10 @@ export const interruptTaskSet = () => {
     da.info.tasksetinterrupt({
       action: () =>
         openCongratPage({
-          nodemode,
-          pts,
-          remainsum,
           success: false,
         }),
       nodemode,
-      completed: taskset.state.repeat,
+      completed: taskset.state.completed,
     });
   } else {
     openAndRefreshFlowPage({

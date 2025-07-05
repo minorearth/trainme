@@ -181,7 +181,7 @@ const getTaskSetInterruptedInfo = (completed, nodemode) => {
   return { caption, text };
 };
 
-export const getIntro = ({ nodemode, completed, overflow }) => {
+export const getStarPageIntro = ({ nodemode, completed, overflow }) => {
   if (nodemode == "textbook") {
     return "Приветствуем вас в учебнике 📘 ! В учебнике доступна теория только по открытым темам";
   }

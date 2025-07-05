@@ -1,22 +1,20 @@
 "use client";
+import { observer } from "mobx-react-lite";
+
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { useTheme } from "@mui/material/styles";
+
+//components
+import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
 import TextAnimated from "@/components/common/textAnimated/textAnimated";
-import { useEffect, useState } from "react";
+
+//stores
 import navigator from "@/components/Navigator/layers/store/navigator";
 import taskset from "@/components/taskset/layers/store/taskset";
 
-import { observer } from "mobx-react-lite";
-
 const CongratPage = observer(() => {
-  const [pts, setPts] = useState(10);
-  const [isSuccess, setIsSuccess] = useState();
-
-  useEffect(() => {}, []);
-
   const theme = useTheme();
   return (
     <Box

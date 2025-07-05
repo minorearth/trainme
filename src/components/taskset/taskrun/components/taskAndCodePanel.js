@@ -44,7 +44,7 @@ const TaskAndCodePanel = observer(() => {
     <Grid
       container
       spacing={2}
-      columns={{ xs: 1, md: task.currTask.tasktype == "guide" ? 1 : 3 }}
+      columns={{ xs: 1, md: task.currTask?.tasktype == "guide" ? 1 : 3 }}
     >
       {task.currTask.tasktype != "guide" && (
         <Grid size={{ xs: 1, md: 1 }}>
