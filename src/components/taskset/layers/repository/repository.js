@@ -39,7 +39,7 @@ export const getAllCourseTasks = async (courseid) => {
     "chapters",
     "alltasks"
   );
-  return await ETL(allTasks.data.tasks);
+  return allTasks.data.tasks;
 };
 
 export const getAllTasksDataObj = async (courseid) => {

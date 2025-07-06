@@ -64,7 +64,7 @@ export const loadPTrek = async () => {
     }
 
     if (page == "testrun" || page == "lessonStarted") {
-      const { nodemode, taskstage, pts, remainsum } = CSP.taskset;
+      const { nodemode, taskstage } = CSP.taskset;
       if (taskstage == "accomplished_suspended") {
         openCongratPage({ success: false });
       }
@@ -104,6 +104,7 @@ const recoverTasks = async ({ CSP }) => {
     champid,
     recapTasksIds,
   });
+
   setTasks({ tasks, taskid: CSP.task.currTaskId });
   if (taskstage == "recap_suspended" && nodemode != "exam") {
     da.info.recap();

@@ -19,7 +19,8 @@ import {
   prepareTaskLog,
 } from "@/components/taskset/layers/services/servicesHelpers";
 
-//
+// ETL
+import { ETL } from "@/components/taskset/layers/services/ETL";
 
 //stores
 import taskset from "@/components/taskset/layers/store/taskset";
@@ -136,7 +137,7 @@ export const getRandomTasksForChamp = async ({
     num: taskCount,
   });
 
-  return await filteredTasks.data;
+  return await ETL(filteredTasks.data);
 };
 
 export const getRandomTasksForExam = async ({
@@ -151,7 +152,7 @@ export const getRandomTasksForExam = async ({
     const savedTasks = allTasks.filter((task) =>
       randomsaved.includes(task.taskuuid)
     );
-    return { tasksuuids: randomsaved, tasksFetched: savedTasks };
+    return { tasksuuids: randomsaved, tasksFetched: await ETL(savedTasks) };
   } else {
     const randomTasks = getRandomTasks({
       allTasks,
@@ -159,8 +160,8 @@ export const getRandomTasksForExam = async ({
       levelEnd,
       num: 5,
     });
-
+    const tasksFetched = await ETL(randomTasks.data);
     const tasksuuids = randomTasks.data.map((task) => task.taskuuid);
-    return { tasksuuids, tasksFetched: randomTasks.data };
+    return { tasksuuids, tasksFetched };
   }
 };

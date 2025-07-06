@@ -66,6 +66,8 @@ class taskset {
   }
 
   async setAllTasks(tasks: any, currid: any) {
+    console.log("ho3", currid);
+
     // const tasksETL = tasks;
     runInAction(() => {
       this.allTasks = tasks;
