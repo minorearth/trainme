@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box";
-import UserReport from "@/components/manager/groupsNreports/reports/userreport/userReport";
 import { observer } from "mobx-react-lite";
+
+//components
+import UserReport from "@/components/manager/groupsNreports/reports/userreport/userReport";
 import PivotReports from "@/components/manager/groupsNreports/reports/pivotreport/reports";
 import Groups from "@/components/manager/groupsNreports/groups/groups";
 

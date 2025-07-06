@@ -3,10 +3,14 @@
 
 import Box from "@mui/material/Box";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
-import CustomStatItem from "@/components/manager/groupsNreports/reports/userreport/components/statItem";
 import { observer } from "mobx-react-lite";
-import stat from "@/components/manager/groupsNreports/store/stat";
+
+//components
+import CustomStatItem from "@/components/manager/groupsNreports/reports/userreport/components/statItem";
 import CodeViewer from "@/components/manager/groupsNreports/reports/userreport/components/CodeViewer";
+
+//stores
+import stat from "@/components/manager/groupsNreports/store/stat";
 
 const UserReport = observer(() => {
   if (stat.userstatvisible) {

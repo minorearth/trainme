@@ -1,7 +1,9 @@
-//repository
+//repository(external)
 import { getReadyCourses } from "@/components/courses/layers/repository/repository";
+import { getAllTasksDataObj } from "@/components/taskset/layers/repository/repository";
+
+//repository(local)
 import {
-  getAllTasksData,
   getGroupsObj,
   getChaptersObjdata,
 } from "@/components/manager/groupsNreports/groups/layers/repository/repository";
@@ -15,7 +17,7 @@ export const getAllCoursesTasks = async () => {
   let allCoursesTasks = {};
   await Promise.all(
     readyCourses.map(async (courseid) => {
-      allCoursesTasks[courseid] = await getAllTasksData(courseid);
+      allCoursesTasks[courseid] = await getAllTasksDataObj(courseid);
     })
   );
   stat.setAllCoursesTasks(allCoursesTasks);

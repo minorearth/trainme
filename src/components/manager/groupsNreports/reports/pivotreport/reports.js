@@ -1,10 +1,16 @@
 import Box from "@mui/material/Box";
-import PivotTable from "./components/pivot";
-import stat from "@/components/manager/groupsNreports/store/stat";
 import { observer } from "mobx-react-lite";
 import { IconButton } from "@mui/material";
+
+//icons
 import MonochromePhotosOutlinedIcon from "@mui/icons-material/MonochromePhotosOutlined";
 import RefreshOutlinedIcon from "@mui/icons-material/RefreshOutlined";
+
+//components
+import PivotTable from "./components/pivot";
+
+//stores
+import stat from "@/components/manager/groupsNreports/store/stat";
 
 const PivotReports = observer(() => {
   if (stat.reportvisible)

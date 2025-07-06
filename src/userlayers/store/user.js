@@ -1,6 +1,6 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { updateSCP, updateKeySCP } from "@/db/localstorage";
-import { getUserMetaCourseProgress } from "@/userlayers/repository/repositoryUserMeta";
+// import { getUserMetaCourseProgress } from "@/userlayers/repository/repositoryUserMeta";
 
 class user {
   userid = "";
@@ -10,7 +10,7 @@ class user {
   avatarid = 0;
   // nickname = "";
   // nicknamechecked = false;
-  actions = { getUserCourseProgress: getUserMetaCourseProgress };
+  actions = {};
 
   setProgressP = (data) => {
     this.progress = data;

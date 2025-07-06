@@ -8,7 +8,7 @@ import {
   getAllCoursesTasks,
   getGroups,
   getChaptersObj,
-} from "@/components/manager/groupsNreports/groups/layers/services/servicesLoad";
+} from "@/components/manager/groupsNreports/groups/layers/services/servicesData";
 
 import {
   showUserReport,

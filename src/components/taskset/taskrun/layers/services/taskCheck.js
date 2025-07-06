@@ -1,6 +1,6 @@
-import local from "@/globals/local";
 import { toJS } from "mobx";
 
+//services(external)
 import {
   runCheckers,
   getErrorMessage,

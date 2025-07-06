@@ -1,8 +1,12 @@
+import { v4 as uuidv4 } from "uuid";
+
+//repository
 import {
   addNewGroupDB,
   updateNodeLabelDB,
 } from "@/components/manager/groupsNreports/groups/layers/repository/repository";
-import { v4 as uuidv4 } from "uuid";
+
+//stores
 import user from "@/userlayers/store/user";
 import stat from "@/components/manager/groupsNreports/store/stat";
 

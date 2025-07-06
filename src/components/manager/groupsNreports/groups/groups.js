@@ -1,11 +1,17 @@
 import Box from "@mui/material/Box";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import { IconButton } from "@mui/material";
+import { observer } from "mobx-react-lite";
+
+//icons
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import RefreshOutlinedIcon from "@mui/icons-material/RefreshOutlined";
+
+//components
 import CustomTreeItem from "@/components/manager/groupsNreports/groups/components/groupItem";
+
+//stores
 import stat from "@/components/manager/groupsNreports/store/stat";
-import { observer } from "mobx-react-lite";
 
 const Groups = observer(() => {
   return (

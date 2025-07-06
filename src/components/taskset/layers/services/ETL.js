@@ -2,7 +2,6 @@ import local from "@/globals/local";
 import { fetchFile } from "@/apicalls/apicalls";
 
 export const ETL = async (tasks) => {
-  console.log("oo", tasks);
   await supplyWithFilesData(tasks);
   tranformData(tasks);
   return tasks;
@@ -101,4 +100,16 @@ const extractFileNames = ({ tasks }) => {
     });
   });
   return files;
+};
+
+export const allTasksArrToObj = (allTasks) => {
+  const alltasksObj = allTasks.data.tasks.reduce(
+    (acc, task) => ({
+      ...acc,
+      [task.taskuuid]: { task: task.task, id: task.id },
+    }),
+    {}
+  );
+
+  return alltasksObj;
 };

@@ -4,7 +4,7 @@ import task from "@/components/taskset/taskrun/layers/store/task";
 import { updateSCP } from "@/db/localstorage";
 import { getStarPageIntro } from "@/components/common/dialog/dialogMacro";
 
-import { ETL } from "@/components/taskset/layers/repository/ETL";
+import { ETL } from "@/components/taskset/layers/services/ETL";
 
 import {
   nextTaskOrCompleteTestRun,

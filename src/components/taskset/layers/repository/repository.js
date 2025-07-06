@@ -1,6 +1,9 @@
 import { getDocDataFromSubCollectionByIdClient } from "@/db/CA/interface";
-import { getRandomTasks } from "@/components/taskset/layers/repository/utils";
-import { ETL } from "@/components/taskset/layers/repository/ETL";
+import { getRandomTasks } from "@/components/taskset/layers/services/servicesHelpers";
+import {
+  ETL,
+  allTasksArrToObj,
+} from "@/components/taskset/layers/services/ETL";
 
 export const getAllTasksFromChapter = async (chapterid, courseid) => {
   const tasks = await getDocDataFromSubCollectionByIdClient(
@@ -9,6 +12,7 @@ export const getAllTasksFromChapter = async (chapterid, courseid) => {
     "chapters",
     chapterid
   );
+  //TODO: movee all ETLS after filter
   return !tasks.data ? [] : await ETL(tasks.data.tasks);
 };
 
@@ -28,58 +32,22 @@ export const getTextBookTasks = async ({ completed, courseid }) => {
   return await ETL(unlockedTheory);
 };
 
-export const getRandomTasksForChamp = async ({
-  levelStart,
-  levelEnd,
-  taskCount,
-  courseid,
-}) => {
+export const getAllCourseTasks = async (courseid) => {
   const allTasks = await getDocDataFromSubCollectionByIdClient(
     "newtasks",
     courseid,
     "chapters",
     "alltasks"
   );
-
-  const filteredTasks = getRandomTasks({
-    allTasks: allTasks.data.tasks,
-    levelStart,
-    levelEnd,
-    num: taskCount,
-  });
-
-  return await ETL(filteredTasks.data);
+  return await ETL(allTasks.data.tasks);
 };
 
-export const getRandomTasksForExam = async ({
-  courseid,
-  levelStart,
-  levelEnd,
-  randomsaved,
-}) => {
+export const getAllTasksDataObj = async (courseid) => {
   const allTasks = await getDocDataFromSubCollectionByIdClient(
     "newtasks",
     courseid,
     "chapters",
     "alltasks"
   );
-
-  if (randomsaved && randomsaved?.length != 0) {
-    const filteredTasks = allTasks.data.tasks.filter((task) =>
-      randomsaved.includes(task.taskuuid)
-    );
-    const tasksuuids = randomsaved;
-    console.log("filteredTasks", filteredTasks);
-    return { tasksuuids, tasksFetched: await ETL(filteredTasks) };
-  } else {
-    const filteredTasks = getRandomTasks({
-      allTasks: allTasks.data.tasks,
-      levelStart,
-      levelEnd,
-      num: 5,
-    });
-
-    const tasksuuids = filteredTasks.data.map((task) => task.taskuuid);
-    return { tasksuuids, tasksFetched: await ETL(filteredTasks.data) };
-  }
+  return allTasksArrToObj(allTasks);
 };

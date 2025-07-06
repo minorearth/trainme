@@ -1,9 +1,13 @@
 import FabAnimated from "@/components/common/fabAnimated/fabAnimated";
-import stn from "@/globals/settings";
 import { motion } from "framer-motion";
 import Box from "@mui/material/Box";
-import navigator from "./layers/store/navigator";
 import { useRouter } from "next/navigation";
+
+//globals
+import stn from "@/globals/settings";
+
+//stores
+import navigator from "./layers/store/navigator";
 
 const RIGHT = 16;
 const TOP = 16;

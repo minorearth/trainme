@@ -7,15 +7,18 @@ import { getChampTasks } from "@/components/champ/layers/repository/repository";
 //repository(local)
 import {
   getAllTasksFromChapter,
-  getRandomTasksForExam,
   getTextBookTasks,
+  getAllCourseTasks,
 } from "@/components/taskset/layers/repository/repository";
 
 //service helpers(local)
 import {
   getTasksRecap,
   getTasksetState,
+  getRandomTasks,
+  prepareTaskLog,
 } from "@/components/taskset/layers/services/servicesHelpers";
+
 //
 
 //stores
@@ -83,15 +86,6 @@ export const updateTasksetState = (props) => {
   taskset.updateStateP(taskSetState);
 };
 
-const prepareTaskLog = (courseid, lastcompleted, tasklog) => {
-  let res = {};
-  const dest = `courses.${courseid}.stat.${lastcompleted}.tasks`;
-  Object.keys(tasklog).forEach(
-    (taskuuid) => (res[`${dest}.${taskuuid}`] = tasklog[taskuuid])
-  );
-  return res;
-};
-
 export const saveProgress = async ({ success }) => {
   const { chapterid, tobeunlocked, pts, tasklog, completed } = taskset.state;
   const { unlocked, rating } = user.progress;
@@ -124,5 +118,49 @@ export const saveProgress = async ({ success }) => {
     await saveUserMeta({ data: dataToEncrypt, id: user.userid });
   } catch (e) {
     throw new Error("Server error");
+  }
+};
+
+export const getRandomTasksForChamp = async ({
+  levelStart,
+  levelEnd,
+  taskCount,
+  courseid,
+}) => {
+  const allTasks = await getAllCourseTasks(courseid);
+
+  const filteredTasks = getRandomTasks({
+    allTasks,
+    levelStart,
+    levelEnd,
+    num: taskCount,
+  });
+
+  return await filteredTasks.data;
+};
+
+export const getRandomTasksForExam = async ({
+  courseid,
+  levelStart,
+  levelEnd,
+  randomsaved,
+}) => {
+  const allTasks = await getAllCourseTasks(courseid);
+
+  if (randomsaved && randomsaved?.length != 0) {
+    const savedTasks = allTasks.filter((task) =>
+      randomsaved.includes(task.taskuuid)
+    );
+    return { tasksuuids: randomsaved, tasksFetched: savedTasks };
+  } else {
+    const randomTasks = getRandomTasks({
+      allTasks,
+      levelStart,
+      levelEnd,
+      num: 5,
+    });
+
+    const tasksuuids = randomTasks.data.map((task) => task.taskuuid);
+    return { tasksuuids, tasksFetched: randomTasks.data };
   }
 };

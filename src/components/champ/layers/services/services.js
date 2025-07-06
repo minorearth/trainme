@@ -8,7 +8,7 @@ import { generateString } from "@/globals/utils/utilsRandom";
 import { sortItems } from "@/components/champ/layers/services/servicesHelpers";
 
 //repository(external)
-import { getRandomTasksForChamp } from "@/components/taskset/layers/repository/repository";
+import { getRandomTasksForChamp } from "@/components/taskset/layers/services/services";
 
 //repository(local)
 import {

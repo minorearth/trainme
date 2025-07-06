@@ -1,5 +1,5 @@
-export const allUsersMetaToObject = (completed) => {
-  const res = completed.reduce(
+export const extractDataNeededFromStat = (usersMeta) => {
+  const res = usersMeta.reduce(
     (acc, user) => ({
       ...acc,
       [user.userId]: getCourseChapters(user.courses),

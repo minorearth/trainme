@@ -1,3 +1,4 @@
+//DB
 import {
   setDocInCollectionClient,
   getDocDataFromCollectionByIdClient,
@@ -5,7 +6,8 @@ import {
   setDocInSubCollectionClient,
 } from "@/db/CA/interface";
 
-import { allUsersMetaToObject } from "@/components/manager/groupsNreports/reports/pivotreport/layers/repository/ETL";
+//ETL
+import { extractDataNeededFromStat } from "@/components/manager/groupsNreports/reports/pivotreport/layers/repository/ETL";
 
 export const saveSnapshot = ({ userid, groupid, userMetaObj }) => {
   setDocInSubCollectionClient(
@@ -18,6 +20,7 @@ export const saveSnapshot = ({ userid, groupid, userMetaObj }) => {
   setDocInCollectionClient("snapshots", userMetaObj, `${userid}_${groupid}`);
 };
 
+//TODO:remade
 export const getSnapShot = async ({ groupid, userid }) => {
   const snapshot = await getDocDataFromCollectionByIdClient(
     "snapshots",
@@ -26,7 +29,7 @@ export const getSnapShot = async ({ groupid, userid }) => {
   return snapshot.data?.userMetaObj ?? {};
 };
 
-export const getAllUserMetaObj = async (uids) => {
+export const getUsersMetaObj = async (uids) => {
   const usersMeta = await getMultipleDocsClient("usermeta", uids);
-  return allUsersMetaToObject(usersMeta);
+  return extractDataNeededFromStat(usersMeta);
 };

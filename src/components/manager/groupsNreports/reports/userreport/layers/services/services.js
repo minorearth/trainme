@@ -1,6 +1,6 @@
-import { getReportTree } from "./utils";
+import { getReportTree } from "./servicesHelpers";
 import stat from "@/components/manager/groupsNreports/store/stat";
-import { getUserMetaDataCA } from "@/components/manager/groupsNreports/reports/userreport/layers/repository/repository";
+import { getUserMetaDataCA } from "@/userlayers/repository/repositoryUserMeta";
 import { toJS } from "mobx";
 
 export const showUserReport = async (uid) => {

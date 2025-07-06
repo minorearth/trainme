@@ -1,4 +1,4 @@
-import { chaptersObjToArray } from "@/components/manager/groupsNreports/reports/pivotreport/layers/services/utils";
+import { chaptersObjToArraySorted } from "@/components/course/layers/services/utils";
 
 export const prepareReport = ({
   allCoursesChapters,
@@ -23,7 +23,6 @@ const makeReport = ({
   snapShot,
 }) => {
   let report = {};
-  console.log("usersMetaObj", usersMetaObj);
 
   Object.keys(allCoursesChapters).forEach((courseid) => {
     const rows = Object.keys(usernames).map((user, id) =>
@@ -72,7 +71,7 @@ const getRows = ({
   courseid,
   snapShot,
 }) => {
-  const chaptersArr = chaptersObjToArray(chapters);
+  const chaptersArr = chaptersObjToArraySorted(chapters);
 
   const rows = chaptersArr.reduce(
     (acc, chapter, id) => ({

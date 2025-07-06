@@ -1,15 +1,3 @@
-export const allTasksArrToObj = (allTasks) => {
-  const alltasksObj = allTasks.data.tasks.reduce(
-    (acc, task) => ({
-      ...acc,
-      [task.taskuuid]: { task: task.task, id: task.id },
-    }),
-    {}
-  );
-
-  return alltasksObj;
-};
-
 export const groupsObjectToArr = (data) => {
   const arr = Object.keys(data)
     .map((id) => ({

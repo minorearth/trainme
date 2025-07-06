@@ -1,25 +1,15 @@
+//DB
 import {
   setDocInCollectionClient,
   getDocDataFromCollectionByIdClient,
-  getDocDataFromSubCollectionByIdClient,
   updateDocByidClient,
 } from "@/db/CA/interface";
 
+//ETL
 import {
-  allTasksArrToObj,
   groupsObjectToArr,
   groupsArrToObject,
 } from "@/components/manager/groupsNreports/groups/layers/repository/ETL";
-
-export const getAllTasksData = async (courseid) => {
-  const allTasks = await getDocDataFromSubCollectionByIdClient(
-    "newtasks",
-    courseid,
-    "chapters",
-    "alltasks"
-  );
-  return allTasksArrToObj(allTasks);
-};
 
 export const getGroupsObj = async (userid) => {
   const groups = await getDocDataFromCollectionByIdClient("groups", userid);

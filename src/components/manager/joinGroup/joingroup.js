@@ -2,9 +2,15 @@
 import { Box } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { Button } from "@mui/material";
-import useJoinGroup from "./joinGroupVC";
 import Typography from "@mui/material/Typography";
+
+//hooks
+import useJoinGroup from "./joinGroupVC";
+
+//components
 import CustomField from "@/components/common/customfield/customField";
+
+//stores
 import txtField from "@/components/common/customfield/store";
 
 const Joingroup = observer(({ groupid, manager }) => {

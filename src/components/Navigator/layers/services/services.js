@@ -1,12 +1,13 @@
 import { toJS } from "mobx";
 import { da } from "@/components/common/dialog/dialogMacro";
 
-//repository
+//repository(external)
 import {
   checkCourseReady,
   checkCoursePaid,
 } from "@/components/courses/layers/repository/repository";
 import { saveChampUserTaskLog } from "@/components/champ/layers/repository/repository";
+import { getUserMetaCourseProgress } from "@/userlayers/repository/repositoryUserMeta";
 
 //services(external)
 import { signOutUser } from "@/userlayers/services/servicesAuth";
@@ -58,10 +59,7 @@ export const openCourseFlowPageFromMain = async (courseid) => {
 };
 
 export const openAndRefreshFlowPage = async ({ courseid, refetchFlow }) => {
-  const progress = await user.actions.getUserCourseProgress(
-    courseid,
-    user.userid
-  );
+  const progress = await getUserMetaCourseProgress(courseid, user.userid);
   getFlow({ courseid, refetchFlow, progress });
   setFlowPageState({ courseid, progress });
 };

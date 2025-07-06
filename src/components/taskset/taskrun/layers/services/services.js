@@ -1,14 +1,13 @@
+import { toJS } from "mobx";
 import { da } from "@/components/common/dialog/dialogMacro";
 
-import { toJS } from "mobx";
+//services(external)
 import { defineTheme } from "@/components/taskset/taskrun/components/monaco/themesetter";
+import { checkOnChangeErrors } from "@/components/taskset/taskrun/layers/services/taskCheck";
 
 //stores
 import countdownbutton from "@/components/common/CountdownButton/store";
 import task from "@/components/taskset/taskrun/layers/store/task";
-
-//
-import { checkOnChangeErrors } from "@/components/taskset/taskrun/layers/services/taskCheck";
 
 export const refreshEditor = () => {
   task.editorRef.current.setValue(task.currTask.defaultcode);

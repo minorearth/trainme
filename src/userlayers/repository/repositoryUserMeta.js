@@ -7,6 +7,8 @@ import stn from "@/globals/settings";
 import { getDataFetch, setDataFetch } from "@/apicalls/apicalls";
 //DB
 import { setDocInCollection } from "@/db/CA/firebaseCA";
+import { getDocDataFromCollectionByIdClient } from "@/db/CA/interface";
+
 //repository
 import { getFreeCourses } from "@/components/courses/layers/repository/repository";
 
@@ -27,6 +29,11 @@ export const getUserMetaCourseProgress = async (courseid, uid) => {
   //TODO:keep only keys needed(later)
   const userProgress = ETLUserProgress(allUserMeta.courses[courseid]);
   return userProgress;
+};
+
+export const getUserMetaDataCA = async (uid) => {
+  const userMeta = await getDocDataFromCollectionByIdClient("usermeta", uid);
+  return userMeta.data;
 };
 
 export const saveUserMeta = async (dataToEncrypt) => {

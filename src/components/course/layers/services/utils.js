@@ -1,4 +1,4 @@
-export const chaptersObjToArray = (chapters) => {
+export const chaptersObjToArraySorted = (chapters) => {
   const res = Object.keys(chapters).map((chapterId) => ({
     chapterId,
     order: chapters[chapterId].order,

@@ -1,6 +1,8 @@
 import { toJS } from "mobx";
 
 import { initials } from "@/components/Navigator/layers/store/initialStates";
+//utils
+import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
 
 //stores
 import task from "@/components/taskset/taskrun/layers/store/task";
@@ -134,4 +136,25 @@ export const setRecapTasks = ({ tasksetState }) => {
     0
   );
   taskset.updateStateP({ taskstage: "recap" });
+};
+
+export const getRandomTasks = ({ allTasks, levelStart, levelEnd, num }) => {
+  const scope = allTasks.filter(
+    (task) => task.level <= levelEnd && task.level >= levelStart
+  );
+  if (scope.length < num) {
+    return { status: "error", count: scope.length, data: [] };
+  }
+  const numbers = getNeverRepeatIntegers(scope.length - 1, num);
+  const filteredTasks = scope.filter((task, id) => numbers.includes(id));
+  return { status: "ok", data: filteredTasks, count: filteredTasks.length };
+};
+
+export const prepareTaskLog = (courseid, lastcompleted, tasklog) => {
+  let res = {};
+  const dest = `courses.${courseid}.stat.${lastcompleted}.tasks`;
+  Object.keys(tasklog).forEach(
+    (taskuuid) => (res[`${dest}.${taskuuid}`] = tasklog[taskuuid])
+  );
+  return res;
 };
