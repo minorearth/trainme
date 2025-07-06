@@ -19,9 +19,7 @@ import { login, logout } from "@/db/SA/session";
 
 export const signInUser = async (email, password) => {
   await logout();
-
   await setPersistence(auth, browserLocalPersistence);
-
   try {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (e) {
@@ -29,24 +27,10 @@ export const signInUser = async (email, password) => {
   }
 };
 
-//TODO:remade
-export const launchAuthStateChangeMonitor = async () => {
-  const getid = new Promise((resolved, rejected) => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        auth.languageCode = "ru";
-        if (user.emailVerified) {
-          await login("teacher");
-          resolved(user.uid);
-        } else {
-          // sendEmailVerification(user).then(() => {});
-          resolved("notVerified");
-        }
-      } else {
-      }
-    });
+export const launchAuthStateChangeMonitor = async (action) => {
+  const uid = await new Promise((resolved, rejected) => {
+    onAuthStateChanged(auth, (user) => action(resolved, user, login));
   });
-  const uid = await getid;
   return uid;
 };
 
@@ -68,12 +52,4 @@ export const resetPsw = (email) => {
 export const signOutUserRep = async () => {
   await signOut(auth);
   await logout();
-};
-
-export const getUserMeta = async (uid) => {
-  const userMeta = await getDataFetch({
-    data: { id: uid },
-    type: "getusermetadata",
-  });
-  return userMeta;
 };

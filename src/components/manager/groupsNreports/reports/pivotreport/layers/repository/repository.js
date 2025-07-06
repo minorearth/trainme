@@ -1,9 +1,9 @@
 //DB
 import {
-  setDocInCollectionClient,
-  getDocDataFromCollectionByIdClient,
   getMultipleDocsClient,
   setDocInSubCollectionClient,
+  getDocDataFromSubCollectionByIdClient,
+  getDocDataFromCollectionByIdClient,
 } from "@/db/CA/interface";
 
 //ETL
@@ -17,16 +17,21 @@ export const saveSnapshot = ({ userid, groupid, userMetaObj }) => {
     groupid,
     userMetaObj
   );
-  setDocInCollectionClient("snapshots", userMetaObj, `${userid}_${groupid}`);
+  // setDocInCollectionClient("snapshots", userMetaObj, `${userid}_${groupid}`);
 };
 
-//TODO:(later)remade
 export const getSnapShot = async ({ groupid, userid }) => {
-  const snapshot = await getDocDataFromCollectionByIdClient(
+  const snapshot = await getDocDataFromSubCollectionByIdClient(
     "snapshots",
-    `${userid}_${groupid}`
+    userid,
+    "snapshot",
+    groupid
   );
-  return snapshot.data?.userMetaObj ?? {};
+  // const snapshot = await getDocDataFromCollectionByIdClient(
+  //   "snapshots",
+  //   `${userid}_${groupid}`
+  // );
+  return snapshot.data?.usersMetaObj ?? {};
 };
 
 export const getUsersMetaObj = async (uids) => {

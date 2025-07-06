@@ -32,7 +32,7 @@ export const subscribeOnChamp = async ({ champid, action }) => {
     champid,
     action
   );
-  //TODO: (later)test
+  //TODO: (later)test and to Constants
   setInterval(() => {
     unsubscribe();
     // }, 1000 * 6);

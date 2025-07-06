@@ -1,8 +1,11 @@
 import { courses } from "@/globals/courses";
 
 export const getReportTree = (userstat, chaptersobj, allCoursesTasks) => {
-  //TODO(later): sort courses
-  const res = Object.keys(userstat).map((courseId) => ({
+  const courcesIds = Object.keys(userstat).sort(
+    (a, b) => courses[a].order - courses[b].order
+  );
+
+  const res = courcesIds.map((courseId) => ({
     id: courseId,
     label: courses[courseId].title,
     children: [

@@ -6,3 +6,7 @@ export const chaptersObjToArraySorted = (chapters) => {
   }));
   return res.sort((a, b) => a.order - b.order);
 };
+
+export const extractChapterIdsOnly_admin = (nodes) => {
+  return nodes.map((node) => node.id).filter((id) => id[0] != "-");
+};

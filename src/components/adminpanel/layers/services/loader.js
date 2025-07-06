@@ -10,7 +10,7 @@ import {
 //services(local)
 import {
   supplyTasksWithChapterLevel,
-  getChaptersIds,
+  getChaptersIdsAndTextBookId,
   getChapterTasks,
 } from "@/components/adminpanel/layers/services/loaderHelpers";
 
@@ -41,7 +41,7 @@ const uploadCourse = async ({ courseid, coursesToLoad }) => {
 
   await uploadAllCourseTasks({ courseid, allTasksWithLevels });
 
-  const chaptersIds = getChaptersIds(chapterFlowNodes);
+  const chaptersIds = getChaptersIdsAndTextBookId(chapterFlowNodes);
   await Promise.all(
     chaptersIds.map(async (chapterid) => {
       const chapterTasks = getChapterTasks({ chapterid, tasksall });

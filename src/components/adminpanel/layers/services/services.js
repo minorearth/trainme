@@ -5,7 +5,7 @@ import { courses } from "@/globals/courses";
 import { updateDocSA } from "@/db/SA/firebaseSA";
 
 //repository
-import { fetchChapterIds } from "@/components/course/layers/repository/repository";
+import { fetchChapterIds_admin } from "@/components/course/layers/repository/repository";
 
 //utils
 import { encrypt2 } from "@/globals/utils/encryption";
@@ -45,8 +45,7 @@ export const resetUser = async ({ courseid, uid }) => {
 
 export const unlockAllChaptersCurrentUser = async () => {
   const courseid = course.state.courseid;
-  const chaptersIds = await fetchChapterIds({ courseid });
-  //TODO: (later)remade unlocked(remove llottie chapters)
+  const chaptersIds = await fetchChapterIds_admin({ courseid });
   const data = {
     data: {
       [`courses.${courseid}.completed`]: [],
@@ -64,7 +63,7 @@ export const unlockAllChaptersCurrentUser = async () => {
 
 export const completeAllChaptersCurrentUser = async () => {
   const courseid = course.state.courseid;
-  const chaptersIds = await fetchChapterIds({ courseid });
+  const chaptersIds = await fetchChapterIds_admin({ courseid });
   const data = {
     data: {
       [`courses.${courseid}.completed`]: chaptersIds,

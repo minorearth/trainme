@@ -4,7 +4,7 @@ import { da } from "@/components/common/dialog/dialogMacro";
 import { cleanUpCSP } from "@/db/localstorage";
 
 //services(external)
-import { signUpUser, signInNow } from "@/userlayers/services/servicesAuth";
+import { signUp, signIn } from "@/userlayers/services/servicesAuth";
 
 //repository(external)
 import { resetPsw } from "@/userlayers/repository/repositoryAuth";
@@ -19,7 +19,7 @@ export const signInSubmit = async (event, router) => {
   if (txtField.validate(["email", "password"])) {
     splash.setShowProgress();
     cleanUpCSP();
-    await signInNow(
+    await signIn(
       txtField.state.email.value,
       txtField.state.password.value,
       router
@@ -41,7 +41,7 @@ export const recoverPswSubmit = (event) => {
 export const signUpSubmit = async (event) => {
   event.preventDefault();
   if (txtField.validate(["email", "password", "name"])) {
-    await signUpUser(
+    await signUp(
       txtField.state.email.value,
       txtField.state.password.value,
       txtField.state.name.value

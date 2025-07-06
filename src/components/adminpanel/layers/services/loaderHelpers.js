@@ -1,9 +1,9 @@
-export const getChaptersIds = (chapterFlowNodes) => {
-  const chapters = chapterFlowNodes
-    .map((chapter) => chapter.id)
-    //excludee lottie
-    .filter((id) => id[0] != "-");
-  return [...chapters, "textbook"];
+//utils
+import { extractChapterIdsOnly_admin } from "@/components/course/layers/services/utils";
+
+export const getChaptersIdsAndTextBookId = (chapterFlowNodes) => {
+  const chapterIds = extractChapterIdsOnly_admin(chapterFlowNodes);
+  return [...chapterIds, "textbook"];
 };
 
 export const getChapterTasks = ({ chapterid, tasksall }) => {

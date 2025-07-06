@@ -5,6 +5,9 @@ import { getDataFetch, setDataFetch } from "@/apicalls/apicalls";
 import { getDocDataFromCollectionByIdClient } from "@/db/CA/interface";
 import { encrypt2 } from "@/globals/utils/encryption";
 
+//utils
+import { extractChapterIdsOnly_admin } from "@/components/course/layers/services/utils";
+
 export const checkCoursePaid = async ({ courseid, uid }) => {
   const coursePaid = await getDataFetch({
     type: "checkcoursepaid",
@@ -22,12 +25,9 @@ export const fetchFlow = async ({ courseid }) => {
   return flow;
 };
 
-export const fetchChapterIds = async ({ courseid }) => {
+export const fetchChapterIds_admin = async ({ courseid }) => {
   const data = await getDocDataFromCollectionByIdClient("chapters", courseid);
-
-  return data.data.chapterFlowNodes
-    .filter((node) => node.id != -1)
-    .map((node) => node.id);
+  return extractChapterIdsOnly_admin(data.data.chapterFlowNodes);
 };
 
 export const buyChapterCall = async ({

@@ -57,3 +57,11 @@ export const createNewUserMeta = async (userId, name) => {
   };
   await setDocInCollection(db, stn.collections.USER_META, data, userId);
 };
+
+export const getUserMeta = async (uid) => {
+  const userMeta = await getDataFetch({
+    data: { id: uid },
+    type: "getusermetadata",
+  });
+  return userMeta;
+};

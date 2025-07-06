@@ -19,15 +19,14 @@ export const checkNickName = (name) => {
 };
 
 export const checkTasknum = (tasknum) => {
-  //TODO: (regex) all zero i e 000
-  return !/^\d{0,2}$/.test(tasknum) || !tasknum;
+  return !/^(?:[3-9]|[1-9][0-9])$/.test(tasknum) || !tasknum;
 };
 
 export const checkFirstName = (firstname) => {
-  return !/^[А-ЯЁA-Z][a-яёa-z]{0,25}$/.test(firstname);
+  return !/^[\p{Lu}][\p{Ll}]{0,25}$/u.test(firstname);
 };
 
-//TODO: (regex)for cirilic All caps works that is bad
 export const checkSecondName = (secondName) => {
-  return !/^[А-ЯЁA-Z][a-яёa-z]{0,25}$/.test(secondName);
+  return !/^[\p{Lu}][\p{Ll}]{0,25}$/u.test(secondName);
+  // return !/^[А-ЯЁA-Z][a-яёa-z]{0,25}$/.test(secondName);
 };

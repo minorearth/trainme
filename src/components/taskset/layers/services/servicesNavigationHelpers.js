@@ -46,3 +46,46 @@ export const setTaskNumErrorFixed = (error) => {
 export const ok = (action = () => {}) => {
   splash.setGotoplayLottie(false, "ok", () => action());
 };
+
+export const calcEarned = (error) => {
+  const { taskstage, completed, overflow, nodemode, pts, remainsum } =
+    taskset.state;
+  let income = 0;
+  if (overflow) {
+    return pts;
+  }
+  if (!error) {
+    if (taskstage == "WIP" && !completed && nodemode != "exam") {
+      income = 10;
+    }
+    if (taskstage == "WIP" && !completed && nodemode == "exam") {
+      income = 2;
+    }
+    if (taskstage == "WIP" && completed && nodemode != "exam") {
+      income = 2;
+    }
+    if (taskstage == "WIP" && completed && nodemode == "exam") {
+      income = 1;
+    }
+
+    if (taskstage == "recap" && !completed && nodemode != "exam") {
+      income = 2;
+    }
+
+    if (taskstage == "recap" && !completed && nodemode == "exam") {
+      income = 1;
+    }
+
+    if (taskstage == "recap" && completed) {
+      income = 1;
+    }
+    if (nodemode == "addhoc" || nodemode == "newtopic" || nodemode == "exam") {
+      return Math.min(pts + income, remainsum);
+    }
+    if (nodemode == "champ") {
+      return pts + income;
+    }
+  } else {
+    return pts;
+  }
+};

@@ -10,7 +10,7 @@ import { saveChampUserTaskLog } from "@/components/champ/layers/repository/repos
 import { getUserMetaCourseProgress } from "@/userlayers/repository/repositoryUserMeta";
 
 //services(external)
-import { signOutUser } from "@/userlayers/services/servicesAuth";
+import { signOut } from "@/userlayers/services/servicesAuth";
 import { getFlow } from "@/components/course/layers/services/services";
 import { saveProgress } from "@/components/taskset/layers/services/services";
 import {
@@ -169,7 +169,7 @@ export const openTutorial = () => {
 };
 
 export const openLoginPageSignOut = async (router) => {
-  await signOutUser(router);
+  await signOut(router);
 };
 
 export const openChampPage = () => {
