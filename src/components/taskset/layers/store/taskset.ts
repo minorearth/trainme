@@ -4,8 +4,6 @@ import task from "@/components/taskset/taskrun/layers/store/task";
 import { updateSCP } from "@/db/localstorage";
 import { getStarPageIntro } from "@/components/common/dialog/dialogMacro";
 
-import { ETL } from "@/components/taskset/layers/services/ETL";
-
 import {
   nextTaskOrCompleteTestRun,
   nextTask,
@@ -66,9 +64,6 @@ class taskset {
   }
 
   async setAllTasks(tasks: any, currid: any) {
-    console.log("ho3", currid);
-
-    // const tasksETL = tasks;
     runInAction(() => {
       this.allTasks = tasks;
       task.setCurrTaskDataP(tasks[currid], currid);

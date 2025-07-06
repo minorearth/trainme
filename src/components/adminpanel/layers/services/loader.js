@@ -1,3 +1,5 @@
+//repository
+
 import {
   uploadCourseChapters,
   uploadAllCourseTasks,
@@ -5,11 +7,12 @@ import {
   uploadCourseChaptersObject,
 } from "@/components/adminpanel/layers/repository/repository";
 
+//services(local)
 import {
   supplyTasksWithChapterLevel,
   getChaptersIds,
   getChapterTasks,
-} from "@/components/adminpanel/layers/services/utils";
+} from "@/components/adminpanel/layers/services/loaderHelpers";
 
 export const load = async (coursesToLoad) => {
   const coursesToLoadIds = Object.keys(coursesToLoad);

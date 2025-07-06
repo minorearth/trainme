@@ -26,7 +26,7 @@ export const getUserMetaCourseProgress = async (courseid, uid) => {
     data: { id: uid },
     type: "getusermetadata",
   });
-  //TODO:keep only keys needed(later)
+  //TODO:(later)keep only keys needed
   const userProgress = ETLUserProgress(allUserMeta.courses[courseid]);
   return userProgress;
 };

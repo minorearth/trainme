@@ -169,7 +169,6 @@ export const openTutorial = () => {
 };
 
 export const openLoginPageSignOut = async (router) => {
-  //TODO: move method from domain
   await signOutUser(router);
 };
 

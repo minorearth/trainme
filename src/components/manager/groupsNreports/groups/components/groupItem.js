@@ -65,6 +65,7 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
           ) : (
             <CustomLabel
               {...getLabelProps()}
+              hasChildren={children.length != 0}
               copyGroupLink={() => stat.actions.copyGroupLink(itemId)}
               toggleItemEditing={interactions.toggleItemEditing}
               isGroup={item.isFolder}
@@ -92,6 +93,7 @@ function CustomLabel({
   copyGroupLink,
   showUserMeta,
   showReport,
+  hasChildren,
   ...other
 }) {
   return (
@@ -125,7 +127,7 @@ function CustomLabel({
             <InsertLinkOutlinedIcon fontSize="small" />
           </IconButton>
         )}
-        {isGroup && (
+        {isGroup && hasChildren && (
           <IconButton
             size="small"
             onClick={showReport}

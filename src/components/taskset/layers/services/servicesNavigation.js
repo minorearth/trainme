@@ -14,16 +14,16 @@ import user from "@/userlayers/store/user";
 
 // service helpers(local)
 import {
-  setEarned,
+  calcEarned,
   setTaskLog,
   setTaskNumErrorFixed,
   addErrorTaskToRecap,
   setRecapTasks,
   ok,
-} from "@/components/taskset/layers/services/servicesHelpers";
+} from "@/components/taskset/layers/services/servicesNavigationHelpers";
 
 export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
-  const pts = setEarned(error);
+  const pts = calcEarned(error);
   const tasklog = setTaskLog({ error, code });
   const fixed = setTaskNumErrorFixed(error);
   const { taskstage, nodemode } = taskset.state;

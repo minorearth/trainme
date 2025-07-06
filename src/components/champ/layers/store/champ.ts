@@ -21,6 +21,16 @@ class champ {
   champstarted = false;
   users = [];
   subscribedChampid = "";
+  activeStep = 0;
+  createMode = false;
+
+  setActiveStep = (value: any) => {
+    this.activeStep = value;
+  };
+
+  setCreateMode = (value: any) => {
+    this.createMode = value;
+  };
 
   eraseStateP() {
     this.range = [1, 30];

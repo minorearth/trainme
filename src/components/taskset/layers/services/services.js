@@ -16,11 +16,12 @@ import {
   getTasksRecap,
   getTasksetState,
   getRandomTasks,
-  prepareTaskLog,
 } from "@/components/taskset/layers/services/servicesHelpers";
 
+import { taskLogToDBFormat } from "@/components/taskset/layers/repository/ETL";
+
 // ETL
-import { ETL } from "@/components/taskset/layers/services/ETL";
+import { supplyFilesAndTransform } from "@/components/taskset/layers/services/ETL";
 
 //stores
 import taskset from "@/components/taskset/layers/store/taskset";
@@ -55,7 +56,7 @@ export const getTasks = async ({
       completed: userProgress.completed,
       courseid,
     });
-    return { tasks, tasksuuids: [] };
+    return { tasks: await supplyFilesAndTransform(tasks), tasksuuids: [] };
   }
   if (nodemode == "exam") {
     const { tasksuuids, tasksFetched } = await getRandomTasksForExam({
@@ -69,9 +70,59 @@ export const getTasks = async ({
   if (nodemode == "addhoc" || nodemode == "newtopic") {
     const tasks = await getAllTasksFromChapter(chapterid, courseid);
     if (taskstage == "recap" || taskstage == "recap_suspended") {
-      const recapTasks = getTasksRecap(recapTasksIds, tasks);
+      const recapTasks = await supplyFilesAndTransform(
+        getTasksRecap(recapTasksIds, tasks)
+      );
       return { tasks: recapTasks, tasksuuids: recapTasksIds };
-    } else return { tasks, tasksuuids: [] };
+    } else
+      return { tasks: await supplyFilesAndTransform(tasks), tasksuuids: [] };
+  }
+};
+
+export const getRandomTasksForChamp = async ({
+  levelStart,
+  levelEnd,
+  taskCount,
+  courseid,
+}) => {
+  const allTasks = await getAllCourseTasks(courseid);
+
+  const filteredTasks = getRandomTasks({
+    allTasks,
+    levelStart,
+    levelEnd,
+    num: taskCount,
+  });
+
+  return await supplyFilesAndTransform(filteredTasks.data);
+};
+
+export const getRandomTasksForExam = async ({
+  courseid,
+  levelStart,
+  levelEnd,
+  randomsaved,
+}) => {
+  const allTasks = await getAllCourseTasks(courseid);
+
+  if (randomsaved && randomsaved?.length != 0) {
+    const savedTasks = allTasks.filter((task) =>
+      randomsaved.includes(task.taskuuid)
+    );
+    return {
+      tasksuuids: randomsaved,
+      tasksFetched: await supplyFilesAndTransform(savedTasks),
+    };
+  } else {
+    const randomTasks = getRandomTasks({
+      allTasks,
+      levelStart,
+      levelEnd,
+      num: 5,
+    });
+    const tasksFetched = await supplyFilesAndTransform(randomTasks.data);
+    const tasksuuids = randomTasks.data.map((task) => task.taskuuid);
+    return { tasksuuids, tasksFetched };
   }
 };
 
@@ -90,10 +141,10 @@ export const updateTasksetState = (props) => {
 export const saveProgress = async ({ success }) => {
   const { chapterid, tobeunlocked, pts, tasklog, completed } = taskset.state;
   const { unlocked, rating } = user.progress;
-  //TODO: После фейла запроса из-за отсутвия интернета кнопка сохранить не нажимается(later)
+  //TODO: (not captured)После фейла запроса из-за отсутвия интернета кнопка сохранить не нажимается(later)
   let dataToEncrypt;
   const courseid = course.state.courseid;
-  const tasklogPrepared = prepareTaskLog(courseid, chapterid, tasklog);
+  const tasklogPrepared = taskLogToDBFormat(courseid, chapterid, tasklog);
 
   dataToEncrypt = {
     [`courses.${courseid}.rating`]: rating + pts,
@@ -119,49 +170,5 @@ export const saveProgress = async ({ success }) => {
     await saveUserMeta({ data: dataToEncrypt, id: user.userid });
   } catch (e) {
     throw new Error("Server error");
-  }
-};
-
-export const getRandomTasksForChamp = async ({
-  levelStart,
-  levelEnd,
-  taskCount,
-  courseid,
-}) => {
-  const allTasks = await getAllCourseTasks(courseid);
-
-  const filteredTasks = getRandomTasks({
-    allTasks,
-    levelStart,
-    levelEnd,
-    num: taskCount,
-  });
-
-  return await ETL(filteredTasks.data);
-};
-
-export const getRandomTasksForExam = async ({
-  courseid,
-  levelStart,
-  levelEnd,
-  randomsaved,
-}) => {
-  const allTasks = await getAllCourseTasks(courseid);
-
-  if (randomsaved && randomsaved?.length != 0) {
-    const savedTasks = allTasks.filter((task) =>
-      randomsaved.includes(task.taskuuid)
-    );
-    return { tasksuuids: randomsaved, tasksFetched: await ETL(savedTasks) };
-  } else {
-    const randomTasks = getRandomTasks({
-      allTasks,
-      levelStart,
-      levelEnd,
-      num: 5,
-    });
-    const tasksFetched = await ETL(randomTasks.data);
-    const tasksuuids = randomTasks.data.map((task) => task.taskuuid);
-    return { tasksuuids, tasksFetched };
   }
 };

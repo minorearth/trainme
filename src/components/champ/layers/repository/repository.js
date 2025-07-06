@@ -27,13 +27,12 @@ export const getChampTasks = async ({ champid }) => {
 };
 
 export const subscribeOnChamp = async ({ champid, action }) => {
-  console.log("users monitoring started", champid);
   const unsubscribe = await getDocFromCollectionByIdRealtimeClient(
     stn.collections.CHAMPS,
     champid,
     action
   );
-  //TODO: test
+  //TODO: (later)test
   setInterval(() => {
     unsubscribe();
     // }, 1000 * 6);

@@ -6,11 +6,9 @@ import {
   launchAuthStateChangeMonitor,
   createUser,
   signOutUserRep,
+  getUserMeta,
 } from "@/userlayers/repository/repositoryAuth";
 import { createNewUserMeta } from "@/userlayers/repository/repositoryUserMeta";
-
-//api calls
-import { getDataFetch } from "@/apicalls/apicalls";
 
 //stores
 import user from "@/userlayers/store/user";
@@ -47,15 +45,9 @@ export const signInNow = async (email, password, router) => {
     return;
   }
 
-  //TODO:to repository
-  const allUserMeta = await getDataFetch({
-    data: { id: uid },
-    type: "getusermetadata",
-  });
+  const userMeta = await getUserMeta(uid);
 
-  console.log("allUserMeta", allUserMeta);
-
-  user.setUserNameP(allUserMeta.name);
+  user.setUserNameP(userMeta.name);
   router.push(`/chapters`);
 };
 

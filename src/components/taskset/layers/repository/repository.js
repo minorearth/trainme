@@ -1,9 +1,7 @@
 import { getDocDataFromSubCollectionByIdClient } from "@/db/CA/interface";
-import { getRandomTasks } from "@/components/taskset/layers/services/servicesHelpers";
-import {
-  ETL,
-  allTasksArrToObj,
-} from "@/components/taskset/layers/services/ETL";
+
+//ETL
+import { allTasksArrToObj } from "@/components/taskset/layers/repository/ETL";
 
 export const getAllTasksFromChapter = async (chapterid, courseid) => {
   const tasks = await getDocDataFromSubCollectionByIdClient(
@@ -12,8 +10,7 @@ export const getAllTasksFromChapter = async (chapterid, courseid) => {
     "chapters",
     chapterid
   );
-  //TODO: movee all ETLS after filter
-  return !tasks.data ? [] : await ETL(tasks.data.tasks);
+  return !tasks.data ? [] : tasks.data.tasks;
 };
 
 export const getTextBookTasks = async ({ completed, courseid }) => {
@@ -29,7 +26,7 @@ export const getTextBookTasks = async ({ completed, courseid }) => {
   if (!tasks.data) {
     return [];
   }
-  return await ETL(unlockedTheory);
+  return await unlockedTheory;
 };
 
 export const getAllCourseTasks = async (courseid) => {

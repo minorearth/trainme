@@ -12,6 +12,9 @@ import {
   setPersistence,
 } from "firebase/auth";
 
+//api calls
+import { getDataFetch } from "@/apicalls/apicalls";
+
 import { login, logout } from "@/db/SA/session";
 
 export const signInUser = async (email, password) => {
@@ -65,4 +68,12 @@ export const resetPsw = (email) => {
 export const signOutUserRep = async () => {
   await signOut(auth);
   await logout();
+};
+
+export const getUserMeta = async (uid) => {
+  const userMeta = await getDataFetch({
+    data: { id: uid },
+    type: "getusermetadata",
+  });
+  return userMeta;
 };

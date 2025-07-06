@@ -20,7 +20,7 @@ export const saveSnapshot = ({ userid, groupid, userMetaObj }) => {
   setDocInCollectionClient("snapshots", userMetaObj, `${userid}_${groupid}`);
 };
 
-//TODO:remade
+//TODO:(later)remade
 export const getSnapShot = async ({ groupid, userid }) => {
   const snapshot = await getDocDataFromCollectionByIdClient(
     "snapshots",

@@ -49,7 +49,6 @@ export const joinChamp = async () => {
       userid: user.userid,
       champid: champ.champid,
     });
-    console.log("persstatus", persstatus, champ.champid);
     if (persstatus == "joined" || persstatus == "undefined") {
       champ.setCapturingChampstart(true);
       if (champ.champid != champ.subscribedChampid) {
@@ -114,7 +113,6 @@ const launchChamp = () => {
 };
 
 export const captureChampStart = async ({ champid }) => {
-  console.log("тутат");
   await subscribeOnChamp({
     champid,
     action: captureAndlaunchChamp,

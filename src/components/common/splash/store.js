@@ -44,7 +44,6 @@ class splash {
     animation = "progressdots",
     delay = 1500
   ) {
-    console.log("променад");
     setTimeout(() => {
       this.state = {
         ...this.state,

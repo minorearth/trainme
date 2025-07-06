@@ -1,12 +1,16 @@
 "use client";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
-import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
-import splash from "./store";
 import { observer } from "mobx-react-lite";
+
+//stores
+import splash from "./store";
+
+//components
+import CountdownCircle from "@/components/common/splash/components/CountdownCircle";
 import CSSLoader from "@/components/common/animations/css/CSSSplash";
 import AnimationLottieGoToPlay from "@/components/common/splash/components/AnimationLottieGoToPlay";
-import CountdownCircle from "@/components/common/splash/components/CountdownCircle";
+import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
 
 const Splash = observer(() => {
   return (

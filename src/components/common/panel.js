@@ -12,17 +12,12 @@ export const Panel = ({ children, label }) => {
       component="fieldset"
       sx={{
         width: "100%",
-        // marginBottom: "10px",
         padding: "10px",
         paddingLeft: "20px",
-        // paddingRight: "40px",
-        // border: "1px  #ddd",
         border: `1px solid  ${theme.palette.divider}`,
         borderRadius: "3px",
-        // flex: 1,
         height: "100%",
         minHeight: "200px",
-
         "& .MuiFormGroup-root": { height: "100%" },
       }}
     >

@@ -1,8 +1,9 @@
 "use client";
 import { styled } from "@mui/material/styles";
-import Switch from "@mui/material/Switch";
-import { useEffect } from "react";
 import { useColorScheme } from "@mui/material/styles";
+import Switch from "@mui/material/Switch";
+
+//stores
 import task from "@/components/taskset/taskrun/layers/store/task";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({

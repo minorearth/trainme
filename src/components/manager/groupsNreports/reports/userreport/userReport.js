@@ -1,6 +1,7 @@
 // https://mui.com/x/react-tree-view/tree-item-customization/
 // https://mui.com/x/react-tree-view/rich-tree-view/editing/
 
+import { toJS } from "mobx";
 import Box from "@mui/material/Box";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
 import { observer } from "mobx-react-lite";
@@ -13,6 +14,7 @@ import CodeViewer from "@/components/manager/groupsNreports/reports/userreport/c
 import stat from "@/components/manager/groupsNreports/store/stat";
 
 const UserReport = observer(() => {
+  console.log("stat.userstat", toJS(stat.userstat));
   if (stat.userstatvisible) {
     return (
       <Box

@@ -81,7 +81,6 @@ class task {
   };
 
   setCurrTaskDataP(data: any, id: any) {
-    console.log("gooo", data, id);
     this.currTask = data;
     this.currTaskId = id;
     setTaskCode(data, this.editorRef.current);

@@ -10,7 +10,6 @@ export async function POST(request) {
     const reqData = await request.json();
     const { type, data } = reqData;
     let res = "error";
-    //TODO:remove type
     if (type == "paychapter" || type == "setusermetadata") {
       res = await updateDocSA("usermeta", data);
     }

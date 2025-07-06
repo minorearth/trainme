@@ -1,10 +1,14 @@
+//stores
 import { courses } from "@/globals/courses";
 
+//DB
 import { updateDocSA } from "@/db/SA/firebaseSA";
 
-import { encrypt2 } from "@/globals/utils/encryption";
-
+//repository
 import { fetchChapterIds } from "@/components/course/layers/repository/repository";
+
+//utils
+import { encrypt2 } from "@/globals/utils/encryption";
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
@@ -42,7 +46,7 @@ export const resetUser = async ({ courseid, uid }) => {
 export const unlockAllChaptersCurrentUser = async () => {
   const courseid = course.state.courseid;
   const chaptersIds = await fetchChapterIds({ courseid });
-  //TODO: remade unlocked(remove llottie chapters)
+  //TODO: (later)remade unlocked(remove llottie chapters)
   const data = {
     data: {
       [`courses.${courseid}.completed`]: [],

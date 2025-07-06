@@ -23,13 +23,6 @@ class txtField {
     Object.keys(this.state).forEach((field) => (this.state[field] = DEFAULT));
   }
 
-  //   handleChange(value, type) {
-  //     if (textFieldProps[type].instantValidation)
-  // {    const error = textFieldProps[type].validator(value);
-  //     const helperText = error ? textFieldProps[type].helperText : "";
-  //     this.state[type] = { error, value, helperText };}
-  //   }
-
   handleChange2(value, type) {
     if (textFieldProps[type].instantValidation) {
       const error = textFieldProps[type].validator(value);

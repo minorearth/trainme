@@ -1,8 +1,6 @@
 import Fab from "@mui/material/Fab";
-import { motion } from "framer-motion";
 import Icon2State from "./icon";
 import { Tooltip } from "@mui/material";
-import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButtonNoRipple";
 
 const FabAnimated = ({ action, icon, position, tooltip }) => {
   return (
