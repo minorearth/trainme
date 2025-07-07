@@ -60,7 +60,9 @@ const Navigator = observer(() => {
             </>
           )}
 
-          {stn.mode.DEV_MODE && <AdminPanel />}
+          {stn.mode.DEV_MODE &&
+            (navigator.state.page == "testrun" ||
+              navigator.state.page == "flow") && <AdminPanel />}
           {navigator.state.page == "courses" && <Courses />}
           {navigator.state.page == "champ" && <Champ />}
           {navigator.state.page == "flow" && !!course.flow && (

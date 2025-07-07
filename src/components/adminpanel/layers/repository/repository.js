@@ -15,7 +15,7 @@ export const uploadCourseChapters = async ({
   );
 };
 
-export const uploadAllCourseTasks = async ({
+export const uploadAllCourseTasksView = async ({
   courseid,
   allTasksWithLevels,
 }) => {

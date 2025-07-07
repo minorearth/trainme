@@ -87,7 +87,7 @@ export const openLessonStartPage = async ({
     randomsaved: taskset.state.randomsaved,
   });
 
-  setTasks({ nodemode, tasks, taskid: 0 });
+  taskset.setAllTasks(tasks, 0);
 
   updateTasksetState({
     nodemode,

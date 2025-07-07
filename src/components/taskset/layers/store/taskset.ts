@@ -63,7 +63,7 @@ class taskset {
     this.actions = methods;
   }
 
-  async setAllTasks(tasks: any, currid: any) {
+  async setAllTasks(tasks: any, currid: number) {
     runInAction(() => {
       this.allTasks = tasks;
       task.setCurrTaskDataP(tasks[currid], currid);

@@ -10,15 +10,16 @@ export const getChapterTasks = ({ chapterid, tasksall }) => {
   return tasksall.filter((test) => test.chapterid == chapterid);
 };
 
-export const supplyTasksWithChapterLevel = ({ tasksall, chapterFlowNodes }) => {
+export const supplyTasksWithChapterLevel = ({ tasks, chapterFlowNodes }) => {
+  console.log("chapterFlowNodesout", chapterFlowNodes);
   const chaptersLevels = getChaptersLevels(chapterFlowNodes);
-  const allTasksWithLevels = tasksall
+  const tasksWithLevels = tasks
     .filter((task) => task.tasktype == "task")
     .map((task) => {
       return { ...task, level: chaptersLevels[task.chapterparentid] };
     });
 
-  return allTasksWithLevels;
+  return tasksWithLevels;
 };
 
 const getChaptersLevels = (chapters) => {

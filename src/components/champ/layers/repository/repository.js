@@ -21,9 +21,9 @@ export const saveChampUserTaskLog = ({ tasklog, champid, userid }) => {
   });
 };
 
-export const getChampTasks = async ({ champid }) => {
+export const getChampTasksDB = async ({ champid }) => {
   const allTasks = await getDocDataFromCollectionByIdClient("champs", champid);
-  return allTasks;
+  return allTasks.data.tasks;
 };
 
 export const subscribeOnChamp = async ({ champid, action }) => {

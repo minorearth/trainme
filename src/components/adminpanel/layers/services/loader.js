@@ -2,7 +2,7 @@
 
 import {
   uploadCourseChapters,
-  uploadAllCourseTasks,
+  uploadAllCourseTasksView,
   uploadChapterTasks,
   uploadCourseChaptersObject,
 } from "@/components/adminpanel/layers/repository/repository";
@@ -35,18 +35,29 @@ const uploadCourse = async ({ courseid, coursesToLoad }) => {
   });
 
   const allTasksWithLevels = supplyTasksWithChapterLevel({
-    tasksall,
+    tasks: tasksall,
     chapterFlowNodes,
   });
 
-  await uploadAllCourseTasks({ courseid, allTasksWithLevels });
+  await uploadAllCourseTasksView({ courseid, allTasksWithLevels });
 
   const chaptersIds = getChaptersIdsAndTextBookId(chapterFlowNodes);
+
   await Promise.all(
     chaptersIds.map(async (chapterid) => {
+      console.log("chapterFlowNodesIn", chapterFlowNodes);
+
       const chapterTasks = getChapterTasks({ chapterid, tasksall });
+      const chapterTasksWithLevels = supplyTasksWithChapterLevel({
+        tasks: chapterTasks,
+        chapterFlowNodes,
+      });
       chapterTasks.length != 0 &&
-        (await uploadChapterTasks({ courseid, chapterid, chapterTasks }));
+        (await uploadChapterTasks({
+          courseid,
+          chapterid,
+          chapterTasks: chapterTasksWithLevels,
+        }));
     })
   );
 };

@@ -6,6 +6,9 @@ import taskset from "@/components/taskset/layers/store/taskset";
 import splash from "@/components/common/splash/store";
 //
 
+//serviceHelpers(local)
+import { getTasksRecap } from "@/components/taskset/layers/services/servicesHelpers";
+
 export const setTaskLog = ({ code, error }) => {
   const tasklog = taskset.state.tasklog;
   const taskuuid = task.currTask.taskuuid;
@@ -30,7 +33,10 @@ export const addErrorTaskToRecap = () => {
 
 export const setRecapTasks = ({ tasksetState }) => {
   taskset.setAllTasks(
-    getTasksRecap(tasksetState.state.recapTasksIds, tasksetState.allTasks),
+    getTasksRecap({
+      recapTasksIds: tasksetState.state.recapTasksIds,
+      tasks: tasksetState.allTasks,
+    }),
     0
   );
   taskset.updateStateP({ taskstage: "recap" });

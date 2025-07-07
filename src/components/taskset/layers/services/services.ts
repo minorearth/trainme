@@ -2,7 +2,7 @@ import { toJS } from "mobx";
 
 //repository(external)
 import { saveUserMeta } from "@/userlayers/repository/repositoryUserMeta";
-import { getChampTasks } from "@/components/champ/layers/repository/repository";
+import { getChampTasksDB } from "@/components/champ/layers/repository/repository";
 
 //repository(local)
 import {
@@ -28,7 +28,25 @@ import taskset from "@/components/taskset/layers/store/taskset";
 import user from "@/userlayers/store/user";
 import course from "@/components/course/layers/store/course";
 
-//
+//types
+import { RawTask, Task, TaskStage, UserProgress, Nodemode } from "@/types";
+
+interface GetTasksResult {
+  tasks: Task[];
+  tasksuuids: string[];
+}
+
+interface getTasksParams {
+  champid: string;
+  userProgress: UserProgress;
+  courseid: string;
+  level: number;
+  chapterid: string;
+  nodemode: Nodemode;
+  recapTasksIds: number[];
+  taskstage: TaskStage;
+  randomsaved: string[];
+}
 
 export const getTasks = async ({
   champid,
@@ -38,18 +56,11 @@ export const getTasks = async ({
   chapterid,
   nodemode,
   recapTasksIds = [],
-  taskstage = "",
+  taskstage,
   randomsaved,
-}) => {
-  if (nodemode == "champ") {
-    const tasks = await getChampTasks({
-      champid,
-    });
-    if (taskstage == "recap" || taskstage == "recap_suspended") {
-      const recapTasks = getTasksRecap(recapTasksIds, tasks.data.tasks);
-      return { tasks: recapTasks, tasksuuids: recapTasksIds };
-    } else return { tasks: tasks.data.tasks, tasksuuids: [] };
-  }
+}: getTasksParams): Promise<GetTasksResult | undefined> => {
+  if (nodemode == "champ")
+    return await getChampTasks({ champid, taskstage, recapTasksIds });
 
   if (nodemode == "textbook") {
     const tasks = await getTextBookTasks({
@@ -69,22 +80,32 @@ export const getTasks = async ({
   }
   if (nodemode == "addhoc" || nodemode == "newtopic") {
     const tasks = await getAllTasksFromChapter(chapterid, courseid);
-    if (taskstage == "recap" || taskstage == "recap_suspended") {
+    if (
+      taskstage == TaskStage.recap ||
+      taskstage == TaskStage.recap_suspended
+    ) {
       const recapTasks = await supplyFilesAndTransform(
-        getTasksRecap(recapTasksIds, tasks)
+        getTasksRecap({ recapTasksIds, tasks })
       );
-      return { tasks: recapTasks, tasksuuids: recapTasksIds };
+      return { tasks: recapTasks, tasksuuids: [] };
     } else
       return { tasks: await supplyFilesAndTransform(tasks), tasksuuids: [] };
   }
 };
+
+interface getRandomTasksForChampParams {
+  levelStart: number;
+  levelEnd: number;
+  taskCount: number;
+  courseid: string;
+}
 
 export const getRandomTasksForChamp = async ({
   levelStart,
   levelEnd,
   taskCount,
   courseid,
-}) => {
+}: getRandomTasksForChampParams) => {
   const allTasks = await getAllCourseTasks(courseid);
 
   const filteredTasks = getRandomTasks({
@@ -94,19 +115,26 @@ export const getRandomTasksForChamp = async ({
     num: taskCount,
   });
 
-  return await supplyFilesAndTransform(filteredTasks.data);
+  return filteredTasks.data;
 };
+
+interface getRandomTasksForExamParams {
+  courseid: string;
+  levelStart: number;
+  levelEnd: number;
+  randomsaved: string[];
+}
 
 export const getRandomTasksForExam = async ({
   courseid,
   levelStart,
   levelEnd,
   randomsaved,
-}) => {
-  const allTasks = await getAllCourseTasks(courseid);
+}: getRandomTasksForExamParams) => {
+  const allTasks: RawTask[] = await getAllCourseTasks(courseid);
 
   if (randomsaved && randomsaved?.length != 0) {
-    const savedTasks = allTasks.filter((task) =>
+    const savedTasks = allTasks.filter((task: RawTask) =>
       randomsaved.includes(task.taskuuid)
     );
     return {
@@ -121,16 +149,12 @@ export const getRandomTasksForExam = async ({
       num: 5,
     });
     const tasksFetched = await supplyFilesAndTransform(randomTasks.data);
-    const tasksuuids = randomTasks.data.map((task) => task.taskuuid);
+    const tasksuuids = randomTasks.data.map((task: RawTask) => task.taskuuid);
     return { tasksuuids, tasksFetched };
   }
 };
 
-export const setTasks = ({ tasks, taskid }) => {
-  taskset.setAllTasks(tasks, taskid);
-};
-
-export const updateTasksetState = (props) => {
+export const updateTasksetState = (props: any) => {
   const taskSetState = getTasksetState({
     ...props,
   });
@@ -138,9 +162,13 @@ export const updateTasksetState = (props) => {
   taskset.updateStateP(taskSetState);
 };
 
-export const saveProgress = async ({ success }) => {
+interface saveProgress {
+  success: boolean;
+}
+export const saveProgress = async ({ success }: saveProgress) => {
   const { chapterid, tobeunlocked, pts, tasklog, completed } = taskset.state;
-  const { unlocked, rating } = user.progress;
+  const progress = user.progress as UserProgress;
+  const { unlocked, rating, stat, completed: completedChapters } = progress;
   //TODO: (not captured)После фейла запроса из-за отсутвия интернета кнопка сохранить не нажимается(later)
   let dataToEncrypt;
   const courseid = course.state.courseid;
@@ -149,16 +177,13 @@ export const saveProgress = async ({ success }) => {
   dataToEncrypt = {
     [`courses.${courseid}.rating`]: rating + pts,
     [`courses.${courseid}.stat.${chapterid}.sum`]:
-      (user.progress.stat[chapterid]?.sum ?? 0) + pts,
+      (stat[chapterid]?.sum ?? 0) + pts,
     ...tasklogPrepared,
   };
   if (!completed && success) {
     dataToEncrypt = {
       ...dataToEncrypt,
-      [`courses.${courseid}.completed`]: [
-        ...user.progress.completed,
-        chapterid,
-      ],
+      [`courses.${courseid}.completed`]: [...completedChapters, chapterid],
       //all unlocked chapters(more than completed by lastunlocked)
       [`courses.${courseid}.unlocked`]: [...unlocked, ...tobeunlocked],
       //next chapters after just completed
@@ -170,5 +195,36 @@ export const saveProgress = async ({ success }) => {
     await saveUserMeta({ data: dataToEncrypt, id: user.userid });
   } catch (e) {
     throw new Error("Server error");
+  }
+};
+
+interface getChampTasksParams {
+  champid: string;
+  taskstage: TaskStage;
+  recapTasksIds: number[];
+}
+
+const getChampTasks = async ({
+  champid,
+  taskstage,
+  recapTasksIds,
+}: getChampTasksParams): Promise<GetTasksResult> => {
+  const rawTasks: RawTask[] = await getChampTasksDB({
+    champid,
+  });
+  if (taskstage == TaskStage.recap || taskstage == TaskStage.recap_suspended) {
+    const rawRecapTasks = getTasksRecap({
+      recapTasksIds,
+      tasks: rawTasks,
+    });
+    const tasks: Task[] = await supplyFilesAndTransform(rawRecapTasks);
+    return {
+      tasks,
+      tasksuuids: [],
+    };
+  } else {
+    const tasks: Task[] = await supplyFilesAndTransform(rawTasks);
+
+    return { tasks, tasksuuids: [] };
   }
 };

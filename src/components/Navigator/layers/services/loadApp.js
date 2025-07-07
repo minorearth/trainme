@@ -9,10 +9,7 @@ import { checkCoursePaid } from "@/components/courses/layers/repository/reposito
 
 //services(external)
 import { getFlow } from "@/components/course/layers/services/services";
-import {
-  getTasks,
-  setTasks,
-} from "@/components/taskset/layers/services/services";
+import { getTasks } from "@/components/taskset/layers/services/services";
 
 //services(local)
 import {
@@ -105,7 +102,7 @@ const recoverTasks = async ({ CSP }) => {
     recapTasksIds,
   });
 
-  setTasks({ tasks, taskid: CSP.task.currTaskId });
+  taskset(tasks, CSP.task.currTaskId);
   if (taskstage == "recap_suspended" && nodemode != "exam") {
     da.info.recap();
     taskset.updateStateP({ taskstage: "recap" });
