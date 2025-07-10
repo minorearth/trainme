@@ -96,7 +96,7 @@ export const setMoneyCurrentUser = async (inValue) => {
 };
 
 export const gotoLastTask = () => {
-  task.setCurrTaskP(taskset.allTasks.length - 1);
+  task.switchTaskP(taskset.tasks.length - 1);
 };
 
 //DO NOT DEELETE

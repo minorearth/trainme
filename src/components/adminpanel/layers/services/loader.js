@@ -34,25 +34,27 @@ const uploadCourse = async ({ courseid, coursesToLoad }) => {
     courseid,
   });
 
-  const allTasksWithLevels = supplyTasksWithChapterLevel({
+  const allTasksAndGuidesWithLevels = supplyTasksWithChapterLevel({
     tasks: tasksall,
     chapterFlowNodes,
   });
 
-  await uploadAllCourseTasksView({ courseid, allTasksWithLevels });
+  await uploadAllCourseTasksView({ courseid, allTasksAndGuidesWithLevels });
 
   const chaptersIds = getChaptersIdsAndTextBookId(chapterFlowNodes);
 
   await Promise.all(
     chaptersIds.map(async (chapterid) => {
-      console.log("chapterFlowNodesIn", chapterFlowNodes);
-
       const chapterTasks = getChapterTasks({ chapterid, tasksall });
+
       const chapterTasksWithLevels = supplyTasksWithChapterLevel({
         tasks: chapterTasks,
         chapterFlowNodes,
       });
-      chapterTasks.length != 0 &&
+      if (chapterid == "textbook")
+        console.log("textbook", chapterTasksWithLevels);
+
+      chapterTasksWithLevels.length != 0 &&
         (await uploadChapterTasks({
           courseid,
           chapterid,

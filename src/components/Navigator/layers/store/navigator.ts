@@ -15,6 +15,8 @@ import {
 } from "@/components/Navigator/layers/services/services";
 import splash from "@/components/common/splash/store";
 
+import { Page, NavigatorState } from "@/types";
+
 // interface INavMethods {
 //   /**
 //    * Open course flow page
@@ -38,7 +40,7 @@ class navigator {
     openChampPage,
     interruptTaskSet,
   };
-  state = {};
+  state: NavigatorState = { page: "courses" };
   dataloaded = false;
   pyodideloaded = false;
   apploaded = false;
@@ -51,23 +53,26 @@ class navigator {
     this.dataloaded = true;
   }
 
-  setStateP(data) {
+  setStateP(data: NavigatorState) {
     this.state = data;
     updateSCP({
       navigator: data,
     });
   }
 
-  setState(data) {
+  setState(data: NavigatorState) {
     this.state = data;
   }
 
-  updateStateP(data) {
+  //unused
+  updateStateP(data: NavigatorState) {
     this.state = { ...this.state, ...data };
     updateSCP({
       navigator: { ...this.state, ...data },
     });
   }
+
+  disposer: () => void;
 
   constructor() {
     makeAutoObservable(this);

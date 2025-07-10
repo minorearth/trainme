@@ -14,7 +14,6 @@ export const initials = {
     taskset: {
       recapTasksIds: [],
       taskstage: "WIP",
-      nodemode: "champ",
       tasklog: {},
       pts: 0,
     },
@@ -23,7 +22,7 @@ export const initials = {
   tasksetpage: { navigator: { page: "testrun" } },
   textbook: {
     navigator: { page: "lessonStarted" },
-    taskset: { nodemode: "textbook" },
+    taskset: { tasksetmode: "textbook" },
     task: { currTaskId: 0 },
   },
   courses: {

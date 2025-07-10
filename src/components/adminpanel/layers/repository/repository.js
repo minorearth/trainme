@@ -17,8 +17,11 @@ export const uploadCourseChapters = async ({
 
 export const uploadAllCourseTasksView = async ({
   courseid,
-  allTasksWithLevels,
+  allTasksAndGuidesWithLevels,
 }) => {
+  const allTasksNoGuides = allTasksAndGuidesWithLevels.filter(
+    (task) => task.tasktype == "task"
+  );
   await setDocInCollectionClient("newtasks", {}, courseid);
   await setDocInSubCollectionClient(
     "newtasks",
@@ -26,7 +29,7 @@ export const uploadAllCourseTasksView = async ({
     "chapters",
     "alltasks",
     {
-      tasks: allTasksWithLevels,
+      tasks: allTasksNoGuides,
     }
   );
 };

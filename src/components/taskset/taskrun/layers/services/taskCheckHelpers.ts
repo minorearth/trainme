@@ -1,27 +1,34 @@
 import { stn } from "@/globals/constants";
 
-const eqArrays = (a, b) => {
-  return (
-    a.every((val, idx) => val === b[idx]) &&
-    b.every((val, idx) => val === a[idx])
-  );
-};
+import { Task } from "@/types";
+import { eqArrays } from "@/globals/utils/arrUtils";
 
-const cleanUpCode = (code) => {
-  return code
-    .match(/[^\r\n]+/g)
+const cleanUpCode = (code: string) => {
+  const lines = code.match(/[^\r\n]+/g) ?? [];
+  const res = lines
     .map((line) => line.replaceAll(/#.*/g, ""))
     .map((line) => line.replaceAll(/[\n\t]/g, ""))
     .filter((line) => line != "");
+  return res;
 };
 
+interface CheckLines {
+  code: string;
+  maxlines: number;
+}
 // [[].*for.*in.*[]]
-const checkLines = (code, maxlines) => {
+const checkLines = ({ code, maxlines }: CheckLines) => {
   const codeLines = cleanUpCode(code);
   return maxlines >= codeLines.length;
 };
 
-const checkMustHave = (code, musthave, musthaveRe) => {
+interface CheckMustHave {
+  code: string;
+  musthave: string[];
+  musthaveRe: string[];
+}
+
+const checkMustHave = ({ code, musthave, musthaveRe }: CheckMustHave) => {
   const codeLines = cleanUpCode(code).join("\n");
 
   const musthaveCheck = musthave
@@ -36,56 +43,80 @@ const checkMustHave = (code, musthave, musthaveRe) => {
   return musthaveCheck && musthaveReCheck;
 };
 
-const checkForbidden = (code, musthave, musthaveRe) => {
+interface checkForbidden {
+  code: string;
+  forbidden: string[];
+  forbiddenRe: string[];
+}
+
+const checkForbidden = ({ code, forbidden, forbiddenRe }: checkForbidden) => {
   const codeLines = cleanUpCode(code).join("\n");
-  const forbiddenCheck1 = musthave.map((item) => !codeLines.includes(item));
+  const forbiddenCheck1 = forbidden.map((item) => !codeLines.includes(item));
   const forbiddenCheck = forbiddenCheck1.every(Boolean);
-
-  const forbiddenReCheck1 = musthaveRe.map((item) => {
+  const forbiddenReCheck1 = forbiddenRe.map((item) => {
     const regex = new RegExp(item, "g");
-
     return codeLines.match(regex) == null;
   });
   const forbiddenReCheck = forbiddenReCheck1.every(Boolean);
-
   return forbiddenCheck && forbiddenReCheck;
 };
 
-const checkCode = async (code, task, runPythonCode) => {
+interface CheckCode {
+  code: string;
+  task: Task;
+  runPythonCode: ({
+    code,
+    stdIn,
+  }: {
+    code: string;
+    stdIn: string;
+  }) => Promise<{ outputTxt: string; outputArr: string[] }>;
+}
+
+const checkCode = async ({ code, task, runPythonCode }: CheckCode) => {
   const results = await Promise.all(
     task.inout.map(async (check) => {
-      const { outputArr } = await runPythonCode(
-        check.filesdata.join("\n") + code,
-        check.inv.join("\n")
-      );
+      const { outputArr } = await runPythonCode({
+        code: check.filesdata.join("\n") + code,
+        stdIn: check.inv.join("\n"),
+      });
       return eqArrays(outputArr, check.outv);
     })
   );
   return results.every(Boolean);
 };
 
-export const runCheckers = async (code, task, runPythonCode) => {
-  const codeChecked = await checkCode(code, task, runPythonCode);
-  const linesChecked = checkLines(code, task.restrictions.maxlines);
-  const mustHaveChecked = checkMustHave(
+export const runCheckers = async ({ code, task, runPythonCode }: CheckCode) => {
+  const codeChecked = await checkCode({ code, task, runPythonCode });
+  const linesChecked = checkLines({
     code,
-    task.restrictions.musthave,
-    task.restrictions.musthaveRe
-  );
-  const forbiddenChecked = checkForbidden(
+    maxlines: task.restrictions.maxlines,
+  });
+  const mustHaveChecked = checkMustHave({
     code,
-    task.restrictions.forbidden,
-    task.restrictions.forbiddenRe
-  );
+    musthave: task.restrictions.musthave,
+    musthaveRe: task.restrictions.musthaveRe,
+  });
+  const forbiddenChecked = checkForbidden({
+    code,
+    forbidden: task.restrictions.forbidden,
+    forbiddenRe: task.restrictions.forbiddenRe,
+  });
   return { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked };
 };
 
-export const getErrorMessage = (
+interface GetErrorMessage {
+  codeChecked: boolean;
+  linesChecked: boolean;
+  mustHaveChecked: boolean;
+  forbiddenChecked: boolean;
+}
+export const getErrorMessage = ({
   codeChecked,
   linesChecked,
   mustHaveChecked,
-  forbiddenChecked
-) => {
+  forbiddenChecked,
+}: GetErrorMessage) => {
   const intro = "Ты допустил следующие ошибки:\n\n ";
   const errorList = [];
   !codeChecked && errorList.push(`☹️ ${stn.errors.error4}\n`);

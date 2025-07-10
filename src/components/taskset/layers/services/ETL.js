@@ -3,12 +3,12 @@ import { fetchFile } from "@/apicalls/apicalls";
 
 export const supplyFilesAndTransform = async (tasks) => {
   await supplyWithFilesData(tasks);
-  tranformData(tasks);
+  supplyWithFriendlyText(tasks);
   return tasks;
 };
 
 //Tranform Data
-const tranformData = (tasks) => {
+const supplyWithFriendlyText = (tasks) => {
   tasks.forEach((task) => {
     task.tasktext =
       task.task +
@@ -17,14 +17,6 @@ const tranformData = (tasks) => {
         task.restrictions.maxlines,
         task.tasktype
       );
-    task.input = task.defaultinput.join("\n");
-    task.code = task.defaultcode;
-    task.expectedOutput = task.defaultoutput.join("\n");
-    task.maxlines = task.restrictions.maxlines;
-    task.filedata =
-      task.inout[0].filesdata && task.inout[0].filesdata.join("\n");
-    task.output = "";
-    task.restrictErrors = "";
   });
 };
 
@@ -67,6 +59,8 @@ const enrichTaskWithFileLoadCode = ({ tasks, filesAndFileContent }) => {
           : inouttest.filesdata.push("");
       });
     });
+    task.filedata =
+      task.inout[0].filesdata && task.inout[0].filesdata.join("\n");
   });
 };
 

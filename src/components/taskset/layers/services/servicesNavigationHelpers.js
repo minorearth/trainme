@@ -3,6 +3,7 @@ import { toJS } from "mobx";
 //stores
 import task from "@/components/taskset/taskrun/layers/store/task";
 import taskset from "@/components/taskset/layers/store/taskset";
+import chapter from "@/components/taskset/layers/store/chapter";
 import splash from "@/components/common/splash/store";
 //
 
@@ -32,7 +33,7 @@ export const addErrorTaskToRecap = () => {
 };
 
 export const setRecapTasks = ({ tasksetState }) => {
-  taskset.setAllTasks(
+  taskset.setTasks(
     getTasksRecap({
       recapTasksIds: tasksetState.state.recapTasksIds,
       tasks: tasksetState.allTasks,
@@ -46,7 +47,7 @@ export const setTaskNumErrorFixed = (error) => {
   const fixed = taskset.state.fixed;
   if (taskset.state.taskstage == "recap" && !error) return fixed + 1;
   if (taskset.state.taskstage == "recap" && error) return fixed;
-  return null;
+  return fixed;
 };
 
 export const ok = (action = () => {}) => {
@@ -54,41 +55,45 @@ export const ok = (action = () => {}) => {
 };
 
 export const calcEarned = (error) => {
-  const { taskstage, completed, overflow, nodemode, pts, remainsum } =
-    taskset.state;
+  const { tasksetmode, pts, taskstage } = taskset.state;
+  const { completed, overflow, remainsum } = chapter.chapter;
   let income = 0;
   if (overflow) {
     return pts;
   }
   if (!error) {
-    if (taskstage == "WIP" && !completed && nodemode != "exam") {
+    if (taskstage == "WIP" && !completed && tasksetmode != "exam") {
       income = 10;
     }
-    if (taskstage == "WIP" && !completed && nodemode == "exam") {
+    if (taskstage == "WIP" && !completed && tasksetmode == "exam") {
       income = 2;
     }
-    if (taskstage == "WIP" && completed && nodemode != "exam") {
+    if (taskstage == "WIP" && completed && tasksetmode != "exam") {
       income = 2;
     }
-    if (taskstage == "WIP" && completed && nodemode == "exam") {
+    if (taskstage == "WIP" && completed && tasksetmode == "exam") {
       income = 1;
     }
 
-    if (taskstage == "recap" && !completed && nodemode != "exam") {
+    if (taskstage == "recap" && !completed && tasksetmode != "exam") {
       income = 2;
     }
 
-    if (taskstage == "recap" && !completed && nodemode == "exam") {
+    if (taskstage == "recap" && !completed && tasksetmode == "exam") {
       income = 1;
     }
 
     if (taskstage == "recap" && completed) {
       income = 1;
     }
-    if (nodemode == "addhoc" || nodemode == "newtopic" || nodemode == "exam") {
+    if (
+      tasksetmode == "addhoc" ||
+      tasksetmode == "newtopic" ||
+      tasksetmode == "exam"
+    ) {
       return Math.min(pts + income, remainsum);
     }
-    if (nodemode == "champ") {
+    if (tasksetmode == "champ") {
       return pts + income;
     }
   } else {

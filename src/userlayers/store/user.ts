@@ -1,58 +1,44 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { updateSCP, updateKeySCP } from "@/db/localstorage";
+import { UserProgress } from "@/types";
+import { USERPROGRESS_DEFAULTS } from "@/typesdefaults";
 // import { getUserMetaCourseProgress } from "@/userlayers/repository/repositoryUserMeta";
 
 class user {
   userid = "";
   isa = false;
   username = "";
-  progress = {};
+  progress: UserProgress = USERPROGRESS_DEFAULTS;
   avatarid = 0;
-  // nickname = "";
-  // nicknamechecked = false;
   actions = {};
 
-  setProgressP = (data) => {
+  setProgressP = (data: UserProgress) => {
     this.progress = data;
     updateKeySCP({ progress: data }, "user");
   };
 
-  setProgress(data) {
+  setProgress(data: UserProgress) {
     this.progress = data;
   }
 
-  setUserid({ id }) {
+  setUserid({ id }: { id: string }) {
     this.userid = id;
   }
 
-  // import { startListeners, stopListeners } from "@/globals/listeners/listeners";
-  // import { loadPTrek } from "@/components/Navigator/layers/services/loadApp";
-
-  // startListeners();
-  // loadPTrek();
-  // setLoading(false);
-
-  setAvatarId(id) {
+  setAvatarId(id: number) {
     this.avatarid = id;
   }
 
-  setUserNameP = (username) => {
+  setUserNameP = (username: string) => {
     this.username = username;
     updateSCP({
       user: { username },
     });
   };
 
-  setUserName = (username) => {
+  setUserName = (username: string) => {
     this.username = username;
-    // this.nickname = username;
-    // this.nicknamechecked = checkNickName(username);
   };
-
-  // setUserName(name) {
-  //   this.username = name;
-  //   this.nickname = nickname;
-  // }
 
   constructor() {
     makeAutoObservable(this);

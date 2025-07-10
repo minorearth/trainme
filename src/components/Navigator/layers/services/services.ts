@@ -13,11 +13,7 @@ import { getUserMetaCourseProgress } from "@/userlayers/repository/repositoryUse
 import { signOut } from "@/userlayers/services/servicesAuth";
 import { getFlow } from "@/components/course/layers/services/services";
 import { saveProgress } from "@/components/taskset/layers/services/services";
-import {
-  getTasks,
-  setTasks,
-  updateTasksetState,
-} from "@/components/taskset/layers/services/services";
+import { getTasks } from "@/components/taskset/layers/services/services";
 
 //service helpers
 import {
@@ -38,13 +34,27 @@ import user from "@/userlayers/store/user";
 import tutorial from "@/components/tutorial/store";
 import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";
+import chapter from "@/components/taskset/layers/store/chapter";
 //
+
+import {
+  TasksetState,
+  UserProgress,
+  ChapterState,
+  ChampState,
+  CourseState,
+  Page,
+} from "@/types";
+
+import { CHAPTER_DEFAULTS } from "@/typesdefaults";
+
+import { NextRouter } from "next/router";
 
 export const openAllCoursePage = () => {
   setAllCoursePageState();
 };
 
-export const openCourseFlowPageFromMain = async (courseid) => {
+export const openCourseFlowPageFromMain = async (courseid: string) => {
   splash.setShowProgress(false, "progressdots", 2000);
 
   const coursePaid = await checkCoursePaid({ courseid, uid: user.userid });
@@ -58,72 +68,82 @@ export const openCourseFlowPageFromMain = async (courseid) => {
   splash.closeProgress();
 };
 
-export const openAndRefreshFlowPage = async ({ courseid, refetchFlow }) => {
+export const openAndRefreshFlowPage = async ({
+  courseid,
+  refetchFlow,
+}: {
+  courseid: string;
+  refetchFlow: boolean;
+}) => {
   const progress = await getUserMetaCourseProgress(courseid, user.userid);
   getFlow({ courseid, refetchFlow, progress });
   setFlowPageState({ courseid, progress });
 };
 
 export const openLessonStartPage = async ({
-  courseid,
-  chapterid,
-  champid,
-  completed,
-  overflow,
-  remainsum,
-  nodemode,
-  level,
-  tobeunlocked,
+  chapterData = CHAPTER_DEFAULTS,
+  tasksetData,
+  champData = { champid: "" },
+  courseData = {},
+}: {
+  tasksetData: TasksetState;
+  chapterData: ChapterState;
+  champData: ChampState;
+  courseData: CourseState;
 }) => {
+  const { tasksetmode, taskstage } = tasksetData;
+
   splash.setShowProgress();
 
   const { tasks, tasksuuids } = await getTasks({
-    champid,
-    userProgress: user.progress,
-    courseid,
-    level,
-    chapterid,
-    nodemode,
-    randomsaved: taskset.state.randomsaved,
+    champData,
+    courseData,
+    chapterData,
+    tasksetData,
+    userProgress: user.progress as UserProgress,
   });
 
-  taskset.setAllTasks(tasks, 0);
+  taskset.setTasks(tasks, 0);
 
-  updateTasksetState({
-    nodemode,
-    chapterid,
-    completed,
-    overflow,
-    remainsum,
-    tobeunlocked,
-    level,
-    tasksuuids,
+  taskset.setStateP({
+    ...initials[tasksetmode].taskset,
+    tasksetmode,
+    taskstage,
+    //not [] for "exam" only
+    randomsaved: tasksuuids,
   });
 
-  if (nodemode == "textbook" && !tasks.length) {
+  chapter.setChapterP(chapterData);
+
+  if (tasksetmode == "textbook" && !tasks.length) {
     da.info.textbookblocked();
-  } else navigator.updateStateP(initials[nodemode].navigator);
+  } else
+    navigator.setStateP({ page: initials[tasksetmode].navigator.page as Page });
 
   splash.closeProgress();
 };
 
 export const openTaskSetPage = async () => {
   splash.setShowProgress(false, "progressdots", 2000);
-  navigator.updateStateP({ ...initials.tasksetpage.navigator });
+  navigator.setStateP({ page: initials.tasksetpage.navigator.page as Page });
   splash.closeProgress();
 };
 
-export const openCongratPage = async ({ success }) => {
+export const openCongratPage = async ({ success }: { success: boolean }) => {
   countdownbutton.hideButton();
-  navigator.updateStateP({ page: "congrat" });
-  taskset.updateStateP({ success });
+  navigator.setStateP({ page: "congrat" });
+  taskset.setStateP({ ...taskset.state, success });
 };
 
-export const closeCongratPage = async (success) => {
-  const nodemode = taskset.state.nodemode;
+export const closeCongratPage = async (success: boolean) => {
+  const tasksetmode = taskset.state.tasksetmode;
   splash.setShowProgress();
 
-  if (nodemode == "addhoc" || nodemode == "newtopic" || nodemode == "exam")
+  if (
+    tasksetmode == "addhoc" ||
+    tasksetmode == "newtopic" ||
+    tasksetmode == "exam"
+  )
     try {
       await saveProgress({ success });
       await openAndRefreshFlowPage({
@@ -134,7 +154,7 @@ export const closeCongratPage = async (success) => {
       da.info.networkerror(e);
     }
 
-  if (nodemode == "champ") {
+  if (tasksetmode == "champ") {
     saveChampUserTaskLog({
       tasklog: taskset.state.tasklog,
       champid: champ.champid,
@@ -146,15 +166,15 @@ export const closeCongratPage = async (success) => {
 };
 
 export const interruptTaskSet = () => {
-  const { nodemode, pts, remainsum } = taskset.state;
-  if (nodemode != "textbook") {
+  const { tasksetmode } = taskset.state;
+  if (tasksetmode != "textbook") {
     da.info.tasksetinterrupt({
       action: () =>
         openCongratPage({
           success: false,
         }),
-      nodemode,
-      completed: taskset.state.completed,
+      tasksetmode,
+      completed: chapter.chapter.completed,
     });
   } else {
     openAndRefreshFlowPage({
@@ -168,7 +188,7 @@ export const openTutorial = () => {
   tutorial.show();
 };
 
-export const openLoginPageSignOut = async (router) => {
+export const openLoginPageSignOut = async (router: NextRouter) => {
   await signOut(router);
 };
 

@@ -20,6 +20,7 @@ export const getTextBookTasks = async ({ completed, courseid }) => {
     "chapters",
     "textbook"
   );
+  console.log("tasks.data.tasks", courseid, tasks.data.tasks);
   const unlockedTheory = tasks.data.tasks.filter((item) =>
     completed.includes(item.chapterparentid)
   );

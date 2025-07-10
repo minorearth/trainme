@@ -94,8 +94,11 @@ export const da = {
           splash.closeProgress();
         }
       ),
-    tasksetinterrupt: ({ action, completed, nodemode }) => {
-      const { caption, text } = getTaskSetInterruptedInfo(completed, nodemode);
+    tasksetinterrupt: ({ action, completed, tasksetmode }) => {
+      const { caption, text } = getTaskSetInterruptedInfo(
+        completed,
+        tasksetmode
+      );
       alertdialog.showDialog(
         caption,
         text,
@@ -153,18 +156,22 @@ export const da = {
   ok: {},
 };
 
-const getTaskSetInterruptedInfo = (completed, nodemode) => {
+const getTaskSetInterruptedInfo = (completed, tasksetmode) => {
   let caption, text;
-  if (nodemode == "exam" || nodemode == "addhoc" || nodemode == "newtopic") {
+  if (
+    tasksetmode == "exam" ||
+    tasksetmode == "addhoc" ||
+    tasksetmode == "newtopic"
+  ) {
     caption = "Завершить";
   }
 
-  if ((nodemode == "newtopic" || nodemode == "addhoc") && !completed) {
+  if ((tasksetmode == "newtopic" || tasksetmode == "addhoc") && !completed) {
     text =
       "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n2 монеты за каждую задачу вместо 10 монет";
   }
 
-  if (nodemode == "exam" && !completed) {
+  if (tasksetmode == "exam" && !completed) {
     text =
       "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n1 монету за каждую задачу вместо 2 монет";
   }
@@ -173,7 +180,7 @@ const getTaskSetInterruptedInfo = (completed, nodemode) => {
     text = "Завершить прохождение?";
   }
 
-  if (nodemode == "champ") {
+  if (tasksetmode == "champ") {
     caption = "Завершить чемпионат";
     text = "Завершить участие в чемпионате?";
   }
@@ -181,19 +188,19 @@ const getTaskSetInterruptedInfo = (completed, nodemode) => {
   return { caption, text };
 };
 
-export const getStarPageIntro = ({ nodemode, completed, overflow }) => {
-  if (nodemode == "textbook") {
+export const getStarPageIntro = ({ tasksetmode, completed, overflow }) => {
+  if (tasksetmode == "textbook") {
     return "Приветствуем вас в учебнике 📘 ! В учебнике доступна теория только по открытым темам";
   }
 
-  if (nodemode == "champ") {
+  if (tasksetmode == "champ") {
     return "Удачи в чемпионате!";
   }
 
-  if (nodemode == "exam")
+  if (tasksetmode == "exam")
     return "В режиме челлендж нет повторения и все задачи должны быть решены с первого раза";
 
-  if (nodemode == "addhoc" || nodemode == "newtopic") {
+  if (tasksetmode == "addhoc" || tasksetmode == "newtopic") {
     if (!completed) {
       return "Постарайтесь решить задачу с первого раза, за это начисляются монеты, которые используются для открытия новых уроков";
     }

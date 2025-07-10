@@ -14,7 +14,7 @@ class champ {
     startChamp,
     captureUsersJoined,
   };
-  champid = null;
+  champid = "";
   state = {};
   range = [1, 30];
   capturingChampstart = false;
@@ -35,7 +35,7 @@ class champ {
   eraseStateP() {
     this.range = [1, 30];
     this.state = {};
-    this.champid = null;
+    this.champid = "";
     updateSCP({
       champ: {},
     });

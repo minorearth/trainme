@@ -53,7 +53,6 @@ const Wrapper = styled.div(({ theme, data }) => ({
     overflow: "hidden",
     display: "flex",
     padding: "2px",
-    // padding: data.nodemode == "exam" ? "6px" : "2px",
     position: "relative",
     borderRadius: "12px",
     flexGrow: 1,

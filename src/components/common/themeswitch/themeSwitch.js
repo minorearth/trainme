@@ -70,11 +70,9 @@ export default function DLSwitch({ sx = {} }) {
   }
 
   const handleChange = (event) => {
-    setMode(event.target.checked ? "dark" : "light");
-    if (task.monacoRef.current)
-      event.target.checked
-        ? task.monacoRef?.current.editor.setTheme("dark")
-        : task.monacoRef?.current.editor.setTheme("light");
+    const mode = event.target.checked ? "dark" : "light";
+    setMode(mode);
+    task.setTheme(mode == "dark");
   };
 
   return (

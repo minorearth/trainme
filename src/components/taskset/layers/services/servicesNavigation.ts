@@ -21,24 +21,33 @@ import {
   setRecapTasks,
   ok,
 } from "@/components/taskset/layers/services/servicesNavigationHelpers";
+interface nextTaskOrCompleteTestRunParams {
+  error: boolean;
+  errorMsg: string;
+  code: string;
+}
 
-export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
+export const nextTaskOrCompleteTestRun = async ({
+  error,
+  errorMsg,
+  code,
+}: nextTaskOrCompleteTestRunParams) => {
   const pts = calcEarned(error);
   const tasklog = setTaskLog({ error, code });
   const fixed = setTaskNumErrorFixed(error);
-  const { taskstage, nodemode } = taskset.state;
+  const { taskstage, tasksetmode } = taskset.state;
 
-  if (nodemode == "champ" && !error)
+  if (tasksetmode == "champ" && !error)
     //In order to save champ points on every task execution
     await updateChampPoints({
       pts,
       champid: champ.champid,
       userid: user.userid,
     });
-  taskset.updateStateP({ fixed, tasklog, pts });
+  taskset.setStateP({ ...taskset.state, fixed, tasklog, pts });
 
-  const tasknum = taskset.allTasks.length;
-  const recapTaskNum = taskset.state.recapTasksIds.length;
+  const tasknum = taskset.tasks.length;
+  const recapTaskNum = taskset.state.recapTasksIds?.length;
   const currTaskId = task.currTaskId;
 
   switch (true) {
@@ -62,7 +71,7 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
         );
       }
       if (recapTaskNum != 0 && taskstage == "WIP") {
-        taskset.state.nodemode == "exam"
+        taskset.state.tasksetmode == "exam"
           ? ok(() =>
               navigator.actions.openCongratPage({
                 success: false,
@@ -72,7 +81,7 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
               setRecapTasks({
                 tasksetState: {
                   state: taskset.state,
-                  allTasks: taskset.allTasks,
+                  allTasks: taskset.tasks,
                 },
               })
             );
@@ -94,11 +103,14 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
       }
       if (taskstage == "WIP" && currTaskId == tasknum - 1) {
         addErrorTaskToRecap();
-        taskset.updateStateP({ taskstage: "recap_suspended" });
+        taskset.setStateP({ ...taskset.state, taskstage: "recap_suspended" });
         task.setCurrTaskCSPOnly(0);
       }
       if (taskstage == "recap" && currTaskId == tasknum - 1) {
-        taskset.updateStateP({ taskstage: "accomplished_suspended" });
+        taskset.setStateP({
+          ...taskset.state,
+          taskstage: "accomplished_suspended",
+        });
       }
       return;
 
@@ -108,21 +120,21 @@ export const nextTaskOrCompleteTestRun = async ({ error, errorMsg, code }) => {
 };
 
 export const nextTask = () => {
-  task.editorRef.current.setValue("");
-  task.setCurrTaskP(task.currTaskId + 1);
+  task.editorRef.current?.setValue("");
+  task.switchTaskP(task.currTaskId + 1);
 };
 
 export const prevTaskNoPts_admin = () => {
-  task.editorRef.current.setValue("");
-  task.setCurrTaskP(task.currTaskId - 1);
+  task.editorRef.current?.setValue("");
+  task.switchTaskP(task.currTaskId - 1);
 };
 
 export const errorCountDownPressed = async () => {
-  task.editorRef.current.setValue("");
+  task.editorRef.current?.setValue("");
   countdownbutton.hideButton();
-  task.updateCurrTask({ info: "", editordisabled: false });
-  task.actions.setEditorDisabled(false);
-  const { nodemode, taskstage } = taskset.state;
+  task.hideInfo();
+  // task.actions.setEditorDisabled(false);
+  const { tasksetmode, taskstage } = taskset.state;
 
   if (taskstage == "accomplished_suspended") {
     navigator.actions.openCongratPage({
@@ -131,18 +143,18 @@ export const errorCountDownPressed = async () => {
     return;
   }
   if (taskstage == "recap_suspended") {
-    nodemode == "exam"
+    tasksetmode == "exam"
       ? navigator.actions.openCongratPage({
           success: false,
         })
       : setRecapTasks({
-          tasksetState: { state: taskset.state, allTasks: taskset.allTasks },
+          tasksetState: { state: taskset.state, allTasks: taskset.tasks },
         });
 
     return;
   }
-  if (task.currTaskId != taskset.allTasks.length) {
-    task.setCurrTaskP(task.currTaskId + 1);
+  if (task.currTaskId != taskset.tasks.length) {
+    task.switchTaskP(task.currTaskId + 1);
     return;
   }
 };

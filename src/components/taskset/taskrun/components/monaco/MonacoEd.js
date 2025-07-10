@@ -11,10 +11,12 @@ import CachedIcon from "@mui/icons-material/Cached";
 import { Watcher } from "@/components/taskset/taskrun/components/monaco/watcher/watcher";
 import Box from "@mui/material/Box";
 
+import { observer } from "mobx-react-lite";
+
 //stores
 import task from "@/components/taskset/taskrun/layers/store/task";
 
-const MonacoEd = () => {
+const MonacoEd = observer(() => {
   const { mode } = useColorScheme();
 
   return (
@@ -24,20 +26,20 @@ const MonacoEd = () => {
     >
       <Watcher />
 
-      {task.currTask.info && (
+      {task.info && (
         <Typography sx={{ textAlign: "center", color: "#618B4E" }}>
-          {task.currTask.info}
+          {task.info}
         </Typography>
       )}
-      {task.currTask.errorMessage && !task.currTask.editordisabled && (
+      {task.errorMessage && !task.editordisabled && (
         <Typography sx={{ textAlign: "center", color: "#FF5549" }}>
-          {task.currTask.errorMessage}
+          {task.errorMessage}
         </Typography>
       )}
       <IconButton
         aria-label="toggle password visibility"
         onClick={() => {
-          task.actions.refreshEditor();
+          task.refreshEditor();
         }}
         sx={{
           position: "absolute",
@@ -57,13 +59,9 @@ const MonacoEd = () => {
         theme={"dark"}
         options={{ ...EditorOptions }}
         language="python"
-        onChange={(value, e) =>
-          task.actions.handleChangeContent({
-            value,
-          })
-        }
+        onChange={(value, e) => task.handleChangeMonacoContent(value)}
         onMount={(editor, monaco) =>
-          task.actions.handleEditorDidMount({
+          task.handleEditorDidMount({
             editor,
             monaco,
             darkmode: mode == "dark" ? true : false,
@@ -72,6 +70,6 @@ const MonacoEd = () => {
       />
     </Box>
   );
-};
+});
 
 export default MonacoEd;

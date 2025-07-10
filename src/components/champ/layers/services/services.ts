@@ -25,12 +25,13 @@ import navigator from "@/components/Navigator/layers/store/navigator";
 import champ from "@/components/champ/layers/store/champ";
 import txtField from "@/components/common/customfield/store";
 import splash from "@/components/common/splash/store";
+import { CHAPTER_DEFAULTS } from "@/typesdefaults";
 
 export const createChamp = async () => {
   const tasks = await getRandomTasksForChamp({
     levelStart: champ.range[0],
     levelEnd: champ.range[1],
-    taskCount: txtField.state.tasknum.value,
+    taskCount: Number(txtField.state.tasknum.value),
     courseid: "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0",
   });
   if (tasks.status == "error") {
@@ -39,7 +40,7 @@ export const createChamp = async () => {
     const champid = generateString(7);
     champ.setChampIdP(champid);
     champ.setUsers([]);
-    createNewChamp({ tasks, champid });
+    createNewChamp({ tasks: tasks.tasks, champid });
   }
 };
 
@@ -75,7 +76,7 @@ export const joinChamp = async () => {
   }
 };
 
-export const startChamp = async (champid) => {
+export const startChamp = async (champid: string) => {
   window.open(
     `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard/${champid}`,
     "_blank"
@@ -83,7 +84,7 @@ export const startChamp = async (champid) => {
   await setChampStarted({ champid });
 };
 
-const captureAndlaunchChamp = (champdoc) => {
+const captureAndlaunchChamp = (champdoc: any) => {
   if (
     champdoc.status == "started" &&
     champdoc.users[user.userid]?.persstatus == "joined"
@@ -94,8 +95,10 @@ const captureAndlaunchChamp = (champdoc) => {
 
 const launchChamp = () => {
   navigator.actions.openLessonStartPage({
-    champid: champ.champid,
-    nodemode: "champ",
+    champData: { champid: champ.champid },
+    tasksetData: { tasksetmode: "champ", taskstage: "WIP", randomsaved: [] },
+    courseData: {},
+    chapterData: CHAPTER_DEFAULTS,
   });
   updateUserInChamp({
     userid: user.userid,
@@ -112,14 +115,14 @@ const launchChamp = () => {
   champ.setCapturingChampstart(false);
 };
 
-export const captureChampStart = async ({ champid }) => {
+export const captureChampStart = async ({ champid }: { champid: string }) => {
   await subscribeOnChamp({
     champid,
     action: captureAndlaunchChamp,
   });
 };
 
-const setUsersAndsmth = (champdoc) => {
+const setUsersAndsmth = (champdoc: any) => {
   const usersArr = ObjtoArr(champdoc?.users);
   const champstarted = champdoc?.status == "started" ? true : false;
   const usersSorted = sortItems({
@@ -131,7 +134,7 @@ const setUsersAndsmth = (champdoc) => {
   champ.setChampStarted(champstarted);
 };
 
-export const captureUsersJoined = async ({ champid }) => {
+export const captureUsersJoined = async ({ champid }: { champid: string }) => {
   champ.setSubscribedChampid(champid);
   await subscribeOnChamp({
     champid,

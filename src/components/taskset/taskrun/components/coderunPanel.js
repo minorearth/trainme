@@ -45,7 +45,7 @@ const CodeRunPanel = observer(() => {
           Проверить!
         </Button>
       )}
-      {(taskset.state.nodemode == "textbook" || stn.mode.DEV_MODE) && (
+      {(taskset.state.tasksetmode == "textbook" || stn.mode.DEV_MODE) && (
         <Button
           onClick={() => {
             taskset.actions.prevTaskNoPts_admin();
@@ -80,7 +80,7 @@ const CodeRunPanel = observer(() => {
       {stn.mode.DEV_MODE && (
         <Button
           onClick={() => {
-            task.actions.setRightCode_admin(task.currTaskId);
+            task.setRightCode_admin(task.currTaskId);
           }}
           variant="outlined"
         >
@@ -90,7 +90,7 @@ const CodeRunPanel = observer(() => {
       {stn.mode.DEV_MODE && (
         <Button
           onClick={() => {
-            task.actions.setForbiddenCode_admin(task.currTaskId);
+            task.setForbiddenCode_admin(task.currTaskId);
           }}
           variant="outlined"
         >

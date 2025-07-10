@@ -11,7 +11,7 @@ import { observer } from "mobx-react-lite";
 
 const InOutPanel = observer(() => {
   const handleChange = (e) => {
-    task.updateCurrTask({ input: e.target.value });
+    task.setInput(e.target.value);
   };
 
   return (
@@ -48,7 +48,7 @@ const InOutPanel = observer(() => {
             disableUnderline
             rows={7}
             onChange={(e) => handleChange(e)}
-            value={task.currTask.input}
+            value={task.input}
             sx={{
               display: "inline-block",
               whiteSpace: "pre-wrap",
@@ -73,7 +73,7 @@ const InOutPanel = observer(() => {
                 whiteSpace: "pre-wrap",
               }}
             >
-              {task.currTask.output}
+              {task.output}
             </Typography>
           </Box>
         </Panel>
@@ -85,7 +85,7 @@ const InOutPanel = observer(() => {
               variant="body1"
               sx={{ display: "inline-block", whiteSpace: "pre-wrap" }}
             >
-              {task.currTask.expectedOutput}
+              {task.currTask.defaultoutput.join("\n")}
             </Typography>
           </Panel>
         </Grid>

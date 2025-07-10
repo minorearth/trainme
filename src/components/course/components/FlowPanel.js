@@ -72,8 +72,12 @@ const FlowPanel = observer(() => {
               sx={{ fontSize: ICON_SIZE }}
               onClick={async () => {
                 navigator.actions.openLessonStartPage({
-                  nodemode: "textbook",
-                  courseid: course.state.courseid,
+                  tasksetData: {
+                    tasksetmode: "textbook",
+                    taskstage: "exploreguide",
+                    randomsaved: [],
+                  },
+                  courseData: { courseid: course.state.courseid },
                 });
               }}
             />

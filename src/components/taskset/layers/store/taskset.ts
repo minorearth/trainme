@@ -11,6 +11,15 @@ import {
   errorCountDownPressed,
 } from "@/components/taskset/layers/services/servicesNavigation";
 
+import chapter from "@/components/taskset/layers/store/chapter";
+import {
+  TasksetMode,
+  Task,
+  TasksetState,
+  TasksetStateChapter,
+  TaskStage,
+} from "@/types";
+
 interface ITask {
   /**
    * Open course flow page
@@ -20,8 +29,13 @@ interface ITask {
   // openAndRefreshFlowPage?: (courseid: string) => void;
 }
 
+const DEFAULT_STATE = {
+  tasksetmode: "" as TasksetMode,
+  taskstage: "" as TaskStage,
+};
+
 class taskset {
-  allTasks: any = [];
+  tasks: Task[] = [];
   tasknum: number = -1;
   actions: any = {
     nextTaskOrCompleteTestRun,
@@ -29,45 +43,54 @@ class taskset {
     prevTaskNoPts_admin,
     errorCountDownPressed,
   };
-  state: any = { recapTasksIds: [] };
+  state: TasksetState = DEFAULT_STATE;
 
   startPageIntro() {
-    const { nodemode, completed, overflow } = this.state;
+    const { tasksetmode } = this.state;
+    const { completed, overflow } = chapter.chapter;
+
     return getStarPageIntro({
-      nodemode,
+      tasksetmode,
       completed,
       overflow,
     });
   }
 
-  updateStateP(data: any) {
+  updateStateP(data: TasksetState) {
     this.state = { ...this.state, ...data };
     updateSCP({
       taskset: { ...this.state, ...data },
     });
   }
 
-  updateState(data: any) {
+  setStateP(data: TasksetState) {
+    this.state = data;
+    updateSCP({
+      taskset: data,
+    });
+  }
+
+  updateState(data: TasksetState) {
     this.state = { ...this.state, ...data };
   }
 
   eraseStateP() {
-    this.state = {};
-    this.allTasks = [];
+    this.state = DEFAULT_STATE;
+    this.tasks = [];
     updateSCP({
       taskset: {},
     });
   }
 
-  setTaskMethods(methods: any) {
-    this.actions = methods;
-  }
-
-  async setAllTasks(tasks: any, currid: number) {
+  async setTasks(tasks: Task[], currid: number) {
     runInAction(() => {
-      this.allTasks = tasks;
-      task.setCurrTaskDataP(tasks[currid], currid);
-      this.tasknum = tasks.length;
+      if (tasks.length != 0) {
+        console.log("тута", tasks);
+
+        this.tasks = tasks;
+        task.setCurrTaskP(tasks[currid], currid);
+        this.tasknum = tasks.length;
+      }
     });
   }
 

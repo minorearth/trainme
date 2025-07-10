@@ -1,42 +1,30 @@
-import task from "@/components/taskset/taskrun/layers/store/task";
-
-export const defineTheme = (monaco, darkmode) => {
-  monaco.editor.defineTheme("dark", {
-    base: "vs-dark",
-    inherit: true,
-    rules: [
-      {
-        token: "identifier",
-        foreground: "9CDCFE",
-      },
-      {
-        token: "identifier.function",
-        foreground: "DCDCAA",
-      },
-      {
-        token: "type",
-        foreground: "1AAFB0",
-      },
-    ],
-    colors: {
-      "editor.background": "#121212",
+export const monacoDarktheme = {
+  base: "vs-dark",
+  inherit: true,
+  rules: [
+    {
+      token: "identifier",
+      foreground: "9CDCFE",
     },
-  });
-  monaco.editor.defineTheme("light", {
-    base: "vs",
-    inherit: true,
-    rules: [],
-    colors: {
-      "editor.background": "#FFFFFF",
+    {
+      token: "identifier.function",
+      foreground: "DCDCAA",
     },
-  });
-  setTheme(darkmode);
+    {
+      token: "type",
+      foreground: "1AAFB0",
+    },
+  ],
+  colors: {
+    "editor.background": "#121212",
+  },
 };
 
-function setTheme(darkmode) {
-  if (!task.monacoRef.current) return;
-
-  darkmode
-    ? task.monacoRef?.current.editor.setTheme("dark")
-    : task.monacoRef?.current.editor.setTheme("light");
-}
+export const monacoLighttheme = {
+  base: "vs",
+  inherit: true,
+  rules: [],
+  colors: {
+    "editor.background": "#FFFFFF",
+  },
+};
