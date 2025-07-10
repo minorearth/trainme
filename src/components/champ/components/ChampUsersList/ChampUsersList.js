@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import { observer } from "mobx-react-lite";
 
 //components
-import UserCard from "@/components/champ/components/userCard";
+import UserCard from "@/components/champ/components/UserCard";
 
 //stores
 import champ from "@/components/champ/layers/store/champ";
