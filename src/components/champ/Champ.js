@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 //components
 import SortableList from "@/components/champ/components/ChampUsersList/ChampUsersList";
 import StepByStep from "@/components/champ/components/Stepper";
-import AvatarStep from "@/components/champ/components/steps/avatarStep";
+import AvatarStep from "@/components/champ/components/steps/avatarStep.js";
 import CreateOrJoinStep from "@/components/champ/components/steps/createOrJoinStep";
 import CreateChampStep from "@/components/champ/components/steps/CreateChamp";
 import JoinStep from "@/components/champ/components/steps/JoinStep";
