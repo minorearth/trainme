@@ -45,11 +45,11 @@ class champ {
     this.range = range;
   };
 
-  setCapturingChampstart = (started: any) => {
+  setCapturingChampstart = (started: boolean) => {
     this.capturingChampstart = started;
   };
 
-  setChampStarted = (started: any) => {
+  setChampStarted = (started: boolean) => {
     this.champstarted = started;
   };
 

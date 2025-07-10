@@ -3,13 +3,15 @@ import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepButton from "@mui/material/StepButton";
+import { observer } from "mobx-react-lite";
+import champ from "@/components/champ/layers/store/champ";
 
 const steps = ["", "", ""];
 
-export default function StepByStep({ activeStep, setActiveStep }) {
+const StepByStep = observer(() => {
   return (
     <Box sx={{ width: "100%", marginBottom: "50px" }}>
-      <Stepper nonLinear activeStep={activeStep}>
+      <Stepper nonLinear activeStep={champ.activeStep}>
         {steps.map((label, index) => (
           <Step key={label}>
             <StepButton color="inherit">{label}</StepButton>
@@ -18,4 +20,6 @@ export default function StepByStep({ activeStep, setActiveStep }) {
       </Stepper>
     </Box>
   );
-}
+});
+
+export default StepByStep;
