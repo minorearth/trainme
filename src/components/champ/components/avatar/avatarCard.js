@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, IconButton } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { avatars } from "./allavatars";
+import { avatars } from "./avatarsAll";
 import user from "@/userlayers/store/user";
 import { observer } from "mobx-react-lite";
 
