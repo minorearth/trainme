@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { Button } from "@mui/material";
 
 //components
-import AvatarSelector from "@/components/champ/components/Avatar/CardAvatar.js";
+import AvatarSelector from "@/components/champ/components/avatar/AvaCrd";
 import CustomField from "@/components/common/customfield/customField";
 
 //stores
