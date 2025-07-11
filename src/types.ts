@@ -65,21 +65,21 @@ export interface UserProgress {
 
 export interface TasksetState {
   tasksetmode: TasksetMode;
-  recapTasksIds?: number[];
+  recapTasksIds: number[];
   taskstage: TaskStage;
   pts?: number;
   tasklog?: any;
   randomsaved?: string[];
-  fixed?: number;
+  fixed: number;
   success?: boolean;
 }
 
 export interface ChapterState {
-  completed?: boolean;
-  overflow?: boolean;
+  completed: boolean;
+  overflow: boolean;
   chapterid: string;
   tobeunlocked: string[];
-  remainsum?: number;
+  remainsum: number;
   level: number;
 }
 
@@ -155,3 +155,13 @@ export interface Champuser {
   uid: string;
   persstatus: string;
 }
+
+export type FieldType =
+  | "firstname"
+  | "secondname"
+  | "champid"
+  | "tasknum"
+  | "nickname"
+  | "email"
+  | "password"
+  | "name";

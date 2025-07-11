@@ -1,11 +1,25 @@
 import Dialog from "@mui/material/Dialog";
+import { Breakpoint } from "@mui/system";
 
 import { observer } from "mobx-react-lite";
 
 import { useTheme } from "@mui/material/styles";
 
+interface DialogWrapper {
+  children: any;
+  maxWidth?: Breakpoint;
+  fullWidth?: boolean;
+  onClose: () => void;
+  open: boolean;
+}
 const DialogWrapper = observer(
-  ({ children, maxWidth = "sm", fullWidth = false, onClose, open }) => {
+  ({
+    children,
+    maxWidth = "sm" as Breakpoint,
+    fullWidth = false,
+    onClose,
+    open,
+  }: DialogWrapper) => {
     const theme = useTheme();
 
     return (

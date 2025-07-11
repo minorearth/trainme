@@ -16,20 +16,39 @@ import {
 //stores
 import user from "@/userlayers/store/user";
 
-export const signUp = async (email, password, name) => {
+import { NextRouter } from "next/router";
+import { User } from "firebase/auth";
+
+export const signUp = async ({
+  email,
+  password,
+  name,
+}: {
+  email: string;
+  password: string;
+  name: string;
+}) => {
   try {
     const user = await createUser(email, password);
     const userid = user.uid;
     createNewUserMeta(userid, name);
     return userid;
   } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
+    // const errorCode = error.code;
+    // const errorMessage = error.message;
   }
 };
 
-export const signIn = async (email, password, router) => {
-  const uid = await getUidAuth(email, password);
+export const signIn = async ({
+  email,
+  password,
+  router,
+}: {
+  email: string;
+  password: string;
+  router: NextRouter;
+}) => {
+  const uid = await getUidAuth({ email, password });
 
   if (uid == "notVerified") {
     da.info.emailnotverified();
@@ -47,12 +66,16 @@ export const signIn = async (email, password, router) => {
   router.push(`/chapters`);
 };
 
-export const signOut = async (router) => {
+export const signOut = async (router: NextRouter) => {
   await signOutUserRep();
   router.push(`/login/`);
 };
 
-const actionOnAuthChanged = async (resolved, user, login) => {
+const actionOnAuthChanged = async (
+  resolved: (value: any) => void,
+  user: User,
+  login: (value: string) => Promise<void>
+) => {
   if (user) {
     if (user.emailVerified) {
       await login("teacher");
@@ -64,7 +87,13 @@ const actionOnAuthChanged = async (resolved, user, login) => {
   }
 };
 
-const getUidAuth = async (email, password) => {
+const getUidAuth = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
   const res = await signInUser(email, password);
   // const uid =
   //   res == "wrongpsw"

@@ -47,5 +47,5 @@ export const getAllTasksDataObj = async (courseid) => {
     "chapters",
     "alltasks"
   );
-  return allTasksArrToObj(allTasks);
+  return allTasksArrToObj(allTasks.data.tasks);
 };

@@ -24,6 +24,7 @@ import {
 
 //constants
 import { initials } from "@/components/Navigator/layers/store/initialStates";
+import { TASKSET_DEFAULTS } from "@/typesdefaults";
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
@@ -106,7 +107,7 @@ export const openLessonStartPage = async ({
   taskset.setTasks(tasks, 0);
 
   taskset.setStateP({
-    ...initials[tasksetmode].taskset,
+    ...TASKSET_DEFAULTS,
     tasksetmode,
     taskstage,
     //not [] for "exam" only

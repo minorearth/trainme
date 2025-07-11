@@ -13,39 +13,39 @@ import { resetPsw } from "@/userlayers/repository/repositoryAuth";
 import authForm from "@/components/authsteps/layers/store/store";
 import splash from "@/components/common/splash/store";
 import txtField from "@/components/common/customfield/store";
+import { AppRouterInstance } from "next/navigation";
 
-export const signInSubmit = async (event, router) => {
-  event.preventDefault();
+export const signInSubmit = async (router: AppRouterInstance) => {
+  // event.preventDefault();
   if (txtField.validate(["email", "password"])) {
     splash.setShowProgress();
     cleanUpCSP();
-    await signIn(
-      txtField.state.email.value,
-      txtField.state.password.value,
-      router
-    );
+    await signIn({
+      email: txtField.state.email.value,
+      password: txtField.state.password.value,
+      router,
+    });
     splash.closeProgress();
     // router.replace("/chapters"); // заменяет текущую страницу
   } else {
   }
 };
 
-export const recoverPswSubmit = (event) => {
-  event.preventDefault();
+export const recoverPswSubmit = () => {
   if (txtField.validate(["email"])) {
     resetPsw(txtField.state.email.value);
     da.info.resetpsw(() => authForm.showSignIn());
   }
 };
 
-export const signUpSubmit = async (event) => {
+export const signUpSubmit = async (event: Event) => {
   event.preventDefault();
   if (txtField.validate(["email", "password", "name"])) {
-    await signUp(
-      txtField.state.email.value,
-      txtField.state.password.value,
-      txtField.state.name.value
-    );
+    await signUp({
+      email: txtField.state.email.value,
+      password: txtField.state.password.value,
+      name: txtField.state.name.value,
+    });
     da.info.accountcreeated(() => authForm.showSignIn());
   }
 };

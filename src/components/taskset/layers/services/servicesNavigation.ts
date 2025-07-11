@@ -79,10 +79,8 @@ export const nextTaskOrCompleteTestRun = async ({
             )
           : ok(() =>
               setRecapTasks({
-                tasksetState: {
-                  state: taskset.state,
-                  allTasks: taskset.tasks,
-                },
+                recapTasksIds: taskset.state.recapTasksIds,
+                tasks: taskset.tasks,
               })
             );
       }
@@ -148,7 +146,8 @@ export const errorCountDownPressed = async () => {
           success: false,
         })
       : setRecapTasks({
-          tasksetState: { state: taskset.state, allTasks: taskset.tasks },
+          recapTasksIds: taskset.state.recapTasksIds,
+          tasks: taskset.tasks,
         });
 
     return;

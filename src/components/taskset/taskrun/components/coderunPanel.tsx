@@ -80,7 +80,7 @@ const CodeRunPanel = observer(() => {
       {stn.mode.DEV_MODE && (
         <Button
           onClick={() => {
-            task.setRightCode_admin(task.currTaskId);
+            task.setRightCode_admin();
           }}
           variant="outlined"
         >
@@ -90,7 +90,7 @@ const CodeRunPanel = observer(() => {
       {stn.mode.DEV_MODE && (
         <Button
           onClick={() => {
-            task.setForbiddenCode_admin(task.currTaskId);
+            task.setForbiddenCode_admin();
           }}
           variant="outlined"
         >

@@ -5,17 +5,23 @@ import { initials } from "@/components/Navigator/layers/store/initialStates";
 import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
 
 //types
-import { RawTask, TasksetMode, TasksetState, TasksetStateChamp } from "@/types";
+import {
+  RawTask,
+  TasksetMode,
+  TasksetState,
+  TasksetStateChamp,
+  Task,
+} from "@/types";
 
 interface GetTasksRecapParams {
   recapTasksIds: number[];
-  tasks: RawTask[];
+  tasks: RawTask[] | Task[];
 }
 
 export const getTasksRecap = ({
   recapTasksIds,
   tasks,
-}: GetTasksRecapParams): RawTask[] => {
+}: GetTasksRecapParams): RawTask[] | Task[] => {
   const filteredTasks = tasks.filter((_: any, id: number) =>
     recapTasksIds.includes(id)
   );

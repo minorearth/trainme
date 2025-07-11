@@ -1,3 +1,5 @@
+import { TasksetMode, TaskStage } from "./types";
+
 export const TASK_DEFAULTS = {
   id: -1,
   defaultcode: "",
@@ -29,7 +31,25 @@ export const TASK_DEFAULTS = {
   filedata: "",
 };
 
-export const CHAPTER_DEFAULTS = { chapterid: "", level: -1, tobeunlocked: [] };
+export const CHAPTER_DEFAULTS = {
+  chapterid: "",
+  level: -1,
+  tobeunlocked: [],
+  remainsum: -1,
+  completed: false,
+  overflow: false,
+};
+
+export const TASKSET_DEFAULTS = {
+  tasksetmode: "newtopic" as TasksetMode,
+  recapTasksIds: [],
+  taskstage: "WIP" as TaskStage,
+  pts: 0,
+  tasklog: [],
+  randomsaved: [],
+  fixed: 0,
+  success: true,
+};
 
 export const USERPROGRESS_DEFAULTS = {
   completed: [],

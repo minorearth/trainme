@@ -19,6 +19,7 @@ import {
   TasksetStateChapter,
   TaskStage,
 } from "@/types";
+import { TASKSET_DEFAULTS } from "@/typesdefaults";
 
 interface ITask {
   /**
@@ -43,7 +44,7 @@ class taskset {
     prevTaskNoPts_admin,
     errorCountDownPressed,
   };
-  state: TasksetState = DEFAULT_STATE;
+  state: TasksetState = TASKSET_DEFAULTS;
 
   startPageIntro() {
     const { tasksetmode } = this.state;
@@ -75,7 +76,7 @@ class taskset {
   }
 
   eraseStateP() {
-    this.state = DEFAULT_STATE;
+    this.state = TASKSET_DEFAULTS;
     this.tasks = [];
     updateSCP({
       taskset: {},

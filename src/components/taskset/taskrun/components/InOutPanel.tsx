@@ -10,7 +10,7 @@ import task from "@/components/taskset/taskrun/layers/store/task";
 import { observer } from "mobx-react-lite";
 
 const InOutPanel = observer(() => {
-  const handleChange = (e) => {
+  const handleChange = (e: Event) => {
     task.setInput(e.target.value);
   };
 
@@ -44,7 +44,7 @@ const InOutPanel = observer(() => {
             id="standard-multiline-flexible"
             multiline
             fullWidth
-            height="100%"
+            // height="100%"
             disableUnderline
             rows={7}
             onChange={(e) => handleChange(e)}

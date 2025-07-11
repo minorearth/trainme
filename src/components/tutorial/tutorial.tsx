@@ -27,9 +27,7 @@ const Tutorial = observer(() => {
           width: "100%",
           backgroundColor: "inherit",
           padding: "20px",
-          //   width: "fit-content",
-          display: "inline-block",
-          // whiteSpace: "pre-line",
+          // display: "inline-block",
           overflow: "scroll",
         }}
         onClick={() => tutorial.hide()}

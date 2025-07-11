@@ -10,7 +10,7 @@ import {
 } from "@/components/common/customfield/validators";
 import local from "@/globals/local";
 
-export const textFieldProps = {
+export const textFieldProps: { [key: string]: any } = {
   firstname: {
     auto: null,
     label: local.ru.caption.AUTH_ENTER_FIRSTNAME,

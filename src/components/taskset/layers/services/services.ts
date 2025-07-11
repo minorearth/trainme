@@ -176,7 +176,11 @@ export const saveProgress = async ({ success }: saveProgress) => {
   //TODO: (not captured)После фейла запроса из-за отсутвия интернета кнопка сохранить не нажимается(later)
   let dataToEncrypt;
   const courseid = course.state.courseid;
-  const tasklogPrepared = taskLogToDBFormat(courseid, chapterid, tasklog);
+  const tasklogPrepared = taskLogToDBFormat({
+    courseid,
+    lastcompleted: chapterid,
+    tasklog,
+  });
   console.log("iii", stat[chapterid], chapterid, toJS(progress));
   dataToEncrypt = {
     [`courses.${courseid}.rating`]: rating + pts,

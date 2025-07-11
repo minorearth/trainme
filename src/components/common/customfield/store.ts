@@ -2,9 +2,14 @@ import { makeObservable, makeAutoObservable } from "mobx";
 import { textFieldProps } from "@/components/common/customfield/setup";
 
 const DEFAULT = { error: true, value: "", helperText: "" };
-
+import { FieldType } from "@/types";
+interface Fieldstate {
+  error: boolean;
+  value: string;
+  helperText: string;
+}
 class txtField {
-  state = {
+  state: { [key: string]: Fieldstate } = {
     email: DEFAULT,
     name: DEFAULT,
     password: DEFAULT,
@@ -15,15 +20,11 @@ class txtField {
     secondname: DEFAULT,
   };
 
-  setState(type, value) {
-    this.state[type] = { ...this.state[type], ...value };
-  }
-
   resetState() {
     Object.keys(this.state).forEach((field) => (this.state[field] = DEFAULT));
   }
 
-  handleChange2(value, type) {
+  handleChange2(value: string, type: FieldType) {
     if (textFieldProps[type].instantValidation) {
       const error = textFieldProps[type].validator(value);
       const helperText = error ? textFieldProps[type].helperText : "";
@@ -31,8 +32,8 @@ class txtField {
     } else this.state[type] = { ...this.state[type], value };
   }
 
-  validate(types) {
-    const res = types.map((type) => {
+  validate(types: FieldType[]) {
+    const res = types.map((type: FieldType) => {
       const error = textFieldProps[type].validator(this.state[type].value);
       const helperText = error ? textFieldProps[type].helperText : "";
       this.state[type] = { ...this.state[type], error, helperText };

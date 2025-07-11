@@ -1,6 +1,7 @@
 import alertdialog from "@/components/common/dialog/store";
 import splash from "@/components/common/splash/store";
 import local from "@/globals/local";
+import { TasksetMode } from "@/types";
 
 export const da = {
   info: {
@@ -22,14 +23,14 @@ export const da = {
           splash.closeProgress();
         }
       ),
-    accountcreeated: (action) =>
+    accountcreeated: (action: () => void) =>
       alertdialog.showDialog(
         local.ru.msg.alert.PSW_ACOUNT_CREATED_TITLE,
         local.ru.msg.alert.PSW_ACOUNT_CREATED_TEXT,
         1,
         () => action()
       ),
-    resetpsw: (action) =>
+    resetpsw: (action: () => void) =>
       alertdialog.showDialog(
         local.ru.msg.alert.PSW_RECOVERY_TITLE,
         local.ru.msg.alert.PSW_RECOVERY_TEXT,
@@ -43,7 +44,7 @@ export const da = {
         1,
         () => {}
       ),
-    buy: (action) =>
+    buy: (action: () => void) =>
       alertdialog.showDialog(
         "Не  оплачен",
         "Данный раздел не оплачен. Купить?",
@@ -84,7 +85,7 @@ export const da = {
           splash.closeProgress();
         }
       ),
-    networkerror: (e) =>
+    networkerror: (e: any) =>
       alertdialog.showDialog(
         "Сохранение данных",
         ' "Что-то пошло не так, повторите попытку...',
@@ -94,8 +95,16 @@ export const da = {
           splash.closeProgress();
         }
       ),
-    tasksetinterrupt: ({ action, completed, tasksetmode }) => {
-      const { caption, text } = getTaskSetInterruptedInfo(
+    tasksetinterrupt: ({
+      action,
+      completed,
+      tasksetmode,
+    }: {
+      action: () => void;
+      completed: boolean;
+      tasksetmode: TasksetMode;
+    }) => {
+      const { caption = "", text = "" } = getTaskSetInterruptedInfo(
         completed,
         tasksetmode
       );
@@ -107,14 +116,14 @@ export const da = {
         () => {}
       );
     },
-    rightcode: (action, errorMsg) =>
+    rightcode: (action: () => void, errorMsg: string) =>
       alertdialog.showDialog(
         local.ru.msg.alert.PSW_TEST_ERROR,
         errorMsg,
         1,
         () => action()
       ),
-    notenoughttasks: (count) =>
+    notenoughttasks: (count: number) =>
       alertdialog.showDialog(
         "Ошибка",
         `По выбранной сложности недостаточно задач. Доступное количество задач: ${count}. Измените уровень сложности.`,
@@ -135,7 +144,7 @@ export const da = {
         1,
         () => {}
       ),
-    nochamp: (e) => {
+    nochamp: (e: any) => {
       console.log(e);
       alertdialog.showDialog(
         "Нет такого чемпионата",
@@ -156,7 +165,10 @@ export const da = {
   ok: {},
 };
 
-const getTaskSetInterruptedInfo = (completed, tasksetmode) => {
+const getTaskSetInterruptedInfo = (
+  completed: boolean,
+  tasksetmode: TasksetMode
+) => {
   let caption, text;
   if (
     tasksetmode == "exam" ||
@@ -188,7 +200,15 @@ const getTaskSetInterruptedInfo = (completed, tasksetmode) => {
   return { caption, text };
 };
 
-export const getStarPageIntro = ({ tasksetmode, completed, overflow }) => {
+export const getStarPageIntro = ({
+  tasksetmode,
+  completed,
+  overflow,
+}: {
+  tasksetmode: TasksetMode;
+  completed: boolean;
+  overflow: boolean;
+}) => {
   if (tasksetmode == "textbook") {
     return "Приветствуем вас в учебнике 📘 ! В учебнике доступна теория только по открытым темам";
   }

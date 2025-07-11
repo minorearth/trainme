@@ -24,7 +24,7 @@ const PswReset = observer(() => {
     <Box
       component="form"
       noValidate
-      onSubmit={(event) => recoverPswSubmit(event)}
+      onSubmit={() => recoverPswSubmit()}
       sx={{
         display: "flex",
         flexDirection: "column",

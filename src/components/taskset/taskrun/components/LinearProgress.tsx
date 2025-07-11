@@ -5,7 +5,13 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { observer } from "mobx-react-lite";
 
-const LinearProgressWithLabel = ({ value, label }) => {
+const LinearProgressWithLabel = ({
+  value,
+  label,
+}: {
+  value: number;
+  label: string;
+}) => {
   return (
     <Box sx={{ width: "100%", padding: "10px" }}>
       <Box sx={{ display: "flex", alignItems: "center" }}>

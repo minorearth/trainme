@@ -25,7 +25,8 @@ import navigator from "@/components/Navigator/layers/store/navigator";
 import champ from "@/components/champ/layers/store/champ";
 import txtField from "@/components/common/customfield/store";
 import splash from "@/components/common/splash/store";
-import { CHAPTER_DEFAULTS } from "@/typesdefaults";
+import { CHAPTER_DEFAULTS, TASKSET_DEFAULTS } from "@/typesdefaults";
+import { TasksetMode } from "@/types";
 
 export const createChamp = async () => {
   const tasks = await getRandomTasksForChamp({
@@ -96,7 +97,7 @@ const captureAndlaunchChamp = (champdoc: any) => {
 const launchChamp = () => {
   navigator.actions.openLessonStartPage({
     champData: { champid: champ.champid },
-    tasksetData: { tasksetmode: "champ", taskstage: "WIP", randomsaved: [] },
+    tasksetData: { ...TASKSET_DEFAULTS, tasksetmode: "champ" as TasksetMode },
     courseData: {},
     chapterData: CHAPTER_DEFAULTS,
   });
