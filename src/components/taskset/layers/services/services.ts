@@ -160,7 +160,7 @@ export const getExamTasks = async ({
       num: 5,
     });
     const tasksFetched = await supplyFilesAndTransform(randomTasks.tasks);
-    const tasksuuids = tasksFetched.tasks.map((task: RawTask) => task.taskuuid);
+    const tasksuuids = tasksFetched.map((task: RawTask) => task.taskuuid);
     return { tasksuuids, tasksFetched };
   }
 };

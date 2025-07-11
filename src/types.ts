@@ -7,10 +7,7 @@ export interface RawTask {
     forbiddenRe: string[];
     forbidden: string[];
   };
-  inout: {
-    inv: string[];
-    outv: string[];
-  }[];
+  inout: RawInOut[];
   chapterid: string;
   task: string;
   taskuuid: string;
@@ -24,16 +21,20 @@ export interface RawTask {
   level: number;
 }
 
-type WithoutId = Omit<RawTask, "inout">;
+export interface RawInOut {
+  inv: string[];
+  outv: string[];
+}
 
-export type Task = WithoutId & {
-  inout: {
-    filesdata: string[];
-    inv: string[];
-    outv: string[];
-  }[];
-  tasktext: string;
+export type InOut = RawInOut & { filesdata: string[] };
+
+export type TaskWithFiles = Omit<RawTask, "inout"> & {
+  inout: InOut[];
   filedata: string;
+};
+
+export type Task = TaskWithFiles & {
+  tasktext: string;
 };
 
 export type TaskStage =

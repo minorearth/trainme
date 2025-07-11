@@ -21,7 +21,7 @@ const JoinStep = observer(() => {
     >
       <CustomField
         type={"champid"}
-        stateChanger={(value) => champ.setChampIdP(value)}
+        onChangeAction={(value) => champ.setChampIdP(value)}
       />
 
       <Button

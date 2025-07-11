@@ -28,15 +28,8 @@ const PswHideShow = ({ hidePsw, showPsw }) => {
   );
 };
 
-const CustomField = observer(({ type, sx, stateChanger = () => {} }) => {
-  // const [value, setValue] = useState("");
+const CustomField = observer(({ type, sx, onChangeAction = () => {} }) => {
   const [showPsw, hidePsw] = useState(type == "password");
-
-  // const handleChange = (e) => {
-  //   setValue(e.target.value);
-  //   authForm.setState(type, { value: e.target.value });
-  // };
-
   return (
     <Box
       sx={{
@@ -82,7 +75,7 @@ const CustomField = observer(({ type, sx, stateChanger = () => {} }) => {
         type={showPsw ? "password" : null}
         onChange={(e) => {
           txtField.handleChange2(e.target.value, type);
-          stateChanger(e.target.value);
+          onChangeAction(e.target.value);
         }}
         error={txtField.state[type].error}
         helperText={txtField.state[type].helperText}
