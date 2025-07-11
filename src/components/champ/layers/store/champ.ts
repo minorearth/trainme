@@ -7,6 +7,9 @@ import {
   captureUsersJoined,
 } from "@/components/champ/layers/services/services";
 
+import { Champuser } from "@/types";
+import { CHAMPUSER_DEFAULTS } from "@/typesdefaults";
+
 class champ {
   actions: any = {
     createChamp,
@@ -16,10 +19,10 @@ class champ {
   };
   champid = "";
   state = {};
-  range = [1, 30];
+  range: number[] = [1, 30];
   capturingChampstart = false;
   champstarted = false;
-  users = [];
+  users: Champuser[] = [];
   subscribedChampid = "";
   activeStep = 0;
   createMode = false;
@@ -41,7 +44,7 @@ class champ {
     });
   }
 
-  setRange = (range: any) => {
+  setRange = (range: number[]) => {
     this.range = range;
   };
 
@@ -53,7 +56,7 @@ class champ {
     this.champstarted = started;
   };
 
-  setUsers = (users: any) => {
+  setUsers = (users: Champuser[]) => {
     this.users = users;
   };
 

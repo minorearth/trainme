@@ -6,19 +6,16 @@ import { observer } from "mobx-react-lite";
 //stores
 import champ from "@/components/champ/layers/store/champ";
 
-function valuetext(value) {
-  return `${value}°C`;
-}
-
 const RangeSlider = observer(() => {
   return (
     <Box sx={{ width: "100%", paddingLeft: "25px", paddingRight: "25px" }}>
       <Slider
         getAriaLabel={() => "Temperature range"}
         value={champ.range}
-        onChange={(e) => champ.setRange(e.target.value)}
+        onChange={(e: Event, newValue: number[] | number) =>
+          champ.setRange(newValue as number[])
+        }
         valueLabelDisplay="auto"
-        // getAriaValueText={valuetext}
         min={1}
         max={30}
       />

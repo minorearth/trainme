@@ -50,7 +50,7 @@ export const getRandomTasks = ({
     (task) => task.level <= levelEnd && task.level >= levelStart
   );
   if (scope.length < num) {
-    return { status: "error", count: scope.length, data: [] };
+    return { status: "error", count: scope.length, tasks: [] };
   }
   const numbers = getNeverRepeatIntegers(scope.length - 1, num);
   const filteredTasks = scope.filter((task, id) => numbers.includes(id));

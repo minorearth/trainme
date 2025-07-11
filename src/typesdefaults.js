@@ -38,3 +38,10 @@ export const USERPROGRESS_DEFAULTS = {
   stat: {},
   paid: [],
 };
+
+export const CHAMPUSER_DEFAULTS = {
+  name: "",
+  pts: 0,
+  change: 0,
+  avatarid: -1,
+};

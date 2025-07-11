@@ -145,3 +145,12 @@ export interface Edge {
   target: string;
   source: string;
 }
+
+export interface Champuser {
+  name: string;
+  pts: number;
+  change: number;
+  avatarid: number;
+  uid: string;
+  persstatus: string;
+}

@@ -58,8 +58,8 @@ export const joinChamp = async () => {
       }
       await updateUserInChamp({
         userid: user.userid,
-        data: {
-          id: user.userid,
+        champuserdata: {
+          uid: user.userid,
           name: txtField.state.nickname.value,
           change: 0,
           pts: 0,
@@ -102,8 +102,8 @@ const launchChamp = () => {
   });
   updateUserInChamp({
     userid: user.userid,
-    data: {
-      id: user.userid,
+    champuserdata: {
+      uid: user.userid,
       name: txtField.state.nickname.value,
       change: 0,
       pts: 0,

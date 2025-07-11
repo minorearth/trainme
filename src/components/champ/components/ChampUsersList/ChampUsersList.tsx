@@ -9,23 +9,27 @@ import UserCard from "@/components/champ/components/CardUser.js";
 
 //stores
 import champ from "@/components/champ/layers/store/champ";
+import { Champuser } from "@/types";
 
-const ListItem = ({ key, name, pts, change, avatarid }) => (
-  <motion.div
-    layout
-    key={key}
-    transition={{ type: "spring", stiffness: 100, damping: 50, duration: 5 }}
-    style={{
-      margin: "10px",
-      padding: "10px",
-      // background: "#f0f0f0",
-      border: "1px solid #ccc",
-      borderRadius: "5px",
-    }}
-  >
-    <UserCard name={name} pts={pts} change={change} avatarid={avatarid} />
-  </motion.div>
-);
+const ListItem = ({ user }: { user: Champuser }) => {
+  const { uid } = user;
+  return (
+    <motion.div
+      layout
+      key={`${uid}motion`}
+      transition={{ type: "spring", stiffness: 100, damping: 50, duration: 5 }}
+      style={{
+        margin: "10px",
+        padding: "10px",
+        // background: "#f0f0f0",
+        border: "1px solid #ccc",
+        borderRadius: "5px",
+      }}
+    >
+      <UserCard user={user} />
+    </motion.div>
+  );
+};
 
 const SortableList = observer(() => {
   if (!champ.users.length)
@@ -55,14 +59,8 @@ const SortableList = observer(() => {
       }}
     >
       <AnimatePresence>
-        {champ.users.map((item, id) => (
-          <ListItem
-            key={item.id}
-            name={item.name}
-            pts={item.pts}
-            change={item.change}
-            avatarid={item.avatarid}
-          />
+        {champ.users.map((user) => (
+          <ListItem key={user.uid} user={user} />
         ))}
       </AnimatePresence>
     </Box>

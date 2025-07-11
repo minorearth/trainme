@@ -8,8 +8,10 @@ import { GoDash } from "react-icons/go";
 
 //components
 import { avatars } from "@/components/champ/components/avatar/avatarsAll.js";
+import { Champuser } from "@/types";
 
-const UserCard = ({ name, pts, change, avatarid }) => {
+const UserCard = ({ user }: { user: Champuser }) => {
+  const { name, pts, change, avatarid } = user;
   return (
     <Box
       sx={{
