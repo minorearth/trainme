@@ -1,15 +1,18 @@
-export const groupsObjectToArr = (data) => {
+import { Group, GroupObj } from "@/types";
+
+export const groupsObjectToArr = (data: GroupObj) => {
   const arr = Object.keys(data)
-    .map((id) => ({
-      id,
-      label: data[id].label,
-      isFolder: data[id].isFolder,
-      children: Object.keys(data[id].children)
-        .map((id2) => ({
-          id: id2,
-          label: data[id].children[id2].label,
-          isFolder: data[id].children[id2].isFolder,
-          uid: data[id].children[id2].uid,
+    .map((groupkey) => ({
+      id: groupkey,
+      label: data[groupkey].label,
+      isFolder: data[groupkey].isFolder,
+      children: Object.keys(data[groupkey].children)
+        .map((userkey) => ({
+          id: userkey,
+          label: data[groupkey].children[userkey].label,
+          isFolder: data[groupkey].children[userkey].isFolder,
+          uid: data[groupkey].children[userkey].uid,
+          children: [],
         }))
         .sort((a, b) =>
           a.label.toLowerCase().localeCompare(b.label.toLowerCase())
@@ -19,7 +22,7 @@ export const groupsObjectToArr = (data) => {
   return arr;
 };
 
-export const groupsArrToObject = (data) => {
+export const groupsArrToObject = (data: Group[]) => {
   const obj = data.reduce(
     (acc, item) => ({
       ...acc,

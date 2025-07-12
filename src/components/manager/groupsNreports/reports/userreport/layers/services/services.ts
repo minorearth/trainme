@@ -3,17 +3,17 @@ import stat from "@/components/manager/groupsNreports/store/stat";
 import { getUserMetaDataCA } from "@/userlayers/repository/repositoryUserMeta";
 import { toJS } from "mobx";
 
-export const showUserReport = async (uid) => {
+export const showUserReport = async (uid: string) => {
   const userMeta = await getUserMetaDataCA(uid);
   const treeRepresent = getReportTree(
     userMeta.courses,
     stat.chaptersobj,
-    stat.allCoursesTasks
+    stat.allCoursesTasksObj
   );
   stat.setCode("");
-  stat.setStat(treeRepresent);
+  stat.setUserStat(treeRepresent);
 };
 
-export const showCode = async (code) => {
+export const showCode = async (code: string) => {
   stat.setCode(code);
 };

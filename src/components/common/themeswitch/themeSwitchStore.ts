@@ -7,7 +7,7 @@ class themeSwitch {
     makeAutoObservable(this);
   }
 
-  setDarkMode(darkmode) {
+  setDarkMode(darkmode: boolean) {
     this.darkmode = darkmode;
   }
 }

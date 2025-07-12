@@ -14,12 +14,12 @@ import progressCircle from "@/components/common/splash/store";
 
 //service helpers
 import { enrichFlowWithUserProgress } from "@/components/course/layers/services/servicesHelpers";
-import { UserProgress } from "@/types";
+import { CourseProgress } from "@/types";
 
 interface getFlow {
   courseid: string;
   refetchFlow: boolean;
-  progress: UserProgress;
+  progress: CourseProgress;
 }
 
 export const getFlow = async ({ courseid, refetchFlow, progress }: getFlow) => {

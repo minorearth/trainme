@@ -4,7 +4,7 @@
 import React from "react";
 import IconButton from "@mui/material/IconButton";
 
-const IconButtonNoRipple = ({ children }) => {
+const IconButtonNoRipple = ({ children }: { children: any }) => {
   return (
     <IconButton
       disableRipple

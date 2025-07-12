@@ -6,9 +6,8 @@ import Button from "@mui/material/Button";
 const sec = 20 * 1000;
 const speed = 100;
 
-const CountdownButton = (props) => {
+const CountdownButton = ({ onClick }) => {
   const [isRunning, setIsRunning] = useState(true);
-  const { onClick } = props;
 
   const [value, setValue] = useState(sec);
   const valueRef = useRef({});

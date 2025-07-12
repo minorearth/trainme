@@ -48,4 +48,4 @@ export const courses = {
     free: false,
     coursesAction: () => navigator.actions.openChampPage(),
   },
-};
+} as { [key: string]: { [key: string]: any } };

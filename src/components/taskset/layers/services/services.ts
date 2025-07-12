@@ -33,9 +33,10 @@ import {
   RawTask,
   Task,
   TaskStage,
-  UserProgress,
+  CourseProgress,
   TasksetMode,
   TasksetStateChapter,
+  UserMeta,
 } from "@/types";
 
 import { TasksetState, ChapterState, ChampState, CourseState } from "@/types";
@@ -50,7 +51,7 @@ interface getTasksParams {
   chapterData: ChapterState;
   champData: ChampState;
   courseData: CourseState;
-  userProgress: UserProgress;
+  userProgress: CourseProgress;
 }
 
 export const getTasks = async ({
@@ -169,28 +170,27 @@ interface saveProgress {
   success: boolean;
 }
 export const saveProgress = async ({ success }: saveProgress) => {
-  const { pts, tasklog } = taskset.state;
+  const { pts = 0, tasklog } = taskset.state;
   const { chapterid, tobeunlocked, completed } = chapter.chapter;
-  const progress = user.progress as UserProgress;
+  const progress = user.progress as CourseProgress;
   const { unlocked, rating, stat, completed: completedChapters } = progress;
   //TODO: (not captured)После фейла запроса из-за отсутвия интернета кнопка сохранить не нажимается(later)
-  let dataToEncrypt;
+  let userData: UserMeta;
   const courseid = course.state.courseid;
   const tasklogPrepared = taskLogToDBFormat({
     courseid,
     lastcompleted: chapterid,
     tasklog,
   });
-  console.log("iii", stat[chapterid], chapterid, toJS(progress));
-  dataToEncrypt = {
+  userData = {
     [`courses.${courseid}.rating`]: rating + pts,
     [`courses.${courseid}.stat.${chapterid}.sum`]:
       (stat[chapterid]?.sum ?? 0) + pts,
     ...tasklogPrepared,
   };
   if (!completed && success) {
-    dataToEncrypt = {
-      ...dataToEncrypt,
+    userData = {
+      ...userData,
       [`courses.${courseid}.completed`]: [...completedChapters, chapterid],
       //all unlocked chapters(more than completed by lastunlocked)
       [`courses.${courseid}.unlocked`]: [...unlocked, ...tobeunlocked],
@@ -200,7 +200,7 @@ export const saveProgress = async ({ success }: saveProgress) => {
   }
 
   try {
-    await saveUserMeta({ data: dataToEncrypt, id: user.userid });
+    await saveUserMeta({ data: userData, id: user.userid });
   } catch (e) {
     throw new Error("Server error");
   }

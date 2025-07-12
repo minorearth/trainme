@@ -40,7 +40,7 @@ import chapter from "@/components/taskset/layers/store/chapter";
 
 import {
   TasksetState,
-  UserProgress,
+  CourseProgress,
   ChapterState,
   ChampState,
   CourseState,
@@ -101,7 +101,7 @@ export const openLessonStartPage = async ({
     courseData,
     chapterData,
     tasksetData,
-    userProgress: user.progress as UserProgress,
+    userProgress: user.progress as CourseProgress,
   });
 
   taskset.setTasks(tasks, 0);

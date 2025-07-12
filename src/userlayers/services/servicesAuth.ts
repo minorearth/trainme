@@ -31,7 +31,7 @@ export const signUp = async ({
   try {
     const user = await createUser(email, password);
     const userid = user.uid;
-    createNewUserMeta(userid, name);
+    createNewUserMeta({ userId: userid, name });
     return userid;
   } catch (error) {
     // const errorCode = error.code;

@@ -55,7 +55,7 @@ export const getGroupUsersObj = (itemId) => {
   const users = group.children.reduce(
     (acc, item) => ({
       ...acc,
-      [item.uid]: { name: item.label, uid: item.uid },
+      [item.uid]: { label: item.label, uid: item.uid },
     }),
     {}
   );

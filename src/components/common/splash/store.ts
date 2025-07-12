@@ -32,6 +32,7 @@ class splash {
     }, delay);
 
     this.state = {
+      ...this.state,
       animationtype: "css",
       showProgress: true,
       background,

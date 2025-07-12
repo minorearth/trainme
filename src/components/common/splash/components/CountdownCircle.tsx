@@ -9,7 +9,7 @@ const sec = 5 * 1000;
 const speed = 5;
 const CountdownCircle = observer(() => {
   const [value, setValue] = useState(sec);
-  const valueRef = useRef({});
+  const valueRef = useRef(sec);
   useEffect(() => {
     if (!splash.state.showProgress) {
       return;

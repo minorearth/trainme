@@ -21,6 +21,8 @@ import {
 } from "@/components/manager/groupsNreports/reports/pivotreport/layers/services/services";
 
 import user from "@/userlayers/store/user";
+import { GroupObj, Group } from "@/types";
+import { CourseChapterObjReport } from "@/components/manager/types";
 
 class stat {
   actions = {
@@ -34,27 +36,28 @@ class stat {
     showReport,
   };
   userstat = [];
-  chaptersobj = {};
-  groupsdata = [];
+  chaptersobj: CourseChapterObjReport = {};
+  groupsdata: Group[] = [];
   code = "";
   report = {};
   userstatvisible = false;
   reportvisible = false;
   snapshot = {};
-  groupSelected = -1;
-  allCoursesTasks = {};
+  groupSelectedId = "";
+  allCoursesTasksObj = {};
 
-  setStat(data) {
+  setUserStat(data) {
     this.userstat = data;
     this.reportvisible = false;
     this.userstatvisible = true;
   }
 
-  setGroupData(data) {
+  setGroupData(data: Group[]) {
     this.groupsdata = data;
   }
-  setAllCoursesTasks(data) {
-    this.allCoursesTasks = data;
+
+  setAllCoursesTasksObj(data) {
+    this.allCoursesTasksObj = data;
   }
 
   setSnapshot(data) {
@@ -62,7 +65,7 @@ class stat {
   }
 
   setGroupSelected(groupid) {
-    this.groupSelected = groupid;
+    this.groupSelectedId = groupid;
   }
 
   setReport(data) {
@@ -71,7 +74,7 @@ class stat {
     this.reportvisible = true;
   }
 
-  setChaptersObj(data) {
+  setChaptersObj(data: CourseChapterObjReport) {
     this.chaptersobj = data;
   }
 

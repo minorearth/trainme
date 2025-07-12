@@ -93,15 +93,15 @@ export const copyDoc = async (db, collection, oldindex, newindex) => {
 export const getMultipleDocs = async (db, collectionName, ids) => {
   const col = collection(db, collectionName);
   const q = query(col, where(documentId(), "in", ids));
-  return multipleDocsToObject(await getDocs(q));
+  return multipleDocsToArray(await getDocs(q));
 };
 
-const multipleDocsToObject = (docs) => {
+const multipleDocsToArray = (docs) => {
   let ret = [];
-  docs.forEach((item) => {
+  docs.forEach((doc) => {
     {
-      const data = item.data();
-      ret = [...ret, { id: item.id, ...data }];
+      const data = doc.data();
+      ret = [...ret, { id: doc.id, ...data }];
     }
   });
   return ret;

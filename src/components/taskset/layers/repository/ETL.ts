@@ -1,6 +1,6 @@
-import { RawTask } from "@/types";
+import { RawTask, RawTaskObj, UserMeta } from "@/types";
 
-export const allTasksArrToObj = (tasks: RawTask[]) => {
+export const allTasksArrToObj = (tasks: RawTask[]): RawTaskObj => {
   const alltasksObj = tasks.reduce(
     (acc, task) => ({
       ...acc,
@@ -22,10 +22,10 @@ export const taskLogToDBFormat = ({
   lastcompleted: string;
   tasklog: any;
 }) => {
-  let res: { [key: string]: string } = {};
+  let res: any = {};
   const dest = `courses.${courseid}.stat.${lastcompleted}.tasks`;
   Object.keys(tasklog).forEach(
     (taskuuid: string) => (res[`${dest}.${taskuuid}`] = tasklog[taskuuid])
   );
-  return res;
+  return res as UserMeta;
 };

@@ -1,4 +1,13 @@
-export const extractDataNeededFromStat = (usersMeta) => {
+import { UserCourses, UserMeta, CourseStat } from "@/types";
+import {
+  UsersMetaReport,
+  UserCoursesReport,
+  CourseStatReport,
+} from "@/components/manager/types";
+
+export const extractDataNeededFromStat = (
+  usersMeta: UserMeta[]
+): UsersMetaReport => {
   const res = usersMeta.reduce(
     (acc, user) => ({
       ...acc,
@@ -9,7 +18,7 @@ export const extractDataNeededFromStat = (usersMeta) => {
   return res;
 };
 
-const getCourseChapters = (courses) => {
+const getCourseChapters = (courses: UserCourses) => {
   const res = Object.keys(courses).reduce(
     (acc, courseid) => ({
       ...acc,
@@ -23,7 +32,7 @@ const getCourseChapters = (courses) => {
   return res;
 };
 
-const getChaptersData = (chapters) => {
+const getChaptersData = (chapters: CourseStat) => {
   return Object.keys(chapters).reduce(
     (acc, chapterid) => ({
       ...acc,

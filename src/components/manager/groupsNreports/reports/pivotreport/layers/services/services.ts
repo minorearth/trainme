@@ -15,33 +15,32 @@ import {
 import { getGroupUsersObj } from "@/components/manager/groupsNreports/groups/layers/services/servicesTree";
 
 //service Helpers
-import { prepareReport } from "@/components/manager/groupsNreports/reports/pivotreport/layers/services/serviceHelpers";
+import { makeReport } from "@/components/manager/groupsNreports/reports/pivotreport/layers/services/serviceHelpers";
 
 export const makeSnapshot = () => {
   saveSnapshot({
     userid: user.userid,
-    groupid: stat.groupSelected,
+    groupid: stat.groupSelectedId,
     userMetaObj: stat.snapshot,
   });
 };
 
-export const showReport = async (itemId) => {
-  const users = getGroupUsersObj(itemId);
-  const uids = Object.keys(users);
+export const showReport = async (groupId: string) => {
+  const groupUsersObj = getGroupUsersObj(groupId);
+  const uids = Object.keys(groupUsersObj);
   if (uids) {
     const usersMetaObj = await getUsersMetaObj(uids);
     stat.setSnapshot({ usersMetaObj });
 
     const snapShot = await getSnapShot({
-      groupid: itemId,
+      groupid: groupId,
       userid: user.userid,
     });
 
-    const report = prepareReport({
-      allCoursesChapters: stat.chaptersobj,
+    const report = makeReport({
+      allCoursesChaptersObj: stat.chaptersobj,
       usersMetaObj,
-      usernames: users,
-      groupid: itemId,
+      groupUsersObj,
       snapShot,
     });
     stat.setReport(report);

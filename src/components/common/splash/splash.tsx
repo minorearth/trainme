@@ -33,15 +33,13 @@ const Splash = observer(() => {
       ></Box>
       {splash.state.animationtype == "lottie" && (
         <AnimationLottie
-          width={"700px"}
-          height={"700px"}
+          style={{ width: "700px", height: "700px" }}
           name={splash.state.animation}
         />
       )}
       {splash.state.animationtype == "gotoplayLottie" && (
         <AnimationLottieGoToPlay
-          width={"700px"}
-          height={"700px"}
+          style={{ width: "700px", height: "700px" }}
           name={splash.state.animation}
           onCompleteAction={splash.state.onCompleteAction}
         />

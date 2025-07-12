@@ -4,28 +4,29 @@ import { getAllTasksDataObj } from "@/components/taskset/layers/repository/repos
 
 //repository(local)
 import {
-  getGroupsObj,
+  getGroupsArr,
   getChaptersObjdata,
 } from "@/components/manager/groupsNreports/groups/layers/repository/repository";
 
 //stores
 import stat from "@/components/manager/groupsNreports/store/stat";
 import user from "@/userlayers/store/user";
+import { RawTaskObj } from "@/types";
 
 export const getAllCoursesTasks = async () => {
   const readyCourses = getReadyCourses();
-  let allCoursesTasks = {};
+  let allCoursesTasksObj: { [key: string]: RawTaskObj } = {};
   await Promise.all(
     readyCourses.map(async (courseid) => {
-      allCoursesTasks[courseid] = await getAllTasksDataObj(courseid);
+      allCoursesTasksObj[courseid] = await getAllTasksDataObj(courseid);
     })
   );
-  stat.setAllCoursesTasks(allCoursesTasks);
+  stat.setAllCoursesTasksObj(allCoursesTasksObj);
 };
 
 export const getGroups = async () => {
-  const groupsObj = await getGroupsObj(user.userid);
-  stat.setGroupData(groupsObj);
+  const groupsArr = await getGroupsArr(user.userid);
+  stat.setGroupData(groupsArr);
 };
 
 export const getChaptersObj = async () => {

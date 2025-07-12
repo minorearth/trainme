@@ -28,7 +28,7 @@ const PivotReports = observer(() => {
             <IconButton
               size="small"
               onClick={() => {
-                stat.actions.showReport(stat.groupSelected);
+                stat.actions.showReport(stat.groupSelectedId);
               }}
               sx={{ color: "text.secondary" }}
             >

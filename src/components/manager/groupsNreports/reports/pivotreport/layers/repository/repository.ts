@@ -8,8 +8,18 @@ import {
 
 //ETL
 import { extractDataNeededFromStat } from "@/components/manager/groupsNreports/reports/pivotreport/layers/repository/ETL";
+import { UserMeta } from "@/types";
+import { UsersMetaReport } from "@/components/manager/types";
 
-export const saveSnapshot = ({ userid, groupid, userMetaObj }) => {
+export const saveSnapshot = ({
+  userid,
+  groupid,
+  userMetaObj,
+}: {
+  userid: string;
+  groupid: string;
+  userMetaObj: UsersMetaReport;
+}) => {
   setDocInSubCollectionClient(
     "snapshots",
     userid,
@@ -20,7 +30,13 @@ export const saveSnapshot = ({ userid, groupid, userMetaObj }) => {
   // setDocInCollectionClient("snapshots", userMetaObj, `${userid}_${groupid}`);
 };
 
-export const getSnapShot = async ({ groupid, userid }) => {
+export const getSnapShot = async ({
+  groupid,
+  userid,
+}: {
+  groupid: string;
+  userid: string;
+}) => {
   const snapshot = await getDocDataFromSubCollectionByIdClient(
     "snapshots",
     userid,
@@ -34,7 +50,9 @@ export const getSnapShot = async ({ groupid, userid }) => {
   return snapshot.data?.usersMetaObj ?? {};
 };
 
-export const getUsersMetaObj = async (uids) => {
-  const usersMeta = await getMultipleDocsClient("usermeta", uids);
+export const getUsersMetaObj = async (
+  uids: string[]
+): Promise<UsersMetaReport> => {
+  const usersMeta: UserMeta[] = await getMultipleDocsClient("usermeta", uids);
   return extractDataNeededFromStat(usersMeta);
 };

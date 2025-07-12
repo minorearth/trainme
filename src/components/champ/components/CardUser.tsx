@@ -66,7 +66,10 @@ const UserCard = ({ user }: { user: Champuser }) => {
         >
           <Typography variant="h6">{`${pts}`}</Typography>
 
-          <AnimationLottie height={"25px"} width={"25px"} name={"coins"} />
+          <AnimationLottie
+            style={{ height: "25px", width: "25px" }}
+            name={"coins"}
+          />
         </Box>
         <Box
           sx={{

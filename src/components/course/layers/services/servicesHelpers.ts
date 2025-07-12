@@ -14,7 +14,7 @@ import {
   EnrichedNodeData,
   Node,
   TasksetMode,
-  UserProgress,
+  CourseProgress,
   Edge,
 } from "@/types";
 
@@ -86,7 +86,7 @@ export const enrichFlowWithUserProgress = ({
 }: {
   nodes: Node[];
   edges: Edge[];
-  progress: UserProgress;
+  progress: CourseProgress;
 }) => {
   const { unlocked, completed, paid, stat } = progress;
 

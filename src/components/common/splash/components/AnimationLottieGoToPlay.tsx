@@ -9,13 +9,18 @@ import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
+import { LottieRefCurrentProps } from "lottie-react";
+
 const AnimationLottieGoToPlay = ({
-  height,
-  width,
+  style,
   name,
   onCompleteAction = () => {},
+}: {
+  style: React.CSSProperties;
+  name: string;
+  onCompleteAction: () => void;
 }) => {
-  const ref = useRef();
+  const ref = useRef<LottieRefCurrentProps>(null);
 
   useEffect(() => {
     if (ref.current && splash.state.play == "start") {
@@ -33,7 +38,7 @@ const AnimationLottieGoToPlay = ({
     >
       <Lottie
         lottieRef={ref}
-        style={{ height, width }}
+        style={style}
         animationData={getLottie(name)}
         autoPlay={false}
         loop={false}

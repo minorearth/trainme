@@ -10,7 +10,7 @@ import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";
 import chapter from "@/components/taskset/layers/store/chapter";
 
-import { UserProgress } from "@/types";
+import { CourseProgress } from "@/types";
 
 //
 
@@ -27,7 +27,7 @@ export const setFlowPageState = ({
   progress,
 }: {
   courseid: string;
-  progress: UserProgress;
+  progress: CourseProgress;
 }) => {
   course.updateStateP({ courseid });
   navigator.setStateP({ page: "flow" });

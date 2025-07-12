@@ -55,12 +55,33 @@ export type Page =
   | "testrun"
   | "congrat";
 
-export interface UserProgress {
-  completed: any;
-  rating: any;
-  unlocked: any;
-  stat: any;
+export interface UserMeta {
+  courses: UserCourses;
+  userId: string;
+  name: string;
+  paidcourses: string[];
+}
+
+export interface UserCourses {
+  [courseid: string]: CourseProgress;
+}
+
+export interface CourseProgress {
+  completed: string[];
+  rating: number;
+  unlocked: string[];
+  stat: CourseStat;
   paid: string[];
+  lastunlocked: string[];
+}
+
+export interface CourseStat {
+  [chapterid: string]: ChapterProgress;
+}
+
+export interface ChapterProgress {
+  sum: number;
+  tasks: any;
 }
 
 export interface TasksetState {
@@ -165,3 +186,37 @@ export type FieldType =
   | "email"
   | "password"
   | "name";
+
+export interface RawTaskObj {
+  [uuid: string]: {
+    task: string;
+    id: number;
+  };
+}
+
+export interface Group {
+  id: string;
+  label: string;
+  isFolder: boolean;
+  children: GroupUser[];
+}
+
+export type GroupUser = Group & { uid: string };
+
+export interface GroupObj {
+  [id: string]: Omit<Group, "id" | "children"> & {
+    children: GroupUserObj;
+  };
+}
+export type GroupUserObjAttrs = Omit<GroupUser, "id">;
+
+//For report purposes
+export type GroupUserObj = {
+  [id: string]: GroupUserObjAttrs;
+};
+
+export type GroupUserObjReportAttr = Pick<GroupUserObjAttrs, "label" | "uid">;
+
+export type GroupUserObjReport = {
+  [id: string]: GroupUserObjReportAttr;
+};

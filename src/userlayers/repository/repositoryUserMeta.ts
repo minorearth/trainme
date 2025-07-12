@@ -20,8 +20,15 @@ import { ETLUserProgress } from "@/userlayers/repository/ETL";
 
 //utils
 import { encrypt2 } from "@/globals/utils/encryption";
+import { UserMeta } from "@/types";
 
-export const getUserMetaCourseProgress = async (courseid, uid) => {
+export const getUserMetaCourseProgress = async ({
+  courseid,
+  uid,
+}: {
+  courseid: string;
+  uid: string;
+}) => {
   const allUserMeta = await getDataFetch({
     data: { id: uid },
     type: "getusermetadata",
@@ -31,12 +38,15 @@ export const getUserMetaCourseProgress = async (courseid, uid) => {
   return userProgress;
 };
 
-export const getUserMetaDataCA = async (uid) => {
+export const getUserMetaDataCA = async (uid: string) => {
   const userMeta = await getDocDataFromCollectionByIdClient("usermeta", uid);
-  return userMeta.data;
+  return userMeta.data || {};
 };
 
-export const saveUserMeta = async (dataToEncrypt) => {
+export const saveUserMeta = async (dataToEncrypt: {
+  data: UserMeta;
+  id: string;
+}) => {
   const res = await setDataFetch({
     type: "setusermetadata",
     data: encrypt2(dataToEncrypt),
@@ -46,7 +56,13 @@ export const saveUserMeta = async (dataToEncrypt) => {
   }
 };
 
-export const createNewUserMeta = async (userId, name) => {
+export const createNewUserMeta = async ({
+  userId,
+  name,
+}: {
+  userId: string;
+  name: string;
+}) => {
   const paidcourses = getFreeCourses();
   const courses = getInitalDataForFreeCourses();
   const data = {
@@ -58,7 +74,7 @@ export const createNewUserMeta = async (userId, name) => {
   await setDocInCollection(db, stn.collections.USER_META, data, userId);
 };
 
-export const getUserMeta = async (uid) => {
+export const getUserMeta = async (uid: string) => {
   const userMeta = await getDataFetch({
     data: { id: uid },
     type: "getusermetadata",

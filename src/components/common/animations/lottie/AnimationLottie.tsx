@@ -7,7 +7,15 @@ import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
-const AnimationLottie = ({ height, width, name, onClick = () => {} }) => {
+const AnimationLottie = ({
+  style,
+  name,
+  onClick = () => {},
+}: {
+  style: React.CSSProperties;
+  name: string;
+  onClick?: () => void;
+}) => {
   return (
     <Box
       sx={{
@@ -18,7 +26,7 @@ const AnimationLottie = ({ height, width, name, onClick = () => {} }) => {
       onClick={() => onClick()}
     >
       <Lottie
-        style={{ height, width }}
+        style={style}
         animationData={getLottie(name)}
         loop={true}
         autoPlay={true}

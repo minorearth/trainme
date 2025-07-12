@@ -11,7 +11,7 @@ export const getFreeCourses = () => {
   return Object.keys(courses).filter((courseId) => courses[courseId].free);
 };
 
-export const checkCourseReady = ({ courseid }) => {
+export const checkCourseReady = ({ courseid }: { courseid: string }) => {
   return getReadyCourses().includes(courseid);
 };
 
@@ -23,7 +23,13 @@ export const getCoursesSorted = () => {
     .sort((a, b) => a.order - b.order);
 };
 
-export const checkCoursePaid = async ({ courseid, uid }) => {
+export const checkCoursePaid = async ({
+  courseid,
+  uid,
+}: {
+  courseid: string;
+  uid: string;
+}) => {
   const coursePaid = await getDataFetch({
     type: "checkcoursepaid",
     data: { courseid, id: uid },
