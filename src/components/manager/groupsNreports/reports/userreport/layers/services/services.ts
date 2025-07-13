@@ -5,11 +5,11 @@ import { toJS } from "mobx";
 
 export const showUserReport = async (uid: string) => {
   const userMeta = await getUserMetaDataCA(uid);
-  const treeRepresent = getReportTree(
-    userMeta.courses,
-    stat.chaptersobj,
-    stat.allCoursesTasksObj
-  );
+  const treeRepresent = getReportTree({
+    userstat: userMeta.courses,
+    chaptersobj: stat.chaptersobj,
+    allCoursesTasks: stat.allCoursesTasksObj,
+  });
   stat.setCode("");
   stat.setUserStat(treeRepresent);
 };

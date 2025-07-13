@@ -9,6 +9,7 @@ import {
 //stores
 import user from "@/userlayers/store/user";
 import stat from "@/components/manager/groupsNreports/store/stat";
+import { Group, GroupUser } from "@/types";
 
 export const addNewGroup = () => {
   const data = [
@@ -24,38 +25,60 @@ export const addNewGroup = () => {
   addNewGroupDB(data, user.userid);
 };
 
-export const changeLabel = ({ itemId, label }) => {
-  const newdata = updateNodeLabel(stat.groupsdata, itemId, label);
+export const changeLabel = ({
+  itemId,
+  label,
+}: {
+  itemId: string;
+  label: string;
+}) => {
+  const newdata = updateNodeLabel({
+    nodes: stat.groupsdata,
+    id: itemId,
+    newLabel: label,
+  });
   updateNodeLabelDB(newdata, user.userid);
 };
 
-const updateNodeLabel = (nodes, id, newLabel) => {
+const updateNodeLabel = ({
+  nodes,
+  id,
+  newLabel,
+}: {
+  nodes: Group[];
+  id: string;
+  newLabel: string;
+}): Group[] | GroupUser[] => {
   return nodes.map((node) => {
     if (node.id === id) {
       return { ...node, label: newLabel };
     }
-    if (node.children) {
+    if (node.children.length != 0) {
       return {
         ...node,
-        children: updateNodeLabel(node.children, id, newLabel),
+        children: updateNodeLabel({
+          nodes: node.children,
+          id,
+          newLabel,
+        }) as GroupUser[],
       };
     }
     return node;
   });
 };
 
-export const copyGroupLink = (itemId) => {
+export const copyGroupLink = (groupId: string) => {
   navigator.clipboard.writeText(
-    `${process.env.NEXT_PUBLIC_DOMAIN}/joingroup/${itemId}/${user.userid}`
+    `${process.env.NEXT_PUBLIC_DOMAIN}/joingroup/${groupId}/${user.userid}`
   );
 };
 
-export const getGroupUsersObj = (itemId) => {
-  const group = stat.groupsdata.filter((item) => item.id == itemId)[0];
+export const getGroupUsersObj = (groupId: string) => {
+  const group = stat.groupsdata.filter((item) => item.id == groupId)[0];
   const users = group.children.reduce(
-    (acc, item) => ({
+    (acc, user) => ({
       ...acc,
-      [item.uid]: { label: item.label, uid: item.uid },
+      [user.uid]: { label: user.label, uid: user.uid },
     }),
     {}
   );

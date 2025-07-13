@@ -21,6 +21,17 @@ export interface RawTask {
   level: number;
 }
 
+export type AllCoursesRawTaskObj = {
+  [courseid: string]: RawTaskObj;
+};
+
+export interface RawTaskObj {
+  [uuid: string]: {
+    task: string;
+    id: number;
+  };
+}
+
 export interface RawInOut {
   inv: string[];
   outv: string[];
@@ -81,7 +92,16 @@ export interface CourseStat {
 
 export interface ChapterProgress {
   sum: number;
-  tasks: any;
+  tasks: TasksStat;
+}
+
+export interface TasksStat {
+  [taskuid: string]: TaskStatAttrs;
+}
+
+export interface TaskStatAttrs {
+  code: string;
+  errorcode: string;
 }
 
 export interface TasksetState {
@@ -187,13 +207,6 @@ export type FieldType =
   | "password"
   | "name";
 
-export interface RawTaskObj {
-  [uuid: string]: {
-    task: string;
-    id: number;
-  };
-}
-
 export interface Group {
   id: string;
   label: string;
@@ -202,6 +215,13 @@ export interface Group {
 }
 
 export type GroupUser = Group & { uid: string };
+
+export type UserReport = Pick<Group, "id" | "label"> & {
+  order: number;
+  type: string;
+  code: string;
+  children: UserReport[];
+};
 
 export interface GroupObj {
   [id: string]: Omit<Group, "id" | "children"> & {

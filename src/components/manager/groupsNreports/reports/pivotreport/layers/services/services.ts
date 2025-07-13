@@ -30,7 +30,7 @@ export const showReport = async (groupId: string) => {
   const uids = Object.keys(groupUsersObj);
   if (uids) {
     const usersMetaObj = await getUsersMetaObj(uids);
-    stat.setSnapshot({ usersMetaObj });
+    stat.setSnapshot(usersMetaObj);
 
     const snapShot = await getSnapShot({
       groupid: groupId,

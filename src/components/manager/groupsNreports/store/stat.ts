@@ -21,8 +21,18 @@ import {
 } from "@/components/manager/groupsNreports/reports/pivotreport/layers/services/services";
 
 import user from "@/userlayers/store/user";
-import { GroupObj, Group } from "@/types";
-import { CourseChapterObjReport } from "@/components/manager/types";
+import {
+  GroupObj,
+  Group,
+  RawTaskObj,
+  AllCoursesRawTaskObj,
+  UserReport,
+} from "@/types";
+import {
+  CourseChapterObjReport,
+  UsersMetaReport,
+} from "@/components/manager/types";
+import { RichTreeViewItemsSlotProps } from "@mui/x-tree-view/internals";
 
 class stat {
   actions = {
@@ -35,7 +45,7 @@ class stat {
     makeSnapshot,
     showReport,
   };
-  userstat = [];
+  userstat: UserReport[] = [];
   chaptersobj: CourseChapterObjReport = {};
   groupsdata: Group[] = [];
   code = "";
@@ -45,8 +55,9 @@ class stat {
   snapshot = {};
   groupSelectedId = "";
   allCoursesTasksObj = {};
+  disposeReaction: () => void;
 
-  setUserStat(data) {
+  setUserStat(data: UserReport[]) {
     this.userstat = data;
     this.reportvisible = false;
     this.userstatvisible = true;
@@ -56,19 +67,19 @@ class stat {
     this.groupsdata = data;
   }
 
-  setAllCoursesTasksObj(data) {
+  setAllCoursesTasksObj(data: AllCoursesRawTaskObj) {
     this.allCoursesTasksObj = data;
   }
 
-  setSnapshot(data) {
+  setSnapshot(data: UsersMetaReport) {
     this.snapshot = data;
   }
 
-  setGroupSelected(groupid) {
+  setGroupSelected(groupid: string) {
     this.groupSelectedId = groupid;
   }
 
-  setReport(data) {
+  setReport(data: UsersMetaReport) {
     this.report = data;
     this.userstatvisible = false;
     this.reportvisible = true;
@@ -78,7 +89,7 @@ class stat {
     this.chaptersobj = data;
   }
 
-  setCode(data) {
+  setCode(data: string) {
     this.code = data;
   }
 
