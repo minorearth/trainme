@@ -4,34 +4,16 @@ import {
   UsersMetaReport,
   ChapterObjReport,
   ChapterArrReport,
+  PivotReport,
 } from "@/components/manager/types";
+
 import {
-  GroupUserObj,
   GroupUserObjReport,
   GroupUserObjReportAttr,
-} from "@/types";
+} from "@/components/manager/types";
 
 import { CourseChapterObjReport } from "@/components/manager/types";
 
-interface PivotReport {
-  [courseid: string]: {
-    rows: {
-      [col: string]: {
-        completed: string;
-        sum: number | string;
-        maxcoins: string;
-        id: string;
-      };
-    }[];
-    cols: {
-      header: string;
-      accessor: string;
-      order: number;
-      maxcoins: number;
-      title: string;
-    }[];
-  };
-}
 export const makeReport = ({
   allCoursesChaptersObj,
   usersMetaObj,

@@ -10,6 +10,8 @@ import {
   sendPasswordResetEmail,
   signOut,
   setPersistence,
+  User,
+  NextOrObserver,
 } from "firebase/auth";
 
 //api calls
@@ -17,7 +19,13 @@ import { getDataFetch } from "@/apicalls/apicalls";
 
 import { login, logout } from "@/db/SA/session";
 
-export const signInUser = async (email, password) => {
+export const signInUser = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
   await logout();
   await setPersistence(auth, browserLocalPersistence);
   try {
@@ -27,9 +35,17 @@ export const signInUser = async (email, password) => {
   }
 };
 
-export const launchAuthStateChangeMonitor = async (action) => {
+export const launchAuthStateChangeMonitor = async (
+  action: (
+    resolved: (value: string) => string,
+    user: User | null,
+    login: (value: string) => Promise<void>
+  ) => string
+) => {
   const uid = await new Promise((resolved, rejected) => {
-    onAuthStateChanged(auth, (user) => action(resolved, user, login));
+    onAuthStateChanged(auth, (user: User | null) =>
+      action(resolved, user, login)
+    );
   });
   return uid;
 };

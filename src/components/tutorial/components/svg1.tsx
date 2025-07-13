@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export const SvgIcon1 = (props) => (
+export const SvgIcon1 = () => (
   <Wrapper>
     <svg
       xmlns="http://www.w3.org/2000/svg"

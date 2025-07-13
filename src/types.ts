@@ -206,37 +206,3 @@ export type FieldType =
   | "email"
   | "password"
   | "name";
-
-export interface Group {
-  id: string;
-  label: string;
-  isFolder: boolean;
-  children: GroupUser[];
-}
-
-export type GroupUser = Group & { uid: string };
-
-export type UserReport = Pick<Group, "id" | "label"> & {
-  order: number;
-  type: string;
-  code: string;
-  children: UserReport[];
-};
-
-export interface GroupObj {
-  [id: string]: Omit<Group, "id" | "children"> & {
-    children: GroupUserObj;
-  };
-}
-export type GroupUserObjAttrs = Omit<GroupUser, "id">;
-
-//For report purposes
-export type GroupUserObj = {
-  [id: string]: GroupUserObjAttrs;
-};
-
-export type GroupUserObjReportAttr = Pick<GroupUserObjAttrs, "label" | "uid">;
-
-export type GroupUserObjReport = {
-  [id: string]: GroupUserObjReportAttr;
-};

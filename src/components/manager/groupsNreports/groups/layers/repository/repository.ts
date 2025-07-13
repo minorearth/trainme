@@ -10,7 +10,8 @@ import {
   groupsObjectToArr,
   groupsArrToObject,
 } from "@/components/manager/groupsNreports/groups/layers/repository/ETL";
-import { Group, GroupObj, GroupUserObjAttrs } from "@/types";
+
+import { Group, GroupObj, GroupUserObjAttrs } from "@/components/manager/types";
 
 import { CourseChapterObjReport } from "@/components/manager/types";
 

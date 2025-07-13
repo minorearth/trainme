@@ -21,15 +21,12 @@ import {
 } from "@/components/manager/groupsNreports/reports/pivotreport/layers/services/services";
 
 import user from "@/userlayers/store/user";
-import {
-  GroupObj,
-  Group,
-  RawTaskObj,
-  AllCoursesRawTaskObj,
-  UserReport,
-} from "@/types";
+import { AllCoursesRawTaskObj } from "@/types";
+
+import { Group, UserReport } from "@/components/manager/types";
 import {
   CourseChapterObjReport,
+  PivotReport,
   UsersMetaReport,
 } from "@/components/manager/types";
 import { RichTreeViewItemsSlotProps } from "@mui/x-tree-view/internals";
@@ -79,7 +76,7 @@ class stat {
     this.groupSelectedId = groupid;
   }
 
-  setReport(data: UsersMetaReport) {
+  setReport(data: PivotReport) {
     this.report = data;
     this.userstatvisible = false;
     this.reportvisible = true;

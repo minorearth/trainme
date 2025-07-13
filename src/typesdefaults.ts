@@ -57,6 +57,7 @@ export const USERPROGRESS_DEFAULTS = {
   unlocked: [],
   stat: {},
   paid: [],
+  lastunlocked: [],
 };
 
 export const CHAMPUSER_DEFAULTS = {

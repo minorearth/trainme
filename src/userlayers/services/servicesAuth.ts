@@ -72,10 +72,10 @@ export const signOut = async (router: NextRouter) => {
 };
 
 const actionOnAuthChanged = async (
-  resolved: (value: any) => void,
-  user: User,
+  resolved: (value: string) => string,
+  user: User | null,
   login: (value: string) => Promise<void>
-) => {
+): Promise<string> => {
   if (user) {
     if (user.emailVerified) {
       await login("teacher");
@@ -84,6 +84,7 @@ const actionOnAuthChanged = async (
       resolved("notVerified");
     }
   } else {
+    resolved("noUser");
   }
 };
 
@@ -94,11 +95,7 @@ const getUidAuth = async ({
   email: string;
   password: string;
 }) => {
-  const res = await signInUser(email, password);
-  // const uid =
-  //   res == "wrongpsw"
-  //     ? "wrongpsw"
-  //     : await launchAuthStateChangeMonitor(actionOnAuthChanged);
+  const res = await signInUser({ email, password });
 
   return res ?? (await launchAuthStateChangeMonitor(actionOnAuthChanged));
 };

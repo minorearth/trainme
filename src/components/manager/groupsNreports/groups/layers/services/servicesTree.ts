@@ -9,7 +9,8 @@ import {
 //stores
 import user from "@/userlayers/store/user";
 import stat from "@/components/manager/groupsNreports/store/stat";
-import { Group, GroupUser } from "@/types";
+
+import { Group, GroupUser } from "@/components/manager/types";
 
 export const addNewGroup = () => {
   const data = [
