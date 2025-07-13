@@ -6,7 +6,10 @@ import { useTreeItemUtils } from "@mui/x-tree-view/hooks";
 import { useTreeItemModel } from "@mui/x-tree-view/hooks";
 
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import { useTreeItem } from "@mui/x-tree-view/useTreeItem";
+import {
+  useTreeItem,
+  UseTreeItemParameters,
+} from "@mui/x-tree-view/useTreeItem";
 import {
   TreeItemContent,
   TreeItemRoot,
@@ -17,12 +20,15 @@ import {
 import { TreeItemIcon } from "@mui/x-tree-view/TreeItemIcon";
 import { TreeItemProvider } from "@mui/x-tree-view/TreeItemProvider";
 import stat from "@/components/manager/groupsNreports/store/stat";
+import { UserReport } from "@/components/manager/types";
 
 const CustomStatItem = React.forwardRef(function CustomStatItem(
-  { id, itemId, label, disabled, children },
-  ref
+  props: UseTreeItemParameters,
+  ref: React.Ref<HTMLLIElement>
 ) {
-  const item = useTreeItemModel(itemId);
+  const { itemId, children } = props;
+
+  const item = useTreeItemModel(itemId) as UserReport;
 
   const {
     getContextProviderProps,
@@ -32,7 +38,7 @@ const CustomStatItem = React.forwardRef(function CustomStatItem(
     getGroupTransitionProps,
     getIconContainerProps,
     status,
-  } = useTreeItem({ id, itemId, label, disabled, children, rootRef: ref });
+  } = useTreeItem({ ...props, rootRef: ref });
 
   const { interactions } = useTreeItemUtils({
     itemId,

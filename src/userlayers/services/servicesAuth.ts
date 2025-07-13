@@ -29,7 +29,7 @@ export const signUp = async ({
   name: string;
 }) => {
   try {
-    const user = await createUser(email, password);
+    const user = await createUser({ email, password });
     const userid = user.uid;
     createNewUserMeta({ userId: userid, name });
     return userid;
@@ -72,10 +72,10 @@ export const signOut = async (router: NextRouter) => {
 };
 
 const actionOnAuthChanged = async (
-  resolved: (value: string) => string,
+  resolved: (value: string) => void,
   user: User | null,
   login: (value: string) => Promise<void>
-): Promise<string> => {
+) => {
   if (user) {
     if (user.emailVerified) {
       await login("teacher");

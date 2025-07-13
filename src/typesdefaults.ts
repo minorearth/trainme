@@ -40,6 +40,10 @@ export const CHAPTER_DEFAULTS = {
   overflow: false,
 };
 
+export const CHAMP_DEFAULTS = {
+  champid: "",
+};
+
 export const TASKSET_DEFAULTS = {
   tasksetmode: "newtopic" as TasksetMode,
   recapTasksIds: [],

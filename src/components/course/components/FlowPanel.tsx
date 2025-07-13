@@ -26,6 +26,11 @@ import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import user from "@/userlayers/store/user";
 import course from "@/components/course/layers/store/course";
+import {
+  CHAMP_DEFAULTS,
+  CHAMPUSER_DEFAULTS,
+  CHAPTER_DEFAULTS,
+} from "@/typesdefaults";
 
 const ICON_SIZE = "60px";
 const FlowPanel = observer(() => {
@@ -74,9 +79,13 @@ const FlowPanel = observer(() => {
                 navigator.actions.openLessonStartPage({
                   tasksetData: {
                     tasksetmode: "textbook",
-                    taskstage: "exploreguide",
+                    taskstage: "WIP",
                     randomsaved: [],
+                    recapTasksIds: [],
+                    fixed: 0,
                   },
+                  chapterData: CHAPTER_DEFAULTS,
+                  champData: CHAMP_DEFAULTS,
                   courseData: { courseid: course.state.courseid },
                 });
               }}

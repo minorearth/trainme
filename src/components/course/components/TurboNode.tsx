@@ -3,7 +3,7 @@ import React, { memo } from "react";
 import { Handle, Position } from "@xyflow/react";
 import styled from "@emotion/styled";
 import localFont from "next/font/local";
-import { useTheme } from "@mui/material/styles";
+import { Theme, useTheme } from "@mui/material/styles";
 
 //components
 import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
@@ -21,7 +21,7 @@ const myFont = localFont({
   src: "../../../app/Monaco.ttf",
 });
 
-const Wrapper = styled.div(({ theme, data }) => ({
+const Wrapper = styled.div(({ theme }) => ({
   borderRadius: "12px",
   display: "flex",
   height: "auto",
@@ -173,9 +173,9 @@ const Wrapper = styled.div(({ theme, data }) => ({
 }));
 
 const TurboNode = memo(({ data }) => {
-  const theme = useTheme();
+  const theme = useTheme<Theme>();
   return (
-    <Wrapper theme={theme} data={data}>
+    <Wrapper theme={theme}>
       <div className="cloud gradient">
         <div style={{ width: "30px" }}>
           {data.completed ? (
@@ -227,8 +227,7 @@ const TurboNode = memo(({ data }) => {
                     style={{ display: "inline-block", verticalAlign: "sub" }}
                   >
                     <AnimationLottie
-                      height={"15px"}
-                      width={"15px"}
+                      style={{ height: "15px", width: "15px" }}
                       name={"coins"}
                     />
                   </span>

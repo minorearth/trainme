@@ -46,7 +46,7 @@ class stat {
   chaptersobj: CourseChapterObjReport = {};
   groupsdata: Group[] = [];
   code = "";
-  report = {};
+  report: PivotReport = {};
   userstatvisible = false;
   reportvisible = false;
   snapshot = {};

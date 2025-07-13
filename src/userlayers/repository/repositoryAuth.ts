@@ -37,20 +37,28 @@ export const signInUser = async ({
 
 export const launchAuthStateChangeMonitor = async (
   action: (
-    resolved: (value: string) => string,
+    resolved: (value: string) => void,
     user: User | null,
     login: (value: string) => Promise<void>
-  ) => string
+  ) => void
 ) => {
-  const uid = await new Promise((resolved, rejected) => {
-    onAuthStateChanged(auth, (user: User | null) =>
-      action(resolved, user, login)
-    );
-  });
+  const uid = await new Promise(
+    (resolved: (value: string) => void, rejected) => {
+      onAuthStateChanged(auth, (user: User | null) =>
+        action(resolved, user, login)
+      );
+    }
+  );
   return uid;
 };
 
-export const createUser = async (email, password) => {
+export const createUser = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
   const userCredential = await createUserWithEmailAndPassword(
     auth,
     email,
@@ -60,7 +68,7 @@ export const createUser = async (email, password) => {
   return userCredential.user;
 };
 
-export const resetPsw = (email) => {
+export const resetPsw = (email: string) => {
   auth.languageCode = "ru";
   sendPasswordResetEmail(auth, email);
 };

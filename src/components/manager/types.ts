@@ -29,23 +29,25 @@ export interface CourseChapterObjReport {
 }
 
 export interface PivotReport {
-  [courseid: string]: {
-    rows: {
-      [col: string]: {
-        completed: string;
-        sum: number | string;
-        maxcoins: string;
-        id: string;
-      };
-    }[];
-    cols: {
-      header: string;
-      accessor: string;
-      order: number;
-      maxcoins: number;
-      title: string;
-    }[];
-  };
+  [courseid: string]: CoursePivotReport;
+}
+
+export interface CoursePivotReport {
+  rows: {
+    [col: string]: {
+      completed: string;
+      sum: number | string;
+      maxcoins: string;
+      id: string;
+    };
+  }[];
+  cols: {
+    header: string;
+    accessor: string;
+    order: number;
+    maxcoins: number;
+    title: string;
+  }[];
 }
 
 export interface Group {
