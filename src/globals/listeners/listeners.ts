@@ -13,19 +13,19 @@ export const stopListeners = () => {
   if (!stn.mode.allowpaste) document.removeEventListener("paste", handlePaste);
 };
 
-const handleBeforeUnload = (event) => {
+const handleBeforeUnload = (event: Event) => {
   const message = "Вы уверены, что хотите покинуть страницу?";
   event.preventDefault();
-  event.returnValue = message;
+  // event.returnValue = message;
   return message;
 };
 
-const handleCopy = (event) => {
-  event.clipboardData.setData("text/plain", "No Copying!");
+const handleCopy = (event: ClipboardEvent) => {
+  event.clipboardData?.setData("text/plain", "No Copying!");
   event.preventDefault();
 };
 
-const handlePaste = (event) => {
+const handlePaste = (event: ClipboardEvent) => {
   event.preventDefault();
   event.stopPropagation();
 };

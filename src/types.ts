@@ -129,11 +129,29 @@ export interface ChampState {
 }
 
 export interface CourseState {
-  courseid?: string;
+  courseid: string;
 }
 
 export interface NavigatorState {
   page: Page;
+}
+
+export type StateType =
+  | "navigator"
+  | "course"
+  | "champ"
+  | "chapter"
+  | "taskset"
+  | "user";
+
+export interface CSP {
+  navigator: NavigatorState;
+  course: CourseState;
+  champ: ChampState;
+  chapter: ChapterState;
+  taskset: TasksetState;
+  user: { username: string; progress: CourseProgress };
+  task: { currTaskId: number };
 }
 
 export type TasksetStateChapter = Required<TasksetState>;
@@ -179,6 +197,7 @@ export type EnrichedNodeData = NodeData & {
   tobeunlocked: string[];
   overflow: boolean;
   rating: number;
+  sum: number;
   action: (data: EnrichedNodeData) => void;
 };
 

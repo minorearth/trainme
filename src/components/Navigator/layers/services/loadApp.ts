@@ -26,6 +26,7 @@ import user from "@/userlayers/store/user";
 import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";
 import chapter from "@/components/taskset/layers/store/chapter";
+import { CSP } from "@/types";
 
 //
 
@@ -87,7 +88,7 @@ export const loadPTrek = async () => {
   }
 };
 
-const recoverTasks = async ({ CSP }) => {
+const recoverTasks = async ({ CSP }: { CSP: CSP }) => {
   const { tasksetmode, taskstage } = CSP.taskset;
   const { tasks } = await getTasks({
     champData: CSP.champ || {},
@@ -100,6 +101,6 @@ const recoverTasks = async ({ CSP }) => {
   taskset.setTasks(tasks, CSP.task.currTaskId);
   if (taskstage == "recap_suspended" && tasksetmode != "exam") {
     da.info.recap();
-    taskset.updateStateP({ taskstage: "recap" });
+    taskset.setStateP({ ...taskset.state, taskstage: "recap" });
   }
 };

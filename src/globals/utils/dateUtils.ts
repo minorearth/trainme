@@ -1,4 +1,4 @@
-const formatDate = (unformatted) => {
+const formatDate = (unformatted: string) => {
   let date2 = new Date(unformatted);
   const localUnformatted = date2.toLocaleString();
   // const regex =

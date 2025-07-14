@@ -1,4 +1,4 @@
-import { TasksetMode, TaskStage } from "./types";
+import { Page, TasksetMode, TaskStage } from "./types";
 
 export const TASK_DEFAULTS = {
   id: -1,
@@ -44,6 +44,18 @@ export const CHAMP_DEFAULTS = {
   champid: "",
 };
 
+export const COURSE_DEFAULTS = {
+  courseid: "",
+};
+
+export const NAVIGATOR_DEFAULTS = {
+  page: "courses" as Page,
+};
+
+export const TASKSTATE_DEFAULTS = {
+  currTaskId: -1,
+};
+
 export const TASKSET_DEFAULTS = {
   tasksetmode: "newtopic" as TasksetMode,
   recapTasksIds: [],
@@ -69,4 +81,14 @@ export const CHAMPUSER_DEFAULTS = {
   pts: 0,
   change: 0,
   avatarid: -1,
+};
+
+export const CSP_DEFAULTS = {
+  navigator: NAVIGATOR_DEFAULTS,
+  course: COURSE_DEFAULTS,
+  champ: CHAMP_DEFAULTS,
+  chapter: CHAPTER_DEFAULTS,
+  taskset: TASKSET_DEFAULTS,
+  user: { username: "", progress: USERPROGRESS_DEFAULTS },
+  task: TASKSTATE_DEFAULTS,
 };

@@ -3,7 +3,9 @@ import React, { memo } from "react";
 import { Handle, Position } from "@xyflow/react";
 import styled from "@emotion/styled";
 import localFont from "next/font/local";
-import { Theme, useTheme } from "@mui/material/styles";
+// import { useTheme } from "@mui/material/styles";
+
+import { ThemeProvider, useTheme } from "@emotion/react";
 
 //components
 import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
@@ -16,6 +18,7 @@ import { BiCoinStack } from "react-icons/bi";
 import { GoArrowRight } from "react-icons/go";
 import { RxLayers } from "react-icons/rx";
 import { BsUnlock } from "react-icons/bs";
+import { EnrichedNodeData, NodeData } from "@/types";
 
 const myFont = localFont({
   src: "../../../app/Monaco.ttf",
@@ -172,78 +175,79 @@ const Wrapper = styled.div(({ theme }) => ({
   },
 }));
 
-const TurboNode = memo(({ data }) => {
-  const theme = useTheme<Theme>();
+const TurboNode = memo(({ data }: { data: EnrichedNodeData }) => {
+  const theme = useTheme();
   return (
-    <Wrapper theme={theme}>
-      <div className="cloud gradient">
-        <div style={{ width: "30px" }}>
-          {data.completed ? (
-            <CheckIcon />
-          ) : data.unlocked ? (
-            <LockOpenIcon />
-          ) : (
-            <LockIcon />
-          )}
+    <ThemeProvider theme={theme}>
+      <Wrapper>
+        <div className="cloud gradient">
+          <div style={{ width: "30px" }}>
+            {data.completed ? (
+              <CheckIcon />
+            ) : data.unlocked ? (
+              <LockOpenIcon />
+            ) : (
+              <LockIcon />
+            )}
+          </div>
         </div>
-      </div>
 
-      <div className="wrapper gradient" onClick={() => data.action(data)}>
-        <div className="inner">
-          <div className="body">
-            <div style={{ width: "100%" }}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
-                <div className="icon">
-                  <RxLayers />
-                </div>
-                <div className="title">{data.title}</div>
-              </div>
-              {data.subline && <div className="subline">{data.subline}</div>}
-              <div className="bottom">
-                <div style={{ width: "100%" }}>
-                  <span
-                    style={{ fontSize: 20, display: "inline-block" }}
-                  >{`${data.sum}`}</span>
-                  <span
-                    style={{
-                      fontSize: 10,
-                      padding: "0 4px",
-                      display: "inline-block",
-                    }}
-                  >
-                    /
-                  </span>
-                  <span
-                    style={{ fontSize: 10, display: "inline-block" }}
-                  >{`${data.maxcoins}`}</span>
-                  {/* <BiCoinStack fontSize="8" sx={{ paddingTop: "10px" }} /> */}
-                  <span
-                    style={{ display: "inline-block", verticalAlign: "sub" }}
-                  >
-                    <AnimationLottie
-                      style={{ height: "15px", width: "15px" }}
-                      name={"coins"}
-                    />
-                  </span>
-                </div>
-
-                {data.unlockpts && !data.paid && data.nodemode != "exam" && (
-                  <div className="cost">
-                    <BiCoinStack />
-                    <p>{data.unlockpts}</p>
-                    <GoArrowRight />
-                    <BsUnlock />
+        <div className="wrapper gradient" onClick={() => data.action(data)}>
+          <div className="inner">
+            <div className="body">
+              <div style={{ width: "100%" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <div className="icon">
+                    <RxLayers />
                   </div>
-                )}
-              </div>
+                  <div className="title">{data.title}</div>
+                </div>
+                {data.subline && <div className="subline">{data.subline}</div>}
+                <div className="bottom">
+                  <div style={{ width: "100%" }}>
+                    <span
+                      style={{ fontSize: 20, display: "inline-block" }}
+                    >{`${data.sum}`}</span>
+                    <span
+                      style={{
+                        fontSize: 10,
+                        padding: "0 4px",
+                        display: "inline-block",
+                      }}
+                    >
+                      /
+                    </span>
+                    <span
+                      style={{ fontSize: 10, display: "inline-block" }}
+                    >{`${data.maxcoins}`}</span>
+                    {/* <BiCoinStack fontSize="8" sx={{ paddingTop: "10px" }} /> */}
+                    <span
+                      style={{ display: "inline-block", verticalAlign: "sub" }}
+                    >
+                      <AnimationLottie
+                        style={{ height: "15px", width: "15px" }}
+                        name={"coins"}
+                      />
+                    </span>
+                  </div>
 
-              {/* {data.unlockpts && !data.paid && (
+                  {data.unlockpts && !data.paid && data.nodemode != "exam" && (
+                    <div className="cost">
+                      <BiCoinStack />
+                      <p>{data.unlockpts}</p>
+                      <GoArrowRight />
+                      <BsUnlock />
+                    </div>
+                  )}
+                </div>
+
+                {/* {data.unlockpts && !data.paid && (
                 <div className="cost">
                   <BiCoinStack />
                   <p>{data.unlockpts}</p>
@@ -251,13 +255,14 @@ const TurboNode = memo(({ data }) => {
                   <BsUnlock />
                 </div>
               )} */}
+              </div>
             </div>
+            <Handle type="target" position={Position.Left} />
+            <Handle type="source" position={Position.Right} />
           </div>
-          <Handle type="target" position={Position.Left} />
-          <Handle type="source" position={Position.Right} />
         </div>
-      </div>
-    </Wrapper>
+      </Wrapper>
+    </ThemeProvider>
   );
 });
 TurboNode.displayName = "TurboNode";

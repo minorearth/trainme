@@ -71,6 +71,8 @@ const nodeAction = (data: EnrichedNodeData) => {
           tasksetmode: nodemode as TasksetMode,
           taskstage: "WIP",
           randomsaved: [],
+          recapTasksIds: [],
+          fixed: 0,
         },
         courseData: { courseid: course.state.courseid },
         champData: { champid: "" },

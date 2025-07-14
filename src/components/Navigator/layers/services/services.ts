@@ -24,7 +24,7 @@ import {
 
 //constants
 import { initials } from "@/components/Navigator/layers/store/initialStates";
-import { TASKSET_DEFAULTS } from "@/typesdefaults";
+import { COURSE_DEFAULTS, TASKSET_DEFAULTS } from "@/typesdefaults";
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
@@ -76,7 +76,10 @@ export const openAndRefreshFlowPage = async ({
   courseid: string;
   refetchFlow: boolean;
 }) => {
-  const progress = await getUserMetaCourseProgress(courseid, user.userid);
+  const progress = await getUserMetaCourseProgress({
+    courseid,
+    uid: user.userid,
+  });
   getFlow({ courseid, refetchFlow, progress });
   setFlowPageState({ courseid, progress });
 };
@@ -85,7 +88,7 @@ export const openLessonStartPage = async ({
   chapterData = CHAPTER_DEFAULTS,
   tasksetData,
   champData = { champid: "" },
-  courseData = {},
+  courseData = COURSE_DEFAULTS,
 }: {
   tasksetData: TasksetState;
   chapterData: ChapterState;

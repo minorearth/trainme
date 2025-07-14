@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/crypto-js": "^4.2.2",
     "@types/node": "^22.15.30",
     "@types/react": "^19.1.6",
     "dependency-cruiser": "^16.10.2",

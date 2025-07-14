@@ -10,6 +10,10 @@ export const wakeUp = () => {
     .catch((err) => console.error("Ping failed", err));
 };
 
+interface setDataFetch {
+  type: string;
+  data: string;
+}
 export const setDataFetch = async (data) => {
   wakeUp();
   const res = await new Promise((resolve) => {

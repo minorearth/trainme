@@ -305,7 +305,10 @@ const words = [
 //leafNum=7
 //total=25
 //[3,4,3,4,3,4,4]
-export const spreadNumbersOverNodesRandomly = (leafNum, total) => {
+export const spreadNumbersOverNodesRandomly = (
+  leafNum: number,
+  total: number
+) => {
   const remainder = total % leafNum;
   const base = Math.floor(total / leafNum);
   const res = Array(leafNum).fill(base);
@@ -318,8 +321,8 @@ export const spreadNumbersOverNodesRandomly = (leafNum, total) => {
 //ex.  n-number of tasks to allocate, length-folders  num   n<length
 //n=4 length=7
 //res=[3,1,6,5]
-export const getNeverRepeatIntegers = (length, n) => {
-  let res = [];
+export const getNeverRepeatIntegers = (length: number, n: number) => {
+  let res: number[] = [];
   while (res.length != n) {
     const num = Math.floor(Math.random() * length);
     !res.includes(num) && (res = [...res, num]);
@@ -327,7 +330,7 @@ export const getNeverRepeatIntegers = (length, n) => {
   return res;
 };
 
-export const randomNum = (length) => {
+export const randomNum = (length: number) => {
   return Math.floor(Math.random() * length);
 };
 
@@ -335,7 +338,10 @@ export const randomNum = (length) => {
 //listToPickFrom=['a','b','c']
 //numToPick=2
 //res=>['a','c']
-export const pickRandomItemsFromList = (numToPick, listToPickFrom) => {
+export const pickRandomItemsFromList = (
+  numToPick: number,
+  listToPickFrom: number[]
+) => {
   if (numToPick < listToPickFrom.length) {
     const NeverRepeatIntegers = getNeverRepeatIntegers(
       listToPickFrom.length,
@@ -347,7 +353,7 @@ export const pickRandomItemsFromList = (numToPick, listToPickFrom) => {
   }
 };
 
-const pickRandomSingleFromList = (listToPickFrom) => {
+const pickRandomSingleFromList = (listToPickFrom: string[]) => {
   const num = Math.floor(Math.random() * listToPickFrom.length);
   return listToPickFrom[num];
 };
@@ -360,7 +366,7 @@ export const getRandomWordNumberString = () => {
 
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-export const generateString = (length) => {
+export const generateString = (length: number) => {
   let result = "";
   const charactersLength = characters.length;
   for (let i = 0; i < length; i++) {

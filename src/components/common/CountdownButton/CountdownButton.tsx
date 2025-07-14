@@ -6,13 +6,13 @@ import Button from "@mui/material/Button";
 const sec = 20 * 1000;
 const speed = 100;
 
-const CountdownButton = ({ onClick }) => {
+const CountdownButton = ({ onClick }: { onClick: () => void }) => {
   const [isRunning, setIsRunning] = useState(true);
 
   const [value, setValue] = useState(sec);
-  const valueRef = useRef({});
+  const valueRef = useRef<number>(sec);
   useEffect(() => {
-    let interval = null;
+    let interval = undefined;
 
     if (isRunning) {
       interval = setInterval(() => {
@@ -37,7 +37,7 @@ const CountdownButton = ({ onClick }) => {
   }, [isRunning]);
 
   return (
-    <Button id="countdownbtn" {...props}>{`Продолжить ${Math.round(
+    <Button id="countdownbtn">{`Продолжить ${Math.round(
       value / 1000
     )}`}</Button>
   );

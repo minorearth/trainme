@@ -1,6 +1,8 @@
+import { Page } from "@/types";
+
 export const initials = {
   initialState: {
-    navigator: { page: "courses" },
+    navigator: { page: "courses" as Page },
     taskset: {},
     task: { currTaskId: -1 },
   },

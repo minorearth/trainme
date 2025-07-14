@@ -1,4 +1,4 @@
-export const ObjtoArr = (obj) => {
+export const ObjtoArr = (obj: { [key: string]: any }) => {
   return !obj
     ? []
     : Object.keys(obj).map((key) => {
@@ -8,18 +8,22 @@ export const ObjtoArr = (obj) => {
       });
 };
 
-export const flipObject = (obj) => {
-  const ret = {};
+export const flipObject = (obj: { [key: string]: any }) => {
+  const ret: { [key: string]: any } = {};
   Object.keys(obj).forEach((key) => {
     ret[obj[key]] = key;
   });
   return ret;
 };
 
-export const getSubKeyValues = (obj, subkey) => {
+export const getKeyValues = (obj: { [key: string]: any }) => {
   return Object.keys(obj).map((key) => obj[key]);
 };
 
-export const getKeyBySubKeyValue = (obj, subkey, value) => {
+export const getKeyBySubKeyValue = (
+  obj: { [key: string]: any },
+  subkey: string,
+  value: any
+) => {
   return Object.keys(obj).filter((key) => obj[key][subkey] == value)[0];
 };

@@ -25,7 +25,11 @@ import navigator from "@/components/Navigator/layers/store/navigator";
 import champ from "@/components/champ/layers/store/champ";
 import txtField from "@/components/common/customfield/store";
 import splash from "@/components/common/splash/store";
-import { CHAPTER_DEFAULTS, TASKSET_DEFAULTS } from "@/typesdefaults";
+import {
+  CHAPTER_DEFAULTS,
+  COURSE_DEFAULTS,
+  TASKSET_DEFAULTS,
+} from "@/typesdefaults";
 import { TasksetMode } from "@/types";
 
 export const createChamp = async () => {
@@ -98,7 +102,7 @@ const launchChamp = () => {
   navigator.actions.openLessonStartPage({
     champData: { champid: champ.champid },
     tasksetData: { ...TASKSET_DEFAULTS, tasksetmode: "champ" as TasksetMode },
-    courseData: {},
+    courseData: COURSE_DEFAULTS,
     chapterData: CHAPTER_DEFAULTS,
   });
   updateUserInChamp({
