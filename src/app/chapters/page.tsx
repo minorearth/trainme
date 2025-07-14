@@ -1,21 +1,22 @@
 "use client";
+import Navigator from "@/components/Navigator/navigator";
+import user from "@/userlayers/store/user";
+import { observer } from "mobx-react-lite";
 import { ThemeProvider } from "@mui/material/styles";
 import { useCustomTheme } from "@/app/theme";
 import { CssBaseline } from "@mui/material";
-import SortableList from "@/components/champ/components/ChampUsersList/ChampUsersList";
-import useDashboard from "@/components/champ/hooks/useDashboard";
 
-const Page = ({ params }) => {
+const Page = observer(({}) => {
   const { customTheme } = useCustomTheme();
-  useDashboard({ champid: params.champ });
+
   return (
     <>
       <ThemeProvider theme={customTheme}>
         <CssBaseline />
-        <SortableList />
+        {!!user.userid && <Navigator />}
       </ThemeProvider>
     </>
   );
-};
+});
 
 export default Page;

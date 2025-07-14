@@ -5,7 +5,7 @@ import { CssBaseline } from "@mui/material";
 import DashBoard from "@/components/manager/groupsNreports/dashboard";
 import Box from "@mui/material/Box";
 
-export default function Page({ params }) {
+export default function Page({}) {
   const { customTheme } = useCustomTheme();
   return (
     <ThemeProvider theme={customTheme}>

@@ -1,22 +1,25 @@
 "use client";
-import Navigator from "@/components/Navigator/navigator";
-import user from "@/userlayers/store/user";
-import { observer } from "mobx-react-lite";
 import { ThemeProvider } from "@mui/material/styles";
 import { useCustomTheme } from "@/app/theme";
 import { CssBaseline } from "@mui/material";
+import Joingroup from "@/components/manager/joinGroup/joingroup";
 
-const Page = observer(({ params }) => {
+interface PageProps {
+  params: {
+    joingroup: [groupid: string, manager: string];
+  };
+}
+export default function Page({ params }: PageProps) {
   const { customTheme } = useCustomTheme();
-
   return (
     <>
       <ThemeProvider theme={customTheme}>
         <CssBaseline />
-        {!!user.userid && <Navigator />}
+        <Joingroup
+          groupid={params.joingroup[0]}
+          manager={params.joingroup[1]}
+        />
       </ThemeProvider>
     </>
   );
-});
-
-export default Page;
+}

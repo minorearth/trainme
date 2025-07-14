@@ -49,7 +49,7 @@ import {
 
 import { CHAPTER_DEFAULTS } from "@/typesdefaults";
 
-import { NextRouter } from "next/router";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export const openAllCoursePage = () => {
   setAllCoursePageState();
@@ -192,7 +192,7 @@ export const openTutorial = () => {
   tutorial.show();
 };
 
-export const openLoginPageSignOut = async (router: NextRouter) => {
+export const openLoginPageSignOut = async (router: AppRouterInstance) => {
   await signOut(router);
 };
 

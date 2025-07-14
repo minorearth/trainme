@@ -16,7 +16,7 @@ import {
 //stores
 import user from "@/userlayers/store/user";
 
-import { NextRouter } from "next/router";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { User } from "firebase/auth";
 
 export const signUp = async ({
@@ -46,7 +46,7 @@ export const signIn = async ({
 }: {
   email: string;
   password: string;
-  router: NextRouter;
+  router: AppRouterInstance;
 }) => {
   const uid = await getUidAuth({ email, password });
 
@@ -66,7 +66,7 @@ export const signIn = async ({
   router.push(`/chapters`);
 };
 
-export const signOut = async (router: NextRouter) => {
+export const signOut = async (router: AppRouterInstance) => {
   await signOutUserRep();
   router.push(`/login/`);
 };

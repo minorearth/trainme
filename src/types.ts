@@ -1,4 +1,6 @@
-export interface RawTask {
+import { ChapterObjReport } from "./components/manager/types";
+
+export interface TaskToUpload {
   chapterparentid: string;
   restrictions: {
     maxlines: number;
@@ -18,8 +20,9 @@ export interface RawTask {
   defaultoutput: string[];
   defaultinput: string[];
   id: number;
-  level: number;
 }
+
+export type RawTask = TaskToUpload & { level: number };
 
 export type AllCoursesRawTaskObj = {
   [courseid: string]: RawTaskObj;
@@ -225,3 +228,12 @@ export type FieldType =
   | "email"
   | "password"
   | "name";
+
+export interface CoursesToLoad {
+  [courseid: string]: {
+    chapterFlowNodes: Node[];
+    chapterFlowNodesObj: ChapterObjReport;
+    chapterFlowEdges: Edge[];
+    tasksall: TaskToUpload[];
+  };
+}

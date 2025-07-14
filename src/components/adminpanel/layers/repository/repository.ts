@@ -1,12 +1,18 @@
+import { CourseChapterObjReport } from "@/components/manager/types";
 import {
   setDocInCollectionClient,
   setDocInSubCollectionClient,
 } from "@/db/CA/interface";
+import { Edge, Node, RawTask } from "@/types";
 
 export const uploadCourseChapters = async ({
   chapterFlowNodes,
   chapterFlowEdges,
   courseid,
+}: {
+  chapterFlowNodes: Node[];
+  chapterFlowEdges: Edge[];
+  courseid: string;
 }) => {
   setDocInCollectionClient(
     "chapters",
@@ -18,6 +24,9 @@ export const uploadCourseChapters = async ({
 export const uploadAllCourseTasksView = async ({
   courseid,
   allTasksAndGuidesWithLevels,
+}: {
+  courseid: string;
+  allTasksAndGuidesWithLevels: RawTask[];
 }) => {
   const allTasksNoGuides = allTasksAndGuidesWithLevels.filter(
     (task) => task.tasktype == "task"
@@ -38,13 +47,19 @@ export const uploadChapterTasks = async ({
   courseid,
   chapterid,
   chapterTasks,
+}: {
+  courseid: string;
+  chapterid: string;
+  chapterTasks: RawTask[];
 }) => {
   setDocInSubCollectionClient("newtasks", courseid, "chapters", chapterid, {
     tasks: chapterTasks,
   });
 };
 
-export const uploadCourseChaptersObject = async (chapterCourseObjectModel) => {
+export const uploadCourseChaptersObject = async (
+  chapterCourseObjectModel: CourseChapterObjReport
+) => {
   await setDocInCollectionClient(
     "views",
     chapterCourseObjectModel,

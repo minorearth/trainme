@@ -13,8 +13,14 @@ import {
   getChaptersIdsAndTextBookId,
   getChapterTasks,
 } from "@/components/adminpanel/layers/services/loaderHelpers";
+import {
+  ChapterObjReport,
+  CourseChapterObjReport,
+} from "@/components/manager/types";
+import { CoursesToLoad, Node, Task } from "@/types";
+import { Edge } from "@xyflow/react";
 
-export const load = async (coursesToLoad) => {
+export const load = async (coursesToLoad: CoursesToLoad) => {
   const coursesToLoadIds = Object.keys(coursesToLoad);
   await Promise.all(
     coursesToLoadIds.map(
@@ -24,7 +30,13 @@ export const load = async (coursesToLoad) => {
   await prepareAndUploadCourseChaptersObj({ coursesToLoadIds, coursesToLoad });
 };
 
-const uploadCourse = async ({ courseid, coursesToLoad }) => {
+const uploadCourse = async ({
+  courseid,
+  coursesToLoad,
+}: {
+  courseid: string;
+  coursesToLoad: CoursesToLoad;
+}) => {
   const { chapterFlowNodes, chapterFlowEdges, tasksall } =
     coursesToLoad[courseid];
 
@@ -67,8 +79,11 @@ const uploadCourse = async ({ courseid, coursesToLoad }) => {
 const prepareAndUploadCourseChaptersObj = async ({
   coursesToLoadIds,
   coursesToLoad,
+}: {
+  coursesToLoadIds: string[];
+  coursesToLoad: CoursesToLoad;
 }) => {
-  let chapterCourseObjectModel = {};
+  let chapterCourseObjectModel: CourseChapterObjReport = {};
   coursesToLoadIds.forEach(
     (courseid) =>
       (chapterCourseObjectModel[courseid] =

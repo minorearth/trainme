@@ -13,7 +13,8 @@ import { resetPsw } from "@/userlayers/repository/repositoryAuth";
 import authForm from "@/components/authsteps/layers/store/store";
 import splash from "@/components/common/splash/store";
 import txtField from "@/components/common/customfield/store";
-import { AppRouterInstance } from "next/navigation";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+// import { AppRouterInstance } from "";
 
 export const signInSubmit = async (router: AppRouterInstance) => {
   // event.preventDefault();

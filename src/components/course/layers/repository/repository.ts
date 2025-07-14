@@ -8,7 +8,13 @@ import { encrypt2 } from "@/globals/utils/encryption";
 //utils
 import { extractChapterIdsOnly_admin } from "@/components/course/layers/services/utils";
 
-export const checkCoursePaid = async ({ courseid, uid }) => {
+export const checkCoursePaid = async ({
+  courseid,
+  uid,
+}: {
+  courseid: string;
+  uid: string;
+}) => {
   const coursePaid = await getDataFetch({
     type: "checkcoursepaid",
     data: { courseid, id: uid },
@@ -16,18 +22,22 @@ export const checkCoursePaid = async ({ courseid, uid }) => {
   return coursePaid;
 };
 
-export const fetchFlow = async ({ courseid }) => {
+export const fetchFlow = async ({ courseid }: { courseid: string }) => {
   const data = await getDocDataFromCollectionByIdClient("chapters", courseid);
   const flow = {
-    nodes: data.data.chapterFlowNodes,
-    edges: data.data.chapterFlowEdges,
+    nodes: data.data?.chapterFlowNodes,
+    edges: data.data?.chapterFlowEdges,
   };
   return flow;
 };
 
-export const fetchChapterIds_admin = async ({ courseid }) => {
+export const fetchChapterIds_admin = async ({
+  courseid,
+}: {
+  courseid: string;
+}) => {
   const data = await getDocDataFromCollectionByIdClient("chapters", courseid);
-  return extractChapterIdsOnly_admin(data.data.chapterFlowNodes);
+  return extractChapterIdsOnly_admin(data.data?.chapterFlowNodes);
 };
 
 export const buyChapterCall = async ({
@@ -37,6 +47,13 @@ export const buyChapterCall = async ({
   unlockpts,
   chapterid,
   uid,
+}: {
+  rating: number;
+  paidchapers: string[];
+  courseid: string;
+  unlockpts: number;
+  chapterid: string;
+  uid: string;
 }) => {
   await setDataFetch({
     type: "paychapter",

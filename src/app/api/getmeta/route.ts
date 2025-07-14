@@ -5,7 +5,7 @@ export const revalidate = 0; //revalidate api every 0 second
 
 import { getDocSA, checkCoursePaidSA } from "@/db/SA/firebaseSA";
 
-export async function POST(request) {
+export async function POST(request: Request) {
   try {
     const reqData = await request.json();
     const { type, data } = reqData;

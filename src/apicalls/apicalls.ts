@@ -10,11 +10,11 @@ export const wakeUp = () => {
     .catch((err) => console.error("Ping failed", err));
 };
 
-interface setDataFetch {
+interface DataFetch {
   type: string;
-  data: string;
+  data: Object;
 }
-export const setDataFetch = async (data) => {
+export const setDataFetch = async (data: DataFetch) => {
   wakeUp();
   const res = await new Promise((resolve) => {
     setTimeout(async () => {
@@ -36,7 +36,7 @@ export const setDataFetch = async (data) => {
   return res;
 };
 
-export const getDataFetch = async (data) => {
+export const getDataFetch = async (data: DataFetch) => {
   try {
     const response = await fetch("/api/getmeta", {
       method: "POST",
@@ -58,7 +58,7 @@ export const getDataFetch = async (data) => {
   // Yes, self deployed on google cloud. My solution at the time was to switch to api routes and that worked fine. Recently with the new updates of nextjs, I have tried server actions again and they work fine now.Yes, self deployed on google cloud. My solution at the time was to switch to api routes and that worked fine. Recently with the new updates of nextjs, I have tried server actions again and they work fine now.
 };
 
-export const fetchFile = async (fileUrl) => {
+export const fetchFile = async (fileUrl: string) => {
   try {
     const response = await fetch(fileUrl);
     if (!response.ok) {

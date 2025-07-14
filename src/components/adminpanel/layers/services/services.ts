@@ -26,7 +26,13 @@ export const resetCurrentUser = async () => {
   });
 };
 
-export const resetUser = async ({ courseid, uid }) => {
+export const resetUser = async ({
+  courseid,
+  uid,
+}: {
+  courseid: string;
+  uid: string;
+}) => {
   const data = {
     data: {
       [`courses.${courseid}`]: {
@@ -81,7 +87,7 @@ export const completeAllChaptersCurrentUser = async () => {
   });
 };
 
-export const setMoneyCurrentUser = async (inValue) => {
+export const setMoneyCurrentUser = async (inValue: string) => {
   const courseid = course.state.courseid;
   const data = {
     data: { [`courses.${courseid}.rating`]: Number(inValue) },

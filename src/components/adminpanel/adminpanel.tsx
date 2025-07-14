@@ -15,9 +15,11 @@ import {
 } from "@/components/adminpanel/layers/services/services";
 
 const AdminPanel = () => {
-  const [inValue, setInValue] = useState(5000);
+  const [inValue, setInValue] = useState("5000");
 
-  const handleChange = (e) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setInValue(e.target.value);
   };
 
