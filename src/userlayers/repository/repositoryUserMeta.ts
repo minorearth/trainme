@@ -39,7 +39,10 @@ export const getUserMetaCourseProgress = async ({
 };
 
 export const getUserMetaDataCA = async (uid: string) => {
-  const userMeta = await getDocDataFromCollectionByIdClient("usermeta", uid);
+  const userMeta = await getDocDataFromCollectionByIdClient({
+    collectionName: "usermeta",
+    id: uid,
+  });
   return userMeta.data || {};
 };
 
@@ -71,7 +74,12 @@ export const createNewUserMeta = async ({
     paidcourses,
     courses,
   };
-  await setDocInCollection(db, stn.collections.USER_META, data, userId);
+  await setDocInCollection({
+    db,
+    collectionName: stn.collections.USER_META,
+    data,
+    id: userId,
+  });
 };
 
 export const getUserMeta = async (uid: string) => {
