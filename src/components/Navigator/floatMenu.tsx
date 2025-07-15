@@ -41,7 +41,7 @@ const FloatMenu = () => {
         action={() => {
           navigator.actions.openLoginPageSignOut(router);
         }}
-        position={{ top: TOP, right: RIGHT }}
+        style={{ top: TOP, right: RIGHT }}
       />
 
       {navigator.state.page == "champ" && (
@@ -49,7 +49,7 @@ const FloatMenu = () => {
           tooltip={"На главную"}
           icon="home"
           action={() => navigator.actions.openAllCoursePage()}
-          position={{ top: TOP, right: RIGHT + stn.ui.FLOAT_BTN_PADDING }}
+          style={{ top: TOP, right: RIGHT + stn.ui.FLOAT_BTN_PADDING }}
         />
       )}
     </Box>

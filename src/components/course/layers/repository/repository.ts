@@ -23,7 +23,10 @@ export const checkCoursePaid = async ({
 };
 
 export const fetchFlow = async ({ courseid }: { courseid: string }) => {
-  const data = await getDocDataFromCollectionByIdClient("chapters", courseid);
+  const data = await getDocDataFromCollectionByIdClient({
+    collectionName: "chapters",
+    id: courseid,
+  });
   const flow = {
     nodes: data.data?.chapterFlowNodes,
     edges: data.data?.chapterFlowEdges,
@@ -36,7 +39,10 @@ export const fetchChapterIds_admin = async ({
 }: {
   courseid: string;
 }) => {
-  const data = await getDocDataFromCollectionByIdClient("chapters", courseid);
+  const data = await getDocDataFromCollectionByIdClient({
+    collectionName: "chapters",
+    id: courseid,
+  });
   return extractChapterIdsOnly_admin(data.data?.chapterFlowNodes);
 };
 

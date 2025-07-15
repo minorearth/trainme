@@ -30,7 +30,7 @@ import {
   COURSE_DEFAULTS,
   TASKSET_DEFAULTS,
 } from "@/typesdefaults";
-import { TasksetMode } from "@/types";
+import { Champ, TasksetMode } from "@/types";
 
 export const createChamp = async () => {
   const tasks = await getRandomTasksForChamp({
@@ -89,7 +89,7 @@ export const startChamp = async (champid: string) => {
   await setChampStarted({ champid });
 };
 
-const captureAndlaunchChamp = (champdoc: any) => {
+const captureAndlaunchChamp = (champdoc: Champ) => {
   if (
     champdoc.status == "started" &&
     champdoc.users[user.userid]?.persstatus == "joined"

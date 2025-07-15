@@ -1,6 +1,13 @@
 import React from "react";
 
 // https://www.svgrepo.com/svg/454517/animal-dog-domestic-3
+declare const require: {
+  context(
+    directory: string,
+    useSubdirectories?: boolean,
+    regExp?: RegExp
+  ): { keys: () => string[]; (id: string): any };
+};
 
 const avatarsContext = require.context("./avatars", false, /\.jsx$/);
 const avatarModules = avatarsContext.keys().map(avatarsContext);

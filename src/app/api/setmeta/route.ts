@@ -5,9 +5,13 @@ export const revalidate = 1; //revalidate api every 1 second
 
 import { updateDocSA } from "@/db/SA/firebaseSA";
 
+interface reqData {
+  type: string;
+  data: { id: string };
+}
 export async function POST(request: Request) {
   try {
-    const reqData = await request.json();
+    const reqData: reqData = await request.json();
     const { type, data } = reqData;
     let res = "error";
     if (type == "paychapter" || type == "setusermetadata") {

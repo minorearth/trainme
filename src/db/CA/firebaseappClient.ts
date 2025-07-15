@@ -1,7 +1,6 @@
 "use client";
 import { initializeApp } from "firebase/app";
 import { initializeFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import user from "@/userlayers/store/user";
 
@@ -19,10 +18,10 @@ export const app = initializeApp(firebaseConfig);
 
 export const db = initializeFirestore(app, {
   experimentalForceLongPolling: true,
-  useFetchStreams: false,
+  //TS error:
+  // useFetchStreams: false,
 });
 
-// export const storage = getStorage(app);
 export const auth = getAuth(app);
 
 onAuthStateChanged(auth, (fbuser) => {

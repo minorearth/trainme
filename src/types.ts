@@ -210,6 +210,10 @@ export interface Edge {
   source: string;
 }
 
+export interface Champ {
+  status: string;
+  users: { [userid: string]: Champuser };
+}
 export interface Champuser {
   name: string;
   pts: number;

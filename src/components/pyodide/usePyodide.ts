@@ -7,6 +7,8 @@ import pyodide from "@/components/pyodide/pyodide";
 
 const PYODIDE_VERSION = "0.26.4";
 
+// type loadPyodide  = (options: { indexURL: string }) => Promise<any>;
+
 function usePyodide() {
   const pyodideScriptStatus = useScript(
     stn.mode.pyodideCDN
@@ -17,7 +19,10 @@ function usePyodide() {
   useEffect(() => {
     if (pyodideScriptStatus === "ready" && !pyodide.pyodide) {
       (async () => {
-        const loadedPyodide = await globalThis.loadPyodide({
+        const loadPyodide = (globalThis as any).loadPyodide as (options: {
+          indexURL: string;
+        }) => Promise<any>;
+        const loadedPyodide = await loadPyodide({
           indexURL: stn.mode.pyodideCDN
             ? `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/`
             : `/pyodide/`,

@@ -7,7 +7,7 @@ import {
   updateDocByidClient,
   setDocInCollectionClient,
 } from "@/db/CA/interface";
-import { Champuser, RawTask } from "@/types";
+import { Champ, Champuser, RawTask } from "@/types";
 
 export const updateChampPoints = async ({
   pts,
@@ -18,7 +18,7 @@ export const updateChampPoints = async ({
   champid: string;
   userid: string;
 }) => {
-  await updateDocByidClient("champs", champid, {
+  await updateDocByidClient<Champ>("champs", champid, {
     [`users.${userid}.pts`]: pts,
   });
 };
@@ -39,7 +39,10 @@ export const saveChampUserTaskLog = ({
 };
 
 export const getChampTasksDB = async ({ champid }: { champid: string }) => {
-  const allTasks = await getDocDataFromCollectionByIdClient("champs", champid);
+  const allTasks = await getDocDataFromCollectionByIdClient({
+    collectionName: "champs",
+    id: champid,
+  });
   return allTasks.data?.tasks || [];
 };
 
@@ -50,11 +53,11 @@ export const subscribeOnChamp = async ({
   champid: string;
   action: (champdoc: any) => void;
 }) => {
-  const unsubscribe = await getDocFromCollectionByIdRealtimeClient(
-    stn.collections.CHAMPS,
-    champid,
-    action
-  );
+  const unsubscribe = await getDocFromCollectionByIdRealtimeClient<Champ>({
+    collectionName: stn.collections.CHAMPS,
+    id: champid,
+    onChangeAction: action,
+  });
   //TODO: (later)test and to Constants
   setInterval(() => {
     unsubscribe();
@@ -83,10 +86,10 @@ export const getUserChampStatus = async ({
   champid: string;
   userid: string;
 }) => {
-  const champData = await getDocDataFromCollectionByIdClient(
-    stn.collections.CHAMPS,
-    champid
-  );
+  const champData = await getDocDataFromCollectionByIdClient({
+    collectionName: stn.collections.CHAMPS,
+    id: champid,
+  });
   if (!champData.data?.users[userid]?.persstatus) {
     return "undefined";
   } else {
@@ -101,11 +104,11 @@ export const createNewChamp = async ({
   champid: string;
   tasks: RawTask[];
 }) => {
-  await setDocInCollectionClient(
-    stn.collections.CHAMPS,
-    { tasks, users: [], status: "created" },
-    champid
-  );
+  await setDocInCollectionClient({
+    collectionName: stn.collections.CHAMPS,
+    data: { tasks, users: [], status: "created" },
+    id: champid,
+  });
 };
 
 export const setChampStarted = async ({ champid }: { champid: string }) => {

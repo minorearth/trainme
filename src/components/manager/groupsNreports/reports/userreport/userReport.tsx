@@ -14,7 +14,6 @@ import CodeViewer from "@/components/manager/groupsNreports/reports/userreport/c
 import stat from "@/components/manager/groupsNreports/store/stat";
 
 const UserReport = observer(() => {
-  console.log("stat.userstat", toJS(stat.userstat));
   if (stat.userstatvisible) {
     return (
       <Box

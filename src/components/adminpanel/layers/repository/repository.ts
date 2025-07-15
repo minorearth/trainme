@@ -14,11 +14,11 @@ export const uploadCourseChapters = async ({
   chapterFlowEdges: Edge[];
   courseid: string;
 }) => {
-  setDocInCollectionClient(
-    "chapters",
-    { chapterFlowNodes, chapterFlowEdges },
-    courseid
-  );
+  setDocInCollectionClient({
+    collectionName: "chapters",
+    data: { chapterFlowNodes, chapterFlowEdges },
+    id: courseid,
+  });
 };
 
 export const uploadAllCourseTasksView = async ({
@@ -31,16 +31,20 @@ export const uploadAllCourseTasksView = async ({
   const allTasksNoGuides = allTasksAndGuidesWithLevels.filter(
     (task) => task.tasktype == "task"
   );
-  await setDocInCollectionClient("newtasks", {}, courseid);
-  await setDocInSubCollectionClient(
-    "newtasks",
-    courseid,
-    "chapters",
-    "alltasks",
-    {
+  await setDocInCollectionClient({
+    collectionName: "newtasks",
+    data: {},
+    id: courseid,
+  });
+  await setDocInSubCollectionClient({
+    collectionName1: "newtasks",
+    id1: courseid,
+    collectionName2: "chapters",
+    id2: "alltasks",
+    data: {
       tasks: allTasksNoGuides,
-    }
-  );
+    },
+  });
 };
 
 export const uploadChapterTasks = async ({
@@ -52,17 +56,23 @@ export const uploadChapterTasks = async ({
   chapterid: string;
   chapterTasks: RawTask[];
 }) => {
-  setDocInSubCollectionClient("newtasks", courseid, "chapters", chapterid, {
-    tasks: chapterTasks,
+  setDocInSubCollectionClient({
+    collectionName1: "newtasks",
+    id1: courseid,
+    collectionName2: "chapters",
+    id2: chapterid,
+    data: {
+      tasks: chapterTasks,
+    },
   });
 };
 
 export const uploadCourseChaptersObject = async (
   chapterCourseObjectModel: CourseChapterObjReport
 ) => {
-  await setDocInCollectionClient(
-    "views",
-    chapterCourseObjectModel,
-    "chaptersobject"
-  );
+  await setDocInCollectionClient({
+    collectionName: "views",
+    data: chapterCourseObjectModel,
+    id: "chaptersobject",
+  });
 };

@@ -59,7 +59,7 @@ const MonacoEd = observer(() => {
         theme={"dark"}
         options={{ ...EditorOptions }}
         language="python"
-        onChange={(value, e) => task.handleChangeMonacoContent(value)}
+        onChange={(value) => task.handleChangeMonacoContent(value || "")}
         onMount={(editor, monaco) =>
           task.handleEditorDidMount({
             editor,

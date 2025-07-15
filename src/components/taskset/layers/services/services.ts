@@ -94,7 +94,7 @@ export const getTasks = async ({
     return { tasks: tasksFetched, tasksuuids };
   }
   if (tasksetmode == "addhoc" || tasksetmode == "newtopic") {
-    const tasks = await getAllTasksFromChapter(chapterid, courseid);
+    const tasks = await getAllTasksFromChapter({ chapterid, courseid });
     if (taskstage == "recap" || taskstage == "recap_suspended") {
       const recapTasks = await supplyFilesAndTransform(
         getTasksRecap({ recapTasksIds, tasks })

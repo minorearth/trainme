@@ -20,13 +20,13 @@ export const saveSnapshot = ({
   groupid: string;
   userMetaObj: UsersMetaReport;
 }) => {
-  setDocInSubCollectionClient(
-    "snapshots",
-    userid,
-    "snapshot",
-    groupid,
-    userMetaObj
-  );
+  setDocInSubCollectionClient({
+    collectionName1: "snapshots",
+    id1: userid,
+    collectionName2: "snapshot",
+    id2: groupid,
+    data: userMetaObj,
+  });
   // setDocInCollectionClient("snapshots", userMetaObj, `${userid}_${groupid}`);
 };
 
@@ -37,12 +37,12 @@ export const getSnapShot = async ({
   groupid: string;
   userid: string;
 }) => {
-  const snapshot = await getDocDataFromSubCollectionByIdClient(
-    "snapshots",
-    userid,
-    "snapshot",
-    groupid
-  );
+  const snapshot = await getDocDataFromSubCollectionByIdClient({
+    collectionName1: "snapshots",
+    id1: userid,
+    collectionName2: "snapshot",
+    id2: groupid,
+  });
   // const snapshot = await getDocDataFromCollectionByIdClient(
   //   "snapshots",
   //   `${userid}_${groupid}`
@@ -53,6 +53,9 @@ export const getSnapShot = async ({
 export const getUsersMetaObj = async (
   uids: string[]
 ): Promise<UsersMetaReport> => {
-  const usersMeta: UserMeta[] = await getMultipleDocsClient("usermeta", uids);
+  const usersMeta: UserMeta[] = await getMultipleDocsClient({
+    collectionName: "usermeta",
+    ids: uids,
+  });
   return extractDataNeededFromStat(usersMeta);
 };

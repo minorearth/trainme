@@ -4,7 +4,13 @@ import FormLabel from "@mui/material/FormLabel";
 import FormGroup from "@mui/material/FormGroup";
 import { useTheme } from "@mui/material";
 
-export const Panel = ({ children, label }) => {
+export const Panel = ({
+  children,
+  label,
+}: {
+  children: React.ReactNode;
+  label: string;
+}) => {
   const theme = useTheme();
 
   return (

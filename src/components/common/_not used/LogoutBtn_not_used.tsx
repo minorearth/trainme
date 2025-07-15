@@ -15,7 +15,7 @@ const LogoutBtn = () => {
         }}
       >
         <div className="sign">
-          <RiLogoutCircleRLine size="large" sx={{}} />
+          <RiLogoutCircleRLine size="large" />
         </div>
         <div className="text">Logout</div>
       </button>

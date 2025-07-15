@@ -1,11 +1,11 @@
 import * as React from "react";
 
-const SvgIcon = (props) => (
+const SvgIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="300"
     height="300"
-    ariaHidden="true"
+    aria-hidden="true"
     className="iconify iconify--noto"
     viewBox="0 0 128 128"
   >

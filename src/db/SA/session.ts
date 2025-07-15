@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 
-export async function login(user) {
+export async function login(user: string) {
   const expires = new Date(Date.now() + 60 * 60 * 20 * 1000);
   // const expires = new Date(Date.now() + 10000);
   cookies().set("session", user, { expires, httpOnly: true });

@@ -1,8 +1,11 @@
-export const EditorOptions = {
+import { editor } from "monaco-editor";
+
+export const EditorOptions: editor.IStandaloneEditorConstructionOptions = {
   automaticLayout: true,
   contextmenu: false,
   dragAndDrop: false,
-  alwaysConsumeMouseWheel: false,
+  //TODO:smth in types
+  // alwaysConsumeMouseWheel: false,
   dropIntoEditor: {
     enabled: false,
   },
@@ -17,14 +20,15 @@ export const EditorOptions = {
   folding: false,
 
   renderLineHighlight: "none",
-  renderIndentGuides: false,
+  //TODO:smth in types
+  // renderIndentGuides: false,
   overviewRulerLanes: 0,
   minimap: {
     enabled: false,
   },
   padding: {
     top: 8,
-    button: 8,
+    bottom: 8,
   },
   scrollbar: {
     verticalScrollbarSize: 9,
@@ -35,6 +39,6 @@ export const EditorOptions = {
   smoothScrolling: true,
   tabSize: 4,
   quickSuggestions: true,
-  wordBasedSuggestions: true,
+  wordBasedSuggestions: "currentDocument",
   wordWrap: "on",
 };

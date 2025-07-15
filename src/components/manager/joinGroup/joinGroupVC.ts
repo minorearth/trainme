@@ -9,7 +9,17 @@ import user from "@/userlayers/store/user";
 const useJoinGroup = () => {
   const [inviteAccepted, setInviteAccepted] = useState(false);
 
-  const joinGroup = async ({ groupid, secondName, firstName, manager }) => {
+  const joinGroup = async ({
+    groupid,
+    secondName,
+    firstName,
+    manager,
+  }: {
+    groupid: string;
+    secondName: string;
+    firstName: string;
+    manager: string;
+  }) => {
     try {
       await addUserToGroup({
         groupid,

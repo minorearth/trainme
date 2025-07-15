@@ -15,7 +15,7 @@ const useApp = () => {
     const startApp = async () => {
       startListeners();
       await loadPTrek();
-      navigator.setDataloaded(true);
+      navigator.setDataloaded();
     };
     startApp();
 

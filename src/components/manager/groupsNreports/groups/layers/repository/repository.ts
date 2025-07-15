@@ -16,25 +16,36 @@ import { Group, GroupObj, GroupUserObjAttrs } from "@/components/manager/types";
 import { CourseChapterObjReport } from "@/components/manager/types";
 
 export const getGroupsArr = async (userid: string) => {
-  const groups = await getDocDataFromCollectionByIdClient("groups", userid);
+  const groups = await getDocDataFromCollectionByIdClient({
+    collectionName: "groups",
+    id: userid,
+  });
   const data = groupsObjectToArr(groups.data as GroupObj);
   return data;
 };
 
 export const getChaptersObjdata = async (): Promise<CourseChapterObjReport> => {
-  const chaptersObj = await getDocDataFromCollectionByIdClient(
-    "views",
-    "chaptersobject"
-  );
+  const chaptersObj = await getDocDataFromCollectionByIdClient({
+    collectionName: "views",
+    id: "chaptersobject",
+  });
   return chaptersObj.data || {};
 };
 
 export const addNewGroupDB = async (data: Group[], userid: string) => {
-  await setDocInCollectionClient("groups", groupsArrToObject(data), userid);
+  await setDocInCollectionClient({
+    collectionName: "groups",
+    data: groupsArrToObject(data),
+    id: userid,
+  });
 };
 
 export const updateNodeLabelDB = async (data: Group[], userid: string) => {
-  await setDocInCollectionClient("groups", groupsArrToObject(data), userid);
+  await setDocInCollectionClient({
+    collectionName: "groups",
+    data: groupsArrToObject(data),
+    id: userid,
+  });
 };
 
 export const addUserToGroup = async ({
@@ -56,7 +67,7 @@ export const addUserToGroup = async ({
     isFolder: false,
     children: [],
   };
-  await updateDocByidClient("groups", manager, {
+  await updateDocByidClient<Group>("groups", manager, {
     [`${groupid}.children.${groupid + uid}`]: user,
   });
 };

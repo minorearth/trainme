@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/Navigator/layers/store/navigator.ts", "src/components/champ/layers/services/servicesHelpers.ts", "src/components/champ/components/CardUser.tsx", "src/components/champ/components/steps/avatarStep.js", "src/components/common/animations/lottie/getLottie.ts", "src/components/manager/groupsNreports/store/stat.ts", "src/components/course/course.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/Navigator/layers/store/navigator.ts", "src/components/champ/layers/services/servicesHelpers.ts", "src/components/champ/components/CardUser.tsx", "src/components/champ/components/steps/avatarStep.tsx", "src/components/common/animations/lottie/getLottie.ts", "src/components/manager/groupsNreports/store/stat.ts", "src/components/course/course.tsx", "src/components/manager/groupsNreports/reports/pivotreport/layers/repository/ETL.js", "src/components/manager/joinGroup/joingroup.jsx", "src/app/admin/data/chaptersFlowData.js"],
   "exclude": ["node_modules"]
 }
