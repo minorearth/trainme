@@ -128,7 +128,7 @@ const getColumns = (chapters: ChapterObjReport) => {
     }))
     .sort((a, b) => a.order - b.order);
   cols = [
-    { header: "Имя", accessor: "col0", order: -1, maxcoins: -1, title: "" },
+    { header: "Имя", accessor: "col0", order: -1, maxcoins: "", title: "" },
     ...cols,
   ];
   return cols;

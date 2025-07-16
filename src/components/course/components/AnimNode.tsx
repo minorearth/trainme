@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie.js";
+import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
 import { NodeData } from "@/types";
 
 const AnimNode = memo(({ data }: { data: NodeData }) => {

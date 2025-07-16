@@ -10,11 +10,11 @@ export const wakeUp = () => {
     .catch((err) => console.error("Ping failed", err));
 };
 
-interface DataFetch {
+interface setDataFetch {
   type: string;
-  data: Object;
+  data: string;
 }
-export const setDataFetch = async (data: DataFetch) => {
+export const setDataFetch = async (data: setDataFetch) => {
   wakeUp();
   const res = await new Promise((resolve) => {
     setTimeout(async () => {
@@ -36,7 +36,12 @@ export const setDataFetch = async (data: DataFetch) => {
   return res;
 };
 
-export const getDataFetch = async (data: DataFetch) => {
+interface getDataFetch {
+  type: string;
+  data: Object;
+}
+
+export const getDataFetch = async (data: getDataFetch) => {
   try {
     const response = await fetch("/api/getmeta", {
       method: "POST",

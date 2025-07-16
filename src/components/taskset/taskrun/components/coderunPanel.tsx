@@ -41,7 +41,10 @@ const CodeRunPanel = observer(() => {
           disabled={task.executing}
           variant="outlined"
         >
-          <AnimationLottie height={"30px"} width={"30px"} name={"coins"} />
+          <AnimationLottie
+            style={{ height: "30px", width: "30px" }}
+            name={"coins"}
+          />
           Проверить!
         </Button>
       )}
@@ -73,7 +76,7 @@ const CodeRunPanel = observer(() => {
           onClick={() => {
             taskset.actions.errorCountDownPressed();
           }}
-          variant="outlined"
+          // variant="outlined"
         />
       )}
 

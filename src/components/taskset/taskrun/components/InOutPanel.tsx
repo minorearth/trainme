@@ -10,7 +10,9 @@ import task from "@/components/taskset/taskrun/layers/store/task";
 import { observer } from "mobx-react-lite";
 
 const InOutPanel = observer(() => {
-  const handleChange = (e: Event) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     task.setInput(e.target.value);
   };
 

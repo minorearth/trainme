@@ -20,6 +20,7 @@ export const addNewGroup = () => {
       label: "Новая группа",
       children: [],
       isFolder: true,
+      uid: "",
     },
   ];
   stat.setGroupData(data);
@@ -49,19 +50,19 @@ const updateNodeLabel = ({
   nodes: Group[];
   id: string;
   newLabel: string;
-}): Group[] | GroupUser[] => {
+}): Group[] => {
   return nodes.map((node) => {
     if (node.id === id) {
       return { ...node, label: newLabel };
     }
     if (node.children.length != 0) {
       return {
-        ...node,
+        ...(node as Group),
         children: updateNodeLabel({
           nodes: node.children,
           id,
           newLabel,
-        }) as GroupUser[],
+        }),
       };
     }
     return node;

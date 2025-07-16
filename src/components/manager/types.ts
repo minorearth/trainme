@@ -45,7 +45,7 @@ export interface CoursePivotReport {
     header: string;
     accessor: string;
     order: number;
-    maxcoins: number;
+    maxcoins: number | string;
     title: string;
   }[];
 }
@@ -55,9 +55,10 @@ export interface Group {
   label: string;
   isFolder: boolean;
   children: GroupUser[];
+  uid: string;
 }
 
-export type GroupUser = Group & { uid: string };
+export type GroupUser = Group;
 
 export type UserReport = Pick<Group, "id" | "label"> & {
   order: number;

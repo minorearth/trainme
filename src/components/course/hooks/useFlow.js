@@ -13,8 +13,8 @@ import "@xyflow/react/dist/base.css";
 import { reaction } from "mobx";
 
 //components
-import TurboNode from "../components/TurboNode.js";
-import TurboEdge from "../components/TurboEdge.js";
+import TurboNode from "../components/TurboNode";
+import TurboEdge from "../components/TurboEdge";
 import AnimNode from "../components/AnimNode";
 
 // stores

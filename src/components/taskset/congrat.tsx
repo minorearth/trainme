@@ -29,7 +29,10 @@ const CongratPage = observer(() => {
       }}
     >
       {taskset.state.success && (
-        <AnimationLottie width={"700px"} height={"700px"} name={"success"} />
+        <AnimationLottie
+          style={{ height: "700px", width: "700px" }}
+          name={"success"}
+        />
       )}
       <Box sx={{}}></Box>
       {taskset.state.pts != 0 && (

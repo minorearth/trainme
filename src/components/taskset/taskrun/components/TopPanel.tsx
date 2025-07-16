@@ -34,7 +34,10 @@ const TopPanel = observer(() => {
             justifyContent: "center",
           }}
         >
-          <AnimationLottie height={"80px"} width={"80px"} name={"sheep"} />
+          <AnimationLottie
+            style={{ height: "80px", width: "80px" }}
+            name={"sheep"}
+          />
           <LinearProgressWithLabel
             value={((task.currTaskId + 1) / taskset.tasknum) * 100}
             label={`${task.currTaskId + 1}\\${taskset.tasknum}`}
@@ -50,7 +53,10 @@ const TopPanel = observer(() => {
             justifyContent: "center",
           }}
         >
-          <AnimationLottie height={"50px"} width={"50px"} name={"coins"} />
+          <AnimationLottie
+            style={{ height: "50px", width: "50px" }}
+            name={"coins"}
+          />
           <Typography
             variant="body2"
             sx={{ color: "text.secondary", fontSize: 22 }}
@@ -83,7 +89,7 @@ const TopPanel = observer(() => {
               />
             </Tooltip>
           </IconButtonNoRipple>
-          <DLSwitch />
+          <DLSwitch sx={{}} />
         </Box>
       </Grid>
     </Grid>

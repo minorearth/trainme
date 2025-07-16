@@ -8,7 +8,7 @@ export const Panel = ({
   children,
   label,
 }: {
-  children: any;
+  children: React.ReactNode;
   label: string;
 }) => {
   const theme = useTheme();

@@ -74,11 +74,21 @@ class task {
   }
 
   handleEditorDidMount({ editor, monaco, darkmode }: HandleEditorDidMount) {
+    //     const { mode, setMode } = useColorScheme();
+
+    // if (!mode) {
+    //   return null;
+    // }
+
+    // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //   const mode = event.target.checked ? "dark" : "light";
+    //   setMode(mode);
+    //   task.setTheme(mode == "dark");
+    // };
     this.monacoRef.current = monaco;
     this.editorRef.current = editor;
     this.setEditorCode(this.code);
     this.defineTheme();
-    this.setTheme(true);
   }
 
   defineTheme() {

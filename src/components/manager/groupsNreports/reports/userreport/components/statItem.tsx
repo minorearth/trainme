@@ -54,8 +54,7 @@ const CustomStatItem = React.forwardRef(function CustomStatItem(
           </TreeItemIconContainer>
           <CustomLabel
             {...getLabelProps()}
-            toggleItemEditing={interactions.toggleItemEditing}
-            // isGroup={item.isFolder}
+            // toggleItemEditing={interactions.toggleItemEditing}
             showCode={() => stat.actions.showCode(item.code)}
             type={item.type}
           />
@@ -67,13 +66,16 @@ const CustomStatItem = React.forwardRef(function CustomStatItem(
 });
 
 function CustomLabel({
-  editing,
   editable,
   children,
-  toggleItemEditing,
   showCode,
   type,
   ...other
+}: {
+  editable: boolean;
+  children: React.ReactNode;
+  showCode: () => void;
+  type: string;
 }) {
   return (
     <TreeItemLabel

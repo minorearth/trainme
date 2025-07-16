@@ -10,7 +10,7 @@ import { ReactFlowProvider } from "@xyflow/react";
 
 //hooks
 import useApp from "./hooks/loadApp";
-import usePyodide from "@/components/pyodide/usePyodide.js";
+import usePyodide from "@/components/pyodide/usePyodide";
 
 //stores
 

@@ -1,4 +1,4 @@
-import { Group, GroupObj } from "@/types";
+import { Group, GroupObj } from "@/components/manager/types";
 
 export const groupsObjectToArr = (data: GroupObj) => {
   const arr = Object.keys(data)
@@ -6,6 +6,7 @@ export const groupsObjectToArr = (data: GroupObj) => {
       id: groupkey,
       label: data[groupkey].label,
       isFolder: data[groupkey].isFolder,
+      uid: "",
       children: Object.keys(data[groupkey].children)
         .map((userkey) => ({
           id: userkey,

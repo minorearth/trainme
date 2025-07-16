@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import countdownbutton from "@/components/common/CountdownButton/store";
 import Button from "@mui/material/Button";
 
 //TODO: (later) to constants
@@ -37,9 +36,11 @@ const CountdownButton = ({ onClick }: { onClick: () => void }) => {
   }, [isRunning]);
 
   return (
-    <Button id="countdownbtn">{`Продолжить ${Math.round(
-      value / 1000
-    )}`}</Button>
+    <Button
+      onClick={() => onClick()}
+      variant="outlined"
+      id="countdownbtn"
+    >{`Продолжить ${Math.round(value / 1000)}`}</Button>
   );
 };
 

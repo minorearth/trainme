@@ -103,7 +103,7 @@ const FlowPanel = observer(() => {
             />
           </Tooltip>
         </IconButtonNoRipple>
-        <DLSwitch />
+        <DLSwitch sx={{}} />
       </Paper>
     </Panel>
   );

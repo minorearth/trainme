@@ -14,7 +14,7 @@ import { observer } from "mobx-react-lite";
 import "./css/styles.css";
 
 //components
-import FlowPanel from "./components/FlowPanel.js";
+import FlowPanel from "./components/FlowPanel";
 
 //hooks
 import useFlow from "./hooks/useFlow";

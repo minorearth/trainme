@@ -7,7 +7,7 @@ import ArrowCircleDownOutlinedIcon from "@mui/icons-material/ArrowCircleDownOutl
 import { GoDash } from "react-icons/go";
 
 //components
-import { avatars } from "@/components/champ/components/avatar/avatarsAll.js";
+import { avatars } from "@/components/champ/components/avatar/avatarsAll";
 import { Champuser } from "@/types";
 
 const UserCard = ({ user }: { user: Champuser }) => {

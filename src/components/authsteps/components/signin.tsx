@@ -28,7 +28,7 @@ const SignIn = observer(() => {
     <Box
       component="form"
       noValidate
-      onSubmit={() => signInSubmit(router)}
+      onSubmit={(event) => signInSubmit(event, router)}
       sx={{
         display: "flex",
         flexDirection: "column",

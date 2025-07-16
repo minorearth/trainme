@@ -7,7 +7,7 @@ import { updateDocSA } from "@/db/SA/firebaseSA";
 
 interface reqData {
   type: string;
-  data: { id: string };
+  data: string;
 }
 export async function POST(request: Request) {
   try {

@@ -128,6 +128,7 @@ export const prevTaskNoPts_admin = () => {
 };
 
 export const errorCountDownPressed = async () => {
+  console.log("Im.hehe");
   task.editorRef.current?.setValue("");
   countdownbutton.hideButton();
   task.hideInfo();

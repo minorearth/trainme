@@ -16,8 +16,11 @@ import txtField from "@/components/common/customfield/store";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 // import { AppRouterInstance } from "";
 
-export const signInSubmit = async (router: AppRouterInstance) => {
-  // event.preventDefault();
+export const signInSubmit = async (
+  event: React.FormEvent<HTMLFormElement>,
+  router: AppRouterInstance
+) => {
+  event.preventDefault();
   if (txtField.validate(["email", "password"])) {
     splash.setShowProgress();
     cleanUpCSP();

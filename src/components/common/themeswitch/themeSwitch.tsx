@@ -1,10 +1,12 @@
 "use client";
-import { styled } from "@mui/material/styles";
+import { styled, SxProps } from "@mui/material/styles";
 import { useColorScheme } from "@mui/material/styles";
 import Switch from "@mui/material/Switch";
 
 //stores
 import task from "@/components/taskset/taskrun/layers/store/task";
+import { useEffect } from "react";
+import { observer } from "mobx-react-lite";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -62,14 +64,19 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default function DLSwitch({ sx = {} }) {
+const DLSwitch = observer(({ sx }: { sx: SxProps }) => {
   const { mode, setMode } = useColorScheme();
+
+  useEffect(() => {
+    console.log("mode", mode);
+    task.setTheme(mode == "dark");
+  }, [task.editorRef.current]);
 
   if (!mode) {
     return null;
   }
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const mode = event.target.checked ? "dark" : "light";
     setMode(mode);
     task.setTheme(mode == "dark");
@@ -82,4 +89,6 @@ export default function DLSwitch({ sx = {} }) {
       sx={{ ...sx, m: 1, marginLeft: "0px" }}
     />
   );
-}
+});
+
+export default DLSwitch;

@@ -15,7 +15,10 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import CheckIcon from "@mui/icons-material/Check";
 import PivotTableChartOutlinedIcon from "@mui/icons-material/PivotTableChartOutlined";
-import { useTreeItem } from "@mui/x-tree-view/useTreeItem";
+import {
+  useTreeItem,
+  UseTreeItemParameters,
+} from "@mui/x-tree-view/useTreeItem";
 import {
   TreeItemContent,
   TreeItemRoot,
@@ -27,12 +30,14 @@ import { TreeItemIcon } from "@mui/x-tree-view/TreeItemIcon";
 import { TreeItemProvider } from "@mui/x-tree-view/TreeItemProvider";
 import { TreeItemLabelInput } from "@mui/x-tree-view/TreeItemLabelInput";
 import stat from "@/components/manager/groupsNreports/store/stat";
+import { Group, GroupUser } from "@/components/manager/types";
 
 const CustomTreeItem = React.forwardRef(function CustomTreeItem(
-  { id, itemId, label, disabled, children },
-  ref
+  props: UseTreeItemParameters,
+  ref: React.Ref<HTMLLIElement>
 ) {
-  const item = useTreeItemModel(itemId);
+  const { id, itemId, label, disabled, children } = props;
+  const item = useTreeItemModel<Group>(itemId);
 
   const {
     getContextProviderProps,
@@ -60,16 +65,18 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
           {status.editing ? (
             <CustomLabelInput
               {...getLabelInputProps()}
-              handleSaveItemLabel={() => {}}
+              handleCancelItemLabelEditing={() => {}}
             />
           ) : (
             <CustomLabel
               {...getLabelProps()}
-              hasChildren={children.length != 0}
+              hasChildren={React.Children.count(children) > 0}
+              // hasChildren={children && children.length != 0}
+
               copyGroupLink={() => stat.actions.copyGroupLink(itemId)}
               toggleItemEditing={interactions.toggleItemEditing}
-              isGroup={item.isFolder}
-              showUserMeta={() => stat.actions.showUserReport(item.uid)}
+              isGroup={item?.isFolder || false}
+              showUserMeta={() => stat.actions.showUserReport(item?.uid || "")}
               showReport={() => {
                 stat.setGroupSelected(itemId);
                 stat.actions.showReport(itemId);
@@ -84,17 +91,24 @@ const CustomTreeItem = React.forwardRef(function CustomTreeItem(
 });
 
 function CustomLabel({
-  editing,
   editable,
   children,
   toggleItemEditing,
   isGroup,
-  handleSaveItemLabel,
   copyGroupLink,
   showUserMeta,
   showReport,
   hasChildren,
   ...other
+}: {
+  editable: boolean;
+  children: React.ReactNode;
+  toggleItemEditing: () => void;
+  isGroup: boolean;
+  copyGroupLink: () => void;
+  showUserMeta: () => void;
+  showReport: () => void;
+  hasChildren: boolean;
 }) {
   return (
     <TreeItemLabel
@@ -150,8 +164,14 @@ function CustomLabel({
   );
 }
 
-function CustomLabelInput(props) {
-  const { handleCancelItemLabelEditing, value, ...other } = props;
+function CustomLabelInput({
+  handleCancelItemLabelEditing,
+  value,
+  ...other
+}: {
+  handleCancelItemLabelEditing: () => void;
+  value: string;
+}) {
   const theme = useTheme();
 
   return (
