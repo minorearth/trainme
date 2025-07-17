@@ -12,6 +12,7 @@ import stat from "@/components/manager/groupsNreports/store/stat";
 
 import { Group, GroupUser } from "@/components/manager/types";
 
+//TODO: fix cleenup error. Totally wrong
 export const addNewGroup = () => {
   const data = [
     ...stat.groupsdata,

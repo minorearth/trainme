@@ -42,7 +42,9 @@ export const recoverPswSubmit = () => {
   }
 };
 
-export const signUpSubmit = async (event: Event) => {
+export const signUpSubmit = async (
+  event: React.MouseEvent<HTMLButtonElement>
+) => {
   event.preventDefault();
   if (txtField.validate(["email", "password", "name"])) {
     await signUp({

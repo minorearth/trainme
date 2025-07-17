@@ -22,12 +22,12 @@ const Tutorial = observer(() => {
     >
       <Box
         sx={{
-          display: "flex",
+          // display: "flex",
           flex: 1,
           width: "100%",
           backgroundColor: "inherit",
           padding: "20px",
-          // display: "inline-block",
+          display: "inline-block",
           overflow: "scroll",
         }}
         onClick={() => tutorial.hide()}

@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
+import { NextRequest } from "next/server";
 
-export function middleware(request) {
+export function middleware(request: NextRequest) {
   const session = request.cookies.get("session");
 
   if (

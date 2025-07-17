@@ -38,8 +38,8 @@ const defaultEdgeOptions = {
 
 const useFlow = () => {
   const { fitView } = useReactFlow();
-  const [nodes, setNodes, onNodesChange] = useNodesState();
-  const [edges, setEdges, onEdgesChange] = useEdgesState();
+  const [nodes, setNodes, onNodesChange] = useNodesState(course.flow.nodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(course.flow.edges);
 
   useEffect(() => {
     setEdges(course.flow.edges);
@@ -74,10 +74,7 @@ const useFlow = () => {
     }
   };
 
-  const onConnect = useCallback(
-    (params) => setEdges((els) => addEdge(params, els)),
-    []
-  );
+  const onConnect = useCallback(() => {}, []);
 
   return {
     onConnect,
