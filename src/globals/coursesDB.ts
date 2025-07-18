@@ -1,6 +1,7 @@
 import navigator from "@/components/Navigator/layers/store/navigator";
+import { CoursesDBObj } from "@/T/typesDB";
 
-export const courses = {
+export const courses: CoursesDBObj = {
   "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0": {
     title: "БАЗОВЫЙ КУРС",
     text: "Шаг за шаг с нуля познаем основы программирования на Python",
@@ -48,4 +49,4 @@ export const courses = {
     free: false,
     coursesAction: () => navigator.actions.openChampPage(),
   },
-} as { [key: string]: { [key: string]: any } };
+};

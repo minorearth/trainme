@@ -2,11 +2,17 @@
 import { getDataFetch, setDataFetch } from "@/apicalls/apicalls";
 
 //DB
-import { getDocDataFromCollectionByIdClient } from "@/db/CA/interface";
+import { getDocDataFromCollectionById } from "@/db/CA/firebaseCA";
 import { encrypt2 } from "@/globals/utils/encryption";
 
 //utils
 import { extractChapterIdsOnly_admin } from "@/components/course/layers/services/utils";
+import { EdgeDB, FlowDB, NodeDB } from "@/T/typesDB";
+
+interface response {
+  value: boolean;
+  error: boolean;
+}
 
 export const checkCoursePaid = async ({
   courseid,
@@ -14,36 +20,38 @@ export const checkCoursePaid = async ({
 }: {
   courseid: string;
   uid: string;
-}) => {
-  const coursePaid = await getDataFetch({
+}): Promise<boolean> => {
+  const coursePaid = await getDataFetch<boolean>({
     type: "checkcoursepaid",
     data: { courseid, id: uid },
   });
-  return coursePaid;
+  return coursePaid.value;
 };
 
 export const fetchFlow = async ({ courseid }: { courseid: string }) => {
-  const data = await getDocDataFromCollectionByIdClient({
+  const flowDB = await getDocDataFromCollectionById<FlowDB>({
     collectionName: "chapters",
     id: courseid,
   });
   const flow = {
-    nodes: data.data?.chapterFlowNodes,
-    edges: data.data?.chapterFlowEdges,
+    //confirm as
+    nodes: flowDB?.chapterFlowNodes as NodeDB[],
+    edges: flowDB?.chapterFlowEdges as EdgeDB[],
   };
   return flow;
 };
 
+//TODO:similar to fetchFlow
 export const fetchChapterIds_admin = async ({
   courseid,
 }: {
   courseid: string;
 }) => {
-  const data = await getDocDataFromCollectionByIdClient({
+  const flowDB = await getDocDataFromCollectionById<FlowDB>({
     collectionName: "chapters",
     id: courseid,
   });
-  return extractChapterIdsOnly_admin(data.data?.chapterFlowNodes);
+  return extractChapterIdsOnly_admin(flowDB?.chapterFlowNodes);
 };
 
 export const buyChapterCall = async ({

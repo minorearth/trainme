@@ -14,15 +14,17 @@ import progressCircle from "@/components/common/splash/store";
 
 //service helpers
 import { enrichFlowWithUserProgress } from "@/components/course/layers/services/servicesHelpers";
-import { CourseProgress } from "@/types";
+import { CourseProgressDB } from "@/T/typesDB";
 
-interface getFlow {
+export const getFlow = async ({
+  courseid,
+  refetchFlow,
+  progress,
+}: {
   courseid: string;
   refetchFlow: boolean;
-  progress: CourseProgress;
-}
-
-export const getFlow = async ({ courseid, refetchFlow, progress }: getFlow) => {
+  progress: CourseProgressDB;
+}) => {
   if (refetchFlow) {
     const flow = await fetchFlow({ courseid });
     const enrichedflow = enrichFlowWithUserProgress({
@@ -31,7 +33,6 @@ export const getFlow = async ({ courseid, refetchFlow, progress }: getFlow) => {
     });
     course.setInitialFlow(enrichedflow);
     course.setFlow(enrichedflow);
-    console.log("enrichedflow", enrichedflow);
   } else {
     course.setFlow({ ...course.initialFlow });
   }

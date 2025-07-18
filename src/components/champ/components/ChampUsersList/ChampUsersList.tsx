@@ -9,9 +9,9 @@ import UserCard from "@/components/champ/components/CardUser";
 
 //stores
 import champ from "@/components/champ/layers/store/champ";
-import { Champuser } from "@/types";
+import { ChampuserDB } from "@/T/typesDB";
 
-const ListItem = ({ user }: { user: Champuser }) => {
+const ListItem = ({ user }: { user: ChampuserDB }) => {
   const { uid } = user;
   return (
     <motion.div

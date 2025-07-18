@@ -1,4 +1,4 @@
-import { courses } from "@/globals/courses";
+import { courses } from "@/globals/coursesDB";
 
 //api calls
 import { getDataFetch } from "@/apicalls/apicalls";
@@ -19,6 +19,7 @@ export const getCoursesSorted = () => {
   return Object.keys(courses)
     .map((id) => ({
       ...courses[id],
+      courseid: id,
     }))
     .sort((a, b) => a.order - b.order);
 };

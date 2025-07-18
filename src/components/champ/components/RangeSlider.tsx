@@ -13,6 +13,7 @@ const RangeSlider = observer(() => {
         getAriaLabel={() => "Temperature range"}
         value={champ.range}
         onChange={(e: Event, newValue: number[] | number) =>
+          //confirm as
           champ.setRange(newValue as number[])
         }
         valueLabelDisplay="auto"

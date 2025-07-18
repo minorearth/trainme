@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 import { useTheme } from "@mui/material/styles";
 
 interface DialogWrapper {
-  children: any;
+  children: React.ReactNode;
   maxWidth?: Breakpoint;
   fullWidth?: boolean;
   onClose: () => void;

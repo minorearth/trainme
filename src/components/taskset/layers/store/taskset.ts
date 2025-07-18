@@ -1,7 +1,7 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { runInAction } from "mobx";
 import task from "@/components/taskset/taskrun/layers/store/task";
-import { updateSCP } from "@/db/localstorage";
+import { updateKeySCP, updateSCP } from "@/db/localstorage";
 import { getStarPageIntro } from "@/components/common/dialog/dialogMacro";
 
 import {
@@ -12,27 +12,17 @@ import {
 } from "@/components/taskset/layers/services/servicesNavigation";
 
 import chapter from "@/components/taskset/layers/store/chapter";
+import { TASKSET_DEFAULTS } from "@/T/typesdefaults";
 import {
-  TasksetMode,
   Task,
-  TasksetState,
-  TasksetStateChapter,
-  TaskStage,
-} from "@/types";
-import { TASKSET_DEFAULTS } from "@/typesdefaults";
-
-interface ITask {
-  /**
-   * Open course flow page
-   * @param courseid - course to show.
-   * @returns nothing.
-   */
-  // openAndRefreshFlowPage?: (courseid: string) => void;
-}
+  TasksetMode,
+  TasksetStage,
+  TasksetStatePersisted,
+} from "@/T/typesState";
 
 const DEFAULT_STATE = {
   tasksetmode: "" as TasksetMode,
-  taskstage: "" as TaskStage,
+  taskstage: "" as TasksetStage,
 };
 
 class taskset {
@@ -44,7 +34,7 @@ class taskset {
     prevTaskNoPts_admin,
     errorCountDownPressed,
   };
-  state: TasksetState = TASKSET_DEFAULTS;
+  state: TasksetStatePersisted = TASKSET_DEFAULTS;
 
   startPageIntro() {
     const { tasksetmode } = this.state;
@@ -57,47 +47,52 @@ class taskset {
     });
   }
 
-  updateStateP(data: TasksetState) {
-    this.state = { ...this.state, ...data };
-    updateSCP({
-      taskset: { ...this.state, ...data },
-    });
-  }
-
-  setStateP(data: TasksetState) {
+  setStateP(data: TasksetStatePersisted) {
     this.state = data;
     updateSCP({
       taskset: data,
     });
   }
 
-  updateState(data: TasksetState) {
-    this.state = { ...this.state, ...data };
+  setTaskSetState(data: TasksetStatePersisted) {
+    this.state = data;
   }
 
   eraseStateP() {
     this.state = TASKSET_DEFAULTS;
     this.tasks = [];
     updateSCP({
-      taskset: {},
+      taskset: TASKSET_DEFAULTS,
     });
   }
 
-  async setTasks(tasks: Task[], currid: number) {
+  async setTasks({ tasks }: { tasks: Task[] }) {
     runInAction(() => {
       if (tasks.length != 0) {
-        console.log("тута", tasks);
-
+        // this.state.currTaskId = currTaskId;
         this.tasks = tasks;
-        task.setCurrTaskP(tasks[currid], currid);
         this.tasknum = tasks.length;
       }
     });
   }
+
+  switchTaskP = (id: number) => {
+    if (id != this.tasks.length) {
+      this.state.currTaskId = id;
+      task.setCurrTask(this.tasks[id]);
+      updateKeySCP(
+        {
+          taskset: { currTaskId: id },
+        },
+        "taskset"
+      );
+    }
+  };
 
   constructor() {
     makeAutoObservable(this);
   }
 }
 
-export default new taskset();
+const intsance = new taskset();
+export default intsance;

@@ -19,6 +19,8 @@ export const Watcher = () => {
               // ) {
               //   node.firstChild.firstChild.style.display = "none";
               // }
+
+              //confirm  as
               const element = node.firstChild?.firstChild as HTMLElement | null;
               if (element) {
                 element.style.display = "none";

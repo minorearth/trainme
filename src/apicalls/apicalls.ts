@@ -36,12 +36,12 @@ export const setDataFetch = async (data: setDataFetch) => {
   return res;
 };
 
-interface getDataFetch {
+interface GetDataFetch {
   type: string;
   data: Object;
 }
 
-export const getDataFetch = async (data: getDataFetch) => {
+export const getDataFetch = async <T>(data: GetDataFetch) => {
   try {
     const response = await fetch("/api/getmeta", {
       method: "POST",
@@ -54,9 +54,10 @@ export const getDataFetch = async (data: getDataFetch) => {
       throw new Error("Network response was not ok");
     }
     const result = await response.json();
-    return result;
+    return { value: result, error: false } as { value: T; error: boolean };
   } catch (error) {
     console.log(error);
+    return { error: true } as { value: T; error: boolean };
   }
 
   // https://www.reddit.com/r/nextjs/comments/1944xx3/server_actions_not_returning_an_answer/?rdt=59377

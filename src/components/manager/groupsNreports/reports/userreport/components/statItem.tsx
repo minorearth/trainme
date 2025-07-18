@@ -20,7 +20,7 @@ import {
 import { TreeItemIcon } from "@mui/x-tree-view/TreeItemIcon";
 import { TreeItemProvider } from "@mui/x-tree-view/TreeItemProvider";
 import stat from "@/components/manager/groupsNreports/store/stat";
-import { UserReport } from "@/components/manager/types";
+import { UserReport } from "@/T/Managertypes";
 
 const CustomStatItem = React.forwardRef(function CustomStatItem(
   props: UseTreeItemParameters,
@@ -28,7 +28,7 @@ const CustomStatItem = React.forwardRef(function CustomStatItem(
 ) {
   const { itemId, children } = props;
 
-  const item = useTreeItemModel(itemId) as UserReport;
+  const item = useTreeItemModel<UserReport>(itemId);
 
   const {
     getContextProviderProps,
@@ -40,10 +40,10 @@ const CustomStatItem = React.forwardRef(function CustomStatItem(
     status,
   } = useTreeItem({ ...props, rootRef: ref });
 
-  const { interactions } = useTreeItemUtils({
-    itemId,
-    children,
-  });
+  // const { interactions } = useTreeItemUtils({
+  //   itemId,
+  //   children,
+  // });
 
   return (
     <TreeItemProvider {...getContextProviderProps()}>
@@ -55,8 +55,8 @@ const CustomStatItem = React.forwardRef(function CustomStatItem(
           <CustomLabel
             {...getLabelProps()}
             // toggleItemEditing={interactions.toggleItemEditing}
-            showCode={() => stat.actions.showCode(item.code)}
-            type={item.type}
+            showCode={() => stat.actions.showCode(item?.code || "some error")}
+            type={item?.type || "some error"}
           />
         </TreeItemContent>
         {children && <TreeItemGroupTransition {...getGroupTransitionProps()} />}

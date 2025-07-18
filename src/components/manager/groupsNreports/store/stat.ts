@@ -21,15 +21,11 @@ import {
 } from "@/components/manager/groupsNreports/reports/pivotreport/layers/services/services";
 
 import user from "@/userlayers/store/user";
-import { AllCoursesRawTaskObj } from "@/types";
 
-import { Group, UserReport } from "@/components/manager/types";
-import {
-  CourseChapterObjReport,
-  PivotReport,
-  UsersMetaReport,
-} from "@/components/manager/types";
+import { AllCoursesRawTaskObj, UserReport } from "@/T/Managertypes";
+import { CourseChapterObjReport, PivotReport } from "@/T/Managertypes";
 import { RichTreeViewItemsSlotProps } from "@mui/x-tree-view/internals";
+import { GroupArr, UsersMetaReportDB } from "@/T/typesDB";
 
 class stat {
   actions = {
@@ -44,7 +40,7 @@ class stat {
   };
   userstat: UserReport[] = [];
   chaptersobj: CourseChapterObjReport = {};
-  groupsdata: Group[] = [];
+  groupsdata: GroupArr[] = [];
   code = "";
   report: PivotReport = {};
   userstatvisible = false;
@@ -60,7 +56,7 @@ class stat {
     this.userstatvisible = true;
   }
 
-  setGroupData(data: Group[]) {
+  setGroupData(data: GroupArr[]) {
     this.groupsdata = data;
   }
 
@@ -68,7 +64,7 @@ class stat {
     this.allCoursesTasksObj = data;
   }
 
-  setSnapshot(data: UsersMetaReport) {
+  setSnapshot(data: UsersMetaReportDB) {
     this.snapshot = data;
   }
 
@@ -109,4 +105,5 @@ class stat {
   }
 }
 
-export default new stat();
+const newinstance = new stat();
+export default newinstance;

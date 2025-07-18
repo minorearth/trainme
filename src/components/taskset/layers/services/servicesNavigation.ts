@@ -1,5 +1,5 @@
 //data model
-import { updateSCP } from "@/db/localstorage";
+import { updateKeySCP, updateSCP } from "@/db/localstorage";
 
 //repository(external)
 import { updateChampPoints } from "@/components/champ/layers/repository/repository";
@@ -48,7 +48,7 @@ export const nextTaskOrCompleteTestRun = async ({
 
   const tasknum = taskset.tasks.length;
   const recapTaskNum = taskset.state.recapTasksIds?.length;
-  const currTaskId = task.currTaskId;
+  const currTaskId = taskset.state.currTaskId;
 
   switch (true) {
     case currTaskId != tasknum - 1 && !error:
@@ -89,15 +89,21 @@ export const nextTaskOrCompleteTestRun = async ({
       task.actions.showRightCodeAfterError({ errorMsg });
       if (taskstage == "WIP" && currTaskId != tasknum - 1) {
         addErrorTaskToRecap();
-        updateSCP({
-          task: { currTaskId: currTaskId + 1 },
-        });
+        updateKeySCP(
+          {
+            taskset: { currTaskId: currTaskId + 1 },
+          },
+          "taskset"
+        );
       }
 
       if (taskstage == "recap" && currTaskId != tasknum - 1) {
-        updateSCP({
-          task: { currTaskId: currTaskId + 1 },
-        });
+        updateKeySCP(
+          {
+            taskset: { currTaskId: currTaskId + 1 },
+          },
+          "taskset"
+        );
       }
       if (taskstage == "WIP" && currTaskId == tasknum - 1) {
         addErrorTaskToRecap();
@@ -119,12 +125,12 @@ export const nextTaskOrCompleteTestRun = async ({
 
 export const nextTask = () => {
   task.editorRef.current?.setValue("");
-  task.switchTaskP(task.currTaskId + 1);
+  taskset.switchTaskP(taskset.state.currTaskId + 1);
 };
 
 export const prevTaskNoPts_admin = () => {
   task.editorRef.current?.setValue("");
-  task.switchTaskP(task.currTaskId - 1);
+  taskset.switchTaskP(taskset.state.currTaskId - 1);
 };
 
 export const errorCountDownPressed = async () => {
@@ -153,8 +159,8 @@ export const errorCountDownPressed = async () => {
 
     return;
   }
-  if (task.currTaskId != taskset.tasks.length) {
-    task.switchTaskP(task.currTaskId + 1);
+  if (taskset.state.currTaskId != taskset.tasks.length) {
+    taskset.switchTaskP(taskset.state.currTaskId + 1);
     return;
   }
 };

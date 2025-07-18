@@ -143,6 +143,8 @@ const local = {
       "функция find": "Пример: a=b.find('A')",
       "функция rfind": "Пример: a=b.rfind('A')",
       "функция replace": "Пример: a=a.replace('A','B')",
+    } as {
+      [key: string]: string;
     },
   },
 };

@@ -30,14 +30,14 @@ import { TreeItemIcon } from "@mui/x-tree-view/TreeItemIcon";
 import { TreeItemProvider } from "@mui/x-tree-view/TreeItemProvider";
 import { TreeItemLabelInput } from "@mui/x-tree-view/TreeItemLabelInput";
 import stat from "@/components/manager/groupsNreports/store/stat";
-import { Group, GroupUser } from "@/components/manager/types";
+import { GroupArr } from "@/T/typesDB";
 
 const CustomTreeItem = React.forwardRef(function CustomTreeItem(
   props: UseTreeItemParameters,
   ref: React.Ref<HTMLLIElement>
 ) {
   const { id, itemId, label, disabled, children } = props;
-  const item = useTreeItemModel<Group>(itemId);
+  const item = useTreeItemModel<GroupArr>(itemId);
 
   const {
     getContextProviderProps,

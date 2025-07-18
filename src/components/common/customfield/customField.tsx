@@ -11,12 +11,15 @@ import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined
 import { textFieldProps } from "@/components/common/customfield/setup";
 
 import txtField from "@/components/common/customfield/store";
-import { FieldType } from "@/types";
+import { FieldType } from "./types";
+
+import { SxProps, Theme } from "@mui/material/styles";
 
 const PswHideShow = ({
   hidePsw,
   showPsw,
 }: {
+  //confirm any
   hidePsw: (value: any) => void;
   showPsw: boolean;
 }) => {
@@ -42,7 +45,7 @@ const CustomField = observer(
     onChangeAction = () => {},
   }: {
     type: FieldType;
-    sx?: any;
+    sx?: SxProps<Theme>;
     onChangeAction?: (value: string) => void;
   }) => {
     const [showPsw, hidePsw] = useState<boolean>(type == "password");

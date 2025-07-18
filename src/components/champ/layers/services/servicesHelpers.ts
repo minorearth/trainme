@@ -1,10 +1,10 @@
-import { Champuser } from "@/types";
+import { ChampuserDB } from "@/T/typesDB";
 
 interface GetChange {
   champstarted: boolean;
-  oldusers: Champuser[];
+  oldusers: ChampuserDB[];
   positionInNewUserArray: number;
-  user: Champuser;
+  user: ChampuserDB;
 }
 
 const getChange = ({
@@ -31,10 +31,10 @@ export const sortItems = ({
   champstarted,
   oldusers,
 }: {
-  newusers: Champuser[];
+  newusers: ChampuserDB[];
   champstarted: boolean;
-  oldusers: Champuser[];
-}) => {
+  oldusers: ChampuserDB[];
+}): ChampuserDB[] => {
   const newUsersSorted = [...newusers].sort((a, b) => b.pts - a.pts);
   return newUsersSorted.map((user, id) => ({
     ...user,

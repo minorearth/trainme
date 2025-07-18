@@ -9,7 +9,8 @@ import splash from "@/components/common/splash/store";
 
 //serviceHelpers(local)
 import { getTasksRecap } from "@/components/taskset/layers/services/servicesHelpers";
-import { RawTask, TasksetState, Task } from "@/types";
+import { Task } from "@/T/typesState";
+import { TaskDB } from "@/T/typesDB";
 
 export const setTaskLog = ({
   code,
@@ -20,22 +21,20 @@ export const setTaskLog = ({
 }) => {
   const tasklog = taskset.state.tasklog;
   const taskuuid = task.currTask.taskuuid;
-
-  const tasklogdata = !error ? { code } : { errorcode: code };
-  const prevTasklogdata = Object.keys(tasklog).includes(taskuuid)
-    ? tasklog[taskuuid]
-    : {};
-  return {
-    ...tasklog,
-    [taskuuid]: {
-      ...prevTasklogdata,
-      ...tasklogdata,
-    },
-  };
+  if (!tasklog[taskuuid]) tasklog[taskuuid] = { code: "", errorcode: "" };
+  console.log("task.currTask.taskuuid", task.currTask.taskuuid);
+  !error
+    ? (tasklog[taskuuid].code = code)
+    : (tasklog[taskuuid].errorcode = code);
+  return tasklog;
 };
 
 export const addErrorTaskToRecap = () => {
-  const recapTasksIds = [...taskset.state.recapTasksIds, task.currTaskId];
+  //TODO:remade
+  const recapTasksIds = [
+    ...taskset.state.recapTasksIds,
+    taskset.state.currTaskId,
+  ];
   taskset.setStateP({ ...taskset.state, recapTasksIds });
 };
 
@@ -44,14 +43,15 @@ export const setRecapTasks = ({
   tasks,
 }: {
   recapTasksIds: number[];
-  tasks: Task[] | RawTask[];
+  tasks: Task[];
 }) => {
-  const recapTasks = getTasksRecap({
+  const recapTasks = getTasksRecap<Task>({
     recapTasksIds,
     tasks,
   });
-  taskset.setTasks(recapTasks as Task[], 0);
-  taskset.setStateP({ ...taskset.state, taskstage: "recap" });
+  taskset.setTasks({ tasks: recapTasks });
+  task.setCurrTask(recapTasks[0]);
+  taskset.setStateP({ ...taskset.state, taskstage: "recap", currTaskId: 0 });
 };
 
 export const setTaskNumErrorFixed = (error: boolean) => {

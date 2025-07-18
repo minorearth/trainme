@@ -10,23 +10,31 @@ import {
 } from "@/components/common/customfield/validators";
 import local from "@/globals/local";
 
-export const textFieldProps: { [key: string]: any } = {
+export const textFieldProps: {
+  [key: string]: {
+    auto: string | undefined;
+    label: string;
+    helperText: string;
+    validator: (value: string) => boolean;
+    instantValidation: boolean;
+  };
+} = {
   firstname: {
-    auto: null,
+    auto: undefined,
     label: local.ru.caption.AUTH_ENTER_FIRSTNAME,
     helperText: local.ru.msg.snack.AUTH_ENTER_VALID_FIRSTNAME,
     validator: checkFirstName,
     instantValidation: true,
   },
   secondname: {
-    auto: null,
+    auto: undefined,
     label: local.ru.caption.AUTH_ENTER_SECONDNAME,
     helperText: local.ru.msg.snack.AUTH_ENTER_VALID_SECONDNAME,
     validator: checkSecondName,
     instantValidation: true,
   },
   champid: {
-    auto: null,
+    auto: undefined,
     label: local.ru.caption.AUTH_ENTER_CHAMPID,
     helperText: local.ru.msg.snack.AUTH_ENTER_VALID_CHAMPID,
     validator: checkChampid,
@@ -34,7 +42,7 @@ export const textFieldProps: { [key: string]: any } = {
   },
 
   tasknum: {
-    auto: null,
+    auto: undefined,
     label: local.ru.caption.AUTH_ENTER_TASKNUM,
     helperText: local.ru.msg.snack.AUTH_ENTER_VALID_TASKNUM,
     validator: checkTasknum,
@@ -71,7 +79,10 @@ export const textFieldProps: { [key: string]: any } = {
     instantValidation: false,
   },
   default: {
-    auto: null,
+    auto: undefined,
     label: "",
+    helperText: "",
+    validator: () => true,
+    instantValidation: false,
   },
 };

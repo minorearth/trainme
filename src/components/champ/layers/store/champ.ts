@@ -7,8 +7,8 @@ import {
   captureUsersJoined,
 } from "@/components/champ/layers/services/services";
 
-import { Champuser } from "@/types";
-import { CHAMPUSER_DEFAULTS } from "@/typesdefaults";
+import { CHAMPUSER_DEFAULTS } from "@/T/typesdefaults";
+import { ChampuserDB } from "@/T/typesDB";
 
 class champ {
   actions: any = {
@@ -22,16 +22,16 @@ class champ {
   range: number[] = [1, 30];
   capturingChampstart = false;
   champstarted = false;
-  users: Champuser[] = [];
+  users: ChampuserDB[] = [];
   subscribedChampid = "";
   activeStep = 0;
   createMode = false;
 
-  setActiveStep = (value: any) => {
+  setActiveStep = (value: number) => {
     this.activeStep = value;
   };
 
-  setCreateMode = (value: any) => {
+  setCreateMode = (value: boolean) => {
     this.createMode = value;
   };
 
@@ -39,8 +39,9 @@ class champ {
     this.range = [1, 30];
     this.state = {};
     this.champid = "";
+
     updateSCP({
-      champ: {},
+      champ: { champid: "" },
     });
   }
 
@@ -56,40 +57,26 @@ class champ {
     this.champstarted = started;
   };
 
-  setUsers = (users: Champuser[]) => {
+  setUsers = (users: ChampuserDB[]) => {
     this.users = users;
   };
 
-  setState(data: any) {
-    this.state = data;
-  }
-
-  changeTaskCount = (e: any) => {};
-
-  getChampId() {
-    return this.champid;
-  }
-
-  setChampIdP(id: any) {
+  setChampIdP(id: string) {
     this.champid = id;
     updateSCP({ champ: { champid: id } });
   }
 
-  setChampId(id: any) {
+  setChampId(id: string) {
     this.champid = id;
   }
 
-  setSubscribedChampid(champid: any) {
+  setSubscribedChampid(champid: string) {
     this.subscribedChampid = champid;
-  }
-
-  updateState(data: any) {
-    this.state = { ...this.state, ...data };
   }
 
   constructor() {
     makeAutoObservable(this);
   }
 }
-
-export default new champ();
+const newinstance = new champ();
+export default newinstance;

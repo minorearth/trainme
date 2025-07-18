@@ -40,6 +40,7 @@ class splash {
     };
   }
 
+  //TODO:No types?
   setShowProgress(
     background = false,
     animation = "progressdots",

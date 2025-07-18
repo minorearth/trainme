@@ -6,6 +6,7 @@ declare const require: {
     directory: string,
     useSubdirectories?: boolean,
     regExp?: RegExp
+    //confirm any
   ): { keys: () => string[]; (id: string): any };
 };
 

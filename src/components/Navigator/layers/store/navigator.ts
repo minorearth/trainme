@@ -14,17 +14,7 @@ import {
   interruptTaskSet,
 } from "@/components/Navigator/layers/services/services";
 import splash from "@/components/common/splash/store";
-
-import { Page, NavigatorState } from "@/types";
-
-// interface INavMethods {
-//   /**
-//    * Open course flow page
-//    * @param courseid - course to show.
-//    * @returns nothing.
-//    */
-//   openAndRefreshFlowPage?: (courseid: string) => void;
-// }
+import { NavigatorStatePersisted } from "@/T/typesState";
 
 class navigator {
   actions = {
@@ -40,7 +30,7 @@ class navigator {
     openChampPage,
     interruptTaskSet,
   };
-  state: NavigatorState = { page: "courses" };
+  state: NavigatorStatePersisted = { page: "courses" };
   dataloaded = false;
   pyodideloaded = false;
   apploaded = false;
@@ -53,19 +43,19 @@ class navigator {
     this.dataloaded = true;
   }
 
-  setStateP(data: NavigatorState) {
+  setStateP(data: NavigatorStatePersisted) {
     this.state = data;
     updateSCP({
       navigator: data,
     });
   }
 
-  setState(data: NavigatorState) {
+  setState(data: NavigatorStatePersisted) {
     this.state = data;
   }
 
   //unused
-  updateStateP(data: NavigatorState) {
+  updateStateP(data: NavigatorStatePersisted) {
     this.state = { ...this.state, ...data };
     updateSCP({
       navigator: { ...this.state, ...data },
@@ -93,4 +83,5 @@ class navigator {
   }
 }
 
-export default new navigator();
+const newinstance = new navigator();
+export default newinstance;

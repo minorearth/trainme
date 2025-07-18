@@ -39,8 +39,8 @@ const TopPanel = observer(() => {
             name={"sheep"}
           />
           <LinearProgressWithLabel
-            value={((task.currTaskId + 1) / taskset.tasknum) * 100}
-            label={`${task.currTaskId + 1}\\${taskset.tasknum}`}
+            value={((taskset.state.currTaskId + 1) / taskset.tasknum) * 100}
+            label={`${taskset.state.currTaskId + 1}\\${taskset.tasknum}`}
           />
         </Box>
       </Grid>

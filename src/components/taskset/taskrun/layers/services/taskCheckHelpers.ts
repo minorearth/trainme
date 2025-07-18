@@ -1,7 +1,7 @@
 import { stn } from "@/globals/constants";
 
-import { Task } from "@/types";
 import { eqArrays } from "@/globals/utils/arrUtils";
+import { Task } from "@/T/typesState";
 
 const cleanUpCode = (code: string) => {
   const lines = code.match(/[^\r\n]+/g) ?? [];

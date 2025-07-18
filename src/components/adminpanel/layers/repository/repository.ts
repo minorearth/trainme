@@ -1,20 +1,25 @@
-import { CourseChapterObjReport } from "@/components/manager/types";
+import { CourseChapterObjReport } from "@/T/Managertypes";
+import { setDocInCollection, setDocInSubCollection } from "@/db/CA/firebaseCA";
 import {
-  setDocInCollectionClient,
-  setDocInSubCollectionClient,
-} from "@/db/CA/interface";
-import { Edge, Node, RawTask } from "@/types";
+  EdgeDB,
+  FlowDB,
+  NodeDB,
+  TaskDB,
+  TaskDBWraper,
+  TasksLogDB,
+} from "@/T/typesDB";
+import { DocumentData, WithFieldValue } from "firebase/firestore";
 
 export const uploadCourseChapters = async ({
   chapterFlowNodes,
   chapterFlowEdges,
   courseid,
 }: {
-  chapterFlowNodes: Node[];
-  chapterFlowEdges: Edge[];
+  chapterFlowNodes: NodeDB[];
+  chapterFlowEdges: EdgeDB[];
   courseid: string;
 }) => {
-  setDocInCollectionClient({
+  setDocInCollection<FlowDB>({
     collectionName: "chapters",
     data: { chapterFlowNodes, chapterFlowEdges },
     id: courseid,
@@ -26,17 +31,17 @@ export const uploadAllCourseTasksView = async ({
   allTasksAndGuidesWithLevels,
 }: {
   courseid: string;
-  allTasksAndGuidesWithLevels: RawTask[];
+  allTasksAndGuidesWithLevels: TaskDB[];
 }) => {
   const allTasksNoGuides = allTasksAndGuidesWithLevels.filter(
     (task) => task.tasktype == "task"
   );
-  await setDocInCollectionClient({
+  await setDocInCollection({
     collectionName: "newtasks",
     data: {},
     id: courseid,
   });
-  await setDocInSubCollectionClient({
+  await setDocInSubCollection<TaskDBWraper>({
     collectionName1: "newtasks",
     id1: courseid,
     collectionName2: "chapters",
@@ -54,9 +59,9 @@ export const uploadChapterTasks = async ({
 }: {
   courseid: string;
   chapterid: string;
-  chapterTasks: RawTask[];
+  chapterTasks: TaskDB[];
 }) => {
-  setDocInSubCollectionClient({
+  setDocInSubCollection<TaskDBWraper>({
     collectionName1: "newtasks",
     id1: courseid,
     collectionName2: "chapters",
@@ -70,7 +75,7 @@ export const uploadChapterTasks = async ({
 export const uploadCourseChaptersObject = async (
   chapterCourseObjectModel: CourseChapterObjReport
 ) => {
-  await setDocInCollectionClient({
+  await setDocInCollection<CourseChapterObjReport>({
     collectionName: "views",
     data: chapterCourseObjectModel,
     id: "chaptersobject",

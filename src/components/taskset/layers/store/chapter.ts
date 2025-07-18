@@ -2,8 +2,6 @@ import { makeObservable, makeAutoObservable } from "mobx";
 import { runInAction } from "mobx";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import { updateSCP } from "@/db/localstorage";
-import { getStarPageIntro } from "@/components/common/dialog/dialogMacro";
-import { Task, TasksetState, TasksetStateChapter } from "@/types";
 
 interface ITask {
   /**
@@ -14,21 +12,21 @@ interface ITask {
   // openAndRefreshFlowPage?: (courseid: string) => void;
 }
 
-import { ChapterState } from "@/types";
-import { CHAPTER_DEFAULTS } from "@/typesdefaults";
+import { CHAPTER_DEFAULTS } from "@/T/typesdefaults";
+import { ChapterStatePersisted } from "@/T/typesState";
 
 class chapter {
-  chapter: ChapterState = CHAPTER_DEFAULTS;
+  chapter: ChapterStatePersisted = CHAPTER_DEFAULTS;
 
   setChapterid(chapterid: string) {
     this.chapter.chapterid = chapterid;
   }
 
-  setChapter(chapter: ChapterState) {
+  setChapter(chapter: ChapterStatePersisted) {
     this.chapter = chapter;
   }
 
-  setChapterP(chapter: ChapterState) {
+  setChapterP(chapter: ChapterStatePersisted) {
     this.chapter = chapter;
     updateSCP({
       chapter,
@@ -38,7 +36,7 @@ class chapter {
   eraseStateP() {
     this.chapter = CHAPTER_DEFAULTS;
     updateSCP({
-      chapter: {},
+      chapter: CHAPTER_DEFAULTS,
     });
   }
 

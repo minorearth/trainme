@@ -1,14 +1,11 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import navigator from "../Navigator/layers/store/navigator";
 
-interface ITask {
-  // openAndRefreshFlowPage?: (courseid: string) => void;
-}
-
 class pyodide {
+  //confirm any
   pyodide: any = null;
-  actions: any = {};
 
+  //confirm any
   setPyodide(pyodide: any) {
     this.pyodide = pyodide;
     navigator.setPyodideloaded();
@@ -18,5 +15,6 @@ class pyodide {
     makeAutoObservable(this);
   }
 }
+const instance = new pyodide();
 
-export default new pyodide();
+export default instance;

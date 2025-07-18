@@ -1,8 +1,9 @@
 "use client";
 import { decrypt2, encrypt2 } from "@/globals/utils/encryption";
 import stn from "@/globals/settings";
-import { CSP, StateType } from "@/types";
-import { CSP_DEFAULTS } from "@/typesdefaults";
+import { CSP_DEFAULTS } from "@/T/typesdefaults";
+import { CSP } from "@/T/typesDB";
+import { StateType } from "@/T/typesState";
 
 export const getUserId = () => {
   return localStorage.getItem("userid");
@@ -34,11 +35,16 @@ export const loadSetupPersisted = () => {
   return state != null ? JSON.parse(state) : null;
 };
 
-export const updateSCP = (data: object) => {
+export const updateSCP = (data: Partial<CSP>) => {
   const CSP = getCSP();
   setCSP({ ...CSP, ...data });
 };
-export const updateKeySCP = (data: Object, key: StateType) => {
+
+type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
+};
+
+export const updateKeySCP = <T>(data: DeepPartial<CSP>, key: StateType) => {
   const CSP = getCSP();
-  setCSP({ ...CSP, [key]: { ...CSP[key], ...data } });
+  setCSP({ ...CSP, [key]: { ...CSP[key], ...data[key] } });
 };

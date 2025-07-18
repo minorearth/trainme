@@ -1,4 +1,5 @@
-import { Page, TasksetMode, TaskStage } from "./types";
+import { completedChapters, NodeModes } from "./typesDB";
+import { Page, TasksetMode, TasksetStage } from "./typesState";
 
 export const TASK_DEFAULTS = {
   id: -1,
@@ -52,23 +53,20 @@ export const NAVIGATOR_DEFAULTS = {
   page: "courses" as Page,
 };
 
-export const TASKSTATE_DEFAULTS = {
-  currTaskId: -1,
-};
-
 export const TASKSET_DEFAULTS = {
-  tasksetmode: "newtopic" as TasksetMode,
+  tasksetmode: "default" as TasksetMode,
   recapTasksIds: [],
-  taskstage: "WIP" as TaskStage,
+  taskstage: "WIP" as TasksetStage,
   pts: 0,
-  tasklog: [],
+  tasklog: {},
   randomsaved: [],
   fixed: 0,
   success: true,
+  currTaskId: -1,
 };
 
 export const USERPROGRESS_DEFAULTS = {
-  completed: [],
+  completed: [] as completedChapters,
   rating: -1,
   unlocked: [],
   stat: {},
@@ -90,5 +88,12 @@ export const CSP_DEFAULTS = {
   chapter: CHAPTER_DEFAULTS,
   taskset: TASKSET_DEFAULTS,
   user: { username: "", progress: USERPROGRESS_DEFAULTS },
-  task: TASKSTATE_DEFAULTS,
 };
+
+// export const nodeModePages: { [K in TasksetMode]: { page: string } } = {
+//   champ: { page: "lessonStarted" },
+//   addhoc: { page: "lessonStarted" },
+//   exam: { page: "lessonStarted" },
+//   newtopic: { page: "lessonStarted" },
+//   textbook: { page: "lessonStarted" },
+// };

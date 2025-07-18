@@ -1,3 +1,4 @@
+//confirm any
 export const ObjtoArr = (obj: { [key: string]: any }) => {
   return !obj
     ? []
@@ -8,6 +9,7 @@ export const ObjtoArr = (obj: { [key: string]: any }) => {
       });
 };
 
+//confirm any
 export const flipObject = (obj: { [key: string]: any }) => {
   const ret: { [key: string]: any } = {};
   Object.keys(obj).forEach((key) => {
@@ -16,10 +18,12 @@ export const flipObject = (obj: { [key: string]: any }) => {
   return ret;
 };
 
+//confirm any
 export const getKeyValues = (obj: { [key: string]: any }) => {
   return Object.keys(obj).map((key) => obj[key]);
 };
 
+//confirm any
 export const getKeyBySubKeyValue = (
   obj: { [key: string]: any },
   subkey: string,

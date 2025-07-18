@@ -6,8 +6,10 @@ import stn from "@/globals/settings";
 //api calls
 import { getDataFetch, setDataFetch } from "@/apicalls/apicalls";
 //DB
-import { setDocInCollection } from "@/db/CA/firebaseCA";
-import { getDocDataFromCollectionByIdClient } from "@/db/CA/interface";
+import {
+  getDocDataFromCollectionById,
+  setDocInCollection,
+} from "@/db/CA/firebaseCA";
 
 //repository
 import { getFreeCourses } from "@/components/courses/layers/repository/repository";
@@ -20,7 +22,7 @@ import { ETLUserProgress } from "@/userlayers/repository/ETL";
 
 //utils
 import { encrypt2 } from "@/globals/utils/encryption";
-import { UserMeta } from "@/types";
+import { UserMetaDB } from "@/T/typesDB";
 
 export const getUserMetaCourseProgress = async ({
   courseid,
@@ -29,25 +31,25 @@ export const getUserMetaCourseProgress = async ({
   courseid: string;
   uid: string;
 }) => {
-  const allUserMeta = await getDataFetch({
+  const allUserMeta = await getDataFetch<UserMetaDB>({
     data: { id: uid },
     type: "getusermetadata",
   });
   //TODO:(later)keep only keys needed
-  const userProgress = ETLUserProgress(allUserMeta.courses[courseid]);
+  const userProgress = ETLUserProgress(allUserMeta.value.courses[courseid]);
   return userProgress;
 };
 
 export const getUserMetaDataCA = async (uid: string) => {
-  const userMeta = await getDocDataFromCollectionByIdClient({
+  const userMeta = await getDocDataFromCollectionById<UserMetaDB>({
     collectionName: "usermeta",
     id: uid,
   });
-  return userMeta.data || {};
+  return userMeta || {};
 };
 
 export const saveUserMeta = async (dataToEncrypt: {
-  data: UserMeta;
+  data: UserMetaDB;
   id: string;
 }) => {
   const res = await setDataFetch({
@@ -74,8 +76,7 @@ export const createNewUserMeta = async ({
     paidcourses,
     courses,
   };
-  await setDocInCollection({
-    db,
+  await setDocInCollection<UserMetaDB>({
     collectionName: stn.collections.USER_META,
     data,
     id: userId,
@@ -83,9 +84,9 @@ export const createNewUserMeta = async ({
 };
 
 export const getUserMeta = async (uid: string) => {
-  const userMeta = await getDataFetch({
+  const userMeta = await getDataFetch<UserMetaDB>({
     data: { id: uid },
     type: "getusermetadata",
   });
-  return userMeta;
+  return userMeta.value;
 };

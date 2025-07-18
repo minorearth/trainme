@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 //services
 import { startListeners, stopListeners } from "@/globals/listeners/listeners";
-import { loadPTrek } from "@/components/Navigator/layers/services/loadApp";
+import { loadPyTrek } from "@/components/Navigator/layers/services/loadApp";
 
 //stores
 import user from "@/userlayers/store/user";
@@ -14,7 +14,7 @@ const useApp = () => {
   useEffect(() => {
     const startApp = async () => {
       startListeners();
-      await loadPTrek();
+      await loadPyTrek();
       navigator.setDataloaded();
     };
     startApp();

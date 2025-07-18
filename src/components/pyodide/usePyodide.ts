@@ -19,6 +19,7 @@ function usePyodide() {
   useEffect(() => {
     if (pyodideScriptStatus === "ready" && !pyodide.pyodide) {
       (async () => {
+        //confirm as
         const loadPyodide = (globalThis as any).loadPyodide as (options: {
           indexURL: string;
         }) => Promise<any>;

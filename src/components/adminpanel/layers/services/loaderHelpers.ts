@@ -1,8 +1,9 @@
 //utils
 import { extractChapterIdsOnly_admin } from "@/components/course/layers/services/utils";
-import { Node, RawTask, Task, TaskToUpload } from "@/types";
+import { NodeDB, TaskDB } from "@/T/typesDB";
+import { RawTaskToUploadWithoutLevel } from "@/T/typesUpload";
 
-export const getChaptersIdsAndTextBookId = (chapterFlowNodes: Node[]) => {
+export const getChaptersIdsAndTextBookId = (chapterFlowNodes: NodeDB[]) => {
   const chapterIds = extractChapterIdsOnly_admin(chapterFlowNodes);
   return [...chapterIds, "textbook"];
 };
@@ -12,7 +13,7 @@ export const getChapterTasks = ({
   tasksall,
 }: {
   chapterid: string;
-  tasksall: TaskToUpload[];
+  tasksall: RawTaskToUploadWithoutLevel[];
 }) => {
   return tasksall.filter((test) => test.chapterid == chapterid);
 };
@@ -21,8 +22,8 @@ export const supplyTasksWithChapterLevel = ({
   tasks,
   chapterFlowNodes,
 }: {
-  tasks: TaskToUpload[];
-  chapterFlowNodes: Node[];
+  tasks: RawTaskToUploadWithoutLevel[];
+  chapterFlowNodes: NodeDB[];
 }) => {
   const chaptersLevels: { [chapterid: string]: number } =
     getChaptersLevels(chapterFlowNodes);
@@ -32,10 +33,10 @@ export const supplyTasksWithChapterLevel = ({
       return { ...task, level: chaptersLevels[task.chapterparentid] };
     });
 
-  return tasksWithLevels;
+  return tasksWithLevels as TaskDB[];
 };
 
-const getChaptersLevels = (chapters: Node[]) => {
+const getChaptersLevels = (chapters: NodeDB[]) => {
   return chapters.reduce(
     (acc, item) => ({ ...acc, [item.id]: item.data.level }),
     {}

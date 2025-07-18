@@ -1,6 +1,3 @@
-//utils and constants
-import { initials } from "@/components/Navigator/layers/store/initialStates";
-
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
 import task from "@/components/taskset/taskrun/layers/store/task";
@@ -9,15 +6,14 @@ import user from "@/userlayers/store/user";
 import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";
 import chapter from "@/components/taskset/layers/store/chapter";
-
-import { CourseProgress } from "@/types";
+import { CourseProgressDB } from "@/T/typesDB";
 
 //
 
 export const setChampPageState = () => {
   course.eraseStateP();
   taskset.eraseStateP();
-  task.eraseStateP();
+  task.eraseState();
   chapter.eraseStateP();
   navigator.setStateP({ page: "champ" });
 };
@@ -27,12 +23,12 @@ export const setFlowPageState = ({
   progress,
 }: {
   courseid: string;
-  progress: CourseProgress;
+  progress: CourseProgressDB;
 }) => {
-  course.updateStateP({ courseid });
+  course.setStateP({ ...course.state, courseid });
   navigator.setStateP({ page: "flow" });
   taskset.eraseStateP();
-  task.eraseStateP();
+  task.eraseState();
   chapter.eraseStateP();
   user.setProgressP(progress);
 };
@@ -43,5 +39,5 @@ export const setAllCoursePageState = () => {
   champ.eraseStateP();
   taskset.eraseStateP();
   chapter.eraseStateP();
-  task.eraseStateP();
+  task.eraseState();
 };

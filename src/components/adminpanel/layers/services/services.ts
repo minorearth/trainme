@@ -1,5 +1,5 @@
 //stores
-import { courses } from "@/globals/courses";
+import { courses } from "@/globals/coursesDB";
 
 //DB
 import { updateDocSA } from "@/db/SA/firebaseSA";
@@ -16,6 +16,7 @@ import course from "@/components/course/layers/store/course";
 import user from "@/userlayers/store/user";
 import taskset from "@/components/taskset/layers/store/taskset";
 import task from "@/components/taskset/taskrun/layers/store/task";
+import { UserMetaDB } from "@/T/typesDB";
 
 export const resetCurrentUser = async () => {
   const courseid = course.state.courseid;
@@ -46,7 +47,7 @@ export const resetUser = async ({
     },
     id: uid,
   };
-  await updateDocSA("usermeta", encrypt2(data));
+  await updateDocSA<UserMetaDB>("usermeta", encrypt2(data));
 };
 
 export const unlockAllChaptersCurrentUser = async () => {
@@ -60,7 +61,7 @@ export const unlockAllChaptersCurrentUser = async () => {
     },
     id: user.userid,
   };
-  await updateDocSA("usermeta", encrypt2(data));
+  await updateDocSA<UserMetaDB>("usermeta", encrypt2(data));
   navigator.actions.openAndRefreshFlowPage({
     courseid,
     refetchFlow: true,
@@ -79,7 +80,7 @@ export const completeAllChaptersCurrentUser = async () => {
     },
     id: user.userid,
   };
-  await updateDocSA("usermeta", encrypt2(data));
+  await updateDocSA<UserMetaDB>("usermeta", encrypt2(data));
 
   navigator.actions.openAndRefreshFlowPage({
     courseid,
@@ -93,7 +94,7 @@ export const setMoneyCurrentUser = async (inValue: string) => {
     data: { [`courses.${courseid}.rating`]: Number(inValue) },
     id: user.userid,
   };
-  await updateDocSA("usermeta", encrypt2(data));
+  await updateDocSA<UserMetaDB>("usermeta", encrypt2(data));
 
   navigator.actions.openAndRefreshFlowPage({
     courseid,
@@ -102,7 +103,7 @@ export const setMoneyCurrentUser = async (inValue: string) => {
 };
 
 export const gotoLastTask = () => {
-  task.switchTaskP(taskset.tasks.length - 1);
+  taskset.switchTaskP(taskset.tasks.length - 1);
 };
 
 //DO NOT DEELETE

@@ -1,7 +1,7 @@
 import alertdialog from "@/components/common/dialog/store";
 import splash from "@/components/common/splash/store";
 import local from "@/globals/local";
-import { TasksetMode } from "@/types";
+import { TasksetMode } from "@/T/typesState";
 
 export const da = {
   info: {
@@ -85,7 +85,7 @@ export const da = {
           splash.closeProgress();
         }
       ),
-    networkerror: (e: any) =>
+    networkerror: (e: unknown) =>
       alertdialog.showDialog(
         "Сохранение данных",
         ' "Что-то пошло не так, повторите попытку...',
@@ -144,7 +144,7 @@ export const da = {
         1,
         () => {}
       ),
-    nochamp: (e: any) => {
+    nochamp: (e: unknown) => {
       console.log(e);
       alertdialog.showDialog(
         "Нет такого чемпионата",

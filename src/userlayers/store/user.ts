@@ -1,23 +1,24 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { updateSCP, updateKeySCP } from "@/db/localstorage";
-import { CourseProgress } from "@/types";
-import { USERPROGRESS_DEFAULTS } from "@/typesdefaults";
+import { USERPROGRESS_DEFAULTS } from "@/T/typesdefaults";
+import { CourseProgressDB, UserName } from "@/T/typesDB";
+import { UserStatePersisted } from "@/T/typesState";
 // import { getUserMetaCourseProgress } from "@/userlayers/repository/repositoryUserMeta";
 
 class user {
   userid = "";
   isa = false;
-  username = "";
-  progress: CourseProgress = USERPROGRESS_DEFAULTS;
+  username: UserName = "";
+  progress: CourseProgressDB = USERPROGRESS_DEFAULTS;
   avatarid = 0;
   actions = {};
 
-  setProgressP = (data: CourseProgress) => {
+  setProgressP = (data: CourseProgressDB) => {
     this.progress = data;
-    updateKeySCP({ progress: data }, "user");
+    updateKeySCP({ user: { progress: data } }, "user");
   };
 
-  setProgress(data: CourseProgress) {
+  setProgress(data: CourseProgressDB) {
     this.progress = data;
   }
 
@@ -31,9 +32,12 @@ class user {
 
   setUserNameP = (username: string) => {
     this.username = username;
-    updateSCP({
-      user: { username },
-    });
+    updateKeySCP(
+      {
+        user: { username },
+      },
+      "user"
+    );
   };
 
   setUserName = (username: string) => {
@@ -45,4 +49,5 @@ class user {
   }
 }
 
-export default new user();
+const newinstance = new user();
+export default newinstance;

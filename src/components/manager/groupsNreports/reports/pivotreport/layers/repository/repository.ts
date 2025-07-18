@@ -1,15 +1,22 @@
 //DB
 import {
-  getMultipleDocsClient,
-  setDocInSubCollectionClient,
-  getDocDataFromSubCollectionByIdClient,
-  getDocDataFromCollectionByIdClient,
-} from "@/db/CA/interface";
+  getMultipleDocs,
+  setDocInSubCollection,
+  getDocDataFromSubCollectionById,
+} from "@/db/CA/firebaseCA";
 
 //ETL
-import { extractDataNeededFromStat } from "@/components/manager/groupsNreports/reports/pivotreport/layers/repository/ETL";
-import { UserMeta } from "@/types";
-import { UsersMetaReport } from "@/components/manager/types";
+import {
+  extractDataNeededFromStat,
+  allTasksArrToObj,
+} from "@/components/manager/groupsNreports/reports/pivotreport/layers/repository/ETL";
+import {
+  TaskDB,
+  TaskDBWraper,
+  UserMetaDB,
+  UsersMetaReportDB,
+  UsersMetaReportDBWrapper,
+} from "@/T/typesDB";
 
 export const saveSnapshot = ({
   userid,
@@ -18,9 +25,9 @@ export const saveSnapshot = ({
 }: {
   userid: string;
   groupid: string;
-  userMetaObj: UsersMetaReport;
+  userMetaObj: UsersMetaReportDB;
 }) => {
-  setDocInSubCollectionClient({
+  setDocInSubCollection<UsersMetaReportDB>({
     collectionName1: "snapshots",
     id1: userid,
     collectionName2: "snapshot",
@@ -37,25 +44,36 @@ export const getSnapShot = async ({
   groupid: string;
   userid: string;
 }) => {
-  const snapshot = await getDocDataFromSubCollectionByIdClient({
-    collectionName1: "snapshots",
-    id1: userid,
-    collectionName2: "snapshot",
-    id2: groupid,
-  });
+  const snapshot =
+    await getDocDataFromSubCollectionById<UsersMetaReportDBWrapper>({
+      collectionName1: "snapshots",
+      id1: userid,
+      collectionName2: "snapshot",
+      id2: groupid,
+    });
   // const snapshot = await getDocDataFromCollectionByIdClient(
   //   "snapshots",
   //   `${userid}_${groupid}`
   // );
-  return snapshot.data?.usersMetaObj ?? {};
+  return snapshot?.usersMetaObj ?? {};
 };
 
 export const getUsersMetaObj = async (
   uids: string[]
-): Promise<UsersMetaReport> => {
-  const usersMeta: UserMeta[] = await getMultipleDocsClient({
+): Promise<UsersMetaReportDB> => {
+  const usersMeta = await getMultipleDocs<UserMetaDB>({
     collectionName: "usermeta",
     ids: uids,
   });
   return extractDataNeededFromStat(usersMeta);
+};
+
+export const getAllTasksDataObj = async (courseid: string) => {
+  const allTasks = await getDocDataFromSubCollectionById<TaskDBWraper>({
+    collectionName1: "newtasks",
+    id1: courseid,
+    collectionName2: "chapters",
+    id2: "alltasks",
+  });
+  return allTasksArrToObj(allTasks?.tasks);
 };

@@ -1,46 +1,27 @@
 import { toJS } from "mobx";
 
-import { initials } from "@/components/Navigator/layers/store/initialStates";
 //utils
 import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
 
 //types
-import {
-  RawTask,
-  TasksetMode,
-  TasksetState,
-  TasksetStateChamp,
-  Task,
-} from "@/types";
+import { Task } from "@/T/typesState";
+import { TaskDB } from "@/T/typesDB";
 
-interface GetTasksRecapParams {
-  recapTasksIds: number[];
-  tasks: RawTask[] | Task[];
-}
-
-export const getTasksRecap = ({
+export const getTasksRecap = <T>({
   recapTasksIds,
   tasks,
-}: GetTasksRecapParams): RawTask[] | Task[] => {
-  const filteredTasks = tasks.filter((_: any, id: number) =>
+}: {
+  recapTasksIds: number[];
+  tasks: T[];
+}): T[] => {
+  const filteredTasks: T[] = tasks.filter((_: T, id: number) =>
     recapTasksIds.includes(id)
   );
   return filteredTasks;
 };
 
-interface getTasksetParams {
-  tasksetmode: TasksetMode;
-  chapterid: string;
-  completed: boolean;
-  overflow: boolean;
-  remainsum: number;
-  tobeunlocked: string[];
-  level: number;
-  tasksuuids: string[];
-}
-
 interface getRandomTasksParams {
-  allTasks: RawTask[];
+  allTasks: TaskDB[];
   levelStart: number;
   levelEnd: number;
   num: number;

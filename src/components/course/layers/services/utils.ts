@@ -1,5 +1,5 @@
-import { ChapterState, Node, NodeData } from "@/types";
-import { ChapterObjReport } from "@/components/manager/types";
+import { ChapterObjReport } from "@/T/Managertypes";
+import { NodeDB } from "@/T/typesDB";
 
 export const chaptersObjToArraySorted = (chapters: ChapterObjReport) => {
   const res = Object.keys(chapters).map((chapterId) => ({
@@ -10,6 +10,6 @@ export const chaptersObjToArraySorted = (chapters: ChapterObjReport) => {
   return res.sort((a, b) => a.order - b.order);
 };
 
-export const extractChapterIdsOnly_admin = (chapterFlowNodes: Node[]) => {
+export const extractChapterIdsOnly_admin = (chapterFlowNodes: NodeDB[]) => {
   return chapterFlowNodes.map((node) => node.id).filter((id) => id[0] != "-");
 };

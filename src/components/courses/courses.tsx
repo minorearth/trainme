@@ -2,9 +2,10 @@
 import Grid from "@mui/material/Grid2";
 import Card from "./courseCard";
 import { getCoursesSorted } from "@/components/courses/layers/repository/repository";
+import { CoursesDB } from "@/T/typesDB";
 
 const Courses = () => {
-  const coursesData = getCoursesSorted();
+  const coursesData: CoursesDB[] = getCoursesSorted();
 
   return (
     <>

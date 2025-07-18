@@ -23,8 +23,11 @@ import {
 } from "@/components/Navigator/layers/services/servicesHelpers";
 
 //constants
-import { initials } from "@/components/Navigator/layers/store/initialStates";
-import { COURSE_DEFAULTS, TASKSET_DEFAULTS } from "@/typesdefaults";
+import {
+  CHAMP_DEFAULTS,
+  COURSE_DEFAULTS,
+  TASKSET_DEFAULTS,
+} from "@/T/typesdefaults";
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
@@ -36,20 +39,20 @@ import tutorial from "@/components/tutorial/store";
 import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";
 import chapter from "@/components/taskset/layers/store/chapter";
+import task from "@/components/taskset/taskrun/layers/store/task";
 //
 
-import {
-  TasksetState,
-  CourseProgress,
-  ChapterState,
-  ChampState,
-  CourseState,
-  Page,
-} from "@/types";
-
-import { CHAPTER_DEFAULTS } from "@/typesdefaults";
+import { CHAPTER_DEFAULTS } from "@/T/typesdefaults";
 
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import {
+  ChampStatePersisted,
+  ChapterStatePersisted,
+  CourseStatePersisted,
+  Page,
+  TasksetStatePersisted,
+} from "@/T/typesState";
+import { CourseProgressDB } from "@/T/typesDB";
 
 export const openAllCoursePage = () => {
   setAllCoursePageState();
@@ -86,14 +89,14 @@ export const openAndRefreshFlowPage = async ({
 
 export const openLessonStartPage = async ({
   chapterData = CHAPTER_DEFAULTS,
-  tasksetData,
-  champData = { champid: "" },
+  tasksetData = TASKSET_DEFAULTS,
+  champData = CHAMP_DEFAULTS,
   courseData = COURSE_DEFAULTS,
 }: {
-  tasksetData: TasksetState;
-  chapterData: ChapterState;
-  champData: ChampState;
-  courseData: CourseState;
+  tasksetData: TasksetStatePersisted;
+  chapterData: ChapterStatePersisted;
+  champData: ChampStatePersisted;
+  courseData: CourseStatePersisted;
 }) => {
   const { tasksetmode, taskstage } = tasksetData;
 
@@ -104,10 +107,11 @@ export const openLessonStartPage = async ({
     courseData,
     chapterData,
     tasksetData,
-    userProgress: user.progress as CourseProgress,
+    userProgress: user.progress,
   });
 
-  taskset.setTasks(tasks, 0);
+  taskset.setTasks({ tasks });
+  task.setCurrTask(tasks[0]);
 
   taskset.setStateP({
     ...TASKSET_DEFAULTS,
@@ -115,21 +119,21 @@ export const openLessonStartPage = async ({
     taskstage,
     //not [] for "exam" only
     randomsaved: tasksuuids,
+    currTaskId: 0,
   });
 
   chapter.setChapterP(chapterData);
 
   if (tasksetmode == "textbook" && !tasks.length) {
     da.info.textbookblocked();
-  } else
-    navigator.setStateP({ page: initials[tasksetmode].navigator.page as Page });
+  } else navigator.setStateP({ page: "lessonStarted" as Page });
 
   splash.closeProgress();
 };
 
 export const openTaskSetPage = async () => {
   splash.setShowProgress(false, "progressdots", 2000);
-  navigator.setStateP({ page: initials.tasksetpage.navigator.page as Page });
+  navigator.setStateP({ page: "testrun" });
   splash.closeProgress();
 };
 
@@ -154,7 +158,7 @@ export const closeCongratPage = async (success: boolean) => {
         courseid: course.state.courseid,
         refetchFlow: true,
       });
-    } catch (e) {
+    } catch (e: unknown) {
       da.info.networkerror(e);
     }
 

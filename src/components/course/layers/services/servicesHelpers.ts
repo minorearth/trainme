@@ -9,14 +9,9 @@ import user from "@/userlayers/store/user";
 
 //services(local)
 import { buyChapter } from "@/components/course/layers/services/services";
-
-import {
-  EnrichedNodeData,
-  Node,
-  TasksetMode,
-  CourseProgress,
-  Edge,
-} from "@/types";
+import { NodeDataState, TasksetMode } from "@/T/typesState";
+import { CourseProgressDB, CourseStatDB, EdgeDB, NodeDB } from "@/T/typesDB";
+import { TASKSET_DEFAULTS } from "@/T/typesdefaults";
 
 const buyAction = ({
   unlocked,
@@ -37,7 +32,7 @@ const buyAction = ({
     da.info.buy(() => buyChapter({ unlockpts, chapterid }));
 };
 
-const nodeAction = (data: EnrichedNodeData) => {
+const nodeAction = (data: NodeDataState) => {
   const {
     unlocked,
     paid,
@@ -68,11 +63,8 @@ const nodeAction = (data: EnrichedNodeData) => {
           tobeunlocked: completed ? [] : tobeunlocked,
         },
         tasksetData: {
+          ...TASKSET_DEFAULTS,
           tasksetmode: nodemode as TasksetMode,
-          taskstage: "WIP",
-          randomsaved: [],
-          recapTasksIds: [],
-          fixed: 0,
         },
         courseData: { courseid: course.state.courseid },
         champData: { champid: "" },
@@ -86,13 +78,13 @@ export const enrichFlowWithUserProgress = ({
   edges,
   progress,
 }: {
-  nodes: Node[];
-  edges: Edge[];
-  progress: CourseProgress;
+  nodes: NodeDB[];
+  edges: EdgeDB[];
+  progress: CourseProgressDB;
 }) => {
   const { unlocked, completed, paid, stat } = progress;
 
-  const full = nodes.map((node) => ({
+  const full = nodes.map((node: NodeDB) => ({
     ...node,
     data: {
       ...node.data,
@@ -105,19 +97,25 @@ export const enrichFlowWithUserProgress = ({
       overflow: stat[node.id]?.sum
         ? stat[node.id].sum >= node.data.maxcoins
         : false,
-      action: (data: EnrichedNodeData) => nodeAction(data),
+      action: (data: NodeDataState) => nodeAction(data),
     },
   }));
   return { nodes: full, edges };
 };
 
-const getTargetsBySource = ({ src, edges }: { src: string; edges: Edge[] }) => {
+const getTargetsBySource = ({
+  src,
+  edges,
+}: {
+  src: string;
+  edges: EdgeDB[];
+}) => {
   return edges
-    .filter((edge: Edge) => edge.source == src)
-    .map((edge: Edge) => edge.target);
+    .filter((edge: EdgeDB) => edge.source == src)
+    .map((edge: EdgeDB) => edge.target);
 };
 
-const getRemainSum = ({ stat, node }: { stat: any; node: Node }) => {
+const getRemainSum = ({ stat, node }: { stat: CourseStatDB; node: NodeDB }) => {
   if (!stat[node.id]?.sum) {
     return node.data.maxcoins;
   } else {

@@ -1,13 +1,16 @@
-import { UserCourses, UserMeta, CourseStat } from "@/types";
+import { RawTaskObj } from "@/T/Managertypes";
 import {
-  UsersMetaReport,
-  UserCoursesReport,
-  CourseStatReport,
-} from "@/components/manager/types";
+  completedChapters,
+  CourseStatDB,
+  TaskDB,
+  UserCoursesDB,
+  UserMetaDB,
+  UsersMetaReportDB,
+} from "@/T/typesDB";
 
 export const extractDataNeededFromStat = (
-  usersMeta: UserMeta[]
-): UsersMetaReport => {
+  usersMeta: UserMetaDB[]
+): UsersMetaReportDB => {
   const res = usersMeta.reduce(
     (acc, user) => ({
       ...acc,
@@ -18,12 +21,12 @@ export const extractDataNeededFromStat = (
   return res;
 };
 
-const getCourseChapters = (courses: UserCourses) => {
+const getCourseChapters = (courses: UserCoursesDB) => {
   const res = Object.keys(courses).reduce(
     (acc, courseid) => ({
       ...acc,
       [courseid]: {
-        completed: courses[courseid].completed,
+        completed: courses[courseid].completed as completedChapters,
         stat: getChaptersData(courses[courseid].stat),
       },
     }),
@@ -32,7 +35,7 @@ const getCourseChapters = (courses: UserCourses) => {
   return res;
 };
 
-const getChaptersData = (chapters: CourseStat) => {
+const getChaptersData = (chapters: CourseStatDB) => {
   return Object.keys(chapters).reduce(
     (acc, chapterid) => ({
       ...acc,
@@ -40,4 +43,16 @@ const getChaptersData = (chapters: CourseStat) => {
     }),
     {}
   );
+};
+
+export const allTasksArrToObj = (tasks: TaskDB[]): RawTaskObj => {
+  const alltasksObj = tasks.reduce(
+    (acc, task) => ({
+      ...acc,
+      [task.taskuuid]: { task: task.task, id: task.id },
+    }),
+    {}
+  );
+
+  return alltasksObj;
 };

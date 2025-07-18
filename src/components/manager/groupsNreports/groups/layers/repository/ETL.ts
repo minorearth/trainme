@@ -1,6 +1,6 @@
-import { Group, GroupObj } from "@/components/manager/types";
+import { GroupArr, GroupDB } from "@/T/typesDB";
 
-export const groupsObjectToArr = (data: GroupObj) => {
+export const groupsObjectToArr = (data: GroupDB) => {
   const arr = Object.keys(data)
     .map((groupkey) => ({
       id: groupkey,
@@ -8,7 +8,7 @@ export const groupsObjectToArr = (data: GroupObj) => {
       isFolder: data[groupkey].isFolder,
       uid: "",
       children: Object.keys(data[groupkey].children)
-        .map((userkey) => ({
+        .map((userkey: string) => ({
           id: userkey,
           label: data[groupkey].children[userkey].label,
           isFolder: data[groupkey].children[userkey].isFolder,
@@ -23,7 +23,7 @@ export const groupsObjectToArr = (data: GroupObj) => {
   return arr;
 };
 
-export const groupsArrToObject = (data: Group[]) => {
+export const groupsArrToObject = (data: GroupArr[]) => {
   const obj = data.reduce(
     (acc, item) => ({
       ...acc,

@@ -1,7 +1,6 @@
 import { da } from "@/components/common/dialog/dialogMacro";
 
 //globals
-import { initials } from "@/components/Navigator/layers/store/initialStates";
 
 //repository
 import { getPersistedState } from "@/components/Navigator/layers/repository/repository";
@@ -26,29 +25,23 @@ import user from "@/userlayers/store/user";
 import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";
 import chapter from "@/components/taskset/layers/store/chapter";
-import { CSP } from "@/types";
+import { CSP } from "@/T/typesDB";
 
 //
 
-export const loadPTrek = async () => {
+export const loadPyTrek = async () => {
   const CSP = getPersistedState();
-
-  if (!CSP) {
-    navigator.setStateP(initials.initialState.navigator);
-  } else {
+  //TODO:Add checked isInstance for outdated LocalStorage
+  if (CSP) {
     CSP.navigator && navigator.setState(CSP.navigator);
-    CSP.taskset && taskset.updateState(CSP.taskset);
-    CSP.user?.username && user.setUserName(CSP.user.username);
-    CSP.user?.progress && user.setProgress(CSP.user.progress);
-    CSP.course && course.updateState(CSP.course);
+    CSP.taskset && taskset.setTaskSetState(CSP.taskset);
+    CSP.user.username && user.setUserName(CSP.user.username);
+    CSP.user.progress && user.setProgress(CSP.user.progress);
+    CSP.course && course.setCourseState(CSP.course);
     CSP.champ && champ.setChampId(CSP.champ.champid);
     CSP.chapter && chapter.setChapter(CSP.chapter);
 
     const page = CSP.navigator?.page || "courses";
-
-    if (page == "champ" || page == "courses") {
-      navigator.setStateP(initials.initialState.navigator);
-    }
 
     if (page == "flow") {
       const coursePaid = await checkCoursePaid({
@@ -65,10 +58,10 @@ export const loadPTrek = async () => {
 
     if (page == "testrun" || page == "lessonStarted") {
       const { tasksetmode, taskstage } = CSP.taskset;
-      if (taskstage == "accomplished_suspended") {
-        openCongratPage({ success: false });
-      }
-      if (taskstage == "recap_suspended" && tasksetmode == "exam") {
+      if (
+        taskstage == "accomplished_suspended" ||
+        (taskstage == "recap_suspended" && tasksetmode == "exam")
+      ) {
         openCongratPage({ success: false });
       } else {
         await recoverTasks({ CSP });
@@ -77,7 +70,7 @@ export const loadPTrek = async () => {
 
     if (
       (page == "congrat" || page == "testrun" || page == "lessonStarted") &&
-      CSP.course.courseid
+      CSP.course.courseid != ""
     ) {
       getFlow({
         courseid: CSP.course.courseid,
@@ -98,7 +91,9 @@ const recoverTasks = async ({ CSP }: { CSP: CSP }) => {
     tasksetData: CSP.taskset,
   });
 
-  taskset.setTasks(tasks, CSP.task.currTaskId);
+  taskset.setTasks({ tasks });
+  task.setCurrTask(tasks[CSP.taskset.currTaskId]);
+
   if (taskstage == "recap_suspended" && tasksetmode != "exam") {
     da.info.recap();
     taskset.setStateP({ ...taskset.state, taskstage: "recap" });

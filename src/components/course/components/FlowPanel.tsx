@@ -30,7 +30,8 @@ import {
   CHAMP_DEFAULTS,
   CHAMPUSER_DEFAULTS,
   CHAPTER_DEFAULTS,
-} from "@/typesdefaults";
+  TASKSET_DEFAULTS,
+} from "@/T/typesdefaults";
 
 const ICON_SIZE = "60px";
 const FlowPanel = observer(() => {
@@ -78,11 +79,8 @@ const FlowPanel = observer(() => {
               onClick={async () => {
                 navigator.actions.openLessonStartPage({
                   tasksetData: {
+                    ...TASKSET_DEFAULTS,
                     tasksetmode: "textbook",
-                    taskstage: "WIP",
-                    randomsaved: [],
-                    recapTasksIds: [],
-                    fixed: 0,
                   },
                   chapterData: CHAPTER_DEFAULTS,
                   champData: CHAMP_DEFAULTS,

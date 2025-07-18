@@ -20,9 +20,9 @@ import dynamic from "next/dynamic";
 
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
-function Copyright(props) {
+function Copyright({ ...other }) {
   return (
-    <Typography color="text.secondary" align="center" {...props}>
+    <Typography color="text.secondary" align="center" {...other}>
       {"Copyright © "}
       <Link color="inherit" href={process.env.NEXT_PUBLIC_DOMAIN}>
         {local.ru.text.APP_NAME}
@@ -33,7 +33,7 @@ function Copyright(props) {
   );
 }
 
-const Layout = ({ children }) => {
+const Layout = ({ children }: { children: React.ReactNode }) => {
   const { customTheme } = useCustomTheme();
 
   return (
@@ -69,7 +69,7 @@ const Layout = ({ children }) => {
 
             {children}
             <Copyright sx={{ mt: 5 }} />
-            <DLSwitch />
+            <DLSwitch sx={{}} />
           </Box>
         </Grid>
       </Grid>

@@ -1,8 +1,8 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { textFieldProps } from "@/components/common/customfield/setup";
+import { FieldType } from "./types";
 
 const DEFAULT = { error: true, value: "", helperText: "" };
-import { FieldType } from "@/types";
 interface Fieldstate {
   error: boolean;
   value: string;
@@ -47,4 +47,5 @@ class txtField {
   }
 }
 
-export default new txtField();
+const newinstance = new txtField();
+export default newinstance;

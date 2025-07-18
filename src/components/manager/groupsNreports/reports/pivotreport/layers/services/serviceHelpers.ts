@@ -1,18 +1,18 @@
 import { chaptersObjToArraySorted } from "@/components/course/layers/services/utils";
 import {
-  UserCoursesReportAttrs,
-  UsersMetaReport,
   ChapterObjReport,
   ChapterArrReport,
   PivotReport,
-} from "@/components/manager/types";
+} from "@/T/Managertypes";
 
+import { GroupUserObjReport, GroupUserObjReportAttr } from "@/T/Managertypes";
+
+import { CourseChapterObjReport } from "@/T/Managertypes";
 import {
-  GroupUserObjReport,
-  GroupUserObjReportAttr,
-} from "@/components/manager/types";
-
-import { CourseChapterObjReport } from "@/components/manager/types";
+  completedChapters,
+  UserCoursesReportDBAttrs,
+  UsersMetaReportDB,
+} from "@/T/typesDB";
 
 export const makeReport = ({
   allCoursesChaptersObj,
@@ -21,9 +21,9 @@ export const makeReport = ({
   snapShot,
 }: {
   allCoursesChaptersObj: CourseChapterObjReport;
-  usersMetaObj: UsersMetaReport;
+  usersMetaObj: UsersMetaReportDB;
   groupUsersObj: GroupUserObjReport;
-  snapShot: UsersMetaReport;
+  snapShot: UsersMetaReportDB;
 }) => {
   let report: PivotReport = {};
 
@@ -48,7 +48,7 @@ export const makeReport = ({
 };
 
 const getCellValue = (
-  chapters: UserCoursesReportAttrs,
+  chapters: UserCoursesReportDBAttrs,
   chapter: ChapterArrReport
 ) => {
   if (chapters.stat[chapter.id]) {
@@ -63,7 +63,7 @@ const getCompletedInfo = ({
   snapShotCompleted,
   chapterId,
 }: {
-  completed: string[];
+  completed: completedChapters;
   snapShotCompleted: string[];
   chapterId: string;
 }) => {
@@ -85,9 +85,9 @@ const getRows = ({
   chapters: ChapterObjReport;
   user: GroupUserObjReportAttr;
   order: number;
-  usersMetaObj: UsersMetaReport;
+  usersMetaObj: UsersMetaReportDB;
   courseid: string;
-  snapShot: UsersMetaReport;
+  snapShot: UsersMetaReportDB;
 }) => {
   const chaptersArr = chaptersObjToArraySorted(chapters);
 

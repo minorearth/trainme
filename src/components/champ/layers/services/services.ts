@@ -29,8 +29,9 @@ import {
   CHAPTER_DEFAULTS,
   COURSE_DEFAULTS,
   TASKSET_DEFAULTS,
-} from "@/typesdefaults";
-import { Champ, TasksetMode } from "@/types";
+} from "@/T/typesdefaults";
+import { ChampDB } from "@/T/typesDB";
+import { TasksetMode } from "@/T/typesState";
 
 export const createChamp = async () => {
   const tasks = await getRandomTasksForChamp({
@@ -76,7 +77,7 @@ export const joinChamp = async () => {
     }
     if (persstatus == "champwip") da.info.champblocked();
     if (persstatus == "champisover") da.info.champover();
-  } catch (e) {
+  } catch (e: unknown) {
     da.info.nochamp(e);
   }
 };
@@ -89,7 +90,7 @@ export const startChamp = async (champid: string) => {
   await setChampStarted({ champid });
 };
 
-const captureAndlaunchChamp = (champdoc: Champ) => {
+const captureAndlaunchChamp = (champdoc: ChampDB) => {
   if (
     champdoc.status == "started" &&
     champdoc.users[user.userid]?.persstatus == "joined"
@@ -101,7 +102,7 @@ const captureAndlaunchChamp = (champdoc: Champ) => {
 const launchChamp = () => {
   navigator.actions.openLessonStartPage({
     champData: { champid: champ.champid },
-    tasksetData: { ...TASKSET_DEFAULTS, tasksetmode: "champ" as TasksetMode },
+    tasksetData: { ...TASKSET_DEFAULTS, tasksetmode: "champ" },
     courseData: COURSE_DEFAULTS,
     chapterData: CHAPTER_DEFAULTS,
   });
@@ -127,9 +128,9 @@ export const captureChampStart = async ({ champid }: { champid: string }) => {
   });
 };
 
-const setUsersAndsmth = (champdoc: any) => {
-  const usersArr = ObjtoArr(champdoc?.users);
-  const champstarted = champdoc?.status == "started" ? true : false;
+const setUsersAndsmth = (champData: ChampDB) => {
+  const usersArr = ObjtoArr(champData?.users);
+  const champstarted = champData?.status == "started" ? true : false;
   const usersSorted = sortItems({
     newusers: usersArr,
     oldusers: champ.users,

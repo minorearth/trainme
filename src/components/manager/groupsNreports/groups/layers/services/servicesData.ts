@@ -1,6 +1,6 @@
 //repository(external)
 import { getReadyCourses } from "@/components/courses/layers/repository/repository";
-import { getAllTasksDataObj } from "@/components/taskset/layers/repository/repository";
+import { getAllTasksDataObj } from "@/components/manager/groupsNreports/reports/pivotreport/layers/repository/repository";
 
 //repository(local)
 import {
@@ -11,7 +11,7 @@ import {
 //stores
 import stat from "@/components/manager/groupsNreports/store/stat";
 import user from "@/userlayers/store/user";
-import { RawTaskObj } from "@/types";
+import { RawTaskObj } from "@/T/Managertypes";
 
 export const getAllCoursesTasks = async () => {
   const readyCourses = getReadyCourses();

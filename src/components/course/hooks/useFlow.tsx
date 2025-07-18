@@ -21,6 +21,7 @@ import AnimNode from "../components/AnimNode";
 import user from "@/userlayers/store/user";
 import course from "@/components/course/layers/store/course";
 import alertdialog from "@/components/common/dialog/store";
+import { NodeDataState, NodeDBState } from "@/T/typesState";
 
 const nodeTypes = {
   turbo: TurboNode,
@@ -38,7 +39,9 @@ const defaultEdgeOptions = {
 
 const useFlow = () => {
   const { fitView } = useReactFlow();
-  const [nodes, setNodes, onNodesChange] = useNodesState(course.flow.nodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState<NodeDBState>(
+    course.flow.nodes
+  );
   const [edges, setEdges, onEdgesChange] = useEdgesState(course.flow.edges);
 
   useEffect(() => {

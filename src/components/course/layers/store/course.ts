@@ -1,35 +1,49 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { runInAction } from "mobx";
 import { updateSCP } from "@/db/localstorage";
+import { CourseStatePersisted, FlowState } from "@/T/typesState";
+import { COURSE_DEFAULTS } from "@/T/typesdefaults";
+
+const FLOW_DEFAULTS = {
+  nodes: [],
+  edges: [],
+};
 
 class course {
-  flow: any = [];
-  initialFlow: any = [];
-  state: any = {};
+  flow: FlowState = {
+    nodes: [],
+    edges: [],
+  };
+  initialFlow: FlowState = {
+    nodes: [],
+    edges: [],
+  };
+  state: CourseStatePersisted = COURSE_DEFAULTS;
 
   eraseStateP() {
-    this.flow = {};
-    this.state = {};
+    this.flow = FLOW_DEFAULTS;
+    this.state = COURSE_DEFAULTS;
     updateSCP({
-      course: {},
+      course: { courseid: "" },
     });
   }
 
-  updateStateP(data: any) {
-    this.state = { ...this.state, ...data };
+  setStateP(data: CourseStatePersisted) {
+    this.state = data;
     updateSCP({
-      course: { ...this.state, ...data },
+      course: data,
     });
   }
 
-  updateState(data: any) {
-    this.state = { ...this.state, ...data };
+  setCourseState(data: CourseStatePersisted) {
+    this.state = data;
   }
 
-  setFlow = (data: any) => {
+  setFlow = (data: FlowState) => {
     this.flow = data;
   };
-  setInitialFlow(data: any) {
+
+  setInitialFlow(data: FlowState) {
     this.initialFlow = data;
   }
 
@@ -38,4 +52,5 @@ class course {
   }
 }
 
-export default new course();
+const instance = new course();
+export default instance;

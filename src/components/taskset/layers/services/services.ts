@@ -27,19 +27,17 @@ import taskset from "@/components/taskset/layers/store/taskset";
 import chapter from "@/components/taskset/layers/store/chapter";
 import user from "@/userlayers/store/user";
 import course from "@/components/course/layers/store/course";
+import {
+  ChampStatePersisted,
+  ChapterStatePersisted,
+  CourseStatePersisted,
+  Task,
+  TasksetStage,
+  TasksetStatePersisted,
+} from "@/T/typesState";
+import { CourseProgressDB, TaskDB, UserMetaDB } from "@/T/typesDB";
 
 //types
-import {
-  RawTask,
-  Task,
-  TaskStage,
-  CourseProgress,
-  TasksetMode,
-  TasksetStateChapter,
-  UserMeta,
-} from "@/types";
-
-import { TasksetState, ChapterState, ChampState, CourseState } from "@/types";
 
 interface GetTasksResult {
   tasks: Task[];
@@ -47,11 +45,11 @@ interface GetTasksResult {
 }
 
 interface getTasksParams {
-  tasksetData: TasksetState;
-  chapterData: ChapterState;
-  champData: ChampState;
-  courseData: CourseState;
-  userProgress: CourseProgress;
+  tasksetData: TasksetStatePersisted;
+  chapterData: ChapterStatePersisted;
+  champData: ChampStatePersisted;
+  courseData: CourseStatePersisted;
+  userProgress: CourseProgressDB;
 }
 
 export const getTasks = async ({
@@ -130,6 +128,7 @@ export const getRandomTasksForChamp = async ({
   return randomTasks;
 };
 
+//move all procesure specificinterfaces to props
 interface getRandomTasksForExamParams {
   courseid: string;
   levelStart: number;
@@ -143,10 +142,10 @@ export const getExamTasks = async ({
   levelEnd,
   randomsaved,
 }: getRandomTasksForExamParams) => {
-  const allTasks: RawTask[] = await getAllCourseTasks(courseid);
+  const allTasks: TaskDB[] = await getAllCourseTasks(courseid);
 
   if (randomsaved && randomsaved?.length != 0) {
-    const savedTasks = allTasks.filter((task: RawTask) =>
+    const savedTasks = allTasks.filter((task: TaskDB) =>
       randomsaved.includes(task.taskuuid)
     );
     return {
@@ -161,7 +160,7 @@ export const getExamTasks = async ({
       num: 5,
     });
     const tasksFetched = await supplyFilesAndTransform(randomTasks.tasks);
-    const tasksuuids = tasksFetched.map((task: RawTask) => task.taskuuid);
+    const tasksuuids = tasksFetched.map((task: TaskDB) => task.taskuuid);
     return { tasksuuids, tasksFetched };
   }
 };
@@ -172,10 +171,10 @@ interface saveProgress {
 export const saveProgress = async ({ success }: saveProgress) => {
   const { pts = 0, tasklog } = taskset.state;
   const { chapterid, tobeunlocked, completed } = chapter.chapter;
-  const progress = user.progress as CourseProgress;
+  const progress = user.progress;
   const { unlocked, rating, stat, completed: completedChapters } = progress;
   //TODO: (not captured)После фейла запроса из-за отсутвия интернета кнопка сохранить не нажимается(later)
-  let userData: UserMeta;
+  let userData: UserMetaDB;
   const courseid = course.state.courseid;
   const tasklogPrepared = taskLogToDBFormat({
     courseid,
@@ -208,7 +207,7 @@ export const saveProgress = async ({ success }: saveProgress) => {
 
 interface getChampTasksParams {
   champid: string;
-  taskstage: TaskStage;
+  taskstage: TasksetStage;
   recapTasksIds: number[];
 }
 
@@ -217,11 +216,11 @@ const getChampTasks = async ({
   taskstage,
   recapTasksIds,
 }: getChampTasksParams): Promise<GetTasksResult> => {
-  const rawTasks: RawTask[] = await getChampTasksDB({
+  const rawTasks = await getChampTasksDB({
     champid,
   });
   if (taskstage == "recap" || taskstage == "recap_suspended") {
-    const rawRecapTasks = getTasksRecap({
+    const rawRecapTasks = getTasksRecap<TaskDB>({
       recapTasksIds,
       tasks: rawTasks,
     });

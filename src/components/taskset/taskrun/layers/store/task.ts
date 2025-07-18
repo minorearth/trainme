@@ -5,7 +5,7 @@ import { editor } from "monaco-editor";
 import { toJS } from "mobx";
 
 //direct DB call
-import { updateSCP } from "@/db/localstorage";
+import { updateKeySCP, updateSCP } from "@/db/localstorage";
 
 //actions
 import { showRightCodeAfterError } from "@/components/taskset/taskrun/layers/services/services";
@@ -27,9 +27,8 @@ import {
   runTask,
 } from "@/components/taskset/taskrun/layers/services/taskCheck";
 
-import { Task } from "@/types";
-
-import { TASK_DEFAULTS } from "@/typesdefaults";
+import { TASK_DEFAULTS } from "@/T/typesdefaults";
+import { Task } from "@/T/typesState";
 
 interface ITask {
   /**
@@ -50,7 +49,6 @@ class task {
   currTask: Task = TASK_DEFAULTS;
   executing: boolean = false;
   output: string = "";
-  currTaskId: number = -1;
   code: string = "";
   input: string = "";
   errorMessage: string = "";
@@ -137,28 +135,20 @@ class task {
     this.editorRef.current?.updateOptions({ readOnly: false });
   }
 
-  setCurrTaskP(task: Task, id: number) {
+  setCurrTask(task: Task) {
     this.currTask = task;
-    this.currTaskId = id;
     this.code = task.defaultcode;
     this.input = task.inout[0].inv.join("\n");
-    updateSCP({ task: { currTaskId: id } });
+    // this.setEditorCode(this.tasks[id].defaultcode);
   }
 
-  switchTaskP = (id: number) => {
-    if (id != taskset.tasks.length) {
-      this.setCurrTaskP(taskset.tasks[id], id);
-      this.setEditorCode(this.currTask.defaultcode);
-      updateSCP({
-        task: { currTaskId: id },
-      });
-    }
-  };
-
   setCurrTaskCSPOnly = (id: number) => {
-    updateSCP({
-      task: { currTaskId: id },
-    });
+    updateKeySCP(
+      {
+        taskset: { currTaskId: id },
+      },
+      "taskset"
+    );
   };
 
   setTaskCode(task: Task) {
@@ -191,16 +181,14 @@ class task {
     }
   }
 
-  eraseStateP() {
-    this.currTaskId = -1;
+  eraseState() {
     this.currTask = TASK_DEFAULTS;
-    updateSCP({
-      task: {},
-    });
   }
 
   refreshInput = () => {
-    const task = taskset.tasks[this.currTaskId];
+    //TODO:remade
+    const task = taskset.tasks[taskset.state.currTaskId];
+
     const input = task.inout[0].inv.join("\n");
     this.setInput(input);
   };
@@ -223,7 +211,8 @@ class task {
   }
 }
 
-export default new task();
+const newinstance = new task();
+export default newinstance;
 
 // class task {
 //   monacoRef: React.RefObject<Monaco | null> = React.createRef();

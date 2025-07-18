@@ -37,10 +37,14 @@ export const runPythonCode = async ({
 
       await runCodeNoGLobals({ pyodide: pyodide.pyodide, code });
       return { outputTxt: output.join("\n"), outputArr: output };
-    } catch (e: any) {
-      const error = e.message.split("\n").slice(-2)[0];
-      output.push(stn.errors.error5 + error);
-      return { outputTxt: output.join("\n"), outputArr: output };
+    } catch (e) {
+      if (e instanceof Error) {
+        const error = e.message.split("\n").slice(-2)[0];
+        output.push(stn.errors.error5 + error);
+        return { outputTxt: output.join("\n"), outputArr: output };
+      } else {
+        return { outputTxt: "some error", outputArr: [] };
+      }
     }
   } else {
     return { outputTxt: "pyodide not avvailable", outputArr: [] };
@@ -51,6 +55,7 @@ const runCodeNoGLobals = async ({
   pyodide,
   code,
 }: {
+  //confirm any
   pyodide: any;
   code: string;
 }) => {

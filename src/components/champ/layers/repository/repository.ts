@@ -2,12 +2,12 @@ import stn from "@/globals/settings";
 
 //DB
 import {
-  getDocDataFromCollectionByIdClient,
-  getDocFromCollectionByIdRealtimeClient,
-  updateDocByidClient,
-  setDocInCollectionClient,
-} from "@/db/CA/interface";
-import { Champ, Champuser, RawTask } from "@/types";
+  getDocDataFromCollectionById,
+  getDocFromCollectionByIdRealtime,
+  updateDocByid,
+  setDocInCollection,
+} from "@/db/CA/firebaseCA";
+import { ChampDB, ChampuserDB, TaskDB, TasksLogDB } from "@/T/typesDB";
 
 export const updateChampPoints = async ({
   pts,
@@ -18,7 +18,7 @@ export const updateChampPoints = async ({
   champid: string;
   userid: string;
 }) => {
-  await updateDocByidClient<Champ>("champs", champid, {
+  await updateDocByid<ChampDB>("champs", champid, {
     [`users.${userid}.pts`]: pts,
   });
 };
@@ -28,22 +28,22 @@ export const saveChampUserTaskLog = ({
   champid,
   userid,
 }: {
-  tasklog: any;
+  tasklog: TasksLogDB;
   champid: string;
   userid: string;
 }) => {
-  updateDocByidClient("champs", champid, {
+  updateDocByid<ChampDB>("champs", champid, {
     [`users.${userid}.tasklog`]: tasklog,
     [`users.${userid}.persstatus`]: "champisover",
   });
 };
 
 export const getChampTasksDB = async ({ champid }: { champid: string }) => {
-  const allTasks = await getDocDataFromCollectionByIdClient({
+  const allTasks = await getDocDataFromCollectionById<ChampDB>({
     collectionName: "champs",
     id: champid,
   });
-  return allTasks.data?.tasks || [];
+  return allTasks?.tasks || [];
 };
 
 export const subscribeOnChamp = async ({
@@ -51,9 +51,9 @@ export const subscribeOnChamp = async ({
   action,
 }: {
   champid: string;
-  action: (champdoc: any) => void;
+  action: (docdata: ChampDB) => void;
 }) => {
-  const unsubscribe = await getDocFromCollectionByIdRealtimeClient<Champ>({
+  const unsubscribe = await getDocFromCollectionByIdRealtime<ChampDB>({
     collectionName: stn.collections.CHAMPS,
     id: champid,
     onChangeAction: action,
@@ -70,11 +70,11 @@ export const updateUserInChamp = async ({
   champid,
   userid,
 }: {
-  champuserdata: Champuser;
+  champuserdata: ChampuserDB;
   champid: string;
   userid: string;
 }) => {
-  await updateDocByidClient("champs", champid, {
+  await updateDocByid<ChampDB>("champs", champid, {
     [`users.${userid}`]: champuserdata,
   });
 };
@@ -86,14 +86,14 @@ export const getUserChampStatus = async ({
   champid: string;
   userid: string;
 }) => {
-  const champData = await getDocDataFromCollectionByIdClient({
+  const champData = await getDocDataFromCollectionById<ChampDB>({
     collectionName: stn.collections.CHAMPS,
     id: champid,
   });
-  if (!champData.data?.users[userid]?.persstatus) {
+  if (!champData?.users[userid]?.persstatus) {
     return "undefined";
   } else {
-    return champData.data.users[userid].persstatus;
+    return champData?.users[userid].persstatus;
   }
 };
 
@@ -102,17 +102,17 @@ export const createNewChamp = async ({
   champid,
 }: {
   champid: string;
-  tasks: RawTask[];
+  tasks: TaskDB[];
 }) => {
-  await setDocInCollectionClient({
+  await setDocInCollection<ChampDB>({
     collectionName: stn.collections.CHAMPS,
-    data: { tasks, users: [], status: "created" },
+    data: { tasks, users: {}, status: "created" },
     id: champid,
   });
 };
 
 export const setChampStarted = async ({ champid }: { champid: string }) => {
-  await updateDocByidClient(stn.collections.CHAMPS, champid, {
+  await updateDocByid<ChampDB>(stn.collections.CHAMPS, champid, {
     status: "started",
   });
 };

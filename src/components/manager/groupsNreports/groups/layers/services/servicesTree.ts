@@ -9,8 +9,7 @@ import {
 //stores
 import user from "@/userlayers/store/user";
 import stat from "@/components/manager/groupsNreports/store/stat";
-
-import { Group, GroupUser } from "@/components/manager/types";
+import { GroupArr } from "@/T/typesDB";
 
 //TODO: fix cleenup error. Totally wrong
 export const addNewGroup = () => {
@@ -48,17 +47,17 @@ const updateNodeLabel = ({
   id,
   newLabel,
 }: {
-  nodes: Group[];
+  nodes: GroupArr[];
   id: string;
   newLabel: string;
-}): Group[] => {
+}): GroupArr[] => {
   return nodes.map((node) => {
     if (node.id === id) {
       return { ...node, label: newLabel };
     }
     if (node.children.length != 0) {
       return {
-        ...(node as Group),
+        ...node,
         children: updateNodeLabel({
           nodes: node.children,
           id,

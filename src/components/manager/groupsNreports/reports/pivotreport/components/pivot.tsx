@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import { observer } from "mobx-react-lite";
 import { toJS } from "mobx";
 import styled from "styled-components";
-import { courses } from "@/globals/courses";
-import { CoursePivotReport } from "@/components/manager/types";
+import { courses } from "@/globals/coursesDB";
+import { CoursePivotReport } from "@/T/Managertypes";
 
 const PivotTable = observer(
   ({ data, courseid }: { data: CoursePivotReport; courseid: string }) => {

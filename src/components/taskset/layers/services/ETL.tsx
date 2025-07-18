@@ -1,19 +1,21 @@
 import local from "@/globals/local";
 import { fetchFile } from "@/apicalls/apicalls";
-import { RawInOut, RawTask, TaskWithFiles } from "@/types";
+import { TaskDB } from "@/T/typesDB";
+import { TaskDBWithFiles } from "@/T/typesState";
+import { InOutDB } from "@/T/typesUpload";
 
-export const supplyFilesAndTransform = async (tasks: RawTask[]) => {
+export const supplyFilesAndTransform = async (tasks: TaskDB[]) => {
   const tasksWithFiles = await supplyWithFilesData(tasks);
   const enrichedTasks = supplyWithFriendlyText(tasksWithFiles);
   return enrichedTasks;
 };
 
-interface filesAndFileContent {
+interface FileNamesAndUrls {
   [filename: string]: { fileurl: string; data: string };
 }
 
 //Tranform Data
-const supplyWithFriendlyText = (tasksWithFiles: TaskWithFiles[]) => {
+const supplyWithFriendlyText = (tasksWithFiles: TaskDBWithFiles[]) => {
   const enrichedTasks = tasksWithFiles.map((task) => ({
     ...task,
     tasktext:
@@ -43,9 +45,7 @@ const formatForbidden = ({
   res += `\n\n<b>Ограничения</b>:\nМаксимальное количество строк кода: ${maxlines}`;
 
   if (forbidden.length) {
-    const forbiddentsample = local.ru.forbiddentsample as {
-      [key: string]: string;
-    };
+    const forbiddentsample = local.ru.forbiddentsample;
     res += `\nЗапрещенные приёмы:`;
     for (let i = 0; i < forbidden.length; i++) {
       res += `<div class="tooltip">${forbidden[i]}, <span class="tooltiptext">${
@@ -58,7 +58,7 @@ const formatForbidden = ({
 
 //Upload files data
 
-const supplyWithFilesData = async (tasks: RawTask[]) => {
+const supplyWithFilesData = async (tasks: TaskDB[]) => {
   const filesAndUrls = extractFileNames({ tasks });
   const filesAndFileContent = await getTaskFilesData({ filesAndUrls });
   const { tasksWithFiles } = enrichTaskWithFileLoadCode({
@@ -72,12 +72,12 @@ const enrichTaskWithFileLoadCode = ({
   tasks,
   filesAndFileContent,
 }: {
-  tasks: RawTask[];
-  filesAndFileContent: filesAndFileContent;
+  tasks: TaskDB[];
+  filesAndFileContent: FileNamesAndUrls;
 }) => {
   const tasksWithFiles = tasks.map((task) => ({
     ...task,
-    inout: task.inout.map((inouttest: RawInOut) => {
+    inout: task.inout.map((inouttest: InOutDB) => {
       const filesdata = getFilesData(inouttest, filesAndFileContent);
       return {
         filesdata,
@@ -92,8 +92,8 @@ const enrichTaskWithFileLoadCode = ({
 };
 
 const getFilesData = (
-  inouttest: RawInOut,
-  filesAndFileContent: filesAndFileContent
+  inouttest: InOutDB,
+  filesAndFileContent: FileNamesAndUrls
 ) => {
   let filesdata: string[] = [];
   inouttest.inv.forEach((filename) => {
@@ -109,12 +109,12 @@ const getFilesData = (
 const getTaskFilesData = async ({
   filesAndUrls,
 }: {
-  filesAndUrls: { [filename: string]: { fileurl: string; data: string } };
+  filesAndUrls: FileNamesAndUrls;
 }) => {
   await Promise.all(
     Object.keys(filesAndUrls).map(async (file) => {
       filesAndUrls[file] = {
-        fileurl: filesAndUrls[file].fileurl,
+        ...filesAndUrls[file],
         data: (await fetchFile(filesAndUrls[file].fileurl)) || "",
       };
     })
@@ -122,19 +122,21 @@ const getTaskFilesData = async ({
   return filesAndUrls;
 };
 
-const extractFileNames = ({ tasks }: { tasks: RawTask[] }) => {
-  const files: any = {};
+const extractFileNames = ({ tasks }: { tasks: TaskDB[] }) => {
+  const files: FileNamesAndUrls = {};
   tasks.forEach((task) => {
     task.inout.forEach((inout) => {
       inout.inv
         .filter((item) => item.includes(".txt"))
         .forEach(
           (filename) =>
+            //TODO:"http://localhost:3000/"
             (files[filename] = {
               fileurl:
                 "http://localhost:3000/" +
                 // "https://hog6lcngzkudsdma.public.blob.vercel-storage.com/a3905595-437e-47f3-b749-28ea5362bd39/d06b8c0d-4837-484a-ad85-9257e0e6af01/" +
                 filename,
+              data: "",
             })
         );
     });

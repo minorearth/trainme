@@ -18,7 +18,7 @@ import { BiCoinStack } from "react-icons/bi";
 import { GoArrowRight } from "react-icons/go";
 import { RxLayers } from "react-icons/rx";
 import { BsUnlock } from "react-icons/bs";
-import { EnrichedNodeData, NodeData } from "@/types";
+import { NodeDataState } from "@/T/typesState";
 
 const myFont = localFont({
   src: "../../../app/Monaco.ttf",
@@ -175,7 +175,7 @@ const Wrapper = styled.div(({ theme }) => ({
   },
 }));
 
-const TurboNode = memo(({ data }: { data: EnrichedNodeData }) => {
+const TurboNode = memo(({ data }: { data: NodeDataState }) => {
   const theme = useTheme();
   return (
     <ThemeProvider theme={theme}>

@@ -1,9 +1,9 @@
 //DB
 import {
-  setDocInCollectionClient,
-  getDocDataFromCollectionByIdClient,
-  updateDocByidClient,
-} from "@/db/CA/interface";
+  setDocInCollection,
+  getDocDataFromCollectionById,
+  updateDocByid,
+} from "@/db/CA/firebaseCA";
 
 //ETL
 import {
@@ -11,37 +11,37 @@ import {
   groupsArrToObject,
 } from "@/components/manager/groupsNreports/groups/layers/repository/ETL";
 
-import { Group, GroupObj, GroupUserObjAttrs } from "@/components/manager/types";
-
-import { CourseChapterObjReport } from "@/components/manager/types";
+import { CourseChapterObjReport } from "@/T/Managertypes";
+import { GroupArr, GroupDB, GroupUserDBAttrs } from "@/T/typesDB";
 
 export const getGroupsArr = async (userid: string) => {
-  const groups = await getDocDataFromCollectionByIdClient({
+  const groups = await getDocDataFromCollectionById<GroupDB>({
     collectionName: "groups",
     id: userid,
   });
-  const data = groupsObjectToArr(groups.data as GroupObj);
+  const data = groupsObjectToArr(groups || {});
   return data;
 };
 
 export const getChaptersObjdata = async (): Promise<CourseChapterObjReport> => {
-  const chaptersObj = await getDocDataFromCollectionByIdClient({
-    collectionName: "views",
-    id: "chaptersobject",
-  });
-  return chaptersObj.data || {};
+  const chaptersObj =
+    await getDocDataFromCollectionById<CourseChapterObjReport>({
+      collectionName: "views",
+      id: "chaptersobject",
+    });
+  return chaptersObj || {};
 };
 
-export const addNewGroupDB = async (data: Group[], userid: string) => {
-  await setDocInCollectionClient({
+export const addNewGroupDB = async (data: GroupArr[], userid: string) => {
+  await setDocInCollection<GroupDB>({
     collectionName: "groups",
     data: groupsArrToObject(data),
     id: userid,
   });
 };
 
-export const updateNodeLabelDB = async (data: Group[], userid: string) => {
-  await setDocInCollectionClient({
+export const updateNodeLabelDB = async (data: GroupArr[], userid: string) => {
+  await setDocInCollection<GroupDB>({
     collectionName: "groups",
     data: groupsArrToObject(data),
     id: userid,
@@ -61,13 +61,13 @@ export const addUserToGroup = async ({
   manager: string;
   uid: string;
 }) => {
-  const user: GroupUserObjAttrs = {
+  const user: GroupUserDBAttrs = {
     uid,
     label: `${secondName} ${firstName}`,
     isFolder: false,
-    children: [],
+    children: {},
   };
-  await updateDocByidClient<Group>("groups", manager, {
+  await updateDocByid<GroupArr>("groups", manager, {
     [`${groupid}.children.${groupid + uid}`]: user,
   });
 };
