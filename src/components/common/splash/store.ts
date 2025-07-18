@@ -1,15 +1,33 @@
+type Animation = "undefined" | "progressdots" | "ok";
+type AnimationType =
+  | "gotoplayLottie"
+  | "lottie"
+  | "countdown"
+  | "css"
+  | "undefined";
+
 import { makeAutoObservable, makeObservable } from "mobx";
+interface SplashState {
+  showProgress: boolean;
+  background: boolean;
+  timeelapsed: boolean;
+  showCSS: boolean;
+  animation: Animation;
+  animationtype: AnimationType;
+  onCompleteAction: () => void;
+  play: boolean;
+}
 
 class splash {
-  state = {
+  state: SplashState = {
     showProgress: false,
     background: true,
     timeelapsed: true,
     showCSS: false,
-    animation: "",
-    animationtype: "",
+    animation: "undefined",
+    animationtype: "undefined",
     onCompleteAction: () => {},
-    play: "",
+    play: false,
   };
 
   constructor() {
@@ -40,11 +58,10 @@ class splash {
     };
   }
 
-  //TODO:No types?
   setShowProgress(
-    background = false,
-    animation = "progressdots",
-    delay = 1500
+    background: boolean = false,
+    animation: Animation = "progressdots",
+    delay: number = 1500
   ) {
     setTimeout(() => {
       this.state = {
@@ -63,16 +80,20 @@ class splash {
     };
   }
 
-  setGotoplayLottie(background = false, animation = "ok", action = () => {}) {
+  setGotoplayLottie(
+    background: boolean = false,
+    animation: Animation = "ok",
+    action = () => {}
+  ) {
     this.state = {
       ...this.state,
       animationtype: "gotoplayLottie",
       showProgress: true,
-      play: "start",
+      play: true,
       background,
       animation,
       onCompleteAction: () => {
-        this.state = { ...this.state, play: "", showProgress: false };
+        this.state = { ...this.state, play: false, showProgress: false };
         action();
       },
     };
@@ -91,5 +112,6 @@ class splash {
     };
   }
 }
+const instance = new splash();
 
-export default new splash();
+export default instance;

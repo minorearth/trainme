@@ -68,7 +68,6 @@ export interface TasksetStatePersisted {
   tasklog: TasksLogDB;
   randomsaved: string[];
   fixed: number;
-  //TODO: wtf?
   success: SuccessType;
   currTaskId: number;
 }

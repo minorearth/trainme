@@ -50,7 +50,7 @@ class navigator {
     });
   }
 
-  setState(data: NavigatorStatePersisted) {
+  setNavigatorState(data: NavigatorStatePersisted) {
     this.state = data;
   }
 

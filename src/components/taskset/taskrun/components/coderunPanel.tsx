@@ -51,7 +51,7 @@ const CodeRunPanel = observer(() => {
       {(taskset.state.tasksetmode == "textbook" || stn.mode.DEV_MODE) && (
         <Button
           onClick={() => {
-            taskset.actions.prevTaskNoPts_admin();
+            taskset.prevTaskNoPts_admin();
           }}
           variant="outlined"
           disabled={taskset.state.currTaskId <= 0}
@@ -62,7 +62,7 @@ const CodeRunPanel = observer(() => {
       {task.currTask.tasktype == "guide" && (
         <Button
           onClick={() => {
-            taskset.actions.nextTask();
+            taskset.nextTask();
           }}
           variant="outlined"
           //TODO:remade

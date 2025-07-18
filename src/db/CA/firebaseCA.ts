@@ -72,7 +72,6 @@ export const getDocDataFromCollectionById = async <T>({
   id: string;
 }) => {
   const docSnap = await getDoc(doc(db, collectionName, id));
-  //TODO: return just data
   return docSnap.data() as T;
 };
 

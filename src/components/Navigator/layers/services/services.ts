@@ -111,10 +111,10 @@ export const openLessonStartPage = async ({
     userProgress: user.progress,
   });
 
-  taskset.setTasks({ tasks });
+  taskset.setTaskSetTasks({ tasks });
   task.setCurrTask(tasks[0]);
 
-  taskset.setStateP({
+  taskset.setTaskSetStateP({
     ...TASKSET_DEFAULTS,
     tasksetmode,
     taskstage,
@@ -123,7 +123,7 @@ export const openLessonStartPage = async ({
     currTaskId: 0,
   });
 
-  chapter.setChapterP(chapterData);
+  chapter.setChapterStateP(chapterData);
 
   if (tasksetmode == "textbook" && !tasks.length) {
     da.info.textbookblocked();
@@ -145,7 +145,7 @@ export const openCongratPage = async ({
 }) => {
   countdownbutton.hideButton();
   navigator.setStateP({ page: "congrat" });
-  taskset.setStateP({ ...taskset.state, success });
+  taskset.setTaskSetStateP({ ...taskset.state, success });
 };
 
 export const closeCongratPage = async () => {
@@ -187,7 +187,7 @@ export const interruptTaskSet = () => {
           success: "fail",
         }),
       tasksetmode,
-      completed: chapter.chapter.completed,
+      completed: chapter.state.completed,
     });
   } else {
     openAndRefreshFlowPage({

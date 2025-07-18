@@ -28,7 +28,7 @@ const CongratPage = observer(() => {
         backgroundColor: theme.palette.background.default,
       }}
     >
-      {taskset.state.success && (
+      {taskset.state.success == "success" && (
         <AnimationLottie
           style={{ height: "700px", width: "700px" }}
           name={"success"}

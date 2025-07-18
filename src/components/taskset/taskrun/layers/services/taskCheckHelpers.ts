@@ -138,6 +138,8 @@ export const getErrorMessage = ({
       codeChecked && linesChecked && mustHaveChecked && forbiddenChecked,
     ].every(Boolean):
       return "";
+    default:
+      return "some error in default";
   }
 };
 

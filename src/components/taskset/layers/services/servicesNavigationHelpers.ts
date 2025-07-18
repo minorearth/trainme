@@ -29,15 +29,6 @@ export const setTaskLog = ({
   return tasklog;
 };
 
-export const addErrorTaskToRecap = () => {
-  //TODO:remade
-  const recapTasksIds = [
-    ...taskset.state.recapTasksIds,
-    taskset.state.currTaskId,
-  ];
-  taskset.setStateP({ ...taskset.state, recapTasksIds });
-};
-
 export const setRecapTasks = ({
   recapTasksIds,
   tasks,
@@ -49,9 +40,13 @@ export const setRecapTasks = ({
     recapTasksIds,
     tasks,
   });
-  taskset.setTasks({ tasks: recapTasks });
+  taskset.setTaskSetTasks({ tasks: recapTasks });
   task.setCurrTask(recapTasks[0]);
-  taskset.setStateP({ ...taskset.state, taskstage: "recap", currTaskId: 0 });
+  taskset.setTaskSetStateP({
+    ...taskset.state,
+    taskstage: "recap",
+    currTaskId: 0,
+  });
 };
 
 export const setTaskNumErrorFixed = (error: boolean) => {
@@ -67,7 +62,7 @@ export const ok = (action = () => {}) => {
 
 export const calcEarned = (error: boolean) => {
   const { tasksetmode, pts = 0, taskstage } = taskset.state;
-  const { completed, overflow, remainsum } = chapter.chapter;
+  const { completed, overflow, remainsum } = chapter.state;
   let income = 0;
   if (overflow) {
     return pts;

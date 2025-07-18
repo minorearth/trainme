@@ -11,8 +11,9 @@ import {
   unlockAllChaptersCurrentUser,
   completeAllChaptersCurrentUser,
   setMoneyCurrentUser,
-  gotoLastTask,
 } from "@/components/adminpanel/layers/services/services";
+
+import taskset from "@/components/taskset/layers/store/taskset";
 
 const AdminPanel = () => {
   const [inValue, setInValue] = useState("5000");
@@ -45,7 +46,7 @@ const AdminPanel = () => {
         }}
       />
       <Button onClick={() => setMoneyCurrentUser(inValue)}>money</Button>
-      <Button onClick={() => gotoLastTask()}>lasttask</Button>
+      <Button onClick={() => taskset.gotoLastTask()}>lasttask</Button>
     </>
   );
 };

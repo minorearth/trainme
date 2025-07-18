@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { initializeFirestore } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import user from "@/userlayers/store/user";
+import { logout } from "../SA/session";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -33,6 +34,7 @@ onAuthStateChanged(auth, (fbuser) => {
 
     // ...
   } else {
+    logout();
     // User is signed out
     // ...
   }

@@ -33,13 +33,13 @@ export const loadPyTrek = async () => {
   const CSP = getPersistedState();
   //TODO:Add checked isInstance for outdated LocalStorage
   if (CSP) {
-    CSP.navigator && navigator.setState(CSP.navigator);
+    CSP.navigator && navigator.setNavigatorState(CSP.navigator);
     CSP.taskset && taskset.setTaskSetState(CSP.taskset);
     CSP.user.username && user.setUserName(CSP.user.username);
     CSP.user.progress && user.setProgress(CSP.user.progress);
     CSP.course && course.setCourseState(CSP.course);
     CSP.champ && champ.setChampId(CSP.champ.champid);
-    CSP.chapter && chapter.setChapter(CSP.chapter);
+    CSP.chapter && chapter.setChapterState(CSP.chapter);
 
     const page = CSP.navigator?.page || "courses";
 
@@ -91,11 +91,11 @@ const recoverTasks = async ({ CSP }: { CSP: CSP }) => {
     tasksetData: CSP.taskset,
   });
 
-  taskset.setTasks({ tasks });
+  taskset.setTaskSetTasks({ tasks });
   task.setCurrTask(tasks[CSP.taskset.currTaskId]);
 
   if (taskstage == "recap_suspended" && tasksetmode != "exam") {
     da.info.recap();
-    taskset.setStateP({ ...taskset.state, taskstage: "recap" });
+    taskset.setTaskSetStateP({ ...taskset.state, taskstage: "recap" });
   }
 };

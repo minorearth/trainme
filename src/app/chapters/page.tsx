@@ -8,6 +8,7 @@ import { CssBaseline } from "@mui/material";
 
 const Page = observer(({}) => {
   const { customTheme } = useCustomTheme();
+  console.log("render2", user.userid);
 
   return (
     <>

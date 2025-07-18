@@ -12,7 +12,7 @@ import { CourseProgressDB } from "@/T/typesDB";
 
 export const setChampPageState = () => {
   course.eraseStateP();
-  taskset.eraseStateP();
+  taskset.eraseTaskSetStateP();
   task.eraseState();
   chapter.eraseStateP();
   navigator.setStateP({ page: "champ" });
@@ -27,7 +27,7 @@ export const setFlowPageState = ({
 }) => {
   course.setStateP({ ...course.state, courseid });
   navigator.setStateP({ page: "flow" });
-  taskset.eraseStateP();
+  taskset.eraseTaskSetStateP();
   task.eraseState();
   chapter.eraseStateP();
   user.setProgressP(progress);
@@ -37,7 +37,7 @@ export const setAllCoursePageState = () => {
   navigator.setStateP({ page: "courses" });
   course.eraseStateP();
   champ.eraseStateP();
-  taskset.eraseStateP();
+  taskset.eraseTaskSetStateP();
   chapter.eraseStateP();
   task.eraseState();
 };

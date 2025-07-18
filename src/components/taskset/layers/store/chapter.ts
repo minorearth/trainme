@@ -16,25 +16,25 @@ import { CHAPTER_DEFAULTS } from "@/T/typesdefaults";
 import { ChapterStatePersisted } from "@/T/typesState";
 
 class chapter {
-  chapter: ChapterStatePersisted = CHAPTER_DEFAULTS;
+  state: ChapterStatePersisted = CHAPTER_DEFAULTS;
 
   setChapterid(chapterid: string) {
-    this.chapter.chapterid = chapterid;
+    this.state.chapterid = chapterid;
   }
 
-  setChapter(chapter: ChapterStatePersisted) {
-    this.chapter = chapter;
+  setChapterState(chapter: ChapterStatePersisted) {
+    this.state = chapter;
   }
 
-  setChapterP(chapter: ChapterStatePersisted) {
-    this.chapter = chapter;
+  setChapterStateP(chapter: ChapterStatePersisted) {
+    this.state = chapter;
     updateSCP({
       chapter,
     });
   }
 
   eraseStateP() {
-    this.chapter = CHAPTER_DEFAULTS;
+    this.state = CHAPTER_DEFAULTS;
     updateSCP({
       chapter: CHAPTER_DEFAULTS,
     });
@@ -45,4 +45,6 @@ class chapter {
   }
 }
 
-export default new chapter();
+const instance = new chapter();
+
+export default instance;

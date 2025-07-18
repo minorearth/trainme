@@ -6,8 +6,6 @@ import { getStarPageIntro } from "@/components/common/dialog/dialogMacro";
 
 import {
   nextTaskOrCompleteTestRun,
-  nextTask,
-  prevTaskNoPts_admin,
   errorCountDownPressed,
 } from "@/components/taskset/layers/services/servicesNavigation";
 
@@ -28,17 +26,15 @@ const DEFAULT_STATE = {
 class taskset {
   tasks: Task[] = [];
   tasknum: number = -1;
-  actions: any = {
+  actions = {
     nextTaskOrCompleteTestRun,
-    nextTask,
-    prevTaskNoPts_admin,
     errorCountDownPressed,
   };
   state: TasksetStatePersisted = TASKSET_DEFAULTS;
 
   startPageIntro() {
     const { tasksetmode } = this.state;
-    const { completed, overflow } = chapter.chapter;
+    const { completed, overflow } = chapter.state;
 
     return getStarPageIntro({
       tasksetmode,
@@ -47,7 +43,7 @@ class taskset {
     });
   }
 
-  setStateP(data: TasksetStatePersisted) {
+  setTaskSetStateP(data: TasksetStatePersisted) {
     this.state = data;
     updateSCP({
       taskset: data,
@@ -58,7 +54,7 @@ class taskset {
     this.state = data;
   }
 
-  eraseStateP() {
+  eraseTaskSetStateP() {
     this.state = TASKSET_DEFAULTS;
     this.tasks = [];
     updateSCP({
@@ -66,10 +62,9 @@ class taskset {
     });
   }
 
-  async setTasks({ tasks }: { tasks: Task[] }) {
+  async setTaskSetTasks({ tasks }: { tasks: Task[] }) {
     runInAction(() => {
       if (tasks.length != 0) {
-        // this.state.currTaskId = currTaskId;
         this.tasks = tasks;
         this.tasknum = tasks.length;
       }
@@ -77,6 +72,7 @@ class taskset {
   }
 
   switchTaskP = (id: number) => {
+    task.editorRef.current?.setValue("");
     if (id != this.tasks.length) {
       this.state.currTaskId = id;
       task.setCurrTask(this.tasks[id]);
@@ -87,6 +83,44 @@ class taskset {
         "taskset"
       );
     }
+  };
+
+  gotoLastTask = () => {
+    this.switchTaskP(this.tasks.length - 1);
+  };
+
+  nextTask = () => {
+    this.switchTaskP(this.state.currTaskId + 1);
+  };
+
+  prevTaskNoPts_admin = () => {
+    this.switchTaskP(this.state.currTaskId - 1);
+  };
+
+  setCurrTaskCSPOnly = (id: number) => {
+    updateKeySCP(
+      {
+        taskset: { currTaskId: id },
+      },
+      "taskset"
+    );
+  };
+
+  addErrorTaskToRecap = ({
+    data,
+    cspcurrtask,
+  }: {
+    data?: Partial<TasksetStatePersisted>;
+    cspcurrtask: number;
+  }) => {
+    const datastate = {
+      ...this.state,
+      ...data,
+      recapTasksIds: [...this.state.recapTasksIds, this.state.currTaskId],
+    };
+    this.setTaskSetState(datastate);
+    updateSCP({ taskset: { ...datastate, currTaskId: cspcurrtask } });
+    // this.setCurrTaskCSPOnly();
   };
 
   constructor() {

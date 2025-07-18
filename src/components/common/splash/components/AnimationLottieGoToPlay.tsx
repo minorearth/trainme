@@ -23,7 +23,7 @@ const AnimationLottieGoToPlay = ({
   const ref = useRef<LottieRefCurrentProps>(null);
 
   useEffect(() => {
-    if (ref.current && splash.state.play == "start") {
+    if (ref.current && splash.state.play) {
       ref.current?.goToAndPlay(0);
     }
   }, [splash.state.play, ref.current]);

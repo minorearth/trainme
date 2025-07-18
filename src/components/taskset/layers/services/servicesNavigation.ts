@@ -17,7 +17,6 @@ import {
   calcEarned,
   setTaskLog,
   setTaskNumErrorFixed,
-  addErrorTaskToRecap,
   setRecapTasks,
   ok,
 } from "@/components/taskset/layers/services/servicesNavigationHelpers";
@@ -44,7 +43,7 @@ export const nextTaskOrCompleteTestRun = async ({
       champid: champ.champid,
       userid: user.userid,
     });
-  taskset.setStateP({ ...taskset.state, fixed, tasklog, pts });
+  taskset.setTaskSetStateP({ ...taskset.state, fixed, tasklog, pts });
 
   const tasknum = taskset.tasks.length;
   const recapTaskNum = taskset.state.recapTasksIds?.length;
@@ -53,7 +52,7 @@ export const nextTaskOrCompleteTestRun = async ({
   switch (true) {
     case currTaskId != tasknum - 1 && !error:
       ok();
-      nextTask();
+      taskset.nextTask();
       return;
     case currTaskId == tasknum - 1 && !error:
       if (taskstage == "recap") {
@@ -86,32 +85,33 @@ export const nextTaskOrCompleteTestRun = async ({
       }
       return;
     case error:
-      task.actions.showRightCodeAfterError({ errorMsg });
+      task.showRightCodeAfterError({ errorMsg });
       if (taskstage == "WIP" && currTaskId != tasknum - 1) {
-        addErrorTaskToRecap();
-        updateKeySCP(
-          {
-            taskset: { currTaskId: currTaskId + 1 },
-          },
-          "taskset"
-        );
+        taskset.addErrorTaskToRecap({
+          data: {},
+          cspcurrtask: currTaskId + 1,
+        });
+        // taskset.setCurrTaskCSPOnly(currTaskId + 1);
       }
 
       if (taskstage == "recap" && currTaskId != tasknum - 1) {
-        updateKeySCP(
-          {
-            taskset: { currTaskId: currTaskId + 1 },
-          },
-          "taskset"
-        );
+        taskset.setCurrTaskCSPOnly(currTaskId + 1);
+        // updateKeySCP(
+        //   {
+        //     taskset: { currTaskId: currTaskId + 1 },
+        //   },
+        //   "taskset"
+        // );
       }
       if (taskstage == "WIP" && currTaskId == tasknum - 1) {
-        addErrorTaskToRecap();
-        taskset.setStateP({ ...taskset.state, taskstage: "recap_suspended" });
-        task.setCurrTaskCSPOnly(0);
+        taskset.addErrorTaskToRecap({
+          data: { taskstage: "recap_suspended" },
+          cspcurrtask: 0,
+        });
+        // taskset.setCurrTaskCSPOnly(0);
       }
       if (taskstage == "recap" && currTaskId == tasknum - 1) {
-        taskset.setStateP({
+        taskset.setTaskSetStateP({
           ...taskset.state,
           taskstage: "accomplished_suspended",
         });
@@ -123,18 +123,7 @@ export const nextTaskOrCompleteTestRun = async ({
   }
 };
 
-export const nextTask = () => {
-  task.editorRef.current?.setValue("");
-  taskset.switchTaskP(taskset.state.currTaskId + 1);
-};
-
-export const prevTaskNoPts_admin = () => {
-  task.editorRef.current?.setValue("");
-  taskset.switchTaskP(taskset.state.currTaskId - 1);
-};
-
 export const errorCountDownPressed = async () => {
-  console.log("Im.hehe");
   task.editorRef.current?.setValue("");
   countdownbutton.hideButton();
   task.hideInfo();

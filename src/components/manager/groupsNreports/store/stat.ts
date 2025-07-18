@@ -24,7 +24,6 @@ import user from "@/userlayers/store/user";
 
 import { AllCoursesRawTaskObj, UserReport } from "@/T/Managertypes";
 import { CourseChapterObjReport, PivotReport } from "@/T/Managertypes";
-import { RichTreeViewItemsSlotProps } from "@mui/x-tree-view/internals";
 import { GroupArr, UsersMetaReportDB } from "@/T/typesDB";
 
 class stat {
@@ -34,6 +33,7 @@ class stat {
     changeLabel,
     copyGroupLink,
     showUserReport,
+    //TODO:move to state
     showCode,
     makeSnapshot,
     showReport,

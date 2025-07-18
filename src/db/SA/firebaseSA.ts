@@ -1,9 +1,9 @@
 "use server";
 import { DocumentData, WithFieldValue } from "firebase/firestore";
-import { decrypt2 } from "./encryption";
+import { decrypt2 } from "@/globals/utils/encryption";
+
 import { db } from "./firebaseappAdmin";
 
-//TODO: add <T>
 export const updateDocSA = async <T>(
   collection: string,
   dataencrypted: string

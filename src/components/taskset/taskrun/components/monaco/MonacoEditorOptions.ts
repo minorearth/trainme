@@ -4,8 +4,6 @@ export const EditorOptions: editor.IStandaloneEditorConstructionOptions = {
   automaticLayout: true,
   contextmenu: false,
   dragAndDrop: false,
-  //TODO:smth in types
-  // alwaysConsumeMouseWheel: false,
   dropIntoEditor: {
     enabled: false,
   },
@@ -20,12 +18,11 @@ export const EditorOptions: editor.IStandaloneEditorConstructionOptions = {
   folding: false,
 
   renderLineHighlight: "none",
-  //TODO:smth in types
-  // renderIndentGuides: false,
   overviewRulerLanes: 0,
   minimap: {
     enabled: false,
   },
+  guides: { indentation: true },
   padding: {
     top: 8,
     bottom: 8,
@@ -33,7 +30,7 @@ export const EditorOptions: editor.IStandaloneEditorConstructionOptions = {
   scrollbar: {
     verticalScrollbarSize: 9,
     horizontalScrollbarSize: 9,
-    // alwaysConsumeMouseWheel: false,
+    alwaysConsumeMouseWheel: true,
   },
   scrollBeyondLastLine: false,
   smoothScrolling: true,

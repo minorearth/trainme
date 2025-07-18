@@ -11,7 +11,6 @@ class user {
   username: UserName = "";
   progress: CourseProgressDB = USERPROGRESS_DEFAULTS;
   avatarid = 0;
-  actions = {};
 
   setProgressP = (data: CourseProgressDB) => {
     this.progress = data;

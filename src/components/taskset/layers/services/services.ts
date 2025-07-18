@@ -168,7 +168,7 @@ export const getExamTasks = async ({
 export const saveProgress = async () => {
   const { pts = 0, tasklog, success } = taskset.state;
 
-  const { chapterid, tobeunlocked, completed } = chapter.chapter;
+  const { chapterid, tobeunlocked, completed } = chapter.state;
   const progress = user.progress;
   const { unlocked, rating, stat, completed: completedChapters } = progress;
   //TODO: (not captured)После фейла запроса из-за отсутвия интернета кнопка сохранить не нажимается(later)

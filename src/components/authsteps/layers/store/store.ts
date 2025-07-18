@@ -7,7 +7,6 @@ class authForm {
   signUp = false;
   signIn = true;
   pswReset = false;
-  actions = {};
 
   showSignUp() {
     txtField.resetState();

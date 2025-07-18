@@ -5,16 +5,15 @@ import { editor } from "monaco-editor";
 import { toJS } from "mobx";
 
 //direct DB call
-import { updateKeySCP, updateSCP } from "@/db/localstorage";
-
-//actions
-import { showRightCodeAfterError } from "@/components/taskset/taskrun/layers/services/services";
+import { updateKeySCP } from "@/db/localstorage";
 
 //service utils
 import { checkOnChangeErrors } from "@/components/taskset/taskrun/layers/services/taskCheck";
 
 //storee
 import taskset from "@/components/taskset/layers/store/taskset";
+import countdownbutton from "@/components/common/CountdownButton/store";
+import { da } from "@/components/common/dialog/dialogMacro";
 
 //themes
 import {
@@ -29,15 +28,6 @@ import {
 
 import { TASK_DEFAULTS } from "@/T/typesdefaults";
 import { Task } from "@/T/typesState";
-
-interface ITask {
-  /**
-   * Open course flow page
-   * @param courseid - course to show.
-   * @returns nothing.
-   */
-  // openAndRefreshFlowPage?: (courseid: string) => void;
-}
 
 interface HandleEditorDidMount {
   editor: editor.IStandaloneCodeEditor | null;
@@ -58,7 +48,6 @@ class task {
   editordisabled: boolean = false;
   info: string = "";
   actions: any = {
-    showRightCodeAfterError,
     checkTask,
     runTask,
   };
@@ -72,17 +61,6 @@ class task {
   }
 
   handleEditorDidMount({ editor, monaco, darkmode }: HandleEditorDidMount) {
-    //     const { mode, setMode } = useColorScheme();
-
-    // if (!mode) {
-    //   return null;
-    // }
-
-    // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //   const mode = event.target.checked ? "dark" : "light";
-    //   setMode(mode);
-    //   task.setTheme(mode == "dark");
-    // };
     this.monacoRef.current = monaco;
     this.editorRef.current = editor;
     this.setEditorCode(this.code);
@@ -124,6 +102,13 @@ class task {
     this.editorRef.current?.updateOptions({ readOnly: true });
   }
 
+  showRightCodeAfterError = ({ errorMsg }: { errorMsg: string }) => {
+    da.info.rightcode(() => {
+      this.showInfo("Изучи правильный код");
+      countdownbutton.showButton();
+    }, errorMsg);
+  };
+
   refreshEditor = () => {
     this.editorRef.current?.setValue(this.currTask.defaultcode);
   };
@@ -139,22 +124,7 @@ class task {
     this.currTask = task;
     this.code = task.defaultcode;
     this.input = task.inout[0].inv.join("\n");
-    // this.setEditorCode(this.tasks[id].defaultcode);
-  }
-
-  setCurrTaskCSPOnly = (id: number) => {
-    updateKeySCP(
-      {
-        taskset: { currTaskId: id },
-      },
-      "taskset"
-    );
-  };
-
-  setTaskCode(task: Task) {
-    const code = task.defaultcode;
-    this.code = code;
-    this.setEditorCode(code);
+    this.setEditorCode(task.defaultcode);
   }
 
   setEditorCode = (code: string) => {
@@ -186,10 +156,7 @@ class task {
   }
 
   refreshInput = () => {
-    //TODO:remade
-    const task = taskset.tasks[taskset.state.currTaskId];
-
-    const input = task.inout[0].inv.join("\n");
+    const input = this.currTask.inout[0].inv.join("\n");
     this.setInput(input);
   };
 
@@ -213,20 +180,3 @@ class task {
 
 const newinstance = new task();
 export default newinstance;
-
-// class task {
-//   monacoRef: React.RefObject<Monaco | null> = React.createRef();
-//   editorRef: React.RefObject<editor.IStandaloneCodeEditor | null> =
-//     React.createRef();
-//   };
-
-// interface handleEditorDidMount {
-//   editor: Monaco;
-//   monaco: editor.IStandaloneCodeEditor;
-//   darkmode: boolean;
-// }
-
-//   handleEditorDidMount({ editor, monaco, darkmode }: handleEditorDidMount) {
-//     this.monacoRef.current = monaco;
-//     this.editorRef.current = editor;
-//   }
