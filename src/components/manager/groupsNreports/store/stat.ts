@@ -1,4 +1,4 @@
-import { makeObservable, makeAutoObservable, reaction } from "mobx";
+import { makeObservable, makeAutoObservable, reaction, toJS } from "mobx";
 import {
   addNewGroup,
   changeLabel,
@@ -10,10 +10,7 @@ import {
   getChaptersObj,
 } from "@/components/manager/groupsNreports/groups/layers/services/servicesData";
 
-import {
-  showUserReport,
-  showCode,
-} from "@/components/manager/groupsNreports/reports/userreport/layers/services/services";
+import { showUserReport } from "@/components/manager/groupsNreports/reports/userreport/layers/services/services";
 
 import {
   makeSnapshot,
@@ -23,8 +20,13 @@ import {
 import user from "@/userlayers/store/user";
 
 import { AllCoursesRawTaskObj, UserReport } from "@/T/Managertypes";
-import { CourseChapterObjReport, PivotReport } from "@/T/Managertypes";
-import { GroupArr, UsersMetaReportDB } from "@/T/typesDB";
+import { PivotReport } from "@/T/Managertypes";
+import {
+  CourseChapterObjDB,
+  GroupArr,
+  UsersMetaReportDB,
+  UsersMetaReportDBWrapper,
+} from "@/T/typesDB";
 
 class stat {
   actions = {
@@ -33,19 +35,17 @@ class stat {
     changeLabel,
     copyGroupLink,
     showUserReport,
-    //TODO:move to state
-    showCode,
     makeSnapshot,
     showReport,
   };
   userstat: UserReport[] = [];
-  chaptersobj: CourseChapterObjReport = {};
+  chaptersobj: CourseChapterObjDB = {};
   groupsdata: GroupArr[] = [];
   code = "";
   report: PivotReport = {};
   userstatvisible = false;
   reportvisible = false;
-  snapshot = {};
+  snapshot: UsersMetaReportDB = {};
   groupSelectedId = "";
   allCoursesTasksObj = {};
   disposeReaction: () => void;
@@ -58,6 +58,10 @@ class stat {
 
   setGroupData(data: GroupArr[]) {
     this.groupsdata = data;
+  }
+
+  refreshGroupData(data: GroupArr) {
+    this.groupsdata = [...this.groupsdata, data];
   }
 
   setAllCoursesTasksObj(data: AllCoursesRawTaskObj) {
@@ -78,7 +82,7 @@ class stat {
     this.reportvisible = true;
   }
 
-  setChaptersObj(data: CourseChapterObjReport) {
+  setChaptersObj(data: CourseChapterObjDB) {
     this.chaptersobj = data;
   }
 
@@ -99,6 +103,10 @@ class stat {
       }
     );
   }
+
+  showCode = (code: string) => {
+    this.setCode(code);
+  };
 
   dispose() {
     this.disposeReaction();

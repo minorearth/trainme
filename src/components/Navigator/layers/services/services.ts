@@ -60,7 +60,7 @@ export const openAllCoursePage = () => {
 };
 
 export const openCourseFlowPageFromMain = async (courseid: string) => {
-  splash.setShowProgress(false, "progressdots", 2000);
+  splash.showProgress(false, "progressdots", 2000);
 
   const coursePaid = await checkCoursePaid({ courseid, uid: user.userid });
   const courseReady = checkCourseReady({ courseid });
@@ -101,7 +101,7 @@ export const openLessonStartPage = async ({
 }) => {
   const { tasksetmode, taskstage } = tasksetData;
 
-  splash.setShowProgress();
+  splash.showProgress();
 
   const { tasks, tasksuuids } = await getTasks({
     champData,
@@ -133,7 +133,7 @@ export const openLessonStartPage = async ({
 };
 
 export const openTaskSetPage = async () => {
-  splash.setShowProgress(false, "progressdots", 2000);
+  splash.showProgress(false, "progressdots", 2000);
   navigator.setStateP({ page: "testrun" });
   splash.closeProgress();
 };
@@ -150,7 +150,7 @@ export const openCongratPage = async ({
 
 export const closeCongratPage = async () => {
   const { tasksetmode } = taskset.state;
-  splash.setShowProgress();
+  splash.showProgress();
 
   if (
     tasksetmode == "addhoc" ||
@@ -202,6 +202,7 @@ export const openTutorial = () => {
 };
 
 export const openLoginPageSignOut = async (router: AppRouterInstance) => {
+  splash.showProgress(false, "progressdots", 0);
   await signOut(router);
 };
 

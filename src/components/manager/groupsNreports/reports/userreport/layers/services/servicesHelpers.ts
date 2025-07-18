@@ -1,10 +1,6 @@
-import {
-  AllCoursesRawTaskObj,
-  CourseChapterObjReport,
-  UserReportType,
-} from "@/T/Managertypes";
+import { AllCoursesRawTaskObj, UserReportType } from "@/T/Managertypes";
 import { courses } from "@/globals/coursesDB";
-import { TaskLogAttrsDB, UserCoursesDB } from "@/T/typesDB";
+import { CourseChapterObjDB, TaskLogAttrsDB, UserCoursesDB } from "@/T/typesDB";
 
 export const getReportTree = ({
   userstat,
@@ -12,7 +8,7 @@ export const getReportTree = ({
   allCoursesTasks,
 }: {
   userstat: UserCoursesDB;
-  chaptersobj: CourseChapterObjReport;
+  chaptersobj: CourseChapterObjDB;
   allCoursesTasks: AllCoursesRawTaskObj;
 }) => {
   const courcesIds = Object.keys(userstat).sort(

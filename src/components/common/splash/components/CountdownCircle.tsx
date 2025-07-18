@@ -11,7 +11,7 @@ const CountdownCircle = observer(() => {
   const [value, setValue] = useState(sec);
   const valueRef = useRef(sec);
   useEffect(() => {
-    if (!splash.state.showProgress) {
+    if (!splash.shown) {
       return;
     }
 
@@ -29,9 +29,9 @@ const CountdownCircle = observer(() => {
     return () => {
       clearInterval(interval);
     };
-  }, [splash.state.showProgress]);
+  }, [splash.shown]);
 
-  if (!splash.state.showProgress) return <></>;
+  if (!splash.shown) return <></>;
 
   return (
     <Box

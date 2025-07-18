@@ -13,7 +13,3 @@ export const showUserReport = async (uid: string) => {
   stat.setCode("");
   stat.setUserStat(treeRepresent);
 };
-
-export const showCode = async (code: string) => {
-  stat.setCode(code);
-};

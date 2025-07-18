@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 //repository
 import {
   addNewGroupDB,
+  addNewGroupDB2,
   updateNodeLabelDB,
 } from "@/components/manager/groupsNreports/groups/layers/repository/repository";
 
@@ -11,20 +12,18 @@ import user from "@/userlayers/store/user";
 import stat from "@/components/manager/groupsNreports/store/stat";
 import { GroupArr } from "@/T/typesDB";
 
-//TODO: fix cleenup error. Totally wrong
 export const addNewGroup = () => {
-  const data = [
-    ...stat.groupsdata,
-    {
-      id: uuidv4(),
-      label: "Новая группа",
-      children: [],
-      isFolder: true,
-      uid: "",
-    },
-  ];
-  stat.setGroupData(data);
-  addNewGroupDB(data, user.userid);
+  const groupid = uuidv4();
+  const groupdata = {
+    label: "Новая группа",
+    children: {},
+    isFolder: true,
+    uid: "",
+  };
+  try {
+    addNewGroupDB2(groupid, groupdata, user.userid);
+    stat.refreshGroupData({ ...groupdata, id: groupid, children: [] });
+  } catch (e) {}
 };
 
 export const changeLabel = ({

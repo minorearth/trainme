@@ -41,17 +41,13 @@ export const fetchFlow = async ({ courseid }: { courseid: string }) => {
   return flow;
 };
 
-//TODO:similar to fetchFlow
 export const fetchChapterIds_admin = async ({
   courseid,
 }: {
   courseid: string;
 }) => {
-  const flowDB = await getDocDataFromCollectionById<FlowDB>({
-    collectionName: "chapters",
-    id: courseid,
-  });
-  return extractChapterIdsOnly_admin(flowDB?.chapterFlowNodes);
+  const flowDB = await fetchFlow({ courseid });
+  return extractChapterIdsOnly_admin(flowDB.nodes);
 };
 
 export const buyChapterCall = async ({

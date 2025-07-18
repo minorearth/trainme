@@ -54,7 +54,7 @@ const CodeRunPanel = observer(() => {
             taskset.prevTaskNoPts_admin();
           }}
           variant="outlined"
-          disabled={taskset.state.currTaskId <= 0}
+          disabled={taskset.prevdisabled}
         >
           Назад
         </Button>
@@ -65,8 +65,7 @@ const CodeRunPanel = observer(() => {
             taskset.nextTask();
           }}
           variant="outlined"
-          //TODO:remade
-          disabled={taskset.state.currTaskId >= taskset.tasknum - 1}
+          disabled={taskset.nextdisabled}
         >
           Продолжить
         </Button>

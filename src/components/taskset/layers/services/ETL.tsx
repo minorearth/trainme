@@ -122,6 +122,8 @@ const getTaskFilesData = async ({
   return filesAndUrls;
 };
 
+// "https://hog6lcngzkudsdma.public.blob.vercel-storage.com/a3905595-437e-47f3-b749-28ea5362bd39/d06b8c0d-4837-484a-ad85-9257e0e6af01/" +
+
 const extractFileNames = ({ tasks }: { tasks: TaskDB[] }) => {
   const files: FileNamesAndUrls = {};
   tasks.forEach((task) => {
@@ -130,12 +132,8 @@ const extractFileNames = ({ tasks }: { tasks: TaskDB[] }) => {
         .filter((item) => item.includes(".txt"))
         .forEach(
           (filename) =>
-            //TODO:"http://localhost:3000/"
             (files[filename] = {
-              fileurl:
-                "http://localhost:3000/" +
-                // "https://hog6lcngzkudsdma.public.blob.vercel-storage.com/a3905595-437e-47f3-b749-28ea5362bd39/d06b8c0d-4837-484a-ad85-9257e0e6af01/" +
-                filename,
+              fileurl: `${process.env.NEXT_PUBLIC_DOMAIN}/${filename}`,
               data: "",
             })
         );

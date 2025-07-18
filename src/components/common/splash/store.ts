@@ -8,9 +8,7 @@ type AnimationType =
 
 import { makeAutoObservable, makeObservable } from "mobx";
 interface SplashState {
-  showProgress: boolean;
   background: boolean;
-  timeelapsed: boolean;
   showCSS: boolean;
   animation: Animation;
   animationtype: AnimationType;
@@ -19,10 +17,10 @@ interface SplashState {
 }
 
 class splash {
+  delayed = false;
+  shown = false;
   state: SplashState = {
-    showProgress: false,
     background: true,
-    timeelapsed: true,
     showCSS: false,
     animation: "undefined",
     animationtype: "undefined",
@@ -35,78 +33,76 @@ class splash {
   }
 
   closeProgress() {
-    this.state = {
-      ...this.state,
-      showProgress: false,
-    };
+    this.shown = false;
   }
 
-  showAppLoader(background = false, delay = 1500) {
+  showAppLoader(background = false, delay = 5500) {
+    this.shown = true;
+    this.delayed = true;
+
     setTimeout(() => {
-      this.state = {
-        ...this.state,
-        timeelapsed: true,
-      };
+      this.delayed = false;
     }, delay);
 
     this.state = {
       ...this.state,
       animationtype: "css",
-      showProgress: true,
       background,
-      timeelapsed: false,
     };
   }
 
-  setShowProgress(
+  showProgress(
     background: boolean = false,
     animation: Animation = "progressdots",
-    delay: number = 1500
+    delay: number = 500
   ) {
+    this.shown = true;
+    this.delayed = true;
+
     setTimeout(() => {
-      this.state = {
-        ...this.state,
-        timeelapsed: true,
-      };
+      this.delayed = false;
     }, delay);
 
     this.state = {
       ...this.state,
       animationtype: "lottie",
-      showProgress: true,
       background,
       animation,
-      timeelapsed: false,
     };
   }
 
-  setGotoplayLottie(
+  gotoplayLottie(
     background: boolean = false,
     animation: Animation = "ok",
     action = () => {}
   ) {
+    this.shown = true;
+    this.delayed = false;
+
     this.state = {
       ...this.state,
       animationtype: "gotoplayLottie",
-      showProgress: true,
       play: true,
       background,
       animation,
       onCompleteAction: () => {
-        this.state = { ...this.state, play: false, showProgress: false };
+        this.state = { ...this.state, play: false };
+        this.shown = false;
         action();
       },
     };
   }
 
   showCountDown(background = false, action = () => {}) {
+    this.shown = true;
+    this.delayed = false;
+
     this.state = {
       ...this.state,
       animationtype: "countdown",
-      showProgress: true,
       background,
       onCompleteAction: () => {
-        this.state = { ...this.state, showProgress: false };
+        this.shown = false;
         action();
       },
     };

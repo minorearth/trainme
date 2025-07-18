@@ -1,7 +1,6 @@
-import { ChapterObjReport } from "@/T/Managertypes";
-import { NodeDB } from "@/T/typesDB";
+import { ChapterObjReportDB, NodeDB } from "@/T/typesDB";
 
-export const chaptersObjToArraySorted = (chapters: ChapterObjReport) => {
+export const chaptersObjToArraySorted = (chapters: ChapterObjReportDB) => {
   const res = Object.keys(chapters).map((chapterId) => ({
     id: chapterId,
     order: chapters[chapterId].order,

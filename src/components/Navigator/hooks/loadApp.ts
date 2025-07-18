@@ -8,14 +8,18 @@ import { loadPyTrek } from "@/components/Navigator/layers/services/loadApp";
 //stores
 import user from "@/userlayers/store/user";
 import navigator from "@/components/Navigator/layers/store/navigator";
+import splash from "@/components/common/splash/store";
 //
 
 const useApp = () => {
   useEffect(() => {
+    !splash.shown && splash.showProgress(false, "progressdots", 4000);
+
     const startApp = async () => {
       startListeners();
       await loadPyTrek();
       navigator.setDataloaded();
+      splash.closeProgress();
     };
     startApp();
 

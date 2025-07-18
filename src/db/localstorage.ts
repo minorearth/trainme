@@ -18,16 +18,30 @@ export const setCSP = (state: CSP) => {
 };
 
 export const cleanUpCSP = () => {
-  localStorage.removeItem("state");
+  localStorage.setItem("state", JSON.stringify(CSP_DEFAULTS));
+  return CSP_DEFAULTS;
 };
 
 export const getCSP = (): CSP => {
   const state = localStorage.getItem("state");
-  if (stn.mode.needCt) {
-    return state != null ? JSON.parse(decrypt2(state)) : CSP_DEFAULTS;
-  } else {
-    return state != null ? JSON.parse(state) : CSP_DEFAULTS;
+  try {
+    if (stn.mode.needCt) {
+      return state != null ? JSON.parse(decrypt2(state)) : cleanUpCSP();
+    } else {
+      return state != null ? JSON.parse(state) : cleanUpCSP();
+    }
+  } catch (e) {
+    return cleanUpCSP();
   }
+};
+
+export const checkVersion = (currentverson: string): boolean => {
+  const localversion = localStorage.getItem("version") ?? "";
+  localStorage.setItem("version", currentverson);
+  if (currentverson != localversion) {
+    localStorage.setItem("state", JSON.stringify({}));
+  }
+  return currentverson == localversion;
 };
 
 export const loadSetupPersisted = () => {

@@ -5,10 +5,13 @@ import { observer } from "mobx-react-lite";
 import { ThemeProvider } from "@mui/material/styles";
 import { useCustomTheme } from "@/app/theme";
 import { CssBaseline } from "@mui/material";
+import splash from "@/components/common/splash/store";
+import { useCallback } from "react";
 
 const Page = observer(({}) => {
   const { customTheme } = useCustomTheme();
-  console.log("render2", user.userid);
+
+  // useCallback(() => splash.showAppLoader(true), []);
 
   return (
     <>

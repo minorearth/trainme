@@ -124,6 +124,8 @@ class task {
     this.currTask = task;
     this.code = task.defaultcode;
     this.input = task.inout[0].inv.join("\n");
+    this.output = "";
+
     this.setEditorCode(task.defaultcode);
   }
 

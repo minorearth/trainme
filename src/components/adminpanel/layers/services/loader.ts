@@ -13,15 +13,14 @@ import {
   getChaptersIdsAndTextBookId,
   getChapterTasks,
 } from "@/components/adminpanel/layers/services/loaderHelpers";
-import { ChapterObjReport, CourseChapterObjReport } from "@/T/Managertypes";
 import { CoursesDataToUpload } from "@/T/typesUpload";
 import { Edge } from "@xyflow/react";
 import splash from "@/components/common/splash/store";
 import { coursesToLoad } from "@/components/adminpanel/layers/services/courses";
-import { TaskDB } from "@/T/typesDB";
+import { CourseChapterObjDB, TaskDB } from "@/T/typesDB";
 
 export const uploadCourses = async () => {
-  splash.setShowProgress(true);
+  splash.showProgress(true);
   //confirm as
   await load(coursesToLoad as CoursesDataToUpload);
   splash.closeProgress();
@@ -90,7 +89,7 @@ const prepareAndUploadCourseChaptersObj = async ({
   coursesToLoadIds: string[];
   coursesToLoad: CoursesDataToUpload;
 }) => {
-  let chapterCourseObjectModel: CourseChapterObjReport = {};
+  let chapterCourseObjectModel: CourseChapterObjDB = {};
   coursesToLoadIds.forEach(
     (courseid) =>
       (chapterCourseObjectModel[courseid] =

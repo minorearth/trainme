@@ -20,8 +20,15 @@ import { signInSubmit } from "@/components/authsteps/layers/services/services";
 
 //stores
 import authForm from "@/components/authsteps/layers/store/store";
+import splash from "@/components/common/splash/store";
 
 const SignIn = observer(() => {
+  // import splash from "@/components/common/splash/store"
+
+  React.useEffect(() => {
+    // splash.showAppLoader(true);
+  }, []);
+
   const router = useRouter();
 
   return (

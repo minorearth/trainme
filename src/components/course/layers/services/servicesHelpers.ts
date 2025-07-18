@@ -28,7 +28,7 @@ const buyAction = ({
 
   if (unlocked && rating < unlockpts) da.info.nomoneytobuy();
 
-  if (unlocked && rating >= unlockpts && !progressCircle.state.showProgress)
+  if (unlocked && rating >= unlockpts && !progressCircle.shown)
     da.info.buy(() => buyChapter({ unlockpts, chapterid }));
 };
 

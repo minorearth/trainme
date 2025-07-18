@@ -55,7 +55,7 @@ const CustomStatItem = React.forwardRef(function CustomStatItem(
           <CustomLabel
             {...getLabelProps()}
             // toggleItemEditing={interactions.toggleItemEditing}
-            showCode={() => stat.actions.showCode(item?.code || "some error")}
+            showCode={() => stat.showCode(item?.code || "some error")}
             type={item?.type || "some error"}
           />
         </TreeItemContent>

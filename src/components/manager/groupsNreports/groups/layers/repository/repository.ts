@@ -11,8 +11,12 @@ import {
   groupsArrToObject,
 } from "@/components/manager/groupsNreports/groups/layers/repository/ETL";
 
-import { CourseChapterObjReport } from "@/T/Managertypes";
-import { GroupArr, GroupDB, GroupUserDBAttrs } from "@/T/typesDB";
+import {
+  CourseChapterObjDB,
+  GroupArr,
+  GroupDB,
+  GroupUserDBAttrs,
+} from "@/T/typesDB";
 
 export const getGroupsArr = async (userid: string) => {
   const groups = await getDocDataFromCollectionById<GroupDB>({
@@ -23,12 +27,11 @@ export const getGroupsArr = async (userid: string) => {
   return data;
 };
 
-export const getChaptersObjdata = async (): Promise<CourseChapterObjReport> => {
-  const chaptersObj =
-    await getDocDataFromCollectionById<CourseChapterObjReport>({
-      collectionName: "views",
-      id: "chaptersobject",
-    });
+export const getChaptersObjdata = async (): Promise<CourseChapterObjDB> => {
+  const chaptersObj = await getDocDataFromCollectionById<CourseChapterObjDB>({
+    collectionName: "views",
+    id: "chaptersobject",
+  });
   return chaptersObj || {};
 };
 
@@ -37,6 +40,16 @@ export const addNewGroupDB = async (data: GroupArr[], userid: string) => {
     collectionName: "groups",
     data: groupsArrToObject(data),
     id: userid,
+  });
+};
+
+export const addNewGroupDB2 = async (
+  groupid: string,
+  groupdata: GroupUserDBAttrs,
+  uuid: string
+) => {
+  await updateDocByid<GroupDB>("groups", uuid, {
+    [`${groupid}`]: groupdata,
   });
 };
 
@@ -67,7 +80,7 @@ export const addUserToGroup = async ({
     isFolder: false,
     children: {},
   };
-  await updateDocByid<GroupArr>("groups", manager, {
+  await updateDocByid<GroupDB>("groups", manager, {
     [`${groupid}.children.${groupid + uid}`]: user,
   });
 };

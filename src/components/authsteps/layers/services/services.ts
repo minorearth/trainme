@@ -22,14 +22,15 @@ export const signInSubmit = async (
 ) => {
   event.preventDefault();
   if (txtField.validate(["email", "password"])) {
-    splash.setShowProgress();
+    splash.showProgress(false, "progressdots", 0);
     cleanUpCSP();
     await signIn({
       email: txtField.state.email.value,
       password: txtField.state.password.value,
       router,
     });
-    splash.closeProgress();
+    // splash.closeProgress();
+    // splash.showAppLoader(true, 0);
     // router.replace("/chapters"); // заменяет текущую страницу
   } else {
   }

@@ -6,17 +6,7 @@ import {
   NodeDataDB,
 } from "@/T/typesDB";
 
-export interface ChapterObjReport {
-  [chapterid: string]: Pick<
-    NodeDataDB,
-    "maxcoins" | "nodemode" | "order" | "title"
-  >;
-}
 export type ChapterArrReport = Pick<NodeDataDB, "maxcoins" | "order" | "id">;
-
-export type CourseChapterObjReport = {
-  [courseid: string]: ChapterObjReport;
-};
 
 export interface PivotReport {
   [courseid: string]: CoursePivotReport;

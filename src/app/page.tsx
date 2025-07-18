@@ -5,7 +5,7 @@ import splash from "@/components/common/splash/store";
 
 export default function Home() {
   const router = useRouter();
-  splash.showAppLoader(true);
+  // splash.showAppLoader(true);
   router.push("/login");
-  return <Splash />;
+  // return <Splash />;
 }

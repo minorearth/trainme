@@ -1,15 +1,12 @@
 import { chaptersObjToArraySorted } from "@/components/course/layers/services/utils";
-import {
-  ChapterObjReport,
-  ChapterArrReport,
-  PivotReport,
-} from "@/T/Managertypes";
+import { ChapterArrReport, PivotReport } from "@/T/Managertypes";
 
 import { GroupUserObjReport, GroupUserObjReportAttr } from "@/T/Managertypes";
 
-import { CourseChapterObjReport } from "@/T/Managertypes";
 import {
+  ChapterObjReportDB,
   completedChapters,
+  CourseChapterObjDB,
   UserCoursesReportDBAttrs,
   UsersMetaReportDB,
 } from "@/T/typesDB";
@@ -20,7 +17,7 @@ export const makeReport = ({
   groupUsersObj,
   snapShot,
 }: {
-  allCoursesChaptersObj: CourseChapterObjReport;
+  allCoursesChaptersObj: CourseChapterObjDB;
   usersMetaObj: UsersMetaReportDB;
   groupUsersObj: GroupUserObjReport;
   snapShot: UsersMetaReportDB;
@@ -82,7 +79,7 @@ const getRows = ({
   courseid,
   snapShot,
 }: {
-  chapters: ChapterObjReport;
+  chapters: ChapterObjReportDB;
   user: GroupUserObjReportAttr;
   order: number;
   usersMetaObj: UsersMetaReportDB;
@@ -116,7 +113,7 @@ const getRows = ({
   };
 };
 
-const getColumns = (chapters: ChapterObjReport) => {
+const getColumns = (chapters: ChapterObjReportDB) => {
   let cols;
   cols = Object.keys(chapters)
     .map((chapterid) => ({

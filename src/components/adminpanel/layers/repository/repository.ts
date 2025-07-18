@@ -1,6 +1,6 @@
-import { CourseChapterObjReport } from "@/T/Managertypes";
 import { setDocInCollection, setDocInSubCollection } from "@/db/CA/firebaseCA";
 import {
+  CourseChapterObjDB,
   EdgeDB,
   FlowDB,
   NodeDB,
@@ -73,9 +73,9 @@ export const uploadChapterTasks = async ({
 };
 
 export const uploadCourseChaptersObject = async (
-  chapterCourseObjectModel: CourseChapterObjReport
+  chapterCourseObjectModel: CourseChapterObjDB
 ) => {
-  await setDocInCollection<CourseChapterObjReport>({
+  await setDocInCollection<CourseChapterObjDB>({
     collectionName: "views",
     data: chapterCourseObjectModel,
     id: "chaptersobject",

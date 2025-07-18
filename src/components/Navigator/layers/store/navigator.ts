@@ -66,9 +66,10 @@ class navigator {
 
   constructor() {
     makeAutoObservable(this);
-    splash.showAppLoader(true);
+
     this.disposer = autorun(() => {
       if (this.pyodideloaded && this.dataloaded) {
+        console.log("zurbagan");
         splash.closeProgress();
         this.apploaded = true;
         this.disposer();

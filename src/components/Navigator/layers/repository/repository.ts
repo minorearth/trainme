@@ -1,5 +1,6 @@
-import { getCSP } from "@/db/localstorage";
+import { checkVersion, cleanUpCSP, getCSP } from "@/db/localstorage";
+import { CSP } from "@/T/typesDB";
 
-export const getPersistedState = () => {
-  return getCSP();
+export const getPersistedState = (currentverson: string): CSP => {
+  return checkVersion(currentverson) ? getCSP() : cleanUpCSP();
 };

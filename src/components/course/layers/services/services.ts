@@ -10,7 +10,7 @@ import {
 import course from "@/components/course/layers/store/course";
 import user from "@/userlayers/store/user";
 import navigator from "@/components/Navigator/layers/store/navigator";
-import progressCircle from "@/components/common/splash/store";
+import splash from "@/components/common/splash/store";
 
 //service helpers
 import { enrichFlowWithUserProgress } from "@/components/course/layers/services/servicesHelpers";
@@ -45,7 +45,7 @@ export const buyChapter = async ({
   unlockpts: number;
   chapterid: string;
 }) => {
-  progressCircle.setShowProgress();
+  splash.showProgress();
   const courseid = course.state.courseid;
   const { rating, paid } = user.progress;
   await buyChapterCall({
@@ -61,5 +61,5 @@ export const buyChapter = async ({
     refetchFlow: true,
   });
 
-  progressCircle.closeProgress();
+  splash.closeProgress();
 };

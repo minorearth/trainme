@@ -11,6 +11,16 @@ import {
 } from "./typesState";
 import { RawTaskToUploadWithoutLevel } from "./typesUpload";
 
+export type DBFormats =
+  | CoursesDBObj
+  | TaskDBWraper
+  | FlowDB
+  | ChampDB
+  | UserMetaDB
+  | GroupDB
+  | UsersMetaReportDB
+  | CourseChapterObjDB;
+
 //Flow
 export type FlowDB = {
   chapterFlowNodes: NodeDB[];
@@ -134,15 +144,16 @@ export interface CSP {
   user: UserStatePersisted;
 }
 
+//Courses
 export interface CoursesDBObj {
-  [courseid: string]: CourseAtts;
+  [courseid: string]: CourseAttsDB;
 }
 
-export interface CoursesDB extends CourseAtts {
+export interface CoursesDB extends CourseAttsDB {
   courseid: string;
 }
 
-export interface CourseAtts {
+export interface CourseAttsDB {
   title: string;
   text: string;
   firstchapter: string;
@@ -191,4 +202,16 @@ export type UserCoursesReportDBAttrs = Pick<CourseProgressDB, "completed"> & {
 
 export interface CourseStatReportDB {
   [chapterid: string]: Pick<ChapterProgressDB, "sum">;
+}
+
+//Report
+export type CourseChapterObjDB = {
+  [courseid: string]: ChapterObjReportDB;
+};
+
+export interface ChapterObjReportDB {
+  [chapterid: string]: Pick<
+    NodeDataDB,
+    "maxcoins" | "nodemode" | "order" | "title"
+  >;
 }

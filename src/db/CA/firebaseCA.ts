@@ -1,3 +1,4 @@
+import { DBFormats } from "@/T/typesDB";
 import { db, auth } from "./firebaseappClient";
 
 import {
@@ -22,7 +23,7 @@ import {
   DocumentData,
 } from "firebase/firestore";
 
-export const setDocInCollection = async <T>({
+export const setDocInCollection = async <T extends DBFormats>({
   collectionName,
   data,
   id,
@@ -37,7 +38,7 @@ export const setDocInCollection = async <T>({
   );
 };
 
-export const setDocInSubCollection = async <T>({
+export const setDocInSubCollection = async <T extends DBFormats>({
   collectionName1,
   id1,
   collectionName2,
@@ -56,15 +57,18 @@ export const setDocInSubCollection = async <T>({
   );
 };
 
-export const updateDocByid = async <T>(
+export const updateDocByid = async <T extends DBFormats>(
   collectionName: string,
   id: string,
   data: Partial<T>
 ) => {
-  await updateDoc(doc(db, collectionName, id), data);
+  await updateDoc(
+    doc(db, collectionName, id),
+    data as WithFieldValue<DocumentData>
+  );
 };
 
-export const getDocDataFromCollectionById = async <T>({
+export const getDocDataFromCollectionById = async <T extends DBFormats>({
   collectionName,
   id,
 }: {
@@ -75,8 +79,7 @@ export const getDocDataFromCollectionById = async <T>({
   return docSnap.data() as T;
 };
 
-//TODO-make T extends DB types
-export const getDocDataFromSubCollectionById = async <T>({
+export const getDocDataFromSubCollectionById = async <T extends DBFormats>({
   collectionName1,
   id1,
   collectionName2,
@@ -93,7 +96,7 @@ export const getDocDataFromSubCollectionById = async <T>({
   return docSnap.data() as T;
 };
 
-export const getDocFromCollectionByIdRealtime = async <T>({
+export const getDocFromCollectionByIdRealtime = async <T extends DBFormats>({
   collectionName,
   id,
   onChangeAction,
@@ -109,7 +112,7 @@ export const getDocFromCollectionByIdRealtime = async <T>({
   return unsubscribe;
 };
 
-export const getMultipleDocs = async <T>({
+export const getMultipleDocs = async <T extends DBFormats>({
   collectionName,
   ids,
 }: {
@@ -125,7 +128,7 @@ type FBResponse<T> = T & {
   id: string;
 };
 
-const multipleDocsToArray = <T>(docs: QuerySnapshot) => {
+const multipleDocsToArray = <T extends DBFormats>(docs: QuerySnapshot) => {
   let ret: T[] = [];
   docs.forEach((doc) => {
     {
@@ -135,46 +138,3 @@ const multipleDocsToArray = <T>(docs: QuerySnapshot) => {
   });
   return ret;
 };
-
-// export const getDocFromCollectionById = async (
-//   db: Firestore,
-//   collectionName: string,
-//   id: string
-// ) => {
-//   const docSnap = await getDoc(doc(db, collectionName, id));
-//   const data = docSnap.data();
-//   return { id: docSnap.id, ...data };
-// };
-
-// export const addDocInCollection = async <T>(
-//   db: Firestore,
-//   collectionName: string,
-//   data:WithFieldValue<T>
-// ) => {
-//   const doc = await addDoc(collection(db, collectionName), data);
-//   return doc.id;
-// };
-
-// export const getAllDocs = async (db: Firestore, collectionName: string) => {
-//   const querySnapshot = await getDocs(collection(db, collectionName));
-//   return querySnapshot;
-// };
-
-// export const deleteDocFromCollection = async (
-//   db: Firestore,
-//   collectionName: string,
-//   id: string
-// ) => {
-//   deleteDoc(doc(db, collectionName, id));
-// };
-
-// export const copyDoc = async (
-//   db: Firestore,
-//   collection: string,
-//   oldindex: string,
-//   newindex: string
-// ) => {
-//   const res = await getDoc(doc(db, collection, oldindex));
-//   const data = res.data();
-//   setDoc(doc(db, collection, newindex), data);
-// };

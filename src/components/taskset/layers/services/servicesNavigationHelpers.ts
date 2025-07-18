@@ -57,7 +57,7 @@ export const setTaskNumErrorFixed = (error: boolean) => {
 };
 
 export const ok = (action = () => {}) => {
-  splash.setGotoplayLottie(false, "ok", () => action());
+  splash.gotoplayLottie(false, "ok", () => action());
 };
 
 export const calcEarned = (error: boolean) => {

@@ -26,6 +26,8 @@ const DEFAULT_STATE = {
 class taskset {
   tasks: Task[] = [];
   tasknum: number = -1;
+  nextdisabled: boolean = false;
+  prevdisabled: boolean = true;
   actions = {
     nextTaskOrCompleteTestRun,
     errorCountDownPressed,
@@ -89,12 +91,19 @@ class taskset {
     this.switchTaskP(this.tasks.length - 1);
   };
 
+  setNavButtonsDisabled = () => {
+    this.nextdisabled = this.state.currTaskId >= this.tasknum - 1;
+    this.prevdisabled = this.state.currTaskId <= 0;
+  };
+
   nextTask = () => {
     this.switchTaskP(this.state.currTaskId + 1);
+    this.setNavButtonsDisabled();
   };
 
   prevTaskNoPts_admin = () => {
     this.switchTaskP(this.state.currTaskId - 1);
+    this.setNavButtonsDisabled();
   };
 
   setCurrTaskCSPOnly = (id: number) => {

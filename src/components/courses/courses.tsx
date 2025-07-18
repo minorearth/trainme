@@ -4,6 +4,8 @@ import Card from "./courseCard";
 import { getCoursesSorted } from "@/components/courses/layers/repository/repository";
 import { CoursesDB } from "@/T/typesDB";
 
+import splash from "@/components/common/splash/store";
+
 const Courses = () => {
   const coursesData: CoursesDB[] = getCoursesSorted();
 

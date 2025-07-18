@@ -15,9 +15,11 @@ import {
 
 //stores
 import user from "@/userlayers/store/user";
+import splash from "@/components/common/splash/store";
 
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { User } from "firebase/auth";
+import { progress } from "framer-motion";
 
 export const signUp = async ({
   email,
@@ -68,6 +70,8 @@ export const signIn = async ({
 
 export const signOut = async (router: AppRouterInstance) => {
   await signOutUserRep();
+  splash.closeProgress();
+
   router.push(`/login/`);
 };
 

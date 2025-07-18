@@ -3,8 +3,9 @@ import { DocumentData, WithFieldValue } from "firebase/firestore";
 import { decrypt2 } from "@/globals/utils/encryption";
 
 import { db } from "./firebaseappAdmin";
+import { DBFormats } from "@/T/typesDB";
 
-export const updateDocSA = async <T>(
+export const updateDocSA = async <T extends DBFormats>(
   collection: string,
   dataencrypted: string
 ) => {
@@ -18,7 +19,10 @@ export const updateDocSA = async <T>(
   }
 };
 
-export const getDocSA = async <T>(collection: string, data: { id: string }) => {
+export const getDocSA = async <T extends DBFormats>(
+  collection: string,
+  data: { id: string }
+) => {
   const { id } = data;
   const userMetaRef = db.collection(collection).doc(id);
   const snapshot = await userMetaRef.get();

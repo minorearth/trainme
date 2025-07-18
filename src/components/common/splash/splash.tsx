@@ -16,7 +16,7 @@ const Splash = observer(() => {
   return (
     <Backdrop
       sx={(theme) => ({ color: "#121212", zIndex: theme.zIndex.drawer + 1 })}
-      open={!splash.state.timeelapsed || splash.state.showProgress}
+      open={splash.delayed || splash.shown}
     >
       <Box
         sx={{

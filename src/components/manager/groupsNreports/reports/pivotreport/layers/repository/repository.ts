@@ -44,18 +44,17 @@ export const getSnapShot = async ({
   groupid: string;
   userid: string;
 }) => {
-  const snapshot =
-    await getDocDataFromSubCollectionById<UsersMetaReportDBWrapper>({
-      collectionName1: "snapshots",
-      id1: userid,
-      collectionName2: "snapshot",
-      id2: groupid,
-    });
+  const snapshot = await getDocDataFromSubCollectionById<UsersMetaReportDB>({
+    collectionName1: "snapshots",
+    id1: userid,
+    collectionName2: "snapshot",
+    id2: groupid,
+  });
   // const snapshot = await getDocDataFromCollectionByIdClient(
   //   "snapshots",
   //   `${userid}_${groupid}`
   // );
-  return snapshot?.usersMetaObj ?? {};
+  return snapshot ?? {};
 };
 
 export const getUsersMetaObj = async (

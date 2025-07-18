@@ -1,12 +1,11 @@
-import { ChapterObjReport } from "./Managertypes";
-import { EdgeDB, NodeDB } from "./typesDB";
+import { ChapterObjReportDB, EdgeDB, NodeDB } from "./typesDB";
 
 //////////////////////////upload(admin)
 //Task
 export interface CoursesDataToUpload {
   [courseid: string]: {
     chapterFlowNodes: NodeDB[];
-    chapterFlowNodesObj: ChapterObjReport;
+    chapterFlowNodesObj: ChapterObjReportDB;
     chapterFlowEdges: EdgeDB[];
     tasksall: RawTaskToUploadWithoutLevel[];
   };
