@@ -21,17 +21,19 @@ export type StateType =
   | "user";
 
 //Task
-export type TaskDBWithFiles = Omit<TaskDB, "inout"> & {
+export interface TaskDBWithFiles extends TaskDB {
   ///////////////////////////////////////////////////////////////
-  inout: InOut[];
+  inout: InOutWithFilesDataState[];
   filedata: string;
-};
+}
 
-export type InOut = InOutDB & { filesdata: string[] };
+export interface InOutWithFilesDataState extends InOutDB {
+  filesdata: string[];
+}
 
-export type Task = TaskDBWithFiles & {
+export interface Task extends TaskDBWithFiles {
   tasktext: string;
-};
+}
 
 //Flow(enriched with progress)
 
@@ -44,19 +46,18 @@ export interface NodeDBState extends NodeDB {
   data: NodeDataState;
 }
 
-export type NodeDataState = NodeDataDB &
-  // Pick<CourseProgressDB, "rating"> &
-  Pick<ChapterProgressDB, "sum"> & {
-    //calculated
-    completed: boolean;
-    unlocked: boolean;
-    paid: boolean;
-    tobeunlocked: string[];
-    overflow: boolean;
-    remainsum: number;
+export interface NodeDataState extends NodeDataDB {
+  sum: ChapterProgressDB["sum"];
+  //calculated
+  completed: boolean;
+  unlocked: boolean;
+  paid: boolean;
+  tobeunlocked: string[];
+  overflow: boolean;
+  remainsum: number;
 
-    action: (data: NodeDataState) => void;
-  };
+  action: (data: NodeDataState) => void;
+}
 
 //Tasksetstate
 export interface TasksetStatePersisted {
@@ -68,9 +69,11 @@ export interface TasksetStatePersisted {
   randomsaved: string[];
   fixed: number;
   //TODO: wtf?
-  success: boolean;
+  success: SuccessType;
   currTaskId: number;
 }
+
+export type SuccessType = "success" | "fail" | "indefined";
 
 export type TasksetStage =
   | "recap"
@@ -85,10 +88,10 @@ export type TasksetMode =
   | Extract<NodeModes, "newtopic" | "addhoc" | "exam">;
 
 //user
-export type UserStatePersisted = {
+export interface UserStatePersisted {
   username: string;
   progress: CourseProgressDB;
-};
+}
 
 //chapter
 

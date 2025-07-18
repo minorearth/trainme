@@ -62,7 +62,7 @@ export const loadPyTrek = async () => {
         taskstage == "accomplished_suspended" ||
         (taskstage == "recap_suspended" && tasksetmode == "exam")
       ) {
-        openCongratPage({ success: false });
+        openCongratPage({ success: "fail" });
       } else {
         await recoverTasks({ CSP });
       }

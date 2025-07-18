@@ -59,14 +59,14 @@ export const nextTaskOrCompleteTestRun = async ({
       if (taskstage == "recap") {
         ok(() =>
           navigator.actions.openCongratPage({
-            success: recapTaskNum == fixed,
+            success: recapTaskNum == fixed ? "success" : "fail",
           })
         );
       }
       if (recapTaskNum == 0 && taskstage == "WIP") {
         ok(() =>
           navigator.actions.openCongratPage({
-            success: true,
+            success: "success",
           })
         );
       }
@@ -74,7 +74,7 @@ export const nextTaskOrCompleteTestRun = async ({
         taskset.state.tasksetmode == "exam"
           ? ok(() =>
               navigator.actions.openCongratPage({
-                success: false,
+                success: "fail",
               })
             )
           : ok(() =>
@@ -143,14 +143,14 @@ export const errorCountDownPressed = async () => {
 
   if (taskstage == "accomplished_suspended") {
     navigator.actions.openCongratPage({
-      success: false,
+      success: "fail",
     });
     return;
   }
   if (taskstage == "recap_suspended") {
     tasksetmode == "exam"
       ? navigator.actions.openCongratPage({
-          success: false,
+          success: "fail",
         })
       : setRecapTasks({
           recapTasksIds: taskset.state.recapTasksIds,

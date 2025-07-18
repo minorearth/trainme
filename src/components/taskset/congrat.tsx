@@ -44,7 +44,7 @@ const CongratPage = observer(() => {
         variant="outlined"
         aria-label="repeat"
         onClick={() => {
-          navigator.actions.closeCongratPage(taskset.state.success || true);
+          navigator.actions.closeCongratPage();
         }}
         endIcon={<ReplayIcon />}
       >

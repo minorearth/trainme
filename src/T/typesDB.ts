@@ -4,7 +4,7 @@ import {
   ChampStatePersisted,
   ChapterStatePersisted,
   CourseStatePersisted,
-  InOut,
+  InOutWithFilesDataState,
   NavigatorStatePersisted,
   TasksetStatePersisted,
   UserStatePersisted,
@@ -27,7 +27,7 @@ export type NodeDB = {
   };
 };
 
-export type NodeDataDB = {
+export interface NodeDataDB extends Record<string, unknown> {
   title: string;
   //description
   subline: string;
@@ -39,7 +39,7 @@ export type NodeDataDB = {
   level: number;
   lottie: string;
   type: string;
-};
+}
 export type chapterid = string;
 
 export type NodeModes = "newtopic" | "addhoc" | "exam" | "animation";
@@ -110,10 +110,10 @@ export interface CourseStatDB {
   [chapterid: string]: ChapterProgressDB;
 }
 
-export type ChapterProgressDB = {
+export interface ChapterProgressDB {
   sum: number;
   tasks: TasksLogDB;
-};
+}
 
 export interface TasksLogDB {
   [taskuid: string]: TaskLogAttrsDB;
@@ -138,9 +138,9 @@ export interface CoursesDBObj {
   [courseid: string]: CourseAtts;
 }
 
-export type CoursesDB = CourseAtts & {
+export interface CoursesDB extends CourseAtts {
   courseid: string;
-};
+}
 
 export interface CourseAtts {
   title: string;

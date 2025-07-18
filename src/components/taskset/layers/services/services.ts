@@ -165,11 +165,9 @@ export const getExamTasks = async ({
   }
 };
 
-interface saveProgress {
-  success: boolean;
-}
-export const saveProgress = async ({ success }: saveProgress) => {
-  const { pts = 0, tasklog } = taskset.state;
+export const saveProgress = async () => {
+  const { pts = 0, tasklog, success } = taskset.state;
+
   const { chapterid, tobeunlocked, completed } = chapter.chapter;
   const progress = user.progress;
   const { unlocked, rating, stat, completed: completedChapters } = progress;
@@ -187,7 +185,7 @@ export const saveProgress = async ({ success }: saveProgress) => {
       (stat[chapterid]?.sum ?? 0) + pts,
     ...tasklogPrepared,
   };
-  if (!completed && success) {
+  if (!completed && success == "success") {
     userData = {
       ...userData,
       [`courses.${courseid}.completed`]: [...completedChapters, chapterid],

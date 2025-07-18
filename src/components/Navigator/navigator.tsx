@@ -32,6 +32,7 @@ import TawkToChat from "@/components/common/tawkto/tawkto.js";
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
 import course from "@/components/course/layers/store/course";
+import taskset from "@/components/taskset/layers/store/taskset";
 
 const Navigator = observer(() => {
   useApp();
@@ -72,7 +73,8 @@ const Navigator = observer(() => {
           )}
           {navigator.state.page == "lessonStarted" && <Start />}
           {navigator.state.page == "testrun" && <Taskrun />}
-          {navigator.state.page == "congrat" && <CongratPage />}
+          {navigator.state.page == "congrat" &&
+            taskset.state.success != "indefined" && <CongratPage />}
         </Box>
       )}
     </Box>

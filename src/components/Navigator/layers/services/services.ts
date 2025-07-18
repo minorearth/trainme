@@ -50,6 +50,7 @@ import {
   ChapterStatePersisted,
   CourseStatePersisted,
   Page,
+  SuccessType,
   TasksetStatePersisted,
 } from "@/T/typesState";
 import { CourseProgressDB } from "@/T/typesDB";
@@ -137,14 +138,18 @@ export const openTaskSetPage = async () => {
   splash.closeProgress();
 };
 
-export const openCongratPage = async ({ success }: { success: boolean }) => {
+export const openCongratPage = async ({
+  success,
+}: {
+  success: SuccessType;
+}) => {
   countdownbutton.hideButton();
   navigator.setStateP({ page: "congrat" });
   taskset.setStateP({ ...taskset.state, success });
 };
 
-export const closeCongratPage = async (success: boolean) => {
-  const tasksetmode = taskset.state.tasksetmode;
+export const closeCongratPage = async () => {
+  const { tasksetmode } = taskset.state;
   splash.setShowProgress();
 
   if (
@@ -153,7 +158,7 @@ export const closeCongratPage = async (success: boolean) => {
     tasksetmode == "exam"
   )
     try {
-      await saveProgress({ success });
+      await saveProgress();
       await openAndRefreshFlowPage({
         courseid: course.state.courseid,
         refetchFlow: true,
@@ -179,7 +184,7 @@ export const interruptTaskSet = () => {
     da.info.tasksetinterrupt({
       action: () =>
         openCongratPage({
-          success: false,
+          success: "fail",
         }),
       tasksetmode,
       completed: chapter.chapter.completed,
