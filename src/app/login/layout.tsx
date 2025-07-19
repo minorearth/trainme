@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid2";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
-import local from "@/globals/local";
+import L from "@/globals/local";
 import background from "./background.json";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
@@ -26,7 +26,7 @@ function Copyright({ ...other }) {
     <Typography color="text.secondary" align="center" {...other}>
       {"Copyright © "}
       <Link color="inherit" href={process.env.NEXT_PUBLIC_DOMAIN}>
-        {local.ru.text.APP_NAME}
+        {L.ru.text.APP_NAME}
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}

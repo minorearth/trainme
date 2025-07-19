@@ -73,6 +73,6 @@ export const fetchFile = async (fileUrl: string) => {
     const data = await response.text();
     return data.replace(/\n/g, "\\n").replace(/\r/g, "\\r");
   } catch (error) {
-    console.error("Ошибка:", error);
+    console.error("Error:", error);
   }
 };

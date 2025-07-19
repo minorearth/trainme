@@ -1,7 +1,7 @@
 "use client";
 //common
 import { observer } from "mobx-react-lite";
-import stn from "@/globals/settings";
+import S from "@/globals/settings";
 import { toJS } from "mobx";
 
 //react stuff
@@ -62,7 +62,7 @@ const Navigator = observer(() => {
             </>
           )}
 
-          {stn.mode.DEV_MODE &&
+          {S.mode.DEV_MODE &&
             (navigator.state.page == PG.testrun ||
               navigator.state.page == PG.flow) && <AdminPanel />}
           {navigator.state.page == PG.courses && <Courses />}

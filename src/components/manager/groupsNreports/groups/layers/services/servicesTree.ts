@@ -11,11 +11,12 @@ import {
 import user from "@/userlayers/store/user";
 import stat from "@/components/manager/groupsNreports/store/stat";
 import { GroupArr } from "@/T/typesDB";
+import L from "@/globals/local";
 
 export const addNewGroup = () => {
   const groupid = uuidv4();
   const groupdata = {
-    label: "Новая группа",
+    label: L.ru.ST.NEW_GROUP,
     children: {},
     isFolder: true,
     uid: "",

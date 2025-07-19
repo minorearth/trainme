@@ -1,15 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
 import Button from "@mui/material/Button";
-
-//TODO: (later) to constants
-const sec = 20 * 1000;
-const speed = 100;
+import L from "@/globals/local";
+import S from "@/globals/settings";
 
 const CountdownButton = ({ onClick }: { onClick: () => void }) => {
   const [isRunning, setIsRunning] = useState(true);
 
-  const [value, setValue] = useState(sec);
-  const valueRef = useRef<number>(sec);
+  const [value, setValue] = useState(S.PROCEED_SUSPENCE);
+  const valueRef = useRef<number>(S.PROCEED_SUSPENCE);
   useEffect(() => {
     let interval = undefined;
 
@@ -21,26 +19,22 @@ const CountdownButton = ({ onClick }: { onClick: () => void }) => {
         } else
           setValue((prevState) => {
             valueRef.current = prevState;
-            return prevState - sec / speed;
+            return prevState - S.PROCEED_SUSPENCE / S.PROCEED_SPEED;
           });
-      }, sec / speed);
+      }, S.PROCEED_SUSPENCE / S.PROCEED_SPEED);
     } else {
       clearInterval(interval);
     }
 
     return () => {
       clearInterval(interval);
-      // setIsRunning(false);
-      // countdownbutton.hideButton();
     };
   }, [isRunning]);
 
   return (
-    <Button
-      onClick={() => onClick()}
-      variant="outlined"
-      id="countdownbtn"
-    >{`Продолжить ${Math.round(value / 1000)}`}</Button>
+    <Button onClick={() => onClick()} variant="outlined" id="countdownbtn">{`${
+      L.ru.buttons.PROCEED
+    } ${Math.round(value / 1000)}`}</Button>
   );
 };
 

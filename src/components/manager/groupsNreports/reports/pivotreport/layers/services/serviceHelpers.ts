@@ -11,6 +11,8 @@ import {
   UsersMetaReportDB,
 } from "@/T/typesDB";
 
+import L from "@/globals/local";
+
 export const makeReport = ({
   allCoursesChaptersObj,
   usersMetaObj,
@@ -125,7 +127,13 @@ const getColumns = (chapters: ChapterObjReportDB) => {
     }))
     .sort((a, b) => a.order - b.order);
   cols = [
-    { header: "Имя", accessor: "col0", order: -1, maxcoins: "", title: "" },
+    {
+      header: L.ru.RT.NAME,
+      accessor: "col0",
+      order: -1,
+      maxcoins: "",
+      title: "",
+    },
     ...cols,
   ];
   return cols;

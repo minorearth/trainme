@@ -9,20 +9,6 @@ const TawkToChat = () => {
 
     document.body.appendChild(tawkScript);
 
-    // window.Tawk_API = window.Tawk_API || {};
-    // window.Tawk_API.onLoad = function () {
-    //   // Устанавливаем интервал для проверки наличия поля ввода
-    //   const intervalId = setInterval(() => {
-    //     const inputField = document.querySelector(".tawk-chatinput-editor"); // Попробуйте найти поле ввода
-
-    //     if (inputField) {
-    //       inputField.firstChild.lastChild.textContent =
-    //         "Ваш предзаполненный текст сообщения"; // Устанавливаем предзаполненный текст
-    //       clearInterval(intervalId); // Очищаем интервал после нахождения поля ввода
-    //     }
-    //   }, 1000); // Проверяем каждые 1000 мс (1 секунда)
-    // };
-
     return () => {
       document.body.removeChild(tawkScript);
     };

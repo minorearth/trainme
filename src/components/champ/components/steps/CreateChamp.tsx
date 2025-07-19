@@ -11,6 +11,7 @@ import CustomField from "@/components/common/customfield/customField";
 //stores
 import champ from "@/components/champ/layers/store/champ";
 import txtField from "@/components/common/customfield/store";
+import L from "@/globals/local";
 
 const CreateChampStep = observer(() => {
   return (
@@ -23,7 +24,7 @@ const CreateChampStep = observer(() => {
       }}
     >
       <>
-        <Typography>Сложность</Typography>
+        <Typography>{L.ru.CH.COMPLEXITY}</Typography>
         <RangeSlider />
       </>
       <CustomField
@@ -46,7 +47,7 @@ const CreateChampStep = observer(() => {
         variant="outlined"
         fullWidth
       >
-        Создать чемпионат
+        {L.ru.buttons.CREATE_CHAMP}
       </Button>
 
       {champ.champid && <Typography variant="h4">{champ.champid}</Typography>}
@@ -56,7 +57,7 @@ const CreateChampStep = observer(() => {
         variant="outlined"
         fullWidth
       >
-        Начать
+        {L.ru.buttons.START_CHAMP}
       </Button>
       <Button
         disabled={!champ.champid}
@@ -66,7 +67,7 @@ const CreateChampStep = observer(() => {
         }}
         fullWidth
       >
-        Присоединиться
+        {L.ru.buttons.JOINCHAMP}
       </Button>
       <Button
         sx={{ width: "30%" }}
@@ -76,7 +77,7 @@ const CreateChampStep = observer(() => {
         variant="outlined"
         fullWidth
       >
-        Назад
+        {L.ru.buttons.BACK_CHAMP}
       </Button>
     </Box>
   );

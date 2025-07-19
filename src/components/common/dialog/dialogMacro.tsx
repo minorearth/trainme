@@ -1,14 +1,14 @@
 import alertdialog from "@/components/common/dialog/store";
 import splash from "@/components/common/splash/store";
-import local from "@/globals/local";
+import L from "@/globals/local";
 import { TasksetMode, TSM } from "@/T/typesBasic";
 
 export const da = {
   info: {
     wrongpsw: () =>
       alertdialog.showDialog(
-        "Неверный логин или пароль",
-        "Перепроверьте все еще раз",
+        L.ru.msg.WRONG_PSW_CAPTION,
+        L.ru.msg.WRONG_PSW_TEXT,
         1,
         () => {
           splash.closeProgress();
@@ -16,8 +16,8 @@ export const da = {
       ),
     emailnotverified: () =>
       alertdialog.showDialog(
-        "email не верифицирован",
-        "На ваш почтовый ящик выслано письмо, \nперейдите по ссылке в письме для смены пароля",
+        L.ru.msg.EMAIL_NOT_VERYFIED_CAPTION,
+        L.ru.msg.EMAIL_NOT_VERYFIED_TEXT,
         1,
         () => {
           splash.closeProgress();
@@ -25,51 +25,51 @@ export const da = {
       ),
     accountcreeated: (action: () => void) =>
       alertdialog.showDialog(
-        local.ru.msg.alert.PSW_ACOUNT_CREATED_TITLE,
-        local.ru.msg.alert.PSW_ACOUNT_CREATED_TEXT,
+        L.ru.msg.PSW_ACOUNT_CREATED_TITLE,
+        L.ru.msg.PSW_ACOUNT_CREATED_TEXT,
         1,
         () => action()
       ),
     resetpsw: (action: () => void) =>
       alertdialog.showDialog(
-        local.ru.msg.alert.PSW_RECOVERY_TITLE,
-        local.ru.msg.alert.PSW_RECOVERY_TEXT,
+        L.ru.msg.PSW_RECOVERY_TITLE,
+        L.ru.msg.PSW_RECOVERY_TEXT,
         1,
         () => action()
       ),
     blocked: () =>
       alertdialog.showDialog(
-        "Заблокировано",
-        "Данный раздел пока заблокирован. \nВыполните задания предыдущего раздела",
+        L.ru.msg.CHAPTER_BLOCKED_CAPTION,
+        L.ru.msg.CHAPTER_BLOCKED_TEXT,
         1,
         () => {}
       ),
     buy: (action: () => void) =>
       alertdialog.showDialog(
-        "Не  оплачен",
-        "Данный раздел не оплачен. Купить?",
+        L.ru.msg.NOTPAID_BUY_CAPTION,
+        L.ru.msg.NOTPAID_BUY_TEXT,
         2,
         () => action(),
         () => {}
       ),
     nomoneytobuy: () =>
       alertdialog.showDialog(
-        "Не  оплачен",
-        "Данный раздел не оплачен. Не хватает монет",
+        L.ru.msg.NOTPAID_NO_MONEY_CAPTION,
+        L.ru.msg.NOTPAID_NO_MONEY_TEXT,
         1,
         () => {}
       ),
     notpaidblocked: () =>
       alertdialog.showDialog(
-        "Заблокировано и не оплачено",
-        "Данный раздел пока заблокирован. \nВыполните задания предыдущего раздела,\nа потом оплатите монетками",
+        L.ru.msg.BLOCKED_AND_NOTPAID_CAPTION,
+        L.ru.msg.BLOCKED_AND_NOTPAID_TEXT,
         1,
         () => {}
       ),
     courseblocked: () => {
       alertdialog.showDialog(
-        "Курс недоступен",
-        "Данный курс пока недоступен",
+        L.ru.msg.COURSE_IS_DISABLED_CAPTION,
+        L.ru.msg.COURSE_IS_DISABLED_TEXT,
         1,
         () => {
           splash.closeProgress();
@@ -78,8 +78,8 @@ export const da = {
     },
     textbookblocked: () =>
       alertdialog.showDialog(
-        "В учебнике нет отрытых тем",
-        "Темы в учебнике открываются по мере проходжения курса",
+        L.ru.msg.TEXTBOOK_BLOCKED_CAPTION,
+        L.ru.msg.TEXTBOOK_BLOCKED_TEXT,
         1,
         () => {
           splash.closeProgress();
@@ -87,8 +87,8 @@ export const da = {
       ),
     networkerror: (e: unknown) =>
       alertdialog.showDialog(
-        "Сохранение данных",
-        ' "Что-то пошло не так, повторите попытку...',
+        L.ru.msg.NETWORK_ERROR_CAPTION,
+        L.ru.msg.NETWORK_ERROR_TEXT,
         1,
         () => {
           console.log(e);
@@ -117,46 +117,43 @@ export const da = {
       );
     },
     rightcode: (action: () => void, errorMsg: string) =>
-      alertdialog.showDialog(
-        local.ru.msg.alert.PSW_TEST_ERROR,
-        errorMsg,
-        1,
-        () => action()
+      alertdialog.showDialog(L.ru.msg.PSW_TEST_ERROR, errorMsg, 1, () =>
+        action()
       ),
     notenoughttasks: (count: number) =>
       alertdialog.showDialog(
-        "Ошибка",
-        `По выбранной сложности недостаточно задач. Доступное количество задач: ${count}. Измените уровень сложности.`,
+        L.ru.msg.NOT_ENOUGHT_TASKS_CAPTION,
+        `${L.ru.msg.NOT_ENOUGHT_TASKS_TEXT_PART1} ${count}${L.ru.msg.NOT_ENOUGHT_TASKS_TEXT_PART2}`,
         1,
         () => {}
       ),
     champblocked: () =>
       alertdialog.showDialog(
-        "Ошибка",
-        "Ты вышел из чемпионата, обратно уже не зайти..",
+        L.ru.msg.CHAMP_COMEBACK_CAPTION,
+        L.ru.msg.CHAMP_COMEBACK_TEXT,
         1,
         () => {}
       ),
     champover: () =>
       alertdialog.showDialog(
-        "Ошибка",
-        "Ты уже поучаствовал в этом чемпионате",
+        L.ru.msg.CHAMPOVER_CAPTION,
+        L.ru.msg.CHAMPOVER_TEXT,
         1,
         () => {}
       ),
     nochamp: (e: unknown) => {
       console.log(e);
       alertdialog.showDialog(
-        "Нет такого чемпионата",
-        "Перепроверьте все еще раз",
+        L.ru.msg.NOCHAMP_CAPTION,
+        L.ru.msg.NOCHAMP_TEXT,
         1,
         () => {}
       );
     },
     recap: () =>
       alertdialog.showDialog(
-        "Повторение",
-        "Попробуй еще раз решить ошибочные задачи",
+        L.ru.msg.RECAP_CAPTION,
+        L.ru.msg.RECAP_TEXT,
         1,
         () => {}
       ),
@@ -175,29 +172,27 @@ const getTaskSetInterruptedInfo = (
     tasksetmode == TSM.addhoc ||
     tasksetmode == TSM.newtopic
   ) {
-    caption = "Завершить";
+    caption = L.ru.msg.INTERRUPT_CAPTION;
   }
 
   if (
     (tasksetmode == TSM.newtopic || tasksetmode == TSM.addhoc) &&
     !completed
   ) {
-    text =
-      "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n2 монеты за каждую задачу вместо 10 монет";
+    text = L.ru.msg.INTERRUPT_TEXT1;
   }
 
   if (tasksetmode == TSM.exam && !completed) {
-    text =
-      "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n1 монету за каждую задачу вместо 2 монет";
+    text = L.ru.msg.INTERRUPT_TEXT2;
   }
 
   if (completed) {
-    text = "Завершить прохождение?";
+    text = L.ru.msg.INTERRUPT_TEXT3;
   }
 
   if (tasksetmode == TSM.champ) {
-    caption = "Завершить чемпионат";
-    text = "Завершить участие в чемпионате?";
+    caption = L.ru.msg.INTERRUPT_CHAMP_CAPTION;
+    text = L.ru.msg.INTERRUPT_CHAMP_TEXT;
   }
 
   return { caption, text };
@@ -213,25 +208,24 @@ export const getStarPageIntro = ({
   overflow: boolean;
 }) => {
   if (tasksetmode == TSM.textbook) {
-    return "Приветствуем вас в учебнике 📘 ! В учебнике доступна теория только по открытым темам";
+    return L.ru.SPG.INTRO1;
   }
 
   if (tasksetmode == TSM.champ) {
-    return "Удачи в чемпионате!";
+    return L.ru.SPG.INTRO2;
   }
 
-  if (tasksetmode == TSM.exam)
-    return "В режиме челлендж нет повторения и все задачи должны быть решены с первого раза";
+  if (tasksetmode == TSM.exam) return L.ru.SPG.INTRO3;
 
   if (tasksetmode == TSM.addhoc || tasksetmode == TSM.newtopic) {
     if (!completed) {
-      return "Постарайтесь решить задачу с первого раза, за это начисляются монеты, которые используются для открытия новых уроков";
+      return L.ru.SPG.INTRO4;
     }
     if (overflow) {
-      return "Вы достигли лимита монет по этой главе😭, здесь вы уже их не заработаете🚫";
+      return L.ru.SPG.INTRO5;
     }
     if (completed) {
-      return "В режиме повторения начисляется гораздо меньше монет";
+      return L.ru.SPG.INTRO6;
     }
   }
 };

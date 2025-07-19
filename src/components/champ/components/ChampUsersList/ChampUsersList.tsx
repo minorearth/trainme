@@ -11,6 +11,8 @@ import UserCard from "@/components/champ/components/CardUser";
 import champ from "@/components/champ/layers/store/champ";
 import { ChampuserDB } from "@/T/typesDB";
 
+import L from "@/globals/local";
+
 const ListItem = ({ user }: { user: ChampuserDB }) => {
   const { uid } = user;
   return (
@@ -43,7 +45,7 @@ const SortableList = observer(() => {
           flex: 1,
         }}
       >
-        Ожидаем участников...
+        {L.ru.text.WAITING_FOR_PAARTICIPANTS}
       </Box>
     );
   return (

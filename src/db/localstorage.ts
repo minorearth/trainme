@@ -1,6 +1,6 @@
 "use client";
 import { decrypt2, encrypt2 } from "@/globals/utils/encryption";
-import stn from "@/globals/settings";
+import S from "@/globals/settings";
 import { CSP_DEFAULTS } from "@/T/typesdefaults";
 import { CSP } from "@/T/typesDB";
 import { StateType } from "@/T/typesState";
@@ -10,7 +10,7 @@ export const getUserId = () => {
 };
 
 export const setCSP = (state: CSP) => {
-  if (stn.mode.needCt) {
+  if (S.mode.needCt) {
     localStorage.setItem("state", encrypt2(JSON.stringify(state)));
   } else {
     localStorage.setItem("state", JSON.stringify(state));
@@ -25,7 +25,7 @@ export const cleanUpCSP = () => {
 export const getCSP = (): CSP => {
   const state = localStorage.getItem("state");
   try {
-    if (stn.mode.needCt) {
+    if (S.mode.needCt) {
       return state != null ? JSON.parse(decrypt2(state)) : cleanUpCSP();
     } else {
       return state != null ? JSON.parse(state) : cleanUpCSP();

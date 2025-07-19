@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import { Button } from "@mui/material";
 
 import champ from "@/components/champ/layers/store/champ";
+import L from "@/globals/local";
 
 const CreateOrJoinStep = observer(() => {
   return (
@@ -23,7 +24,7 @@ const CreateOrJoinStep = observer(() => {
         variant="outlined"
         fullWidth
       >
-        Создать чемпионат
+        {L.ru.buttons.CREATE_CHAMP}
       </Button>
 
       <Button
@@ -35,7 +36,7 @@ const CreateOrJoinStep = observer(() => {
         }}
         fullWidth
       >
-        Присоединиться
+        {L.ru.buttons.JOINCHAMP}
       </Button>
 
       <Button
@@ -46,7 +47,7 @@ const CreateOrJoinStep = observer(() => {
         variant="outlined"
         // fullWidth
       >
-        Назад
+        {L.ru.buttons.BACK_CHAMP}
       </Button>
     </Box>
   );

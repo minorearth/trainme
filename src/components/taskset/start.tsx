@@ -12,6 +12,8 @@ import Typography from "@mui/material/Typography";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import taskset from "@/components/taskset/layers/store/taskset";
 
+import L from "@/globals/local";
+
 export default function Start() {
   const theme = useTheme();
 
@@ -34,7 +36,7 @@ export default function Start() {
         }}
         variant="outlined"
       >
-        {"Начать"}
+        {L.ru.buttons.START}
       </Button>
       <Typography
         variant="body1"

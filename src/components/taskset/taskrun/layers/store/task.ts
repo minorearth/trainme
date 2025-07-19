@@ -3,6 +3,7 @@ import { Monaco } from "@monaco-editor/react";
 import React from "react";
 import { editor } from "monaco-editor";
 import { toJS } from "mobx";
+import L from "@/globals/local";
 
 //direct DB call
 import { updateKeySCP } from "@/db/localstorage";
@@ -95,7 +96,7 @@ class task {
 
   showInfo(value: string) {
     this.editorRef.current?.setValue(
-      `'''\n  Правильный код:\n'''\n\n${this.currTask.rightcode} \n\n'''\n  Твой код:\n'''\n\n${this.code}`
+      `'''\n  ${L.ru.ME.RIGHT_CODE}\n'''\n\n${this.currTask.rightcode} \n\n'''\n  ${L.ru.ME.YOUR_CODE}\n'''\n\n${this.code}`
     );
     this.info = value;
     this.editordisabled = true;
@@ -105,7 +106,7 @@ class task {
 
   showRightCodeAfterError = ({ errorMsg }: { errorMsg: string }) => {
     da.info.rightcode(() => {
-      this.showInfo("Изучи правильный код");
+      this.showInfo(L.ru.ME.EDITOR_INFO);
       countdownbutton.showButton();
     }, errorMsg);
   };

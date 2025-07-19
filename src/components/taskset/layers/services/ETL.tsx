@@ -1,4 +1,4 @@
-import local from "@/globals/local";
+import L from "@/globals/local";
 import { fetchFile } from "@/apicalls/apicalls";
 import { TaskDB } from "@/T/typesDB";
 import { TaskDBWithFiles } from "@/T/typesState";
@@ -43,11 +43,12 @@ const formatForbidden = ({
   if (tasktype != TT.task) {
     return "";
   }
-  res += `\n\n<b>Ограничения</b>:\nМаксимальное количество строк кода: ${maxlines}`;
+
+  res += `\n\n<b>${L.ru.TR.LIMITATIONS_CAPTION}</b>:\n${L.ru.TR.LIMITATIONS_MAXLINES} ${maxlines}`;
 
   if (forbidden.length) {
-    const forbiddentsample = local.ru.forbiddentsample;
-    res += `\nЗапрещенные приёмы:`;
+    const forbiddentsample = L.ru.forbiddentsample;
+    res += `\n${L.ru.TR.LIMITATIONS_FORBIDDEN}`;
     for (let i = 0; i < forbidden.length; i++) {
       res += `<div class="tooltip">${forbidden[i]}, <span class="tooltiptext">${
         forbiddentsample[forbidden[i]]

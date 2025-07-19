@@ -1,4 +1,4 @@
-import stn from "@/globals/settings";
+import S from "@/globals/settings";
 
 //DB
 import {
@@ -67,11 +67,10 @@ export const subscribeOnChamp = async ({
     id: champid,
     onChangeAction: action,
   });
-  //TODO: (later)test and to Constants
+  //TODO: (later)test
   setInterval(() => {
     unsubscribe();
-    // }, 1000 * 6);
-  }, 1000 * 60 * 30);
+  }, S.CHAMP_SUBSCRIBE_DURATION);
 };
 
 export const updateUserInChamp = async ({

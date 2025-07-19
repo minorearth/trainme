@@ -13,6 +13,8 @@ import CustomField from "@/components/common/customfield/customField";
 //stores
 import txtField from "@/components/common/customfield/store";
 
+import L from "@/globals/local";
+
 const Joingroup = observer(
   ({ groupid, manager }: { groupid: string; manager: string }) => {
     const { joinGroup, inviteAccepted } = useJoinGroup();
@@ -67,13 +69,13 @@ const Joingroup = observer(
                 }}
                 fullWidth
               >
-                Присоединиться
+                {L.ru.buttons.JOIN_GROUP}
               </Button>
             </Box>
           )}
           {inviteAccepted && (
             <Typography sx={{ textAlign: "center" }}>
-              {"Вы присоединились к группе! Вкладку можно закрыть!"}
+              {L.ru.text.JOINED_GROUP}
             </Typography>
           )}
         </Box>

@@ -8,6 +8,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { Tooltip } from "@mui/material";
 import { observer } from "mobx-react-lite";
+import L from "@/globals/local";
 
 //css
 import "@xyflow/react/dist/base.css";
@@ -32,6 +33,7 @@ import {
   CHAPTER_DEFAULTS,
   TASKSET_DEFAULTS,
 } from "@/T/typesdefaults";
+import { TSM } from "@/T/typesBasic";
 
 const ICON_SIZE = "60px";
 const FlowPanel = observer(() => {
@@ -50,7 +52,7 @@ const FlowPanel = observer(() => {
         }}
       >
         <IconButtonNoRipple>
-          <Tooltip title={"Вернуться на главную"}>
+          <Tooltip title={L.ru.TT.GOMAINPAGE}>
             <HomeIcon
               sx={{ fontSize: ICON_SIZE }}
               onClick={() => {
@@ -73,14 +75,14 @@ const FlowPanel = observer(() => {
         </Box>
 
         <IconButtonNoRipple>
-          <Tooltip title={"Учебник"}>
+          <Tooltip title={L.ru.TT.TEXTBOOK}>
             <ImportContactsOutlinedIcon
               sx={{ fontSize: ICON_SIZE }}
               onClick={async () => {
                 navigator.actions.openLessonStartPage({
                   tasksetData: {
                     ...TASKSET_DEFAULTS,
-                    tasksetmode: "textbook",
+                    tasksetmode: TSM.textbook,
                   },
                   chapterData: CHAPTER_DEFAULTS,
                   champData: CHAMP_DEFAULTS,
@@ -92,7 +94,7 @@ const FlowPanel = observer(() => {
         </IconButtonNoRipple>
 
         <IconButtonNoRipple>
-          <Tooltip title={"Как проходить курс"}>
+          <Tooltip title={L.ru.TT.HOWTO_GUIDE}>
             <LightbulbIcon
               sx={{ fontSize: ICON_SIZE }}
               onClick={() => {

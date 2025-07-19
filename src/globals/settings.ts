@@ -1,5 +1,5 @@
-import local from "./local";
-const stn = {
+import L from "./local";
+const S = {
   mode: {
     needCt: false,
     //isAdminNeede in adminPanel
@@ -12,5 +12,11 @@ const stn = {
   typepicker: { TYPE_PICKER_TIMEOUT: 400 },
   ui: { FLOAT_BTN_PADDING: 80 },
   SPLASH_DURATION: 2000,
+  CHAMP_SUBSCRIBE_DURATION: 1000 * 60 * 30,
+
+  PROCEED_SUSPENCE: 20 * 1000,
+  PROCEED_SPEED: 100,
 };
-export default stn;
+db: {
+}
+export default S;

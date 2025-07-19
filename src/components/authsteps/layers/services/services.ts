@@ -31,7 +31,7 @@ export const signInSubmit = async (
     });
     // splash.closeProgress();
     // splash.showAppLoader(true, 0);
-    // router.replace("/chapters"); // заменяет текущую страницу
+    // router.replace("/chapters");
   } else {
   }
 };

@@ -10,7 +10,7 @@ const myFont = localFont({
 export const useCustomTheme = () => {
   const customTheme = createTheme({
     palette: {
-      mode: "light", // указываем режим
+      mode: "light",
       error: {
         main: "#AA5733",
       },

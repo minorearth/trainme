@@ -1,8 +1,8 @@
-import local from "@/globals/local";
+import L from "@/globals/local";
 
 export const metadata = {
-  title: local.ru.text.APP_NAME,
-  description: local.ru.text.APP_DESCRIPTION,
+  title: L.ru.text.APP_NAME,
+  description: L.ru.text.APP_DESCRIPTION,
 };
 
 export default function RootLayout({

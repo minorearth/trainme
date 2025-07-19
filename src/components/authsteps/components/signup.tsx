@@ -10,7 +10,7 @@ import CustomField from "@/components/common/customfield/customField";
 import { CustomLink } from "@/components/authsteps/components/customLink";
 
 //globals
-import local from "@/globals/local";
+import L from "@/globals/local";
 
 //services(local)
 import { signUpSubmit } from "@/components/authsteps/layers/services/services";
@@ -39,12 +39,12 @@ const SignUp = () => {
         fullWidth
         variant="contained"
       >
-        {local.ru.caption.AUTH_SIGNUP}
+        {L.ru.links.AUTH_SIGNUP}
       </Button>
       <CustomLink
         action={() => authForm.showSignIn()}
-        title={local.ru.caption.AUTH_SIGNIN}
-        text={local.ru.text.AUTH_HAVE_ACCOUNT + " "}
+        title={L.ru.links.AUTH_SIGNIN}
+        text={L.ru.links.AUTH_HAVE_ACCOUNT + " "}
       />
     </Box>
   );

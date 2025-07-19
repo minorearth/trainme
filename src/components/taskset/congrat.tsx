@@ -15,6 +15,8 @@ import navigator from "@/components/Navigator/layers/store/navigator";
 import taskset from "@/components/taskset/layers/store/taskset";
 import { ST } from "@/T/typesBasic";
 
+import L from "@/globals/local";
+
 const CongratPage = observer(() => {
   const theme = useTheme();
   return (
@@ -37,7 +39,7 @@ const CongratPage = observer(() => {
       )}
       <Box sx={{}}></Box>
       {taskset.state.pts != 0 && (
-        <TextAnimated text={`Заработанные монеты: ${taskset.state.pts} `} />
+        <TextAnimated text={`${L.ru.CG.COINS_EARNED}${taskset.state.pts} `} />
       )}
 
       <Button
@@ -49,7 +51,7 @@ const CongratPage = observer(() => {
         }}
         endIcon={<ReplayIcon />}
       >
-        {"Сохранить и завершить"}
+        {L.ru.CG.SAVE_AND_EXIT}
       </Button>
     </Box>
   );

@@ -1,5 +1,5 @@
-import { stn } from "@/globals/constants";
 import pyodide from "@/components/pyodide/pyodide";
+import L from "@/globals/local";
 
 // https://www.reddit.com/r/nextjs/comments/194r5jn/does_anyone_know_how_to_use_pyodide_with_nextjs/?rdt=49197
 
@@ -40,7 +40,7 @@ export const runPythonCode = async ({
     } catch (e) {
       if (e instanceof Error) {
         const error = e.message.split("\n").slice(-2)[0];
-        output.push(stn.errors.error5 + error);
+        output.push(L.ru.CE.error5 + error);
         return { outputTxt: output.join("\n"), outputArr: output };
       } else {
         return { outputTxt: "some error", outputArr: [] };

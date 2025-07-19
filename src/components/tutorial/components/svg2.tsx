@@ -2,7 +2,7 @@ import * as React from "react";
 import styled from "styled-components";
 const Wrapper = styled.div`
   .my-svg {
-    min-width: 1000px; // Минимальная ширина
+    min-width: 1000px;
   }
 `;
 

@@ -16,6 +16,7 @@ import { observer } from "mobx-react-lite";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import taskset from "@/components/taskset/layers/store/taskset";
+import L from "@/globals/local";
 
 const TopPanel = observer(() => {
   return (
@@ -65,7 +66,7 @@ const TopPanel = observer(() => {
           </Typography>
 
           <IconButtonNoRipple>
-            <Tooltip title={"Как проходить курс"}>
+            <Tooltip title={L.ru.TT.HOWTO_GUIDE}>
               <LightbulbIcon
                 sx={{
                   fontSize: "40px",
@@ -80,7 +81,7 @@ const TopPanel = observer(() => {
           </IconButtonNoRipple>
 
           <IconButtonNoRipple>
-            <Tooltip title={"Заверить прохождение"}>
+            <Tooltip title={L.ru.TT.INTERRUPT_CHAPTER}>
               <HomeIcon
                 sx={{ fontSize: "40px", marginRight: "15px" }}
                 onClick={() => {

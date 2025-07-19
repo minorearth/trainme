@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import { observer } from "mobx-react-lite";
 import { TT } from "@/T/typesBasic";
+import L from "@/globals/local";
 
 const InOutPanel = observer(() => {
   const handleChange = (
@@ -25,7 +26,7 @@ const InOutPanel = observer(() => {
       sx={{ marginTop: "10px", flexGrow: 1 }}
     >
       <Grid size={{ xs: 1, md: 1 }}>
-        <Panel label={"Входные данные"}>
+        <Panel label={L.ru.TR.INPUT_DATA}>
           <IconButton
             aria-label="toggle password visibility"
             onClick={() => {
@@ -60,7 +61,7 @@ const InOutPanel = observer(() => {
         </Panel>
       </Grid>
       <Grid size={{ xs: 1, md: 1 }}>
-        <Panel label={"Выходные данные"}>
+        <Panel label={L.ru.TR.OUTPUTT_DATA}>
           <Box
             sx={{
               height: "100%",
@@ -83,7 +84,7 @@ const InOutPanel = observer(() => {
       </Grid>
       {task.currTask.tasktype != TT.guide && (
         <Grid size={{ xs: 1, md: 1 }}>
-          <Panel label={"Ожидаемый результат"}>
+          <Panel label={L.ru.TR.EXPECTED_OUTPUT}>
             <Typography
               variant="body1"
               sx={{ display: "inline-block", whiteSpace: "pre-wrap" }}

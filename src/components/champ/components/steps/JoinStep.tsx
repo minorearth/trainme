@@ -8,6 +8,7 @@ import CustomField from "@/components/common/customfield/customField";
 
 //stores
 import champ from "@/components/champ/layers/store/champ";
+import L from "@/globals/local";
 
 const JoinStep = observer(() => {
   return (
@@ -30,7 +31,7 @@ const JoinStep = observer(() => {
         onClick={() => champ.actions.joinChamp()}
         fullWidth
       >
-        Присоединиться
+        {L.ru.buttons.JOINCHAMP}
       </Button>
       <Button
         sx={{ width: "30%" }}
@@ -40,7 +41,7 @@ const JoinStep = observer(() => {
         variant="outlined"
         fullWidth
       >
-        Назад
+        {L.ru.buttons.BACK_CHAMP}
       </Button>
     </Box>
   );

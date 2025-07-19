@@ -4,13 +4,14 @@ import Button from "@mui/material/Button";
 import CountdownButton from "@/components/common/CountdownButton/CountdownButton";
 import { observer } from "mobx-react-lite";
 import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
-import stn from "@/globals/settings";
+import S from "@/globals/settings";
 
 //stores
 import countdownbutton from "@/components/common/CountdownButton/store";
 import taskset from "@/components/taskset/layers/store/taskset";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import { TSM, TT } from "@/T/typesBasic";
+import L from "@/globals/local";
 
 const CodeRunPanel = observer(() => {
   return (
@@ -30,7 +31,7 @@ const CodeRunPanel = observer(() => {
           variant="outlined"
           disabled={task.executing}
         >
-          {task.executing ? "Выполняется..." : "Выполнить"}
+          {task.executing ? L.ru.buttons.TASK_EXECUTING : L.ru.buttons.RUNTASSK}
         </Button>
       )}
 
@@ -46,10 +47,10 @@ const CodeRunPanel = observer(() => {
             style={{ height: "30px", width: "30px" }}
             name={"coins"}
           />
-          Проверить!
+          {L.ru.buttons.CHECK_TASK}
         </Button>
       )}
-      {(taskset.state.tasksetmode == TSM.textbook || stn.mode.DEV_MODE) && (
+      {(taskset.state.tasksetmode == TSM.textbook || S.mode.DEV_MODE) && (
         <Button
           onClick={() => {
             taskset.prevTaskNoPts_admin();
@@ -57,7 +58,7 @@ const CodeRunPanel = observer(() => {
           variant="outlined"
           disabled={taskset.prevdisabled}
         >
-          Назад
+          {L.ru.buttons.BACK_CHAMP}
         </Button>
       )}
       {task.currTask.tasktype == TT.guide && (
@@ -68,7 +69,7 @@ const CodeRunPanel = observer(() => {
           variant="outlined"
           disabled={taskset.nextdisabled}
         >
-          Продолжить
+          {L.ru.buttons.PROCEED}
         </Button>
       )}
 
@@ -81,7 +82,7 @@ const CodeRunPanel = observer(() => {
         />
       )}
 
-      {stn.mode.DEV_MODE && (
+      {S.mode.DEV_MODE && (
         <Button
           onClick={() => {
             task.setRightCode_admin();
@@ -91,7 +92,7 @@ const CodeRunPanel = observer(() => {
           RC
         </Button>
       )}
-      {stn.mode.DEV_MODE && (
+      {S.mode.DEV_MODE && (
         <Button
           onClick={() => {
             task.setForbiddenCode_admin();

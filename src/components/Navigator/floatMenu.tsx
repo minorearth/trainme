@@ -4,12 +4,12 @@ import Box from "@mui/material/Box";
 import { useRouter } from "next/navigation";
 
 //globals
-import stn from "@/globals/settings";
+import S from "@/globals/settings";
 
 //stores
 import navigator from "./layers/store/navigator";
 import { PG } from "@/T/typesBasic";
-
+import L from "@/globals/local";
 const RIGHT = 16;
 const TOP = 16;
 
@@ -37,7 +37,7 @@ const FloatMenu = () => {
       }}
     >
       <FabAnimated
-        tooltip={"Выйти"}
+        tooltip={L.ru.TT.EXIT}
         icon="close"
         action={() => {
           navigator.actions.openLoginPageSignOut(router);
@@ -47,10 +47,10 @@ const FloatMenu = () => {
 
       {navigator.state.page == PG.champ && (
         <FabAnimated
-          tooltip={"На главную"}
+          tooltip={L.ru.TT.GOMAINPAGE}
           icon="home"
           action={() => navigator.actions.openAllCoursePage()}
-          style={{ top: TOP, right: RIGHT + stn.ui.FLOAT_BTN_PADDING }}
+          style={{ top: TOP, right: RIGHT + S.ui.FLOAT_BTN_PADDING }}
         />
       )}
     </Box>

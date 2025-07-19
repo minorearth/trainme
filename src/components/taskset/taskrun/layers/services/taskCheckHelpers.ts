@@ -1,4 +1,4 @@
-import { stn } from "@/globals/constants";
+import L from "@/globals/local";
 
 import { eqArrays } from "@/globals/utils/arrUtils";
 import { Task } from "@/T/typesState";
@@ -117,16 +117,16 @@ export const getErrorMessage = ({
   mustHaveChecked,
   forbiddenChecked,
 }: GetErrorMessage) => {
-  const intro = "Ты допустил следующие ошибки:\n\n ";
+  const intro = L.ru.CE.CODE_ERROR_INTRO;
   const errorList = [];
-  !codeChecked && errorList.push(`☹️ ${stn.errors.error4}\n`);
-  !mustHaveChecked && errorList.push(`😢 ${stn.errors.error1}\n`);
-  !linesChecked && errorList.push(`🫤 ${stn.errors.error2}\n\n`);
-  !forbiddenChecked && errorList.push(`🫢 ${stn.errors.error6}`);
+  !codeChecked && errorList.push(`☹️ ${L.ru.CE.error4}\n`);
+  !mustHaveChecked && errorList.push(`😢 ${L.ru.CE.error1}\n`);
+  !linesChecked && errorList.push(`🫤 ${L.ru.CE.error2}\n\n`);
+  !forbiddenChecked && errorList.push(`🫢 ${L.ru.CE.error6}`);
 
   let errorMsg = "";
   if (errorList.length != 0) {
-    errorList.push(`\n\nСмотри верный код в окне редактора!`);
+    errorList.push(L.ru.CE.CODE_ERROR_FOOTER);
 
     errorMsg = intro + errorList.join("");
   }

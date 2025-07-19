@@ -1,7 +1,7 @@
 import { db } from "@/db/CA/firebaseappClient";
 
 //globals
-import stn from "@/globals/settings";
+import S from "@/globals/settings";
 
 //api calls
 import { getDataFetch, setDataFetch } from "@/apicalls/apicalls";

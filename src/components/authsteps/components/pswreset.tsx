@@ -11,7 +11,7 @@ import { CustomLink } from "@/components/authsteps/components/customLink";
 import CustomField from "@/components/common/customfield/customField";
 
 //globals
-import local from "@/globals/local";
+import L from "@/globals/local";
 
 //services(local)
 import { recoverPswSubmit } from "@/components/authsteps/layers/services/services";
@@ -35,12 +35,12 @@ const PswReset = observer(() => {
     >
       <CustomField type={"email"} />
       <Button type="submit" fullWidth variant="contained">
-        {local.ru.caption.AUTH_RESETPSW}
+        {L.ru.buttons.AUTH_RESETPSW}
       </Button>
       <CustomLink
         action={() => authForm.showSignIn()}
-        title={local.ru.caption.AUTH_SIGNIN}
-        text={local.ru.text.AUTH_HAVE_ACCOUNT + " "}
+        title={L.ru.links.AUTH_SIGNIN}
+        text={L.ru.links.AUTH_HAVE_ACCOUNT + " "}
       />
     </Box>
   );

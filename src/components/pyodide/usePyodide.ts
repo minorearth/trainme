@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useScript } from "@uidotdev/usehooks";
-import stn from "@/globals/settings";
+import S from "@/globals/settings";
 import pyodide from "@/components/pyodide/pyodide";
 
 const PYODIDE_VERSION = "0.26.4";
@@ -11,7 +11,7 @@ const PYODIDE_VERSION = "0.26.4";
 
 function usePyodide() {
   const pyodideScriptStatus = useScript(
-    stn.mode.pyodideCDN
+    S.mode.pyodideCDN
       ? `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/pyodide.js`
       : `${process.env.NEXT_PUBLIC_DOMAIN}/pyodide/pyodide.js`
   );
@@ -24,7 +24,7 @@ function usePyodide() {
           indexURL: string;
         }) => Promise<any>;
         const loadedPyodide = await loadPyodide({
-          indexURL: stn.mode.pyodideCDN
+          indexURL: S.mode.pyodideCDN
             ? `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/`
             : `/pyodide/`,
         });

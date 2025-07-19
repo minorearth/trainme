@@ -30,7 +30,12 @@ export interface CoursePivotReport {
   }[];
 }
 
-export type UserReportType = "nottask|task";
+export const URT = {
+  nottask: "nottask",
+  task: "task",
+} as const;
+
+export type UserReportType = (typeof URT)[keyof typeof URT];
 
 export type UserReport = Pick<GroupArr, "id" | "label"> & {
   order: number;

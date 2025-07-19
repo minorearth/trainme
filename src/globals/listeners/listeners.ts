@@ -1,20 +1,19 @@
-import stn from "@/globals/settings";
+import S from "@/globals/settings";
 
 export const startListeners = () => {
-  if (!stn.mode.allowcopy) document.addEventListener("copy", handleCopy);
+  if (!S.mode.allowcopy) document.addEventListener("copy", handleCopy);
   window.addEventListener("beforeunload", handleBeforeUnload);
-  if (!stn.mode.allowpaste)
-    document.addEventListener("paste", handlePaste, true);
+  if (!S.mode.allowpaste) document.addEventListener("paste", handlePaste, true);
 };
 
 export const stopListeners = () => {
-  if (!stn.mode.allowcopy) document.removeEventListener("copy", handleCopy);
+  if (!S.mode.allowcopy) document.removeEventListener("copy", handleCopy);
   window.removeEventListener("beforeunload", handleBeforeUnload);
-  if (!stn.mode.allowpaste) document.removeEventListener("paste", handlePaste);
+  if (!S.mode.allowpaste) document.removeEventListener("paste", handlePaste);
 };
 
 const handleBeforeUnload = (event: Event) => {
-  const message = "Вы уверены, что хотите покинуть страницу?";
+  const message = "";
   event.preventDefault();
   // event.returnValue = message;
   return message;

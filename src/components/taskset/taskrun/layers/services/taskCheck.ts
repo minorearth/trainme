@@ -11,6 +11,7 @@ import { runPythonCode } from "@/components/pyodide/pythonRunner";
 import taskset from "@/components/taskset/layers/store/taskset";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import { TT } from "@/T/typesBasic";
+import L from "@/globals/local";
 
 export const checkTask = async () => {
   if (task.executing) return;
@@ -53,6 +54,6 @@ export const runTask = async () => {
 export const checkOnChangeErrors = ({ lineCount }: { lineCount: number }) => {
   return lineCount > task.currTask.restrictions.maxlines &&
     task.currTask.tasktype != TT.guide
-    ? "Превышено максимальное количество строк"
+    ? L.ru.ME.MAX_LINES_ERROR
     : "";
 };

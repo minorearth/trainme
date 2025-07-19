@@ -8,6 +8,7 @@ import styled from "styled-components";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import { observer } from "mobx-react-lite";
 import { TT } from "@/T/typesBasic";
+import L from "@/globals/local";
 
 const Wrapper = styled.div`
   .tooltip {
@@ -49,7 +50,7 @@ const TaskAndCodePanel = observer(() => {
     >
       {task.currTask.tasktype != TT.guide && (
         <Grid size={{ xs: 1, md: 1 }}>
-          <Panel label={"Выполни задание"}>
+          <Panel label={L.ru.TR.TASK}>
             <Wrapper>
               <Typography
                 variant="body1"
@@ -63,7 +64,7 @@ const TaskAndCodePanel = observer(() => {
         </Grid>
       )}
       <Grid size={{ xs: 1, md: 2 }}>
-        <Panel label={"Редактор кода"}>
+        <Panel label={L.ru.TR.EDITOR}>
           <MonacoEd />
           <CodeRunPanel />
         </Panel>

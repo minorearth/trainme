@@ -10,6 +10,7 @@ import CustomField from "@/components/common/customfield/customField";
 //stores
 import txtField from "@/components/common/customfield/store";
 import champ from "@/components/champ/layers/store/champ";
+import L from "@/globals/local";
 
 const AvatarStep = observer(() => {
   return (
@@ -33,7 +34,7 @@ const AvatarStep = observer(() => {
         variant="outlined"
         fullWidth
       >
-        Дальше
+        {L.ru.buttons.NEXT_TASK}
       </Button>
     </Box>
   );

@@ -15,7 +15,7 @@ import alertdialog from "@/components/common/dialog/store";
 import DialogWrapper from "./dialogWrapper";
 
 //globals
-import local from "@/globals/local";
+import L from "@/globals/local";
 
 const AlertDialog = observer(() => {
   return (
@@ -50,11 +50,13 @@ const AlertDialog = observer(() => {
               alertdialog.okDialog();
             }}
           >
-            {local.ru.caption.ALERT_OK}
+            {L.ru.buttons.ALERT_OK}
           </Button>
         )}
         {alertdialog.dialogState.type == 2 && (
-          <Button onClick={() => alertdialog.cancelDialog()}>{"Отмена"}</Button>
+          <Button onClick={() => alertdialog.cancelDialog()}>
+            {L.ru.buttons.ALERT_CANCEL}
+          </Button>
         )}
       </DialogActions>
     </DialogWrapper>

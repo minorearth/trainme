@@ -13,7 +13,7 @@ import CustomField from "@/components/common/customfield/customField";
 import { CustomLink } from "@/components/authsteps/components/customLink";
 
 //globals
-import local from "@/globals/local";
+import L from "@/globals/local";
 
 //services(local)
 import { signInSubmit } from "@/components/authsteps/layers/services/services";
@@ -47,21 +47,21 @@ const SignIn = observer(() => {
       <CustomField type={"email"} />
       <CustomField type={"password"} />
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-        {local.ru.caption.AUTH_SIGNIN}
+        {L.ru.links.AUTH_SIGNIN}
       </Button>
       <Grid direction="column" container spacing={3}>
         <Grid size={{ xs: "grow" }}>
           <CustomLink
             action={() => authForm.showResetPsw()}
-            title={local.ru.text.AUTH_FORGOT}
+            title={L.ru.links.AUTH_FORGOT}
             text={""}
           />
         </Grid>
         <Grid size={{ xs: "grow" }}>
           <CustomLink
             action={() => authForm.showSignUp()}
-            title={local.ru.caption.AUTH_SIGNUP}
-            text={local.ru.text.AUTH_HAVE_NOACCOUNT + " "}
+            title={L.ru.links.AUTH_SIGNUP}
+            text={L.ru.links.AUTH_HAVE_NOACCOUNT + " "}
           />
         </Grid>
       </Grid>
