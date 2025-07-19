@@ -1,4 +1,5 @@
 //custom field types
+//TODO:dupliicated, see field state
 export const CFT = {
   firstname: "firstname",
   secondname: "secondname",
