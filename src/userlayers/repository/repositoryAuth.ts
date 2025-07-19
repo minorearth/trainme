@@ -18,6 +18,7 @@ import {
 import { getDataFetch } from "@/apicalls/apicalls";
 
 import { login, logout } from "@/db/SA/session";
+import { FirebaseError } from "firebase/app";
 
 export const signInUser = async ({
   email,
@@ -30,9 +31,13 @@ export const signInUser = async ({
   await setPersistence(auth, browserLocalPersistence);
   try {
     await signInWithEmailAndPassword(auth, email, password);
-  } catch (e) {
-    //TODO:throw error
-    return "wrongpsw";
+  } catch (e: unknown) {
+    const error = e as FirebaseError; // приведение типа
+    console.log("Ошибка:", error.message);
+    if (error.code === "auth/invalid-credential") {
+      throw new Error("wrongpsw");
+    }
+    throw new Error("another error");
   }
 };
 

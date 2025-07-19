@@ -50,24 +50,42 @@ export const signIn = async ({
   password: string;
   router: AppRouterInstance;
 }) => {
-  const response = await getUidAuth({ email, password });
+  try {
+    const response = await getUidAuth({ email, password });
+    const userMeta = await getUserMeta(response);
+
+    user.setUserNameP(userMeta.name);
+    router.push(`/${S.P.CHAPTERS}`);
+  } catch (e) {
+    const error = e as Error;
+    console.log("error.nenef", error.message);
+
+    if (error.message == "notVerified") {
+      da.info.emailnotverified();
+      return;
+    }
+    if (error.message == "wrongpsw") {
+      da.info.wrongpsw();
+      return;
+    }
+  }
 
   //TODO: throw error
 
-  if (response == "notVerified") {
-    da.info.emailnotverified();
-    return;
-  }
+  // if (response == "notVerified") {
+  //   da.info.emailnotverified();
+  //   return;
+  // }
 
-  if (response == "wrongpsw") {
-    da.info.wrongpsw();
-    return;
-  }
+  // if (response == "wrongpsw") {
+  //   da.info.wrongpsw();
+  //   return;
+  // }
 
-  const userMeta = await getUserMeta(response);
+  // const userMeta = await getUserMeta(response);
 
-  user.setUserNameP(userMeta.name);
-  router.push(`/${S.P.CHAPTERS}`);
+  // user.setUserNameP(userMeta.name);
+  // router.push(`/${S.P.CHAPTERS}`);
 };
 
 export const signOut = async (router: AppRouterInstance) => {
@@ -101,7 +119,11 @@ const getUidAuth = async ({
   email: string;
   password: string;
 }) => {
-  const res = await signInUser({ email, password });
-
-  return res ?? (await launchAuthStateChangeMonitor(actionOnAuthChanged));
+  try {
+    const res = await signInUser({ email, password });
+    return res ?? (await launchAuthStateChangeMonitor(actionOnAuthChanged));
+  } catch (e: unknown) {
+    const error = e as Error; // приведение типа
+    throw new Error(error.message);
+  }
 };

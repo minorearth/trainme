@@ -9,6 +9,6 @@ export const CFT = {
   email: "email",
   password: "password",
   name: "name",
-};
+} as const;
 
 export type FieldType = (typeof CFT)[keyof typeof CFT];
