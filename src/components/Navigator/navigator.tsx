@@ -35,8 +35,6 @@ import course from "@/components/course/layers/store/course";
 import taskset from "@/components/taskset/layers/store/taskset";
 
 const Navigator = observer(() => {
-  console.log("render", navigator.apploaded, navigator.state.page);
-
   useApp();
   usePyodide();
   return (

@@ -9,7 +9,7 @@ import splash from "@/components/common/splash/store";
 
 //serviceHelpers(local)
 import { getTasksRecap } from "@/components/taskset/layers/services/servicesHelpers";
-import { Task } from "@/T/typesState";
+import { Task, TS } from "@/T/typesState";
 import { TaskDB } from "@/T/typesDB";
 
 export const setTaskLog = ({
@@ -22,7 +22,6 @@ export const setTaskLog = ({
   const tasklog = taskset.state.tasklog;
   const taskuuid = task.currTask.taskuuid;
   if (!tasklog[taskuuid]) tasklog[taskuuid] = { code: "", errorcode: "" };
-  console.log("task.currTask.taskuuid", task.currTask.taskuuid);
   !error
     ? (tasklog[taskuuid].code = code)
     : (tasklog[taskuuid].errorcode = code);
@@ -68,16 +67,16 @@ export const calcEarned = (error: boolean) => {
     return pts;
   }
   if (!error) {
-    if (taskstage == "WIP" && !completed && tasksetmode != "exam") {
+    if (taskstage == TS.WIP && !completed && tasksetmode != "exam") {
       income = 10;
     }
-    if (taskstage == "WIP" && !completed && tasksetmode == "exam") {
+    if (taskstage == TS.WIP && !completed && tasksetmode == "exam") {
       income = 2;
     }
-    if (taskstage == "WIP" && completed && tasksetmode != "exam") {
+    if (taskstage == TS.WIP && completed && tasksetmode != "exam") {
       income = 2;
     }
-    if (taskstage == "WIP" && completed && tasksetmode == "exam") {
+    if (taskstage == TS.WIP && completed && tasksetmode == "exam") {
       income = 1;
     }
 

@@ -8,6 +8,8 @@ import {
   useEdgesState,
   addEdge,
   useReactFlow,
+  EdgeTypes,
+  EdgeProps,
 } from "@xyflow/react";
 import "@xyflow/react/dist/base.css";
 import { reaction } from "mobx";
@@ -28,7 +30,7 @@ const nodeTypes = {
   animation: AnimNode,
 };
 
-const edgeTypes = {
+const edgeTypes: EdgeTypes = {
   turbo: TurboEdge,
 };
 

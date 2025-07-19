@@ -1,5 +1,5 @@
 import { completedChapters, NodeModes } from "./typesDB";
-import { Page, SuccessType, TasksetMode, TasksetStage } from "./typesState";
+import { Page, SuccessType, TasksetMode, TasksetStage, TS } from "./typesState";
 
 export const TASK_DEFAULTS = {
   id: -1,
@@ -56,7 +56,7 @@ export const NAVIGATOR_DEFAULTS = {
 export const TASKSET_DEFAULTS = {
   tasksetmode: "default" as TasksetMode,
   recapTasksIds: [],
-  taskstage: "WIP" as TasksetStage,
+  taskstage: TS.WIP,
   pts: 0,
   tasklog: {},
   randomsaved: [],

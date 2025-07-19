@@ -74,11 +74,14 @@ export interface TasksetStatePersisted {
 
 export type SuccessType = "success" | "fail" | "indefined";
 
-export type TasksetStage =
-  | "recap"
-  | "recap_suspended"
-  | "WIP"
-  | "accomplished_suspended";
+export const TS = {
+  recap: "recap" as const,
+  recapSuspended: "recap_suspended" as const,
+  WIP: "WIP",
+  accomplishedSuspended: "accomplished_suspended" as const,
+} as const;
+
+export type TasksetStage = (typeof TS)[keyof typeof TS];
 
 export type TasksetMode =
   | "champ"

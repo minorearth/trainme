@@ -68,7 +68,6 @@ const DLSwitch = observer(({ sx }: { sx: SxProps }) => {
   const { mode, setMode } = useColorScheme();
 
   useEffect(() => {
-    console.log("mode", mode);
     task.setTheme(mode == "dark");
   }, [task.editorRef.current]);
 

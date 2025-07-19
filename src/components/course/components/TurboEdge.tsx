@@ -1,6 +1,6 @@
 // https://stackoverflow.com/questions/67413946/how-can-i-create-the-following-design-in-react-native-using-svg
 import React from "react";
-import { getBezierPath, Position } from "@xyflow/react";
+import { EdgeProps, getBezierPath, Position } from "@xyflow/react";
 
 export default function CustomEdge({
   id,
@@ -12,17 +12,7 @@ export default function CustomEdge({
   targetPosition,
   style = {},
   markerEnd,
-}: {
-  id: string;
-  sourceX: number;
-  sourceY: number;
-  targetX: number;
-  targetY: number;
-  sourcePosition: Position;
-  targetPosition: Position;
-  style: React.CSSProperties;
-  markerEnd: string;
-}) {
+}: EdgeProps) {
   const xEqual = sourceX === targetX;
   const yEqual = sourceY === targetY;
 

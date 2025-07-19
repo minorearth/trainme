@@ -16,7 +16,7 @@ import {
 import { CoursesDataToUpload } from "@/T/typesUpload";
 import { Edge } from "@xyflow/react";
 import splash from "@/components/common/splash/store";
-import { coursesToLoad } from "@/components/adminpanel/layers/services/courses";
+import { coursesToLoad } from "../../../../../admin/courses";
 import { CourseChapterObjDB, TaskDB } from "@/T/typesDB";
 
 export const uploadCourses = async () => {
@@ -70,14 +70,12 @@ const uploadCourse = async ({
         chapterFlowNodes,
       });
       if (chapterid == "textbook")
-        console.log("textbook", chapterTasksWithLevels);
-
-      chapterTasksWithLevels.length != 0 &&
-        (await uploadChapterTasks({
-          courseid,
-          chapterid,
-          chapterTasks: chapterTasksWithLevels,
-        }));
+        chapterTasksWithLevels.length != 0 &&
+          (await uploadChapterTasks({
+            courseid,
+            chapterid,
+            chapterTasks: chapterTasksWithLevels,
+          }));
     })
   );
 };

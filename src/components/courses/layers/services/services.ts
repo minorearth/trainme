@@ -1,7 +1,6 @@
 import { getFreeCourses } from "@/components/courses/layers/repository/repository";
 import { courses } from "@/globals/coursesDB";
 
-//TODO: (later)remade-get courses instead of ids
 export const getInitalDataForFreeCourses = () => {
   const freeCoursesIds = getFreeCourses();
   return freeCoursesIds.reduce(

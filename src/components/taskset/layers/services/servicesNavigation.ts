@@ -20,17 +20,17 @@ import {
   setRecapTasks,
   ok,
 } from "@/components/taskset/layers/services/servicesNavigationHelpers";
-interface nextTaskOrCompleteTestRunParams {
-  error: boolean;
-  errorMsg: string;
-  code: string;
-}
+import { TS } from "@/T/typesState";
 
 export const nextTaskOrCompleteTestRun = async ({
   error,
   errorMsg,
   code,
-}: nextTaskOrCompleteTestRunParams) => {
+}: {
+  error: boolean;
+  errorMsg: string;
+  code: string;
+}) => {
   const pts = calcEarned(error);
   const tasklog = setTaskLog({ error, code });
   const fixed = setTaskNumErrorFixed(error);
@@ -62,14 +62,14 @@ export const nextTaskOrCompleteTestRun = async ({
           })
         );
       }
-      if (recapTaskNum == 0 && taskstage == "WIP") {
+      if (recapTaskNum == 0 && taskstage == TS.WIP) {
         ok(() =>
           navigator.actions.openCongratPage({
             success: "success",
           })
         );
       }
-      if (recapTaskNum != 0 && taskstage == "WIP") {
+      if (recapTaskNum != 0 && taskstage == TS.WIP) {
         taskset.state.tasksetmode == "exam"
           ? ok(() =>
               navigator.actions.openCongratPage({
@@ -86,29 +86,21 @@ export const nextTaskOrCompleteTestRun = async ({
       return;
     case error:
       task.showRightCodeAfterError({ errorMsg });
-      if (taskstage == "WIP" && currTaskId != tasknum - 1) {
+      if (taskstage == TS.WIP && currTaskId != tasknum - 1) {
         taskset.addErrorTaskToRecap({
           data: {},
           cspcurrtask: currTaskId + 1,
         });
-        // taskset.setCurrTaskCSPOnly(currTaskId + 1);
       }
 
       if (taskstage == "recap" && currTaskId != tasknum - 1) {
         taskset.setCurrTaskCSPOnly(currTaskId + 1);
-        // updateKeySCP(
-        //   {
-        //     taskset: { currTaskId: currTaskId + 1 },
-        //   },
-        //   "taskset"
-        // );
       }
-      if (taskstage == "WIP" && currTaskId == tasknum - 1) {
+      if (taskstage == TS.WIP && currTaskId == tasknum - 1) {
         taskset.addErrorTaskToRecap({
           data: { taskstage: "recap_suspended" },
           cspcurrtask: 0,
         });
-        // taskset.setCurrTaskCSPOnly(0);
       }
       if (taskstage == "recap" && currTaskId == tasknum - 1) {
         taskset.setTaskSetStateP({
