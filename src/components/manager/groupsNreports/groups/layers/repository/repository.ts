@@ -19,6 +19,8 @@ import {
   GroupUserDBAttrs,
 } from "@/T/typesDB";
 
+import S from "@/globals/settings";
+
 export const getGroupsArr = async (userid: string) => {
   const groups = await getDocDataFromCollectionById<GroupDB>({
     collectionName: CLT.groups,
@@ -31,7 +33,7 @@ export const getGroupsArr = async (userid: string) => {
 export const getChaptersObjdata = async (): Promise<CourseChapterObjDB> => {
   const chaptersObj = await getDocDataFromCollectionById<CourseChapterObjDB>({
     collectionName: CLT.views,
-    id: "chaptersobject",
+    id: S.db.CHAPTER_OBJ_VIEW_ID,
   });
   return chaptersObj || {};
 };

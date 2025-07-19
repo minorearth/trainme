@@ -1,11 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
-import Splash from "@/components/common/splash/splash";
-import splash from "@/components/common/splash/store";
+import S from "@/globals/settings";
 
 export default function Home() {
   const router = useRouter();
   // splash.showAppLoader(true);
-  router.push("/login");
+  router.push(`/${S.P.LOGIN}`);
   // return <Splash />;
 }

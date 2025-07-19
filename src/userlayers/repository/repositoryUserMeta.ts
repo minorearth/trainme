@@ -23,6 +23,7 @@ import { ETLUserProgress } from "@/userlayers/repository/ETL";
 //utils
 import { encrypt2 } from "@/globals/utils/encryption";
 import { CLT, UserMetaDB } from "@/T/typesDB";
+import { GetDF, SetDF } from "@/T/typesBasic";
 
 export const getUserMetaCourseProgress = async ({
   courseid,
@@ -33,7 +34,7 @@ export const getUserMetaCourseProgress = async ({
 }) => {
   const allUserMeta = await getDataFetch<UserMetaDB>({
     data: { id: uid },
-    type: "getusermetadata",
+    type: GetDF.getusermetadata,
   });
   //TODO:(later)keep only keys needed
   const userProgress = ETLUserProgress(allUserMeta.value.courses[courseid]);
@@ -53,7 +54,7 @@ export const saveUserMeta = async (dataToEncrypt: {
   id: string;
 }) => {
   const res = await setDataFetch({
-    type: "setusermetadata",
+    type: SetDF.setusermetadata,
     data: encrypt2(dataToEncrypt),
   });
   if (res == "error") {
@@ -86,7 +87,7 @@ export const createNewUserMeta = async ({
 export const getUserMeta = async (uid: string) => {
   const userMeta = await getDataFetch<UserMetaDB>({
     data: { id: uid },
-    type: "getusermetadata",
+    type: GetDF.getusermetadata,
   });
   return userMeta.value;
 };

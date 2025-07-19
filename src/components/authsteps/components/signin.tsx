@@ -21,6 +21,7 @@ import { signInSubmit } from "@/components/authsteps/layers/services/services";
 //stores
 import authForm from "@/components/authsteps/layers/store/store";
 import splash from "@/components/common/splash/store";
+import { CFT } from "@/components/common/customfield/types";
 
 const SignIn = observer(() => {
   // import splash from "@/components/common/splash/store"
@@ -44,8 +45,8 @@ const SignIn = observer(() => {
         width: "100%",
       }}
     >
-      <CustomField type={"email"} />
-      <CustomField type={"password"} />
+      <CustomField type={CFT.email} />
+      <CustomField type={CFT.password} />
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
         {L.ru.links.AUTH_SIGNIN}
       </Button>

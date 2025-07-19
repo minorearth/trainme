@@ -17,6 +17,7 @@ import { signUpSubmit } from "@/components/authsteps/layers/services/services";
 
 // stores
 import authForm from "@/components/authsteps/layers/store/store";
+import { CFT } from "@/components/common/customfield/types";
 
 const SignUp = () => {
   return (
@@ -31,9 +32,9 @@ const SignUp = () => {
         width: "100%",
       }}
     >
-      <CustomField type={"name"} />
-      <CustomField type={"email"} />
-      <CustomField type={"password"} />
+      <CustomField type={CFT.name} />
+      <CustomField type={CFT.email} />
+      <CustomField type={CFT.password} />
       <Button
         onClick={(event) => signUpSubmit(event)}
         fullWidth

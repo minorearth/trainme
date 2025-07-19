@@ -2,6 +2,7 @@ import { courses } from "@/globals/coursesDB";
 
 //api calls
 import { getDataFetch } from "@/apicalls/apicalls";
+import { GetDF } from "@/T/typesBasic";
 
 export const getReadyCourses = () => {
   return Object.keys(courses).filter((courseId) => courses[courseId].completed);
@@ -32,7 +33,7 @@ export const checkCoursePaid = async ({
   uid: string;
 }) => {
   const coursePaid = await getDataFetch({
-    type: "checkcoursepaid",
+    type: GetDF.checkcoursepaid,
     data: { courseid, id: uid },
   });
   return coursePaid;

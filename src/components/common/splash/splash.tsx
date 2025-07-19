@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import { observer } from "mobx-react-lite";
 
 //stores
-import splash from "./store";
+import splash, { AT } from "./store";
 
 //components
 import CountdownCircle from "@/components/common/splash/components/CountdownCircle";
@@ -31,13 +31,13 @@ const Splash = observer(() => {
           backgroundColor: splash.state.background ? "#121212" : "transparent",
         }}
       ></Box>
-      {splash.state.animationtype == "lottie" && (
+      {splash.state.animationtype == AT.lottie && (
         <AnimationLottie
           style={{ width: "700px", height: "700px" }}
           name={splash.state.animation}
         />
       )}
-      {splash.state.animationtype == "gotoplayLottie" && (
+      {splash.state.animationtype == AT.gotoplayLottie && (
         <AnimationLottieGoToPlay
           style={{ width: "700px", height: "700px" }}
           name={splash.state.animation}
@@ -45,8 +45,8 @@ const Splash = observer(() => {
         />
       )}
 
-      {splash.state.animationtype == "css" && <CSSLoader />}
-      {splash.state.animationtype == "countdown" && <CountdownCircle />}
+      {splash.state.animationtype == AT.css && <CSSLoader />}
+      {splash.state.animationtype == AT.countdown && <CountdownCircle />}
     </Backdrop>
   );
 });

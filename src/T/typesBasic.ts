@@ -79,3 +79,27 @@ export type CourseType = (typeof CT)[keyof typeof CT];
 
 export const TT = { guide: "guide", task: "task" } as const;
 export type TaskType = (typeof TT)[keyof typeof TT];
+
+export const STT = {
+  navigator: "navigator",
+  course: "course",
+  champ: "champ",
+  chapter: "chapter",
+  taskset: "taskset",
+  user: "user",
+} as const;
+
+export type StateType = (typeof STT)[keyof typeof STT];
+
+export const GetDF = {
+  getusermetadata: "getusermetadata",
+  checkcoursepaid: "checkcoursepaid",
+} as const;
+
+export type GetDataFetchTypes = (typeof GetDF)[keyof typeof GetDF];
+
+export const SetDF = {
+  paychapter: "paychapter",
+  setusermetadata: "setusermetadata",
+} as const;
+export type SetDataFetch = (typeof SetDF)[keyof typeof SetDF];

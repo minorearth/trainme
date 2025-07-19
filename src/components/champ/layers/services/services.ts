@@ -32,14 +32,16 @@ import {
 } from "@/T/typesdefaults";
 import { ChampDB } from "@/T/typesDB";
 import { CS, PS, TSM } from "@/T/typesBasic";
+import S from "@/globals/settings";
 
 export const createChamp = async () => {
   const tasks = await getRandomTasksForChamp({
     levelStart: champ.range[0],
     levelEnd: champ.range[1],
     taskCount: Number(txtField.state.tasknum.value),
-    courseid: "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0",
+    courseid: S.CHAMP_DEFAULT_COURSEID,
   });
+  //TODO: throw error
   if (tasks.status == "error") {
     da.info.notenoughttasks(tasks.count);
   } else {
@@ -84,7 +86,7 @@ export const joinChamp = async () => {
 
 export const startChamp = async (champid: string) => {
   window.open(
-    `${process.env.NEXT_PUBLIC_DOMAIN}/dashboard/${champid}`,
+    `${process.env.NEXT_PUBLIC_DOMAIN}/${S.P.DASHBOARD}/${champid}`,
     "_blank"
   );
   await setChampStarted({ champid });

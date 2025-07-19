@@ -41,5 +41,6 @@ export const getRandomTasks = ({
   }
   const numbers = getNeverRepeatIntegers(scope.length - 1, num);
   const filteredTasks = scope.filter((task, id) => numbers.includes(id));
+  //TODO: throw error
   return { status: "ok", tasks: filteredTasks, count: filteredTasks.length };
 };

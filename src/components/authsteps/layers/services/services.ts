@@ -14,6 +14,7 @@ import authForm from "@/components/authsteps/layers/store/store";
 import splash from "@/components/common/splash/store";
 import txtField from "@/components/common/customfield/store";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { CFT } from "@/components/common/customfield/types";
 // import { AppRouterInstance } from "";
 
 export const signInSubmit = async (
@@ -21,7 +22,7 @@ export const signInSubmit = async (
   router: AppRouterInstance
 ) => {
   event.preventDefault();
-  if (txtField.validate(["email", "password"])) {
+  if (txtField.validate([CFT.email, CFT.password])) {
     splash.showProgress(false, "progressdots", 0);
     cleanUpCSP();
     await signIn({
@@ -29,15 +30,12 @@ export const signInSubmit = async (
       password: txtField.state.password.value,
       router,
     });
-    // splash.closeProgress();
-    // splash.showAppLoader(true, 0);
-    // router.replace("/chapters");
   } else {
   }
 };
 
 export const recoverPswSubmit = () => {
-  if (txtField.validate(["email"])) {
+  if (txtField.validate([CFT.email])) {
     resetPsw(txtField.state.email.value);
     da.info.resetpsw(() => authForm.showSignIn());
   }
@@ -47,7 +45,7 @@ export const signUpSubmit = async (
   event: React.MouseEvent<HTMLButtonElement>
 ) => {
   event.preventDefault();
-  if (txtField.validate(["email", "password", "name"])) {
+  if (txtField.validate([CFT.email, CFT.password, CFT.name])) {
     await signUp({
       email: txtField.state.email.value,
       password: txtField.state.password.value,

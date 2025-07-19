@@ -5,20 +5,21 @@ export const revalidate = 0; //revalidate api every 0 second
 
 import { getDocSA, checkCoursePaidSA } from "@/db/SA/firebaseSA";
 import { CLT, UserMetaDB } from "@/T/typesDB";
+import { GetDF } from "@/T/typesBasic";
 
 export async function POST(request: Request) {
   try {
     const reqData = await request.json();
     const { type, data } = reqData;
     let res;
-    if (type == "getusermetadata") {
+    if (type == GetDF.getusermetadata) {
       res = await getDocSA<UserMetaDB>({
         collectionName: CLT.usermeta,
         id: data.id,
       });
     }
 
-    if (type == "checkcoursepaid") {
+    if (type == GetDF.checkcoursepaid) {
       res = await checkCoursePaidSA(data);
     }
 

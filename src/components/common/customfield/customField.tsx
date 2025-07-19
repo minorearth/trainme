@@ -11,7 +11,7 @@ import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined
 import { textFieldProps } from "@/components/common/customfield/setup";
 
 import txtField from "@/components/common/customfield/store";
-import { FieldType } from "./types";
+import { CFT, FieldType } from "./types";
 
 import { SxProps, Theme } from "@mui/material/styles";
 
@@ -48,7 +48,7 @@ const CustomField = observer(
     sx?: SxProps<Theme>;
     onChangeAction?: (value: string) => void;
   }) => {
-    const [showPsw, hidePsw] = useState<boolean>(type == "password");
+    const [showPsw, hidePsw] = useState<boolean>(type == CFT.password);
     return (
       <Box
         sx={{
@@ -77,7 +77,7 @@ const CustomField = observer(
           slotProps={{
             // inputLabel: { shrink: true },
             input: {
-              endAdornment: type == "password" && (
+              endAdornment: type == CFT.password && (
                 <PswHideShow hidePsw={hidePsw} showPsw={showPsw} />
               ),
             },
@@ -90,8 +90,8 @@ const CustomField = observer(
           label={textFieldProps[type].label}
           name={type}
           autoComplete={textFieldProps[type].auto}
-          autoFocus={type == "email" ? true : false}
-          type={showPsw ? "password" : undefined}
+          autoFocus={type == CFT.email ? true : false}
+          type={showPsw ? CFT.password : undefined}
           onChange={(e) => {
             txtField.handleChange2(e.target.value, type);
             onChangeAction(e.target.value);

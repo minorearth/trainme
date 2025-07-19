@@ -1,19 +1,22 @@
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
+import S from "./globals/settings";
+
+`/${S.P.CHAPTERS}`;
 
 export function middleware(request: NextRequest) {
-  const session = request.cookies.get("session");
+  const session = request.cookies.get(S.USER_SESSION);
 
   if (
     !session &&
-    (request.nextUrl.pathname.startsWith("/chapters") ||
-      request.nextUrl.pathname.startsWith("/groups") ||
-      request.nextUrl.pathname.startsWith("/joingroup"))
+    (request.nextUrl.pathname.startsWith(`/${S.P.CHAPTERS}`) ||
+      request.nextUrl.pathname.startsWith(`/${S.P.GROUPS}`) ||
+      request.nextUrl.pathname.startsWith(`/${S.P.JOINGROUP}`))
   ) {
     return Response.redirect(new URL("/", request.url));
   }
 
-  if (session && request.nextUrl.pathname.startsWith("/login")) {
-    return Response.redirect(new URL("/chapters", request.url));
+  if (session && request.nextUrl.pathname.startsWith(`/${S.P.LOGIN}`)) {
+    return Response.redirect(new URL(`/${S.P.CHAPTERS}`, request.url));
   }
 }

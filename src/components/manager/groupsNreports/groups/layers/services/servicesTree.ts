@@ -12,6 +12,7 @@ import user from "@/userlayers/store/user";
 import stat from "@/components/manager/groupsNreports/store/stat";
 import { GroupArr } from "@/T/typesDB";
 import L from "@/globals/local";
+import S from "@/globals/settings";
 
 export const addNewGroup = () => {
   const groupid = uuidv4();
@@ -71,7 +72,7 @@ const updateNodeLabel = ({
 
 export const copyGroupLink = (groupId: string) => {
   navigator.clipboard.writeText(
-    `${process.env.NEXT_PUBLIC_DOMAIN}/joingroup/${groupId}/${user.userid}`
+    `${process.env.NEXT_PUBLIC_DOMAIN}/${S.P.JOINGROUP}/${groupId}/${user.userid}`
   );
 };
 

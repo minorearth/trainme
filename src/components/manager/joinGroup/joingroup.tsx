@@ -14,6 +14,7 @@ import CustomField from "@/components/common/customfield/customField";
 import txtField from "@/components/common/customfield/store";
 
 import L from "@/globals/local";
+import { CFT } from "@/components/common/customfield/types";
 
 const Joingroup = observer(
   ({ groupid, manager }: { groupid: string; manager: string }) => {
@@ -51,20 +52,20 @@ const Joingroup = observer(
                 gap: "30px",
               }}
             >
-              <CustomField type={"firstname"} />
-              <CustomField type={"secondname"} />
+              <CustomField type={CFT.firstname} />
+              <CustomField type={CFT.secondname} />
               <Button
                 variant="outlined"
                 disabled={
-                  txtField.state["firstname"].error ||
-                  txtField.state["secondname"].error
+                  txtField.state.firstname.error ||
+                  txtField.state.secondname.error
                 }
                 onClick={() => {
                   joinGroup({
                     groupid,
                     manager,
-                    secondName: txtField.state["firstname"].value,
-                    firstName: txtField.state["secondname"].value,
+                    secondName: txtField.state.firstname.value,
+                    firstName: txtField.state.secondname.value,
                   });
                 }}
                 fullWidth

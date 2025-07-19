@@ -8,6 +8,7 @@ import {
 } from "@/components/champ/layers/services/services";
 
 import { ChampuserDB } from "@/T/typesDB";
+import S from "@/globals/settings";
 
 class champ {
   actions: any = {
@@ -18,7 +19,7 @@ class champ {
   };
   champid = "";
   state = {};
-  range: number[] = [1, 30];
+  range: number[] = S.CHAMP_RANGE;
   capturingChampstart = false;
   champstarted = false;
   users: ChampuserDB[] = [];
@@ -35,7 +36,7 @@ class champ {
   };
 
   eraseStateP() {
-    this.range = [1, 30];
+    this.range = S.CHAMP_RANGE;
     this.state = {};
     this.champid = "";
 

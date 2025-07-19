@@ -18,6 +18,7 @@ import FlowPanel from "./components/FlowPanel";
 
 //hooks
 import useFlow from "./hooks/useFlow";
+import S from "@/globals/settings";
 
 const Course = observer(() => {
   const theme = useTheme();
@@ -34,10 +35,7 @@ const Course = observer(() => {
     >
       <ReactFlow
         nodesDraggable={false}
-        translateExtent={[
-          [0, -250],
-          [1300, 8500],
-        ]}
+        translateExtent={S.FLOW_AREA_SIZE}
         maxZoom={2}
         minZoom={1}
         {...flowOptions}

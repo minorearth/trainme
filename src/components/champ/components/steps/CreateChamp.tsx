@@ -12,6 +12,7 @@ import CustomField from "@/components/common/customfield/customField";
 import champ from "@/components/champ/layers/store/champ";
 import txtField from "@/components/common/customfield/store";
 import L from "@/globals/local";
+import { CFT } from "@/components/common/customfield/types";
 
 const CreateChampStep = observer(() => {
   return (
@@ -28,7 +29,7 @@ const CreateChampStep = observer(() => {
         <RangeSlider />
       </>
       <CustomField
-        type={"tasknum"}
+        type={CFT.tasknum}
         sx={{
           "& .MuiInputBase-input": {
             textAlign: "center",

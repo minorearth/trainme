@@ -28,11 +28,11 @@ import chapter from "@/components/taskset/layers/store/chapter";
 import { CSP } from "@/T/typesDB";
 import { checkVersion } from "@/db/localstorage";
 import { PG, ST, TS, TSM } from "@/T/typesBasic";
+import S from "@/globals/settings";
 
 //
-const currentverson = "0.14";
 export const loadPyTrek = async () => {
-  const CSP = getPersistedState(currentverson);
+  const CSP = getPersistedState(S.CURRENT_LS_VERSION);
   CSP.navigator && navigator.setNavigatorState(CSP.navigator);
   CSP.taskset && taskset.setTaskSetState(CSP.taskset);
   CSP.user.username && user.setUserName(CSP.user.username);

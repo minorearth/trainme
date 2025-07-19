@@ -12,7 +12,7 @@ import {
 import chapter from "@/components/taskset/layers/store/chapter";
 import { TASKSET_DEFAULTS } from "@/T/typesdefaults";
 import { Task, TasksetStatePersisted } from "@/T/typesState";
-import { TasksetMode, TasksetStage } from "@/T/typesBasic";
+import { STT, TasksetMode, TasksetStage } from "@/T/typesBasic";
 
 const DEFAULT_STATE = {
   tasksetmode: "" as TasksetMode,
@@ -78,7 +78,7 @@ class taskset {
         {
           taskset: { currTaskId: id },
         },
-        "taskset"
+        STT.taskset
       );
     }
   };
@@ -107,7 +107,7 @@ class taskset {
       {
         taskset: { currTaskId: id },
       },
-      "taskset"
+      STT.taskset
     );
   };
 

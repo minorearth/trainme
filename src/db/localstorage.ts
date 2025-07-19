@@ -3,27 +3,23 @@ import { decrypt2, encrypt2 } from "@/globals/utils/encryption";
 import S from "@/globals/settings";
 import { CSP_DEFAULTS } from "@/T/typesdefaults";
 import { CSP } from "@/T/typesDB";
-import { StateType } from "@/T/typesState";
-
-export const getUserId = () => {
-  return localStorage.getItem("userid");
-};
+import { StateType } from "@/T/typesBasic";
 
 export const setCSP = (state: CSP) => {
   if (S.mode.needCt) {
-    localStorage.setItem("state", encrypt2(JSON.stringify(state)));
+    localStorage.setItem(S.ls.STATE, encrypt2(JSON.stringify(state)));
   } else {
-    localStorage.setItem("state", JSON.stringify(state));
+    localStorage.setItem(S.ls.STATE, JSON.stringify(state));
   }
 };
 
 export const cleanUpCSP = () => {
-  localStorage.setItem("state", JSON.stringify(CSP_DEFAULTS));
+  localStorage.setItem(S.ls.STATE, JSON.stringify(CSP_DEFAULTS));
   return CSP_DEFAULTS;
 };
 
 export const getCSP = (): CSP => {
-  const state = localStorage.getItem("state");
+  const state = localStorage.getItem(S.ls.STATE);
   try {
     if (S.mode.needCt) {
       return state != null ? JSON.parse(decrypt2(state)) : cleanUpCSP();
@@ -36,17 +32,12 @@ export const getCSP = (): CSP => {
 };
 
 export const checkVersion = (currentverson: string): boolean => {
-  const localversion = localStorage.getItem("version") ?? "";
-  localStorage.setItem("version", currentverson);
+  const localversion = localStorage.getItem(S.ls.VERSION) ?? "";
+  localStorage.setItem(S.ls.VERSION, currentverson);
   if (currentverson != localversion) {
-    localStorage.setItem("state", JSON.stringify({}));
+    localStorage.setItem(S.ls.STATE, JSON.stringify({}));
   }
   return currentverson == localversion;
-};
-
-export const loadSetupPersisted = () => {
-  const state = localStorage.getItem("setup");
-  return state != null ? JSON.parse(state) : null;
 };
 
 export const updateSCP = (data: Partial<CSP>) => {

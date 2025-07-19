@@ -8,6 +8,7 @@ import { encrypt2 } from "@/globals/utils/encryption";
 //utils
 import { extractChapterIdsOnly_admin } from "@/components/course/layers/services/utils";
 import { CLT, EdgeDB, FlowDB, NodeDB } from "@/T/typesDB";
+import { GetDF, SetDF } from "@/T/typesBasic";
 
 interface response {
   value: boolean;
@@ -22,7 +23,7 @@ export const checkCoursePaid = async ({
   uid: string;
 }): Promise<boolean> => {
   const coursePaid = await getDataFetch<boolean>({
-    type: "checkcoursepaid",
+    type: GetDF.checkcoursepaid,
     data: { courseid, id: uid },
   });
   return coursePaid.value;
@@ -66,7 +67,7 @@ export const buyChapterCall = async ({
   uid: string;
 }) => {
   await setDataFetch({
-    type: "paychapter",
+    type: SetDF.paychapter,
     data: encrypt2({
       data: {
         [`courses.${courseid}.rating`]: rating - unlockpts,

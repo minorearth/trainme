@@ -12,13 +12,6 @@ import {
 import { InOutDB } from "./typesUpload";
 
 //////////////////////////State
-export type StateType =
-  | "navigator"
-  | "course"
-  | "champ"
-  | "chapter"
-  | "taskset"
-  | "user";
 
 //Task
 export interface TaskDBWithFiles extends TaskDB {

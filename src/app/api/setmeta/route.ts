@@ -5,6 +5,7 @@ export const revalidate = 1; //revalidate api every 1 second
 
 import { updateDocSA } from "@/db/SA/firebaseSA";
 import { CLT, UserMetaDB } from "@/T/typesDB";
+import { GetDF, SetDF } from "@/T/typesBasic";
 
 interface reqData {
   type: string;
@@ -15,7 +16,7 @@ export async function POST(request: Request) {
     const reqData: reqData = await request.json();
     const { type, data } = reqData;
     let res = "error";
-    if (type == "paychapter" || type == "setusermetadata") {
+    if (type == SetDF.paychapter || type == SetDF.setusermetadata) {
       res = await updateDocSA<UserMetaDB>({
         collectionName: CLT.usermeta,
         dataencrypted: data,

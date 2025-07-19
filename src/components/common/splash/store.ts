@@ -1,16 +1,20 @@
-type Animation = "undefined" | "progressdots" | "ok";
-type AnimationType =
-  | "gotoplayLottie"
-  | "lottie"
-  | "countdown"
-  | "css"
-  | "undefined";
+type LotieAnimationFileName = string;
+
+export const AT = {
+  gotoplayLottie: "gotoplayLottie",
+  lottie: "lottie",
+  countdown: "countdown",
+  css: "css",
+  undefined: "undefined",
+};
+
+type AnimationType = (typeof AT)[keyof typeof AT];
 
 import { makeAutoObservable, makeObservable } from "mobx";
 interface SplashState {
   background: boolean;
   showCSS: boolean;
-  animation: Animation;
+  animation: LotieAnimationFileName;
   animationtype: AnimationType;
   onCompleteAction: () => void;
   play: boolean;
@@ -19,11 +23,12 @@ interface SplashState {
 class splash {
   delayed = false;
   shown = false;
+
   state: SplashState = {
     background: true,
     showCSS: false,
-    animation: "undefined",
-    animationtype: "undefined",
+    animation: "",
+    animationtype: AT.undefined,
     onCompleteAction: () => {},
     play: false,
   };
@@ -46,14 +51,14 @@ class splash {
 
     this.state = {
       ...this.state,
-      animationtype: "css",
+      animationtype: AT.css,
       background,
     };
   }
 
   showProgress(
     background: boolean = false,
-    animation: Animation = "progressdots",
+    animation: LotieAnimationFileName = "progressdots",
     delay: number = 500
   ) {
     this.shown = true;
@@ -65,7 +70,7 @@ class splash {
 
     this.state = {
       ...this.state,
-      animationtype: "lottie",
+      animationtype: AT.lottie,
       background,
       animation,
     };
@@ -73,7 +78,7 @@ class splash {
 
   gotoplayLottie(
     background: boolean = false,
-    animation: Animation = "ok",
+    animation: LotieAnimationFileName = "ok",
     action = () => {}
   ) {
     this.shown = true;
@@ -81,7 +86,7 @@ class splash {
 
     this.state = {
       ...this.state,
-      animationtype: "gotoplayLottie",
+      animationtype: AT.gotoplayLottie,
       play: true,
       background,
       animation,
@@ -99,7 +104,7 @@ class splash {
 
     this.state = {
       ...this.state,
-      animationtype: "countdown",
+      animationtype: AT.countdown,
       background,
       onCompleteAction: () => {
         this.shown = false;

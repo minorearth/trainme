@@ -18,6 +18,7 @@ import { recoverPswSubmit } from "@/components/authsteps/layers/services/service
 
 //stores
 import authForm from "@/components/authsteps/layers/store/store";
+import { CFT } from "@/components/common/customfield/types";
 
 const PswReset = observer(() => {
   return (
@@ -33,7 +34,7 @@ const PswReset = observer(() => {
         width: "100%",
       }}
     >
-      <CustomField type={"email"} />
+      <CustomField type={CFT.email} />
       <Button type="submit" fullWidth variant="contained">
         {L.ru.buttons.AUTH_RESETPSW}
       </Button>

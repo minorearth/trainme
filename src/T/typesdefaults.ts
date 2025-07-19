@@ -1,4 +1,13 @@
-import { Page, PG, SuccessType, TasksetMode, TS, TSM, TT } from "./typesBasic";
+import {
+  Page,
+  PG,
+  ST,
+  SuccessType,
+  TasksetMode,
+  TS,
+  TSM,
+  TT,
+} from "./typesBasic";
 import { completedChapters } from "./typesDB";
 
 export const TASK_DEFAULTS = {
@@ -61,7 +70,7 @@ export const TASKSET_DEFAULTS = {
   tasklog: {},
   randomsaved: [],
   fixed: 0,
-  success: "undefined" as SuccessType,
+  success: ST.undefined,
   currTaskId: -1,
 };
 

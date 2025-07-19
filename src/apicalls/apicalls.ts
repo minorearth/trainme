@@ -1,3 +1,6 @@
+import { GetDataFetchTypes, SetDataFetch } from "@/T/typesBasic";
+import S from "@/globals/settings";
+
 export const wakeUp = () => {
   fetch("/api/wakeup", {
     method: "POST",
@@ -11,7 +14,7 @@ export const wakeUp = () => {
 };
 
 interface setDataFetch {
-  type: string;
+  type: SetDataFetch;
   data: string;
 }
 export const setDataFetch = async (data: setDataFetch) => {
@@ -19,7 +22,7 @@ export const setDataFetch = async (data: setDataFetch) => {
   const res = await new Promise((resolve) => {
     setTimeout(async () => {
       try {
-        const response = await fetch("/api/setmeta", {
+        const response = await fetch(S.P.SETMETA, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -37,13 +40,15 @@ export const setDataFetch = async (data: setDataFetch) => {
 };
 
 interface GetDataFetch {
-  type: string;
+  type: GetDataFetchTypes;
+  //not encrypted
+  //(later)TODO: do types
   data: Object;
 }
 
 export const getDataFetch = async <T>(data: GetDataFetch) => {
   try {
-    const response = await fetch("/api/getmeta", {
+    const response = await fetch(S.P.GETMETA, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

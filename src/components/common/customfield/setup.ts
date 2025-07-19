@@ -9,6 +9,7 @@ import {
   checkSecondName,
 } from "@/components/common/customfield/validators";
 import L from "@/globals/local";
+import { CFT } from "./types";
 
 export const textFieldProps: {
   [key: string]: {
@@ -58,21 +59,21 @@ export const textFieldProps: {
   },
 
   email: {
-    auto: "email",
+    auto: CFT.email,
     label: L.ru.CI.AUTH_ENTER_EMAIL,
     helperText: L.ru.CI.AUTH_ENTER_VALID_EMAIL,
     validator: checkMail,
     instantValidation: false,
   },
   password: {
-    auto: "current-password",
+    auto: CFT.password,
     label: L.ru.CI.AUTH_ENTER_PSW,
     helperText: L.ru.CI.AUTH_ENTER_VALID_PSW,
     validator: checkPsw,
     instantValidation: false,
   },
   name: {
-    auto: "name",
+    auto: CFT.name,
     label: L.ru.CI.AUTH_ENTER_NAME,
     helperText: L.ru.CI.AUTH_ENTER_VALID_NAME,
     validator: regnameVal,

@@ -19,7 +19,7 @@ import splash from "@/components/common/splash/store";
 
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { User } from "firebase/auth";
-import { progress } from "framer-motion";
+import S from "@/globals/settings";
 
 export const signUp = async ({
   email,
@@ -50,29 +50,31 @@ export const signIn = async ({
   password: string;
   router: AppRouterInstance;
 }) => {
-  const uid = await getUidAuth({ email, password });
+  const response = await getUidAuth({ email, password });
 
-  if (uid == "notVerified") {
+  //TODO: throw error
+
+  if (response == "notVerified") {
     da.info.emailnotverified();
     return;
   }
 
-  if (uid == "wrongpsw") {
+  if (response == "wrongpsw") {
     da.info.wrongpsw();
     return;
   }
 
-  const userMeta = await getUserMeta(uid);
+  const userMeta = await getUserMeta(response);
 
   user.setUserNameP(userMeta.name);
-  router.push(`/chapters`);
+  router.push(`/${S.P.CHAPTERS}`);
 };
 
 export const signOut = async (router: AppRouterInstance) => {
   await signOutUserRep();
   splash.closeProgress();
 
-  router.push(`/login/`);
+  router.push(`/${S.P.LOGIN}/`);
 };
 
 const actionOnAuthChanged = async (

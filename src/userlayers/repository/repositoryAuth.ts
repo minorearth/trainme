@@ -31,6 +31,7 @@ export const signInUser = async ({
   try {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (e) {
+    //TODO:throw error
     return "wrongpsw";
   }
 };
