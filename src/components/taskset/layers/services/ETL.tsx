@@ -3,6 +3,7 @@ import { fetchFile } from "@/apicalls/apicalls";
 import { TaskDB } from "@/T/typesDB";
 import { TaskDBWithFiles } from "@/T/typesState";
 import { InOutDB } from "@/T/typesUpload";
+import { TT } from "@/T/typesBasic";
 
 export const supplyFilesAndTransform = async (tasks: TaskDB[]) => {
   const tasksWithFiles = await supplyWithFilesData(tasks);
@@ -39,7 +40,7 @@ const formatForbidden = ({
   tasktype: string;
 }) => {
   let res = "";
-  if (tasktype != "task") {
+  if (tasktype != TT.task) {
     return "";
   }
   res += `\n\n<b>Ограничения</b>:\nМаксимальное количество строк кода: ${maxlines}`;

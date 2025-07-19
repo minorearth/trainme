@@ -32,11 +32,10 @@ import {
   ChapterStatePersisted,
   CourseStatePersisted,
   Task,
-  TasksetStage,
   TasksetStatePersisted,
-  TS,
 } from "@/T/typesState";
 import { CourseProgressDB, TaskDB, UserMetaDB } from "@/T/typesDB";
+import { ST, TasksetStage, TS, TSM } from "@/T/typesBasic";
 
 //types
 
@@ -69,21 +68,21 @@ export const getTasks = async ({
   } = tasksetData;
   const { level, chapterid } = chapterData;
   const { champid } = champData;
-  if (tasksetmode == "champ")
+  if (tasksetmode == TSM.champ)
     return await getChampTasks({
       champid,
       taskstage,
       recapTasksIds,
     });
 
-  if (tasksetmode == "textbook") {
+  if (tasksetmode == TSM.default) {
     const tasks = await getTextBookTasks({
       completed: userProgress.completed,
       courseid,
     });
     return { tasks: await supplyFilesAndTransform(tasks), tasksuuids: [] };
   }
-  if (tasksetmode == "exam") {
+  if (tasksetmode == TSM.exam) {
     const { tasksuuids, tasksFetched } = await getExamTasks({
       courseid,
       levelStart: level - 5,
@@ -92,9 +91,9 @@ export const getTasks = async ({
     });
     return { tasks: tasksFetched, tasksuuids };
   }
-  if (tasksetmode == "addhoc" || tasksetmode == "newtopic") {
+  if (tasksetmode == TSM.addhoc || tasksetmode == TSM.newtopic) {
     const tasks = await getAllTasksFromChapter({ chapterid, courseid });
-    if (taskstage == TS.recap || taskstage == "recap_suspended") {
+    if (taskstage == TS.recap || taskstage == TS.recapSuspended) {
       const recapTasks = await supplyFilesAndTransform(
         getTasksRecap({ recapTasksIds, tasks })
       );
@@ -186,7 +185,7 @@ export const saveProgress = async () => {
       (stat[chapterid]?.sum ?? 0) + pts,
     ...tasklogPrepared,
   };
-  if (!completed && success == "success") {
+  if (!completed && success == ST.success) {
     userData = {
       ...userData,
       [`courses.${courseid}.completed`]: [...completedChapters, chapterid],
@@ -218,7 +217,7 @@ const getChampTasks = async ({
   const rawTasks = await getChampTasksDB({
     champid,
   });
-  if (taskstage == TS.recap || taskstage == "recap_suspended") {
+  if (taskstage == TS.recap || taskstage == TS.recapSuspended) {
     const rawRecapTasks = getTasksRecap<TaskDB>({
       recapTasksIds,
       tasks: rawTasks,

@@ -1,4 +1,11 @@
-import { DBFormats } from "@/T/typesDB";
+import {
+  CollectionRead,
+  CollectionWrite,
+  CollectonsTypes,
+  DBFormats,
+  SubCollectionRead,
+  SubCollectionWrite,
+} from "@/T/typesDB";
 import { db, auth } from "./firebaseappClient";
 
 import {
@@ -27,11 +34,7 @@ export const setDocInCollection = async <T extends DBFormats>({
   collectionName,
   data,
   id,
-}: {
-  collectionName: string;
-  data: T;
-  id: string;
-}) => {
+}: CollectionWrite<T>) => {
   await setDoc(
     doc(db, collectionName, id),
     data as WithFieldValue<DocumentData>
@@ -39,29 +42,23 @@ export const setDocInCollection = async <T extends DBFormats>({
 };
 
 export const setDocInSubCollection = async <T extends DBFormats>({
-  collectionName1,
-  id1,
-  collectionName2,
-  id2,
+  collectionName,
+  id,
+  subCollectionName,
+  subId,
   data,
-}: {
-  collectionName1: string;
-  id1: string;
-  collectionName2: string;
-  id2: string;
-  data: T;
-}) => {
+}: SubCollectionWrite<T>) => {
   await setDoc(
-    doc(db, collectionName1, id1, collectionName2, id2),
+    doc(db, collectionName, id, subCollectionName, subId),
     data as WithFieldValue<DocumentData>
   );
 };
 
-export const updateDocByid = async <T extends DBFormats>(
-  collectionName: string,
-  id: string,
-  data: Partial<T>
-) => {
+export const updateDocByid = async <T extends DBFormats>({
+  collectionName,
+  id,
+  data,
+}: CollectionWrite<Partial<T>>) => {
   await updateDoc(
     doc(db, collectionName, id),
     data as WithFieldValue<DocumentData>
@@ -71,27 +68,19 @@ export const updateDocByid = async <T extends DBFormats>(
 export const getDocDataFromCollectionById = async <T extends DBFormats>({
   collectionName,
   id,
-}: {
-  collectionName: string;
-  id: string;
-}) => {
+}: CollectionRead) => {
   const docSnap = await getDoc(doc(db, collectionName, id));
   return docSnap.data() as T;
 };
 
 export const getDocDataFromSubCollectionById = async <T extends DBFormats>({
-  collectionName1,
-  id1,
-  collectionName2,
-  id2,
-}: {
-  collectionName1: string;
-  id1: string;
-  collectionName2: string;
-  id2: string;
-}) => {
+  collectionName,
+  id,
+  subCollectionName,
+  subId,
+}: SubCollectionRead) => {
   const docSnap = await getDoc(
-    doc(db, collectionName1, id1, collectionName2, id2)
+    doc(db, collectionName, id, subCollectionName, subId)
   );
   return docSnap.data() as T;
 };
@@ -101,7 +90,7 @@ export const getDocFromCollectionByIdRealtime = async <T extends DBFormats>({
   id,
   onChangeAction,
 }: {
-  collectionName: string;
+  collectionName: CollectonsTypes;
   id: string;
   onChangeAction: (data: T) => void;
 }) => {
@@ -116,7 +105,7 @@ export const getMultipleDocs = async <T extends DBFormats>({
   collectionName,
   ids,
 }: {
-  collectionName: string;
+  collectionName: CollectonsTypes;
   ids: string[];
 }) => {
   const col = collection(db, collectionName);

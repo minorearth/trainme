@@ -49,11 +49,10 @@ import {
   ChampStatePersisted,
   ChapterStatePersisted,
   CourseStatePersisted,
-  Page,
-  SuccessType,
   TasksetStatePersisted,
 } from "@/T/typesState";
 import { CourseProgressDB } from "@/T/typesDB";
+import { Page, PG, ST, SuccessType, TSM } from "@/T/typesBasic";
 
 export const openAllCoursePage = () => {
   setAllCoursePageState();
@@ -125,16 +124,16 @@ export const openLessonStartPage = async ({
 
   chapter.setChapterStateP(chapterData);
 
-  if (tasksetmode == "textbook" && !tasks.length) {
+  if (tasksetmode == TSM.textbook && !tasks.length) {
     da.info.textbookblocked();
-  } else navigator.setStateP({ page: "lessonStarted" as Page });
+  } else navigator.setStateP({ page: PG.lessonStarted as Page });
 
   splash.closeProgress();
 };
 
 export const openTaskSetPage = async () => {
   splash.showProgress(false, "progressdots", 2000);
-  navigator.setStateP({ page: "testrun" });
+  navigator.setStateP({ page: PG.testrun });
   splash.closeProgress();
 };
 
@@ -144,7 +143,7 @@ export const openCongratPage = async ({
   success: SuccessType;
 }) => {
   countdownbutton.hideButton();
-  navigator.setStateP({ page: "congrat" });
+  navigator.setStateP({ page: PG.congrat });
   taskset.setTaskSetStateP({ ...taskset.state, success });
 };
 
@@ -153,9 +152,9 @@ export const closeCongratPage = async () => {
   splash.showProgress();
 
   if (
-    tasksetmode == "addhoc" ||
-    tasksetmode == "newtopic" ||
-    tasksetmode == "exam"
+    tasksetmode == TSM.addhoc ||
+    tasksetmode == TSM.newtopic ||
+    tasksetmode == TSM.exam
   )
     try {
       await saveProgress();
@@ -167,7 +166,7 @@ export const closeCongratPage = async () => {
       da.info.networkerror(e);
     }
 
-  if (tasksetmode == "champ") {
+  if (tasksetmode == TSM.champ) {
     saveChampUserTaskLog({
       tasklog: taskset.state.tasklog,
       champid: champ.champid,
@@ -180,11 +179,11 @@ export const closeCongratPage = async () => {
 
 export const interruptTaskSet = () => {
   const { tasksetmode } = taskset.state;
-  if (tasksetmode != "textbook") {
+  if (tasksetmode != TSM.textbook) {
     da.info.tasksetinterrupt({
       action: () =>
         openCongratPage({
-          success: "fail",
+          success: ST.fail,
         }),
       tasksetmode,
       completed: chapter.state.completed,

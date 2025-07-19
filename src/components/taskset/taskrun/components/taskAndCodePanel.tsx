@@ -7,6 +7,7 @@ import CodeRunPanel from "@/components/taskset/taskrun/components/coderunPanel";
 import styled from "styled-components";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import { observer } from "mobx-react-lite";
+import { TT } from "@/T/typesBasic";
 
 const Wrapper = styled.div`
   .tooltip {
@@ -44,9 +45,9 @@ const TaskAndCodePanel = observer(() => {
     <Grid
       container
       spacing={2}
-      columns={{ xs: 1, md: task.currTask?.tasktype == "guide" ? 1 : 3 }}
+      columns={{ xs: 1, md: task.currTask?.tasktype == TT.guide ? 1 : 3 }}
     >
-      {task.currTask.tasktype != "guide" && (
+      {task.currTask.tasktype != TT.guide && (
         <Grid size={{ xs: 1, md: 1 }}>
           <Panel label={"Выполни задание"}>
             <Wrapper>

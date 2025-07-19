@@ -9,8 +9,9 @@ import splash from "@/components/common/splash/store";
 
 //serviceHelpers(local)
 import { getTasksRecap } from "@/components/taskset/layers/services/servicesHelpers";
-import { Task, TS } from "@/T/typesState";
+import { Task } from "@/T/typesState";
 import { TaskDB } from "@/T/typesDB";
+import { TS, TSM } from "@/T/typesBasic";
 
 export const setTaskLog = ({
   code,
@@ -67,24 +68,24 @@ export const calcEarned = (error: boolean) => {
     return pts;
   }
   if (!error) {
-    if (taskstage == TS.WIP && !completed && tasksetmode != "exam") {
+    if (taskstage == TS.WIP && !completed && tasksetmode != TSM.exam) {
       income = 10;
     }
-    if (taskstage == TS.WIP && !completed && tasksetmode == "exam") {
+    if (taskstage == TS.WIP && !completed && tasksetmode == TSM.exam) {
       income = 2;
     }
-    if (taskstage == TS.WIP && completed && tasksetmode != "exam") {
+    if (taskstage == TS.WIP && completed && tasksetmode != TSM.exam) {
       income = 2;
     }
-    if (taskstage == TS.WIP && completed && tasksetmode == "exam") {
+    if (taskstage == TS.WIP && completed && tasksetmode == TSM.exam) {
       income = 1;
     }
 
-    if (taskstage == TS.recap && !completed && tasksetmode != "exam") {
+    if (taskstage == TS.recap && !completed && tasksetmode != TSM.exam) {
       income = 2;
     }
 
-    if (taskstage == TS.recap && !completed && tasksetmode == "exam") {
+    if (taskstage == TS.recap && !completed && tasksetmode == TSM.exam) {
       income = 1;
     }
 
@@ -92,13 +93,13 @@ export const calcEarned = (error: boolean) => {
       income = 1;
     }
     if (
-      tasksetmode == "addhoc" ||
-      tasksetmode == "newtopic" ||
-      tasksetmode == "exam"
+      tasksetmode == TSM.addhoc ||
+      tasksetmode == TSM.newtopic ||
+      tasksetmode == TSM.exam
     ) {
       return Math.min(pts + income, remainsum);
     }
-    if (tasksetmode == "champ") {
+    if (tasksetmode == TSM.champ) {
       return pts + income;
     } else return 0;
   } else {

@@ -14,9 +14,7 @@ import { encrypt2 } from "@/globals/utils/encryption";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import course from "@/components/course/layers/store/course";
 import user from "@/userlayers/store/user";
-import taskset from "@/components/taskset/layers/store/taskset";
-import task from "@/components/taskset/taskrun/layers/store/task";
-import { UserMetaDB } from "@/T/typesDB";
+import { CLT, UserMetaDB } from "@/T/typesDB";
 
 export const resetCurrentUser = async () => {
   const courseid = course.state.courseid;
@@ -47,7 +45,10 @@ export const resetUser = async ({
     },
     id: uid,
   };
-  await updateDocSA<UserMetaDB>("usermeta", encrypt2(data));
+  await updateDocSA<UserMetaDB>({
+    collectionName: CLT.usermeta,
+    dataencrypted: encrypt2(data),
+  });
 };
 
 export const unlockAllChaptersCurrentUser = async () => {
@@ -61,7 +62,10 @@ export const unlockAllChaptersCurrentUser = async () => {
     },
     id: user.userid,
   };
-  await updateDocSA<UserMetaDB>("usermeta", encrypt2(data));
+  await updateDocSA<UserMetaDB>({
+    collectionName: CLT.usermeta,
+    dataencrypted: encrypt2(data),
+  });
   navigator.actions.openAndRefreshFlowPage({
     courseid,
     refetchFlow: true,
@@ -80,7 +84,10 @@ export const completeAllChaptersCurrentUser = async () => {
     },
     id: user.userid,
   };
-  await updateDocSA<UserMetaDB>("usermeta", encrypt2(data));
+  await updateDocSA<UserMetaDB>({
+    collectionName: CLT.usermeta,
+    dataencrypted: encrypt2(data),
+  });
 
   navigator.actions.openAndRefreshFlowPage({
     courseid,
@@ -94,7 +101,10 @@ export const setMoneyCurrentUser = async (inValue: string) => {
     data: { [`courses.${courseid}.rating`]: Number(inValue) },
     id: user.userid,
   };
-  await updateDocSA<UserMetaDB>("usermeta", encrypt2(data));
+  await updateDocSA<UserMetaDB>({
+    collectionName: CLT.usermeta,
+    dataencrypted: encrypt2(data),
+  });
 
   navigator.actions.openAndRefreshFlowPage({
     courseid,

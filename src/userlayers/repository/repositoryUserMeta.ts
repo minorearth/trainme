@@ -22,7 +22,7 @@ import { ETLUserProgress } from "@/userlayers/repository/ETL";
 
 //utils
 import { encrypt2 } from "@/globals/utils/encryption";
-import { UserMetaDB } from "@/T/typesDB";
+import { CLT, UserMetaDB } from "@/T/typesDB";
 
 export const getUserMetaCourseProgress = async ({
   courseid,
@@ -42,7 +42,7 @@ export const getUserMetaCourseProgress = async ({
 
 export const getUserMetaDataCA = async (uid: string) => {
   const userMeta = await getDocDataFromCollectionById<UserMetaDB>({
-    collectionName: "usermeta",
+    collectionName: CLT.usermeta,
     id: uid,
   });
   return userMeta || {};
@@ -77,7 +77,7 @@ export const createNewUserMeta = async ({
     courses,
   };
   await setDocInCollection<UserMetaDB>({
-    collectionName: stn.collections.USER_META,
+    collectionName: CLT.usermeta,
     data,
     id: userId,
   });

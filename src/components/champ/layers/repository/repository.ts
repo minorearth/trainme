@@ -7,7 +7,8 @@ import {
   updateDocByid,
   setDocInCollection,
 } from "@/db/CA/firebaseCA";
-import { ChampDB, ChampuserDB, TaskDB, TasksLogDB } from "@/T/typesDB";
+import { ChampDB, ChampuserDB, CLT, TaskDB, TasksLogDB } from "@/T/typesDB";
+import { CS, CT, PS } from "@/T/typesBasic";
 
 export const updateChampPoints = async ({
   pts,
@@ -18,8 +19,12 @@ export const updateChampPoints = async ({
   champid: string;
   userid: string;
 }) => {
-  await updateDocByid<ChampDB>("champs", champid, {
-    [`users.${userid}.pts`]: pts,
+  await updateDocByid<ChampDB>({
+    collectionName: CLT.champ,
+    id: champid,
+    data: {
+      [`users.${userid}.pts`]: pts,
+    },
   });
 };
 
@@ -32,15 +37,19 @@ export const saveChampUserTaskLog = ({
   champid: string;
   userid: string;
 }) => {
-  updateDocByid<ChampDB>("champs", champid, {
-    [`users.${userid}.tasklog`]: tasklog,
-    [`users.${userid}.persstatus`]: "champisover",
+  updateDocByid<ChampDB>({
+    collectionName: CLT.champ,
+    id: champid,
+    data: {
+      [`users.${userid}.tasklog`]: tasklog,
+      [`users.${userid}.persstatus`]: PS.champisover,
+    },
   });
 };
 
 export const getChampTasksDB = async ({ champid }: { champid: string }) => {
   const allTasks = await getDocDataFromCollectionById<ChampDB>({
-    collectionName: "champs",
+    collectionName: CLT.champ,
     id: champid,
   });
   return allTasks?.tasks || [];
@@ -54,7 +63,7 @@ export const subscribeOnChamp = async ({
   action: (docdata: ChampDB) => void;
 }) => {
   const unsubscribe = await getDocFromCollectionByIdRealtime<ChampDB>({
-    collectionName: stn.collections.CHAMPS,
+    collectionName: CLT.champ,
     id: champid,
     onChangeAction: action,
   });
@@ -74,8 +83,12 @@ export const updateUserInChamp = async ({
   champid: string;
   userid: string;
 }) => {
-  await updateDocByid<ChampDB>("champs", champid, {
-    [`users.${userid}`]: champuserdata,
+  await updateDocByid<ChampDB>({
+    collectionName: CLT.champ,
+    id: champid,
+    data: {
+      [`users.${userid}`]: champuserdata,
+    },
   });
 };
 
@@ -87,11 +100,11 @@ export const getUserChampStatus = async ({
   userid: string;
 }) => {
   const champData = await getDocDataFromCollectionById<ChampDB>({
-    collectionName: stn.collections.CHAMPS,
+    collectionName: CLT.champ,
     id: champid,
   });
   if (!champData?.users[userid]?.persstatus) {
-    return "undefined";
+    return PS.undefined;
   } else {
     return champData?.users[userid].persstatus;
   }
@@ -105,14 +118,18 @@ export const createNewChamp = async ({
   tasks: TaskDB[];
 }) => {
   await setDocInCollection<ChampDB>({
-    collectionName: stn.collections.CHAMPS,
-    data: { tasks, users: {}, status: "created" },
+    collectionName: CLT.champ,
+    data: { tasks, users: {}, status: CS.created },
     id: champid,
   });
 };
 
 export const setChampStarted = async ({ champid }: { champid: string }) => {
-  await updateDocByid<ChampDB>(stn.collections.CHAMPS, champid, {
-    status: "started",
+  await updateDocByid<ChampDB>({
+    collectionName: CLT.champ,
+    id: champid,
+    data: {
+      status: CS.started,
+    },
   });
 };

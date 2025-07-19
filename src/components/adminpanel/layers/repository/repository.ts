@@ -1,5 +1,7 @@
 import { setDocInCollection, setDocInSubCollection } from "@/db/CA/firebaseCA";
+import { TT } from "@/T/typesBasic";
 import {
+  CLT,
   CourseChapterObjDB,
   EdgeDB,
   FlowDB,
@@ -20,7 +22,7 @@ export const uploadCourseChapters = async ({
   courseid: string;
 }) => {
   setDocInCollection<FlowDB>({
-    collectionName: "chapters",
+    collectionName: CLT.chapters,
     data: { chapterFlowNodes, chapterFlowEdges },
     id: courseid,
   });
@@ -34,18 +36,18 @@ export const uploadAllCourseTasksView = async ({
   allTasksAndGuidesWithLevels: TaskDB[];
 }) => {
   const allTasksNoGuides = allTasksAndGuidesWithLevels.filter(
-    (task) => task.tasktype == "task"
+    (task) => task.tasktype == TT.task
   );
   await setDocInCollection({
-    collectionName: "newtasks",
+    collectionName: CLT.newtasks,
     data: {},
     id: courseid,
   });
   await setDocInSubCollection<TaskDBWraper>({
-    collectionName1: "newtasks",
-    id1: courseid,
-    collectionName2: "chapters",
-    id2: "alltasks",
+    collectionName: CLT.newtasks,
+    id: courseid,
+    subCollectionName: CLT.chapters,
+    subId: "alltasks",
     data: {
       tasks: allTasksNoGuides,
     },
@@ -62,10 +64,10 @@ export const uploadChapterTasks = async ({
   chapterTasks: TaskDB[];
 }) => {
   setDocInSubCollection<TaskDBWraper>({
-    collectionName1: "newtasks",
-    id1: courseid,
-    collectionName2: "chapters",
-    id2: chapterid,
+    collectionName: CLT.newtasks,
+    id: courseid,
+    subCollectionName: CLT.chapters,
+    subId: chapterid,
     data: {
       tasks: chapterTasks,
     },
@@ -76,7 +78,7 @@ export const uploadCourseChaptersObject = async (
   chapterCourseObjectModel: CourseChapterObjDB
 ) => {
   await setDocInCollection<CourseChapterObjDB>({
-    collectionName: "views",
+    collectionName: CLT.views,
     data: chapterCourseObjectModel,
     id: "chaptersobject",
   });

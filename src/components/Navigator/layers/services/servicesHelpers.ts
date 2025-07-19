@@ -7,6 +7,7 @@ import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";
 import chapter from "@/components/taskset/layers/store/chapter";
 import { CourseProgressDB } from "@/T/typesDB";
+import { PG } from "@/T/typesBasic";
 
 //
 
@@ -15,7 +16,7 @@ export const setChampPageState = () => {
   taskset.eraseTaskSetStateP();
   task.eraseState();
   chapter.eraseStateP();
-  navigator.setStateP({ page: "champ" });
+  navigator.setStateP({ page: PG.champ });
 };
 
 export const setFlowPageState = ({
@@ -26,7 +27,7 @@ export const setFlowPageState = ({
   progress: CourseProgressDB;
 }) => {
   course.setStateP({ ...course.state, courseid });
-  navigator.setStateP({ page: "flow" });
+  navigator.setStateP({ page: PG.flow });
   taskset.eraseTaskSetStateP();
   task.eraseState();
   chapter.eraseStateP();
@@ -34,7 +35,7 @@ export const setFlowPageState = ({
 };
 
 export const setAllCoursePageState = () => {
-  navigator.setStateP({ page: "courses" });
+  navigator.setStateP({ page: PG.courses });
   course.eraseStateP();
   champ.eraseStateP();
   taskset.eraseTaskSetStateP();

@@ -12,6 +12,7 @@ import {
 } from "@/components/manager/groupsNreports/groups/layers/repository/ETL";
 
 import {
+  CLT,
   CourseChapterObjDB,
   GroupArr,
   GroupDB,
@@ -20,7 +21,7 @@ import {
 
 export const getGroupsArr = async (userid: string) => {
   const groups = await getDocDataFromCollectionById<GroupDB>({
-    collectionName: "groups",
+    collectionName: CLT.groups,
     id: userid,
   });
   const data = groupsObjectToArr(groups || {});
@@ -29,7 +30,7 @@ export const getGroupsArr = async (userid: string) => {
 
 export const getChaptersObjdata = async (): Promise<CourseChapterObjDB> => {
   const chaptersObj = await getDocDataFromCollectionById<CourseChapterObjDB>({
-    collectionName: "views",
+    collectionName: CLT.views,
     id: "chaptersobject",
   });
   return chaptersObj || {};
@@ -37,7 +38,7 @@ export const getChaptersObjdata = async (): Promise<CourseChapterObjDB> => {
 
 export const addNewGroupDB = async (data: GroupArr[], userid: string) => {
   await setDocInCollection<GroupDB>({
-    collectionName: "groups",
+    collectionName: CLT.groups,
     data: groupsArrToObject(data),
     id: userid,
   });
@@ -48,14 +49,18 @@ export const addNewGroupDB2 = async (
   groupdata: GroupUserDBAttrs,
   uuid: string
 ) => {
-  await updateDocByid<GroupDB>("groups", uuid, {
-    [`${groupid}`]: groupdata,
+  await updateDocByid<GroupDB>({
+    collectionName: CLT.groups,
+    id: uuid,
+    data: {
+      [`${groupid}`]: groupdata,
+    },
   });
 };
 
 export const updateNodeLabelDB = async (data: GroupArr[], userid: string) => {
   await setDocInCollection<GroupDB>({
-    collectionName: "groups",
+    collectionName: CLT.groups,
     data: groupsArrToObject(data),
     id: userid,
   });
@@ -80,7 +85,11 @@ export const addUserToGroup = async ({
     isFolder: false,
     children: {},
   };
-  await updateDocByid<GroupDB>("groups", manager, {
-    [`${groupid}.children.${groupid + uid}`]: user,
+  await updateDocByid<GroupDB>({
+    collectionName: CLT.groups,
+    id: manager,
+    data: {
+      [`${groupid}.children.${groupid + uid}`]: user,
+    },
   });
 };

@@ -1,5 +1,6 @@
 //////////////////////////DB
 
+import { Champstatus, CourseType, NodeModes, Persstatus } from "./typesBasic";
 import {
   ChampStatePersisted,
   ChapterStatePersisted,
@@ -10,6 +11,57 @@ import {
   UserStatePersisted,
 } from "./typesState";
 import { RawTaskToUploadWithoutLevel } from "./typesUpload";
+
+export type Subcollection = {};
+
+export interface CollectionRead {
+  id: string;
+  collectionName: CollectonsTypes;
+}
+
+export interface CollectionWrite<T> extends CollectionRead {
+  data: T;
+}
+
+export interface SubCollectionRead extends CollectionRead {
+  subId: string;
+  subCollectionName: CollectonsTypes;
+}
+
+export interface SubCollectionWrite<T> extends CollectionWrite<T> {
+  subId: string;
+  subCollectionName: CollectonsTypes;
+}
+
+// type AllValues<T> = T[keyof T];
+
+export const CLT = {
+  champ: "champ",
+  chapters: "chapters",
+  groups: "groups",
+  tasks: "tasks",
+  newtasks: "newtasks",
+  usermeta: "usermeta",
+  views: "views",
+  snapshots: "snapshots",
+  snapshot: "snapshot",
+} as const;
+
+export type CollectonsTypes = (typeof CLT)[keyof typeof CLT];
+// type CollectonsTypes = keyof Collectons;
+
+// export type Collectons = {
+//   champ: { [champid: string]: ChampDB };
+//   chapters: { [courseid: string]: FlowDB };
+//   groups: { [userid: string]: GroupDB };
+//   tasks: { [chapter: string]: TaskDBWraper };
+//   newtasks: {
+//     [courseid: string]: { chapters: { [chapter: string]: TaskDBWraper } };
+//   };
+//   usermeta: { [userid: string]: UserMetaDB };
+//   views: { chaptersobject: CourseChapterObjDB };
+//   snapshots: { [userid: string]: { snapshot: UsersMetaReportDB } };
+// };
 
 export type DBFormats =
   | CoursesDBObj
@@ -52,8 +104,6 @@ export interface NodeDataDB extends Record<string, unknown> {
 }
 export type chapterid = string;
 
-export type NodeModes = "newtopic" | "addhoc" | "exam" | "animation";
-
 export interface EdgeDB {
   id: string;
   target: string;
@@ -77,8 +127,6 @@ export interface ChampDB {
   tasks: TaskDB[];
 }
 
-type Champstatus = "started" | "created";
-
 export interface ChampuserDB {
   name: string;
   pts: number;
@@ -87,8 +135,6 @@ export interface ChampuserDB {
   uid: string;
   persstatus: Persstatus;
 }
-
-type Persstatus = "champwip" | "champisover" | "joined" | "undefined";
 
 //UserMeta
 export interface UserMetaDB {
@@ -163,8 +209,6 @@ export interface CourseAttsDB {
   free: boolean;
   coursesAction: () => void;
 }
-
-type CourseType = "course" | "champ";
 
 //group
 export type GroupDB = {

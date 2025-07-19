@@ -4,7 +4,7 @@ export const revalidate = 1; //revalidate api every 1 second
 //https://stackoverflow.com/questions/76356803/data-not-updating-when-deployed-nextjs13-app-on-vercel-despite-using-cache-no
 
 import { updateDocSA } from "@/db/SA/firebaseSA";
-import { UserMetaDB } from "@/T/typesDB";
+import { CLT, UserMetaDB } from "@/T/typesDB";
 
 interface reqData {
   type: string;
@@ -16,7 +16,10 @@ export async function POST(request: Request) {
     const { type, data } = reqData;
     let res = "error";
     if (type == "paychapter" || type == "setusermetadata") {
-      res = await updateDocSA<UserMetaDB>("usermeta", data);
+      res = await updateDocSA<UserMetaDB>({
+        collectionName: CLT.usermeta,
+        dataencrypted: data,
+      });
     }
 
     return NextResponse.json({ res });

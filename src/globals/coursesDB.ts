@@ -1,4 +1,5 @@
 import navigator from "@/components/Navigator/layers/store/navigator";
+import { CT } from "@/T/typesBasic";
 import { CoursesDBObj } from "@/T/typesDB";
 
 export const courses: CoursesDBObj = {
@@ -7,7 +8,7 @@ export const courses: CoursesDBObj = {
     text: "Шаг за шаг с нуля познаем основы программирования на Python",
     firstchapter: "4680f00b-b586-413c-890a-9669b4b7b1c3",
     completed: true,
-    type: "course",
+    type: CT.course,
     order: 1,
     free: true,
     coursesAction: () =>
@@ -21,7 +22,7 @@ export const courses: CoursesDBObj = {
     text: "Постигаем продвинутые функции языка Python",
     firstchapter: "d06b8c0d-4837-484a-ad85-9257e0e6af01",
     completed: true,
-    type: "course",
+    type: CT.course,
     order: 2,
     free: true,
     coursesAction: () =>
@@ -34,7 +35,7 @@ export const courses: CoursesDBObj = {
     text: "Подготовка к решению задач ЕГЭ. Все типы задач. Разные способы решения - от Базового до Pro",
     firstchapter: "",
     completed: false,
-    type: "course",
+    type: CT.course,
     order: 3,
     free: false,
     coursesAction: () => navigator.actions.openCourseFlowPageFromMain("555"),
@@ -44,7 +45,7 @@ export const courses: CoursesDBObj = {
     text: "Хакатон  по программированию на скорость",
     firstchapter: "",
     completed: false,
-    type: "champ",
+    type: CT.champ,
     order: 4,
     free: false,
     coursesAction: () => navigator.actions.openChampPage(),

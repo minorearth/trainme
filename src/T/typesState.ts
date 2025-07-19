@@ -1,3 +1,4 @@
+import { Page, SuccessType, TasksetMode, TasksetStage } from "./typesBasic";
 import {
   ChapterProgressDB,
   CourseProgressDB,
@@ -5,7 +6,6 @@ import {
   EdgeDB,
   NodeDataDB,
   NodeDB,
-  NodeModes,
   TaskDB,
   TasksLogDB,
 } from "./typesDB";
@@ -72,23 +72,6 @@ export interface TasksetStatePersisted {
   currTaskId: number;
 }
 
-export type SuccessType = "success" | "fail" | "indefined";
-
-export const TS = {
-  recap: "recap" as const,
-  recapSuspended: "recap_suspended" as const,
-  WIP: "WIP",
-  accomplishedSuspended: "accomplished_suspended" as const,
-} as const;
-
-export type TasksetStage = (typeof TS)[keyof typeof TS];
-
-export type TasksetMode =
-  | "champ"
-  | "textbook"
-  | "default"
-  | Extract<NodeModes, "newtopic" | "addhoc" | "exam">;
-
 //user
 export interface UserStatePersisted {
   username: string;
@@ -114,13 +97,3 @@ export type CourseStatePersisted = Pick<CoursesDB, "courseid">;
 export interface NavigatorStatePersisted {
   page: Page;
 }
-
-export type Page =
-  | "testrun"
-  | "flow"
-  | "courses"
-  | "champ"
-  | "flowflow"
-  | "lessonStarted"
-  | "testrun"
-  | "congrat";

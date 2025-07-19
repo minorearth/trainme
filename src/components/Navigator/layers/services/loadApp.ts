@@ -27,10 +27,10 @@ import champ from "@/components/champ/layers/store/champ";
 import chapter from "@/components/taskset/layers/store/chapter";
 import { CSP } from "@/T/typesDB";
 import { checkVersion } from "@/db/localstorage";
-import { TS } from "@/T/typesState";
+import { PG, ST, TS, TSM } from "@/T/typesBasic";
 
 //
-const currentverson = "0.12";
+const currentverson = "0.14";
 export const loadPyTrek = async () => {
   const CSP = getPersistedState(currentverson);
   CSP.navigator && navigator.setNavigatorState(CSP.navigator);
@@ -43,7 +43,7 @@ export const loadPyTrek = async () => {
 
   const page = CSP.navigator.page;
 
-  if (page == "flow") {
+  if (page == PG.flow) {
     const coursePaid = await checkCoursePaid({
       courseid: CSP.course.courseid,
       uid: user.userid,
@@ -56,20 +56,20 @@ export const loadPyTrek = async () => {
     } else openAllCoursePage();
   }
 
-  if (page == "testrun" || page == "lessonStarted") {
+  if (page == PG.testrun || page == PG.lessonStarted) {
     const { tasksetmode, taskstage } = CSP.taskset;
     if (
-      taskstage == "accomplished_suspended" ||
-      (taskstage == "recap_suspended" && tasksetmode == "exam")
+      taskstage == TS.accomplishedSuspended ||
+      (taskstage == TS.recapSuspended && tasksetmode == TSM.exam)
     ) {
-      openCongratPage({ success: "fail" });
+      openCongratPage({ success: ST.fail });
     } else {
       await recoverTasks({ CSP });
     }
   }
 
   if (
-    (page == "congrat" || page == "testrun" || page == "lessonStarted") &&
+    (page == PG.congrat || page == PG.testrun || page == PG.lessonStarted) &&
     CSP.course.courseid != ""
   ) {
     getFlow({
@@ -93,7 +93,7 @@ const recoverTasks = async ({ CSP }: { CSP: CSP }) => {
   taskset.setTaskSetTasks({ tasks });
   task.setCurrTask(tasks[CSP.taskset.currTaskId]);
 
-  if (taskstage == "recap_suspended" && tasksetmode != "exam") {
+  if (taskstage == TS.recapSuspended && tasksetmode != TSM.exam) {
     da.info.recap();
     taskset.setTaskSetStateP({ ...taskset.state, taskstage: TS.recap });
   }

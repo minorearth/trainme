@@ -19,6 +19,7 @@ import { GoArrowRight } from "react-icons/go";
 import { RxLayers } from "react-icons/rx";
 import { BsUnlock } from "react-icons/bs";
 import { NodeDataState } from "@/T/typesState";
+import { NM } from "@/T/typesBasic";
 
 const myFont = localFont({
   src: "../../../app/Monaco.ttf",
@@ -237,7 +238,7 @@ const TurboNode = memo(({ data }: { data: NodeDataState }) => {
                     </span>
                   </div>
 
-                  {data.unlockpts && !data.paid && data.nodemode != "exam" && (
+                  {data.unlockpts && !data.paid && data.nodemode != NM.exam && (
                     <div className="cost">
                       <BiCoinStack />
                       <p>{data.unlockpts}</p>

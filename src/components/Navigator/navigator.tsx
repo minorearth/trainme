@@ -33,6 +33,7 @@ import TawkToChat from "@/components/common/tawkto/tawkto.js";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import course from "@/components/course/layers/store/course";
 import taskset from "@/components/taskset/layers/store/taskset";
+import { PG, ST } from "@/T/typesBasic";
 
 const Navigator = observer(() => {
   useApp();
@@ -51,8 +52,8 @@ const Navigator = observer(() => {
             height: "100vh",
           }}
         >
-          {(navigator.state.page == "courses" ||
-            navigator.state.page == "champ") && (
+          {(navigator.state.page == PG.courses ||
+            navigator.state.page == PG.champ) && (
             <>
               <FloatMenu />
               <DLSwitch
@@ -62,19 +63,19 @@ const Navigator = observer(() => {
           )}
 
           {stn.mode.DEV_MODE &&
-            (navigator.state.page == "testrun" ||
-              navigator.state.page == "flow") && <AdminPanel />}
-          {navigator.state.page == "courses" && <Courses />}
-          {navigator.state.page == "champ" && <Champ />}
-          {navigator.state.page == "flow" && !!course.flow && (
+            (navigator.state.page == PG.testrun ||
+              navigator.state.page == PG.flow) && <AdminPanel />}
+          {navigator.state.page == PG.courses && <Courses />}
+          {navigator.state.page == PG.champ && <Champ />}
+          {navigator.state.page == PG.flow && !!course.flow && (
             <ReactFlowProvider>
               <Course />
             </ReactFlowProvider>
           )}
-          {navigator.state.page == "lessonStarted" && <Start />}
-          {navigator.state.page == "testrun" && <Taskrun />}
-          {navigator.state.page == "congrat" &&
-            taskset.state.success != "indefined" && <CongratPage />}
+          {navigator.state.page == PG.lessonStarted && <Start />}
+          {navigator.state.page == PG.testrun && <Taskrun />}
+          {navigator.state.page == PG.congrat &&
+            taskset.state.success != ST.undefined && <CongratPage />}
         </Box>
       )}
     </Box>

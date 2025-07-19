@@ -13,6 +13,7 @@ import TextAnimated from "@/components/common/textAnimated/textAnimated";
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
 import taskset from "@/components/taskset/layers/store/taskset";
+import { ST } from "@/T/typesBasic";
 
 const CongratPage = observer(() => {
   const theme = useTheme();
@@ -28,7 +29,7 @@ const CongratPage = observer(() => {
         backgroundColor: theme.palette.background.default,
       }}
     >
-      {taskset.state.success == "success" && (
+      {taskset.state.success == ST.success && (
         <AnimationLottie
           style={{ height: "700px", width: "700px" }}
           name={"success"}

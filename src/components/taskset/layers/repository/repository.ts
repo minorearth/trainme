@@ -1,5 +1,5 @@
 import { getDocDataFromSubCollectionById } from "@/db/CA/firebaseCA";
-import { completedChapters, TaskDB, TaskDBWraper } from "@/T/typesDB";
+import { CLT, completedChapters, TaskDB, TaskDBWraper } from "@/T/typesDB";
 
 //ETL
 
@@ -11,10 +11,10 @@ export const getAllTasksFromChapter = async ({
   courseid: string;
 }) => {
   const tasks = await getDocDataFromSubCollectionById<TaskDBWraper>({
-    collectionName1: "newtasks",
-    id1: courseid,
-    collectionName2: "chapters",
-    id2: chapterid,
+    collectionName: CLT.newtasks,
+    id: courseid,
+    subCollectionName: CLT.chapters,
+    subId: chapterid,
   });
   return !tasks ? [] : tasks.tasks;
 };
@@ -27,10 +27,10 @@ export const getTextBookTasks = async ({
   courseid: string;
 }) => {
   const tasks = await getDocDataFromSubCollectionById<TaskDBWraper>({
-    collectionName1: "newtasks",
-    id1: courseid,
-    collectionName2: "chapters",
-    id2: "textbook",
+    collectionName: CLT.newtasks,
+    id: courseid,
+    subCollectionName: CLT.chapters,
+    subId: "textbook",
   });
   const unlockedTheory = tasks?.tasks.filter((task: TaskDB) =>
     completed.includes(task.chapterparentid)
@@ -43,10 +43,10 @@ export const getTextBookTasks = async ({
 
 export const getAllCourseTasks = async (courseid: string) => {
   const allTasks = await getDocDataFromSubCollectionById<TaskDBWraper>({
-    collectionName1: "newtasks",
-    id1: courseid,
-    collectionName2: "chapters",
-    id2: "alltasks",
+    collectionName: CLT.newtasks,
+    id: courseid,
+    subCollectionName: CLT.chapters,
+    subId: "alltasks",
   });
   return allTasks?.tasks;
 };

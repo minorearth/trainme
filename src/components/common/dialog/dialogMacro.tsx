@@ -1,7 +1,7 @@
 import alertdialog from "@/components/common/dialog/store";
 import splash from "@/components/common/splash/store";
 import local from "@/globals/local";
-import { TasksetMode } from "@/T/typesState";
+import { TasksetMode, TSM } from "@/T/typesBasic";
 
 export const da = {
   info: {
@@ -171,19 +171,22 @@ const getTaskSetInterruptedInfo = (
 ) => {
   let caption, text;
   if (
-    tasksetmode == "exam" ||
-    tasksetmode == "addhoc" ||
-    tasksetmode == "newtopic"
+    tasksetmode == TSM.exam ||
+    tasksetmode == TSM.addhoc ||
+    tasksetmode == TSM.newtopic
   ) {
     caption = "Завершить";
   }
 
-  if ((tasksetmode == "newtopic" || tasksetmode == "addhoc") && !completed) {
+  if (
+    (tasksetmode == TSM.newtopic || tasksetmode == TSM.addhoc) &&
+    !completed
+  ) {
     text =
       "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n2 монеты за каждую задачу вместо 10 монет";
   }
 
-  if (tasksetmode == "exam" && !completed) {
+  if (tasksetmode == TSM.exam && !completed) {
     text =
       "Если досрочно завершить прохождение, \nто при повторном запуске вы будете получать \n1 монету за каждую задачу вместо 2 монет";
   }
@@ -192,7 +195,7 @@ const getTaskSetInterruptedInfo = (
     text = "Завершить прохождение?";
   }
 
-  if (tasksetmode == "champ") {
+  if (tasksetmode == TSM.champ) {
     caption = "Завершить чемпионат";
     text = "Завершить участие в чемпионате?";
   }
@@ -209,18 +212,18 @@ export const getStarPageIntro = ({
   completed: boolean;
   overflow: boolean;
 }) => {
-  if (tasksetmode == "textbook") {
+  if (tasksetmode == TSM.textbook) {
     return "Приветствуем вас в учебнике 📘 ! В учебнике доступна теория только по открытым темам";
   }
 
-  if (tasksetmode == "champ") {
+  if (tasksetmode == TSM.champ) {
     return "Удачи в чемпионате!";
   }
 
-  if (tasksetmode == "exam")
+  if (tasksetmode == TSM.exam)
     return "В режиме челлендж нет повторения и все задачи должны быть решены с первого раза";
 
-  if (tasksetmode == "addhoc" || tasksetmode == "newtopic") {
+  if (tasksetmode == TSM.addhoc || tasksetmode == TSM.newtopic) {
     if (!completed) {
       return "Постарайтесь решить задачу с первого раза, за это начисляются монеты, которые используются для открытия новых уроков";
     }

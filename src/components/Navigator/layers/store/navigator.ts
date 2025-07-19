@@ -15,6 +15,7 @@ import {
 } from "@/components/Navigator/layers/services/services";
 import splash from "@/components/common/splash/store";
 import { NavigatorStatePersisted } from "@/T/typesState";
+import { PG } from "@/T/typesBasic";
 
 class navigator {
   actions = {
@@ -30,7 +31,7 @@ class navigator {
     openChampPage,
     interruptTaskSet,
   };
-  state: NavigatorStatePersisted = { page: "courses" };
+  state: NavigatorStatePersisted = { page: PG.courses };
   dataloaded = false;
   pyodideloaded = false;
   apploaded = false;

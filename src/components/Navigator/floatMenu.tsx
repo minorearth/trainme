@@ -8,6 +8,7 @@ import stn from "@/globals/settings";
 
 //stores
 import navigator from "./layers/store/navigator";
+import { PG } from "@/T/typesBasic";
 
 const RIGHT = 16;
 const TOP = 16;
@@ -44,7 +45,7 @@ const FloatMenu = () => {
         style={{ top: TOP, right: RIGHT }}
       />
 
-      {navigator.state.page == "champ" && (
+      {navigator.state.page == PG.champ && (
         <FabAnimated
           tooltip={"На главную"}
           icon="home"

@@ -3,14 +3,24 @@ import { DocumentData, WithFieldValue } from "firebase/firestore";
 import { decrypt2 } from "@/globals/utils/encryption";
 
 import { db } from "./firebaseappAdmin";
-import { DBFormats } from "@/T/typesDB";
+import {
+  CLT,
+  CollectionRead,
+  CollectionWrite,
+  CollectonsTypes,
+  DBFormats,
+} from "@/T/typesDB";
 
-export const updateDocSA = async <T extends DBFormats>(
-  collection: string,
-  dataencrypted: string
-) => {
-  const { data, id }: { data: T; id: string } = decrypt2(dataencrypted);
-  const userMetaRef = db.collection(collection).doc(id);
+export const updateDocSA = async <T extends DBFormats>({
+  collectionName,
+  dataencrypted,
+}: {
+  collectionName: CollectonsTypes;
+  dataencrypted: string;
+}) => {
+  const { data, id } = decrypt2(dataencrypted);
+  const res: CollectionWrite<T> = { data, collectionName, id };
+  const userMetaRef = db.collection(res.collectionName).doc(res.id);
   try {
     await userMetaRef.update(data as WithFieldValue<DocumentData>);
     return "ok";
@@ -19,12 +29,11 @@ export const updateDocSA = async <T extends DBFormats>(
   }
 };
 
-export const getDocSA = async <T extends DBFormats>(
-  collection: string,
-  data: { id: string }
-) => {
-  const { id } = data;
-  const userMetaRef = db.collection(collection).doc(id);
+export const getDocSA = async <T extends DBFormats>({
+  collectionName,
+  id,
+}: CollectionRead) => {
+  const userMetaRef = db.collection(collectionName).doc(id);
   const snapshot = await userMetaRef.get();
   return snapshot.data() as T;
 };
@@ -34,7 +43,7 @@ export const checkCoursePaidSA = async (data: {
   id: string;
 }) => {
   const { courseid, id } = data;
-  const userMetaRef = db.collection("usermeta").doc(id);
+  const userMetaRef = db.collection(CLT.usermeta).doc(id);
   const snapshot = await userMetaRef.get();
   const profile = snapshot.data();
   return profile?.paidcourses.includes(courseid);

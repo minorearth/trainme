@@ -21,6 +21,7 @@ import { TreeItemIcon } from "@mui/x-tree-view/TreeItemIcon";
 import { TreeItemProvider } from "@mui/x-tree-view/TreeItemProvider";
 import stat from "@/components/manager/groupsNreports/store/stat";
 import { UserReport } from "@/T/Managertypes";
+import { TT } from "@/T/typesBasic";
 
 const CustomStatItem = React.forwardRef(function CustomStatItem(
   props: UseTreeItemParameters,
@@ -90,7 +91,7 @@ function CustomLabel({
     >
       {children}
       <Box sx={{ display: "flex" }}>
-        {type == "task" && (
+        {type == TT.task && (
           <IconButton
             size="small"
             onClick={showCode}

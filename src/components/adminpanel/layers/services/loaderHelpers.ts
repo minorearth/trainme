@@ -27,11 +27,9 @@ export const supplyTasksWithChapterLevel = ({
 }) => {
   const chaptersLevels: { [chapterid: string]: number } =
     getChaptersLevels(chapterFlowNodes);
-  const tasksWithLevels = tasks
-    // .filter((task) => task.tasktype == "task")
-    .map((task) => {
-      return { ...task, level: chaptersLevels[task.chapterparentid] };
-    });
+  const tasksWithLevels = tasks.map((task) => {
+    return { ...task, level: chaptersLevels[task.chapterparentid] };
+  });
 
   return tasksWithLevels as TaskDB[];
 };

@@ -28,6 +28,7 @@ import {
 
 import { TASK_DEFAULTS } from "@/T/typesdefaults";
 import { Task } from "@/T/typesState";
+import { TT } from "@/T/typesBasic";
 
 interface HandleEditorDidMount {
   editor: editor.IStandaloneCodeEditor | null;
@@ -131,7 +132,7 @@ class task {
 
   setEditorCode = (code: string) => {
     this.editorRef.current?.setValue(code);
-    this.currTask.tasktype == "guide"
+    this.currTask.tasktype == TT.guide
       ? this.editorRef.current?.updateOptions({ lineNumbers: "off" })
       : this.editorRef.current?.updateOptions({ lineNumbers: "on" });
   };

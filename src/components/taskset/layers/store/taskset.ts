@@ -11,12 +11,8 @@ import {
 
 import chapter from "@/components/taskset/layers/store/chapter";
 import { TASKSET_DEFAULTS } from "@/T/typesdefaults";
-import {
-  Task,
-  TasksetMode,
-  TasksetStage,
-  TasksetStatePersisted,
-} from "@/T/typesState";
+import { Task, TasksetStatePersisted } from "@/T/typesState";
+import { TasksetMode, TasksetStage } from "@/T/typesBasic";
 
 const DEFAULT_STATE = {
   tasksetmode: "" as TasksetMode,

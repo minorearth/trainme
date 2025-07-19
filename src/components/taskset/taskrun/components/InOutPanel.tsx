@@ -8,6 +8,7 @@ import CachedIcon from "@mui/icons-material/Cached";
 import Box from "@mui/material/Box";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import { observer } from "mobx-react-lite";
+import { TT } from "@/T/typesBasic";
 
 const InOutPanel = observer(() => {
   const handleChange = (
@@ -20,7 +21,7 @@ const InOutPanel = observer(() => {
     <Grid
       container
       spacing={2}
-      columns={{ xs: 1, sm: task.currTask.tasktype == "guide" ? 2 : 3 }}
+      columns={{ xs: 1, sm: task.currTask.tasktype == TT.guide ? 2 : 3 }}
       sx={{ marginTop: "10px", flexGrow: 1 }}
     >
       <Grid size={{ xs: 1, md: 1 }}>
@@ -80,7 +81,7 @@ const InOutPanel = observer(() => {
           </Box>
         </Panel>
       </Grid>
-      {task.currTask.tasktype != "guide" && (
+      {task.currTask.tasktype != TT.guide && (
         <Grid size={{ xs: 1, md: 1 }}>
           <Panel label={"Ожидаемый результат"}>
             <Typography

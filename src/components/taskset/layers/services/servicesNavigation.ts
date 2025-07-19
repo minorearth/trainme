@@ -20,7 +20,7 @@ import {
   setRecapTasks,
   ok,
 } from "@/components/taskset/layers/services/servicesNavigationHelpers";
-import { TS } from "@/T/typesState";
+import { ST, TS, TSM } from "@/T/typesBasic";
 
 export const nextTaskOrCompleteTestRun = async ({
   error,
@@ -36,7 +36,7 @@ export const nextTaskOrCompleteTestRun = async ({
   const fixed = setTaskNumErrorFixed(error);
   const { taskstage, tasksetmode } = taskset.state;
 
-  if (tasksetmode == "champ" && !error)
+  if (tasksetmode == TSM.champ && !error)
     //In order to save champ points on every task execution
     await updateChampPoints({
       pts,
@@ -58,22 +58,22 @@ export const nextTaskOrCompleteTestRun = async ({
       if (taskstage == TS.recap) {
         ok(() =>
           navigator.actions.openCongratPage({
-            success: recapTaskNum == fixed ? "success" : "fail",
+            success: recapTaskNum == fixed ? ST.success : ST.fail,
           })
         );
       }
       if (recapTaskNum == 0 && taskstage == TS.WIP) {
         ok(() =>
           navigator.actions.openCongratPage({
-            success: "success",
+            success: ST.success,
           })
         );
       }
       if (recapTaskNum != 0 && taskstage == TS.WIP) {
-        taskset.state.tasksetmode == "exam"
+        taskset.state.tasksetmode == TSM.exam
           ? ok(() =>
               navigator.actions.openCongratPage({
-                success: "fail",
+                success: ST.fail,
               })
             )
           : ok(() =>
@@ -98,14 +98,14 @@ export const nextTaskOrCompleteTestRun = async ({
       }
       if (taskstage == TS.WIP && currTaskId == tasknum - 1) {
         taskset.addErrorTaskToRecap({
-          data: { taskstage: "recap_suspended" },
+          data: { taskstage: TS.recapSuspended },
           cspcurrtask: 0,
         });
       }
       if (taskstage == TS.recap && currTaskId == tasknum - 1) {
         taskset.setTaskSetStateP({
           ...taskset.state,
-          taskstage: "accomplished_suspended",
+          taskstage: TS.accomplishedSuspended,
         });
       }
       return;
@@ -122,16 +122,16 @@ export const errorCountDownPressed = async () => {
   // task.actions.setEditorDisabled(false);
   const { tasksetmode, taskstage } = taskset.state;
 
-  if (taskstage == "accomplished_suspended") {
+  if (taskstage == TS.accomplishedSuspended) {
     navigator.actions.openCongratPage({
-      success: "fail",
+      success: ST.fail,
     });
     return;
   }
-  if (taskstage == "recap_suspended") {
-    tasksetmode == "exam"
+  if (taskstage == TS.recapSuspended) {
+    tasksetmode == TSM.exam
       ? navigator.actions.openCongratPage({
-          success: "fail",
+          success: ST.fail,
         })
       : setRecapTasks({
           recapTasksIds: taskset.state.recapTasksIds,

@@ -7,7 +7,7 @@ import { encrypt2 } from "@/globals/utils/encryption";
 
 //utils
 import { extractChapterIdsOnly_admin } from "@/components/course/layers/services/utils";
-import { EdgeDB, FlowDB, NodeDB } from "@/T/typesDB";
+import { CLT, EdgeDB, FlowDB, NodeDB } from "@/T/typesDB";
 
 interface response {
   value: boolean;
@@ -30,7 +30,7 @@ export const checkCoursePaid = async ({
 
 export const fetchFlow = async ({ courseid }: { courseid: string }) => {
   const flowDB = await getDocDataFromCollectionById<FlowDB>({
-    collectionName: "chapters",
+    collectionName: CLT.chapters,
     id: courseid,
   });
   const flow = {

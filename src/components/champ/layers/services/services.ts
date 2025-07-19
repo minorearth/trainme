@@ -31,7 +31,7 @@ import {
   TASKSET_DEFAULTS,
 } from "@/T/typesdefaults";
 import { ChampDB } from "@/T/typesDB";
-import { TasksetMode } from "@/T/typesState";
+import { CS, PS, TSM } from "@/T/typesBasic";
 
 export const createChamp = async () => {
   const tasks = await getRandomTasksForChamp({
@@ -56,7 +56,7 @@ export const joinChamp = async () => {
       userid: user.userid,
       champid: champ.champid,
     });
-    if (persstatus == "joined" || persstatus == "undefined") {
+    if (persstatus == PS.joined || persstatus == PS.undefined) {
       champ.setCapturingChampstart(true);
       if (champ.champid != champ.subscribedChampid) {
         captureUsersJoined({ champid: champ.champid });
@@ -69,14 +69,14 @@ export const joinChamp = async () => {
           name: txtField.state.nickname.value,
           change: 0,
           pts: 0,
-          persstatus: "joined",
+          persstatus: PS.joined,
           avatarid: user.avatarid,
         },
         champid: champ.champid,
       });
     }
-    if (persstatus == "champwip") da.info.champblocked();
-    if (persstatus == "champisover") da.info.champover();
+    if (persstatus == PS.champwip) da.info.champblocked();
+    if (persstatus == PS.champisover) da.info.champover();
   } catch (e: unknown) {
     da.info.nochamp(e);
   }
@@ -92,8 +92,8 @@ export const startChamp = async (champid: string) => {
 
 const captureAndlaunchChamp = (champdoc: ChampDB) => {
   if (
-    champdoc.status == "started" &&
-    champdoc.users[user.userid]?.persstatus == "joined"
+    champdoc.status == CS.started &&
+    champdoc.users[user.userid]?.persstatus == PS.joined
   ) {
     splash.showCountDown(false, () => launchChamp());
   }
@@ -102,7 +102,7 @@ const captureAndlaunchChamp = (champdoc: ChampDB) => {
 const launchChamp = () => {
   navigator.actions.openLessonStartPage({
     champData: { champid: champ.champid },
-    tasksetData: { ...TASKSET_DEFAULTS, tasksetmode: "champ" },
+    tasksetData: { ...TASKSET_DEFAULTS, tasksetmode: TSM.champ },
     courseData: COURSE_DEFAULTS,
     chapterData: CHAPTER_DEFAULTS,
   });
@@ -113,7 +113,7 @@ const launchChamp = () => {
       name: txtField.state.nickname.value,
       change: 0,
       pts: 0,
-      persstatus: "champwip",
+      persstatus: PS.champwip,
       avatarid: user.avatarid,
     },
     champid: champ.champid,
@@ -130,7 +130,7 @@ export const captureChampStart = async ({ champid }: { champid: string }) => {
 
 const setUsersAndsmth = (champData: ChampDB) => {
   const usersArr = ObjtoArr(champData?.users);
-  const champstarted = champData?.status == "started" ? true : false;
+  const champstarted = champData?.status == CS.started ? true : false;
   const usersSorted = sortItems({
     newusers: usersArr,
     oldusers: champ.users,

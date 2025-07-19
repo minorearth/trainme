@@ -10,6 +10,7 @@ import stn from "@/globals/settings";
 import countdownbutton from "@/components/common/CountdownButton/store";
 import taskset from "@/components/taskset/layers/store/taskset";
 import task from "@/components/taskset/taskrun/layers/store/task";
+import { TSM, TT } from "@/T/typesBasic";
 
 const CodeRunPanel = observer(() => {
   return (
@@ -33,7 +34,7 @@ const CodeRunPanel = observer(() => {
         </Button>
       )}
 
-      {!countdownbutton.state.visible && task.currTask.tasktype == "task" && (
+      {!countdownbutton.state.visible && task.currTask.tasktype == TT.task && (
         <Button
           onClick={(e) => {
             task.actions.checkTask();
@@ -48,7 +49,7 @@ const CodeRunPanel = observer(() => {
           Проверить!
         </Button>
       )}
-      {(taskset.state.tasksetmode == "textbook" || stn.mode.DEV_MODE) && (
+      {(taskset.state.tasksetmode == TSM.textbook || stn.mode.DEV_MODE) && (
         <Button
           onClick={() => {
             taskset.prevTaskNoPts_admin();
@@ -59,7 +60,7 @@ const CodeRunPanel = observer(() => {
           Назад
         </Button>
       )}
-      {task.currTask.tasktype == "guide" && (
+      {task.currTask.tasktype == TT.guide && (
         <Button
           onClick={() => {
             taskset.nextTask();

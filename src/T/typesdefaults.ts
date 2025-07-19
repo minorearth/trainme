@@ -1,5 +1,5 @@
-import { completedChapters, NodeModes } from "./typesDB";
-import { Page, SuccessType, TasksetMode, TasksetStage, TS } from "./typesState";
+import { Page, PG, SuccessType, TasksetMode, TS, TSM, TT } from "./typesBasic";
+import { completedChapters } from "./typesDB";
 
 export const TASK_DEFAULTS = {
   id: -1,
@@ -12,7 +12,7 @@ export const TASK_DEFAULTS = {
       filesdata: [""],
     },
   ],
-  tasktype: "",
+  tasktype: TT.task,
   level: -1,
   restrictions: {
     musthave: [""],
@@ -50,11 +50,11 @@ export const COURSE_DEFAULTS = {
 };
 
 export const NAVIGATOR_DEFAULTS = {
-  page: "courses" as Page,
+  page: PG.courses,
 };
 
 export const TASKSET_DEFAULTS = {
-  tasksetmode: "default" as TasksetMode,
+  tasksetmode: TSM.default,
   recapTasksIds: [],
   taskstage: TS.WIP,
   pts: 0,
@@ -91,9 +91,9 @@ export const CSP_DEFAULTS = {
 };
 
 // export const nodeModePages: { [K in TasksetMode]: { page: string } } = {
-//   champ: { page: "lessonStarted" },
-//   addhoc: { page: "lessonStarted" },
-//   exam: { page: "lessonStarted" },
-//   newtopic: { page: "lessonStarted" },
-//   textbook: { page: "lessonStarted" },
+//   champ: { page: PG.lessonStarted },
+//   addhoc: { page: PG.lessonStarted },
+//   exam: { page: PG.lessonStarted },
+//   newtopic: { page: PG.lessonStarted },
+//   textbook: { page: PG.lessonStarted },
 // };
