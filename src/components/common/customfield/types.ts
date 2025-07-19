@@ -6,7 +6,7 @@ export const CFT = {
   tasknum: "tasknum",
   nickname: "nickname",
   email: "email",
-  password: "current-password",
+  password: "password",
   name: "name",
 };
 

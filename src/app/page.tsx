@@ -5,6 +5,6 @@ import S from "@/globals/settings";
 export default function Home() {
   const router = useRouter();
   // splash.showAppLoader(true);
-  router.push(`/${S.P.LOGIN}`);
+  router.push(`/login`);
   // return <Splash />;
 }
