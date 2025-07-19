@@ -27,6 +27,7 @@ import champ from "@/components/champ/layers/store/champ";
 import chapter from "@/components/taskset/layers/store/chapter";
 import { CSP } from "@/T/typesDB";
 import { checkVersion } from "@/db/localstorage";
+import { TS } from "@/T/typesState";
 
 //
 const currentverson = "0.12";
@@ -94,6 +95,6 @@ const recoverTasks = async ({ CSP }: { CSP: CSP }) => {
 
   if (taskstage == "recap_suspended" && tasksetmode != "exam") {
     da.info.recap();
-    taskset.setTaskSetStateP({ ...taskset.state, taskstage: "recap" });
+    taskset.setTaskSetStateP({ ...taskset.state, taskstage: TS.recap });
   }
 };

@@ -43,15 +43,15 @@ export const setRecapTasks = ({
   task.setCurrTask(recapTasks[0]);
   taskset.setTaskSetStateP({
     ...taskset.state,
-    taskstage: "recap",
+    taskstage: TS.recap,
     currTaskId: 0,
   });
 };
 
 export const setTaskNumErrorFixed = (error: boolean) => {
   const fixed = taskset.state.fixed;
-  if (taskset.state.taskstage == "recap" && !error) return fixed + 1;
-  if (taskset.state.taskstage == "recap" && error) return fixed;
+  if (taskset.state.taskstage == TS.recap && !error) return fixed + 1;
+  if (taskset.state.taskstage == TS.recap && error) return fixed;
   return fixed;
 };
 
@@ -80,15 +80,15 @@ export const calcEarned = (error: boolean) => {
       income = 1;
     }
 
-    if (taskstage == "recap" && !completed && tasksetmode != "exam") {
+    if (taskstage == TS.recap && !completed && tasksetmode != "exam") {
       income = 2;
     }
 
-    if (taskstage == "recap" && !completed && tasksetmode == "exam") {
+    if (taskstage == TS.recap && !completed && tasksetmode == "exam") {
       income = 1;
     }
 
-    if (taskstage == "recap" && completed) {
+    if (taskstage == TS.recap && completed) {
       income = 1;
     }
     if (

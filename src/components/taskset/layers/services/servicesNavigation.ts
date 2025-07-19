@@ -55,7 +55,7 @@ export const nextTaskOrCompleteTestRun = async ({
       taskset.nextTask();
       return;
     case currTaskId == tasknum - 1 && !error:
-      if (taskstage == "recap") {
+      if (taskstage == TS.recap) {
         ok(() =>
           navigator.actions.openCongratPage({
             success: recapTaskNum == fixed ? "success" : "fail",
@@ -93,7 +93,7 @@ export const nextTaskOrCompleteTestRun = async ({
         });
       }
 
-      if (taskstage == "recap" && currTaskId != tasknum - 1) {
+      if (taskstage == TS.recap && currTaskId != tasknum - 1) {
         taskset.setCurrTaskCSPOnly(currTaskId + 1);
       }
       if (taskstage == TS.WIP && currTaskId == tasknum - 1) {
@@ -102,7 +102,7 @@ export const nextTaskOrCompleteTestRun = async ({
           cspcurrtask: 0,
         });
       }
-      if (taskstage == "recap" && currTaskId == tasknum - 1) {
+      if (taskstage == TS.recap && currTaskId == tasknum - 1) {
         taskset.setTaskSetStateP({
           ...taskset.state,
           taskstage: "accomplished_suspended",

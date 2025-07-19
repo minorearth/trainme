@@ -34,6 +34,7 @@ import {
   Task,
   TasksetStage,
   TasksetStatePersisted,
+  TS,
 } from "@/T/typesState";
 import { CourseProgressDB, TaskDB, UserMetaDB } from "@/T/typesDB";
 
@@ -93,7 +94,7 @@ export const getTasks = async ({
   }
   if (tasksetmode == "addhoc" || tasksetmode == "newtopic") {
     const tasks = await getAllTasksFromChapter({ chapterid, courseid });
-    if (taskstage == "recap" || taskstage == "recap_suspended") {
+    if (taskstage == TS.recap || taskstage == "recap_suspended") {
       const recapTasks = await supplyFilesAndTransform(
         getTasksRecap({ recapTasksIds, tasks })
       );
@@ -217,7 +218,7 @@ const getChampTasks = async ({
   const rawTasks = await getChampTasksDB({
     champid,
   });
-  if (taskstage == "recap" || taskstage == "recap_suspended") {
+  if (taskstage == TS.recap || taskstage == "recap_suspended") {
     const rawRecapTasks = getTasksRecap<TaskDB>({
       recapTasksIds,
       tasks: rawTasks,

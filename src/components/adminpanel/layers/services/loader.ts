@@ -16,13 +16,12 @@ import {
 import { CoursesDataToUpload } from "@/T/typesUpload";
 import { Edge } from "@xyflow/react";
 import splash from "@/components/common/splash/store";
-import { coursesToLoad } from "../../../../../admin/courses";
 import { CourseChapterObjDB, TaskDB } from "@/T/typesDB";
 
-export const uploadCourses = async () => {
+export const uploadCourses = async (coursesToLoad: CoursesDataToUpload) => {
   splash.showProgress(true);
   //confirm as
-  await load(coursesToLoad as CoursesDataToUpload);
+  await load(coursesToLoad);
   splash.closeProgress();
 };
 
