@@ -1,7 +1,7 @@
 import { getDocDataFromSubCollectionById } from "@/db/CA/firebaseCA";
 import { CLT, completedChapters, TaskDB, TaskDBWraper } from "@/T/typesDB";
 
-//ETL
+import S from "@/globals/settings";
 
 export const getAllTasksFromChapter = async ({
   chapterid,
@@ -30,7 +30,7 @@ export const getTextBookTasks = async ({
     collectionName: CLT.newtasks,
     id: courseid,
     subCollectionName: CLT.chapters,
-    subId: "textbook",
+    subId: S.db.TEXT_BOOK_TASKS_ID,
   });
   const unlockedTheory = tasks?.tasks.filter((task: TaskDB) =>
     completed.includes(task.chapterparentid)
@@ -38,7 +38,7 @@ export const getTextBookTasks = async ({
   if (!tasks) {
     return [];
   }
-  return await unlockedTheory;
+  return unlockedTheory;
 };
 
 export const getAllCourseTasks = async (courseid: string) => {
@@ -46,7 +46,7 @@ export const getAllCourseTasks = async (courseid: string) => {
     collectionName: CLT.newtasks,
     id: courseid,
     subCollectionName: CLT.chapters,
-    subId: "alltasks",
+    subId: S.db.ALLTASKS_DOC_ID,
   });
   return allTasks?.tasks;
 };

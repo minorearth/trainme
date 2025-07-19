@@ -19,6 +19,8 @@ import {
   UsersMetaReportDBWrapper,
 } from "@/T/typesDB";
 
+import S from "@/globals/settings";
+
 export const saveSnapshot = ({
   userid,
   groupid,
@@ -69,7 +71,7 @@ export const getAllTasksDataObj = async (courseid: string) => {
     collectionName: CLT.newtasks,
     id: courseid,
     subCollectionName: CLT.chapters,
-    subId: "alltasks",
+    subId: S.db.ALLTASKS_DOC_ID,
   });
   return allTasksArrToObj(allTasks?.tasks);
 };

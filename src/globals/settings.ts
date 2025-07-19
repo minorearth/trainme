@@ -16,7 +16,11 @@ const S = {
 
   PROCEED_SUSPENCE: 20 * 1000,
   PROCEED_SPEED: 100,
+  db: {
+    ALLTASKS_DOC_ID: "alltasks",
+    TEXT_BOOK_TASKS_ID: "textbook",
+    CHAPTER_OBJ_VIEW_ID: "chaptersobject",
+  },
 };
-db: {
-}
+
 export default S;

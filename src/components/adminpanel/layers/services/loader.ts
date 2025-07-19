@@ -18,6 +18,8 @@ import { Edge } from "@xyflow/react";
 import splash from "@/components/common/splash/store";
 import { CourseChapterObjDB, TaskDB } from "@/T/typesDB";
 
+import S from "@/globals/settings";
+
 export const uploadCourses = async (coursesToLoad: CoursesDataToUpload) => {
   splash.showProgress(true);
   //confirm as
@@ -68,7 +70,7 @@ const uploadCourse = async ({
         tasks: chapterTasks,
         chapterFlowNodes,
       });
-      if (chapterid == "textbook")
+      if (chapterid == S.db.TEXT_BOOK_TASKS_ID)
         chapterTasksWithLevels.length != 0 &&
           (await uploadChapterTasks({
             courseid,

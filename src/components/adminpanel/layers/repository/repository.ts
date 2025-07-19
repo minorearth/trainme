@@ -10,7 +10,8 @@ import {
   TaskDBWraper,
   TasksLogDB,
 } from "@/T/typesDB";
-import { DocumentData, WithFieldValue } from "firebase/firestore";
+
+import S from "@/globals/settings";
 
 export const uploadCourseChapters = async ({
   chapterFlowNodes,
@@ -47,7 +48,7 @@ export const uploadAllCourseTasksView = async ({
     collectionName: CLT.newtasks,
     id: courseid,
     subCollectionName: CLT.chapters,
-    subId: "alltasks",
+    subId: S.db.ALLTASKS_DOC_ID,
     data: {
       tasks: allTasksNoGuides,
     },
@@ -80,6 +81,6 @@ export const uploadCourseChaptersObject = async (
   await setDocInCollection<CourseChapterObjDB>({
     collectionName: CLT.views,
     data: chapterCourseObjectModel,
-    id: "chaptersobject",
+    id: S.db.CHAPTER_OBJ_VIEW_ID,
   });
 };

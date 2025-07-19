@@ -2,10 +2,11 @@
 import { extractChapterIdsOnly_admin } from "@/components/course/layers/services/utils";
 import { NodeDB, TaskDB } from "@/T/typesDB";
 import { RawTaskToUploadWithoutLevel } from "@/T/typesUpload";
+import S from "@/globals/settings";
 
 export const getChaptersIdsAndTextBookId = (chapterFlowNodes: NodeDB[]) => {
   const chapterIds = extractChapterIdsOnly_admin(chapterFlowNodes);
-  return [...chapterIds, "textbook"];
+  return [...chapterIds, S.db.TEXT_BOOK_TASKS_ID];
 };
 
 export const getChapterTasks = ({

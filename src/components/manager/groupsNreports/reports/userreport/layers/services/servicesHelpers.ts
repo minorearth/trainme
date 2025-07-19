@@ -43,7 +43,6 @@ export const getReportTree = ({
         id: `${courseId}2`,
         label: L.ru.RT.STATS,
         order: -1,
-        //TODO:
         type: URT.nottask as UserReportType,
         code: "",
         children: Object.keys(userstat[courseId].stat)
