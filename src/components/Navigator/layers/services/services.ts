@@ -53,6 +53,7 @@ import {
 } from "@/T/typesState";
 import { CourseProgressDB } from "@/T/typesDB";
 import { Page, PG, ST, SuccessType, TSM } from "@/T/typesBasic";
+import { throwInnerError } from "@/globals/errorMessages";
 
 export const openAllCoursePage = () => {
   setAllCoursePageState();
@@ -98,36 +99,39 @@ export const openLessonStartPage = async ({
   champData: ChampStatePersisted;
   courseData: CourseStatePersisted;
 }) => {
-  const { tasksetmode, taskstage } = tasksetData;
+  try {
+    const { tasksetmode, taskstage } = tasksetData;
 
-  splash.showProgress();
+    splash.showProgress();
 
-  const { tasks, tasksuuids } = await getTasks({
-    champData,
-    courseData,
-    chapterData,
-    tasksetData,
-    userProgress: user.progress,
-  });
+    const { tasks, tasksuuids } = await getTasks({
+      champData,
+      courseData,
+      chapterData,
+      tasksetData,
+      userProgress: user.progress,
+    });
 
-  taskset.setTaskSetTasks({ tasks });
-  task.setCurrTask(tasks[0]);
+    taskset.setTaskSetTasks({ tasks });
+    task.setCurrTask(tasks[0]);
 
-  taskset.setTaskSetStateP({
-    ...TASKSET_DEFAULTS,
-    tasksetmode,
-    taskstage,
-    //not [] for "exam" only
-    randomsaved: tasksuuids,
-    currTaskId: 0,
-  });
+    taskset.setTaskSetStateP({
+      ...TASKSET_DEFAULTS,
+      tasksetmode,
+      taskstage,
+      //not [] for "exam" only
+      randomsaved: tasksuuids,
+      currTaskId: 0,
+    });
 
-  chapter.setChapterStateP(chapterData);
+    chapter.setChapterStateP(chapterData);
 
-  if (tasksetmode == TSM.textbook && !tasks.length) {
-    da.info.textbookblocked();
-  } else navigator.setStateP({ page: PG.lessonStarted as Page });
-
+    if (tasksetmode == TSM.textbook && !tasks.length) {
+      da.info.textbookblocked();
+    } else navigator.setStateP({ page: PG.lessonStarted as Page });
+  } catch (error) {
+    throw throwInnerError(error);
+  }
   splash.closeProgress();
 };
 

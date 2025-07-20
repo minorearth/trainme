@@ -36,6 +36,7 @@ import {
 } from "@/T/typesState";
 import { CourseProgressDB, TaskDB, UserMetaDB } from "@/T/typesDB";
 import { ST, TasksetStage, TS, TSM } from "@/T/typesBasic";
+import { throwInnerError } from "@/globals/errorMessages";
 
 //types
 
@@ -59,73 +60,79 @@ export const getTasks = async ({
   chapterData,
   tasksetData,
 }: getTasksParams): Promise<GetTasksResult> => {
-  const { courseid = "" } = courseData;
-  const {
-    tasksetmode,
-    taskstage,
-    recapTasksIds = [],
-    randomsaved = [],
-  } = tasksetData;
-  const { level, chapterid } = chapterData;
-  const { champid } = champData;
-  if (tasksetmode == TSM.champ)
-    return await getChampTasks({
-      champid,
+  try {
+    const { courseid = "" } = courseData;
+    const {
+      tasksetmode,
       taskstage,
-      recapTasksIds,
-    });
+      recapTasksIds = [],
+      randomsaved = [],
+    } = tasksetData;
+    const { level, chapterid } = chapterData;
+    const { champid } = champData;
+    if (tasksetmode == TSM.champ)
+      return await getChampTasks({
+        champid,
+        taskstage,
+        recapTasksIds,
+      });
 
-  if (tasksetmode == TSM.default) {
-    const tasks = await getTextBookTasks({
-      completed: userProgress.completed,
-      courseid,
-    });
-    return { tasks: await supplyFilesAndTransform(tasks), tasksuuids: [] };
-  }
-  if (tasksetmode == TSM.exam) {
-    const { tasksuuids, tasksFetched } = await getExamTasks({
-      courseid,
-      levelStart: level - 5,
-      levelEnd: level,
-      randomsaved,
-    });
-    return { tasks: tasksFetched, tasksuuids };
-  }
-  if (tasksetmode == TSM.addhoc || tasksetmode == TSM.newtopic) {
-    const tasks = await getAllTasksFromChapter({ chapterid, courseid });
-    if (taskstage == TS.recap || taskstage == TS.recapSuspended) {
-      const recapTasks = await supplyFilesAndTransform(
-        getTasksRecap({ recapTasksIds, tasks })
-      );
-      return { tasks: recapTasks, tasksuuids: [] };
-    } else
+    if (tasksetmode == TSM.default) {
+      const tasks = await getTextBookTasks({
+        completed: userProgress.completed,
+        courseid,
+      });
       return { tasks: await supplyFilesAndTransform(tasks), tasksuuids: [] };
-  } else return { tasks: [], tasksuuids: [] };
+    }
+    if (tasksetmode == TSM.exam) {
+      const { tasksuuids, tasksFetched } = await getExamTasks({
+        courseid,
+        levelStart: level - 5,
+        levelEnd: level,
+        randomsaved,
+      });
+      return { tasks: tasksFetched, tasksuuids };
+    }
+    if (tasksetmode == TSM.addhoc || tasksetmode == TSM.newtopic) {
+      const tasks = await getAllTasksFromChapter({ chapterid, courseid });
+      if (taskstage == TS.recap || taskstage == TS.recapSuspended) {
+        const recapTasks = await supplyFilesAndTransform(
+          getTasksRecap({ recapTasksIds, tasks })
+        );
+        return { tasks: recapTasks, tasksuuids: [] };
+      } else
+        return { tasks: await supplyFilesAndTransform(tasks), tasksuuids: [] };
+    } else return { tasks: [], tasksuuids: [] };
+  } catch (error) {
+    throw throwInnerError(error);
+  }
 };
-
-interface getRandomTasksForChampParams {
-  levelStart: number;
-  levelEnd: number;
-  taskCount: number;
-  courseid: string;
-}
 
 export const getRandomTasksForChamp = async ({
   levelStart,
   levelEnd,
   taskCount,
   courseid,
-}: getRandomTasksForChampParams) => {
-  const allTasks = await getAllCourseTasks(courseid);
+}: {
+  levelStart: number;
+  levelEnd: number;
+  taskCount: number;
+  courseid: string;
+}) => {
+  try {
+    const allTasks = await getAllCourseTasks(courseid);
 
-  const randomTasks = getRandomTasks({
-    allTasks,
-    levelStart,
-    levelEnd,
-    num: taskCount,
-  });
+    const randomTasks = getRandomTasks({
+      allTasks,
+      levelStart,
+      levelEnd,
+      num: taskCount,
+    });
 
-  return randomTasks;
+    return randomTasks;
+  } catch (error) {
+    throw throwInnerError(error);
+  }
 };
 
 //move all procesure specificinterfaces to props
@@ -153,15 +160,19 @@ export const getExamTasks = async ({
       tasksFetched: await supplyFilesAndTransform(savedTasks),
     };
   } else {
-    const randomTasks = getRandomTasks({
-      allTasks,
-      levelStart,
-      levelEnd,
-      num: 5,
-    });
-    const tasksFetched = await supplyFilesAndTransform(randomTasks.tasks);
-    const tasksuuids = tasksFetched.map((task: TaskDB) => task.taskuuid);
-    return { tasksuuids, tasksFetched };
+    try {
+      const randomTasks = getRandomTasks({
+        allTasks,
+        levelStart,
+        levelEnd,
+        num: 5,
+      });
+      const tasksFetched = await supplyFilesAndTransform(randomTasks);
+      const tasksuuids = tasksFetched.map((task: TaskDB) => task.taskuuid);
+      return { tasksuuids, tasksFetched };
+    } catch (e: unknown) {
+      throw throwInnerError(e);
+    }
   }
 };
 

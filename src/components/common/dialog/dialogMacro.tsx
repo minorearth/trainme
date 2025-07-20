@@ -76,6 +76,16 @@ export const da = {
         }
       );
     },
+    unknownerror: () => {
+      alertdialog.showDialog(
+        L.ru.msg.UNKNOWNERROR_CAPTION,
+        L.ru.msg.UNKNOWNERROR_TEXT,
+        1,
+        () => {
+          splash.closeProgress();
+        }
+      );
+    },
     textbookblocked: () =>
       alertdialog.showDialog(
         L.ru.msg.TEXTBOOK_BLOCKED_CAPTION,

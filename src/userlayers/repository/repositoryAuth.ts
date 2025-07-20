@@ -12,13 +12,11 @@ import {
   setPersistence,
   User,
   NextOrObserver,
+  UserCredential,
 } from "firebase/auth";
 
-//api calls
-import { getDataFetch } from "@/apicalls/apicalls";
-
+import E, { handleFBError } from "@/globals/errorMessages";
 import { login, logout } from "@/db/SA/session";
-import { FirebaseError } from "firebase/app";
 
 export const signInUser = async ({
   email,
@@ -32,12 +30,7 @@ export const signInUser = async ({
   try {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (e: unknown) {
-    const error = e as FirebaseError; // приведение типа
-    console.log("Ошибка:", error.message);
-    if (error.code === "auth/invalid-credential") {
-      throw new Error("wrongpsw");
-    }
-    throw new Error("another error");
+    throw handleFBError(e);
   }
 };
 
@@ -65,21 +58,33 @@ export const createUser = async ({
   email: string;
   password: string;
 }) => {
-  const userCredential = await createUserWithEmailAndPassword(
-    auth,
-    email,
-    password
-  );
-  sendEmailVerification(userCredential.user).then(() => {});
-  return userCredential.user;
+  try {
+    const userCredential: UserCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    sendEmailVerification(userCredential.user).then(() => {});
+    return userCredential.user;
+  } catch (e: unknown) {
+    throw handleFBError(e);
+  }
 };
 
 export const resetPsw = (email: string) => {
   auth.languageCode = "ru";
-  sendPasswordResetEmail(auth, email);
+  try {
+    sendPasswordResetEmail(auth, email);
+  } catch (e) {
+    throw handleFBError(e);
+  }
 };
 
 export const signOutUserRep = async () => {
-  await signOut(auth);
-  await logout();
+  try {
+    await signOut(auth);
+    await logout();
+  } catch (e) {
+    throw handleFBError(e);
+  }
 };

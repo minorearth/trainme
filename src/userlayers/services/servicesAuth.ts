@@ -20,6 +20,7 @@ import splash from "@/components/common/splash/store";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { User } from "firebase/auth";
 import S from "@/globals/settings";
+import E, { finalErrorHandler, throwInnerError } from "@/globals/errorMessages";
 
 export const signUp = async ({
   email,
@@ -35,9 +36,8 @@ export const signUp = async ({
     const userid = user.uid;
     createNewUserMeta({ userId: userid, name });
     return userid;
-  } catch (error) {
-    // const errorCode = error.code;
-    // const errorMessage = error.message;
+  } catch (e: unknown) {
+    finalErrorHandler(e);
   }
 };
 
@@ -57,41 +57,13 @@ export const signIn = async ({
     user.setUserNameP(userMeta.name);
     router.push(`/${S.P.CHAPTERS}`);
   } catch (e) {
-    const error = e as Error;
-    console.log("error.nenef", error.message);
-
-    if (error.message == "notVerified") {
-      da.info.emailnotverified();
-      return;
-    }
-    if (error.message == "wrongpsw") {
-      da.info.wrongpsw();
-      return;
-    }
+    finalErrorHandler(e);
   }
-
-  //TODO: throw error
-
-  // if (response == "notVerified") {
-  //   da.info.emailnotverified();
-  //   return;
-  // }
-
-  // if (response == "wrongpsw") {
-  //   da.info.wrongpsw();
-  //   return;
-  // }
-
-  // const userMeta = await getUserMeta(response);
-
-  // user.setUserNameP(userMeta.name);
-  // router.push(`/${S.P.CHAPTERS}`);
 };
 
 export const signOut = async (router: AppRouterInstance) => {
   await signOutUserRep();
   splash.closeProgress();
-
   router.push(`/${S.P.LOGIN}/`);
 };
 
@@ -112,6 +84,7 @@ const actionOnAuthChanged = async (
   }
 };
 
+//ok
 const getUidAuth = async ({
   email,
   password,
@@ -120,10 +93,9 @@ const getUidAuth = async ({
   password: string;
 }) => {
   try {
-    const res = await signInUser({ email, password });
-    return res ?? (await launchAuthStateChangeMonitor(actionOnAuthChanged));
+    await signInUser({ email, password });
+    return await launchAuthStateChangeMonitor(actionOnAuthChanged);
   } catch (e: unknown) {
-    const error = e as Error; // приведение типа
-    throw new Error(error.message);
+    throw throwInnerError(e);
   }
 };

@@ -33,22 +33,26 @@ import {
 import { ChampDB } from "@/T/typesDB";
 import { CS, PS, TSM } from "@/T/typesBasic";
 import S from "@/globals/settings";
+import {
+  finalErrorHandler,
+  handleFBError,
+  throwInnerError,
+} from "@/globals/errorMessages";
 
 export const createChamp = async () => {
-  const tasks = await getRandomTasksForChamp({
-    levelStart: champ.range[0],
-    levelEnd: champ.range[1],
-    taskCount: Number(txtField.state.tasknum.value),
-    courseid: S.CHAMP_DEFAULT_COURSEID,
-  });
-  //TODO: throw error
-  if (tasks.status == "error") {
-    da.info.notenoughttasks(tasks.count);
-  } else {
+  try {
+    const tasks = await getRandomTasksForChamp({
+      levelStart: champ.range[0],
+      levelEnd: champ.range[1],
+      taskCount: Number(txtField.state.tasknum.value),
+      courseid: S.CHAMP_DEFAULT_COURSEID,
+    });
     const champid = generateString(7);
     champ.setChampIdP(champid);
     champ.setUsers([]);
-    createNewChamp({ tasks: tasks.tasks, champid });
+    createNewChamp({ tasks, champid });
+  } catch (e: unknown) {
+    finalErrorHandler(e);
   }
 };
 
@@ -102,25 +106,29 @@ const captureAndlaunchChamp = (champdoc: ChampDB) => {
 };
 
 const launchChamp = () => {
-  navigator.actions.openLessonStartPage({
-    champData: { champid: champ.champid },
-    tasksetData: { ...TASKSET_DEFAULTS, tasksetmode: TSM.champ },
-    courseData: COURSE_DEFAULTS,
-    chapterData: CHAPTER_DEFAULTS,
-  });
-  updateUserInChamp({
-    userid: user.userid,
-    champuserdata: {
-      uid: user.userid,
-      name: txtField.state.nickname.value,
-      change: 0,
-      pts: 0,
-      persstatus: PS.champwip,
-      avatarid: user.avatarid,
-    },
-    champid: champ.champid,
-  });
-  champ.setCapturingChampstart(false);
+  try {
+    navigator.actions.openLessonStartPage({
+      champData: { champid: champ.champid },
+      tasksetData: { ...TASKSET_DEFAULTS, tasksetmode: TSM.champ },
+      courseData: COURSE_DEFAULTS,
+      chapterData: CHAPTER_DEFAULTS,
+    });
+    updateUserInChamp({
+      userid: user.userid,
+      champuserdata: {
+        uid: user.userid,
+        name: txtField.state.nickname.value,
+        change: 0,
+        pts: 0,
+        persstatus: PS.champwip,
+        avatarid: user.avatarid,
+      },
+      champid: champ.champid,
+    });
+    champ.setCapturingChampstart(false);
+  } catch (error) {
+    throw throwInnerError(error);
+  }
 };
 
 export const captureChampStart = async ({ champid }: { champid: string }) => {

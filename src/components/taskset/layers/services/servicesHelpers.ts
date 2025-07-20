@@ -6,6 +6,8 @@ import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
 //types
 import { Task } from "@/T/typesState";
 import { TaskDB } from "@/T/typesDB";
+import E from "@/globals/errorMessages";
+import L from "@/globals/local";
 
 export const getTasksRecap = <T>({
   recapTasksIds,
@@ -20,27 +22,27 @@ export const getTasksRecap = <T>({
   return filteredTasks;
 };
 
-interface getRandomTasksParams {
-  allTasks: TaskDB[];
-  levelStart: number;
-  levelEnd: number;
-  num: number;
-}
-
 export const getRandomTasks = ({
   allTasks,
   levelStart,
   levelEnd,
   num,
-}: getRandomTasksParams) => {
+}: {
+  allTasks: TaskDB[];
+  levelStart: number;
+  levelEnd: number;
+  num: number;
+}) => {
   const scope = allTasks.filter(
     (task) => task.level <= levelEnd && task.level >= levelStart
   );
   if (scope.length < num) {
-    return { status: "error", count: scope.length, tasks: [] };
+    throw new Error(E.NOT_ENOUGHT_TASKS_ERROR, {
+      cause: { count: scope.length },
+    });
+    // return { status: "error", count: scope.length, tasks: [] };
   }
   const numbers = getNeverRepeatIntegers(scope.length - 1, num);
   const filteredTasks = scope.filter((task, id) => numbers.includes(id));
-  //TODO: throw error
-  return { status: "ok", tasks: filteredTasks, count: filteredTasks.length };
+  return filteredTasks;
 };

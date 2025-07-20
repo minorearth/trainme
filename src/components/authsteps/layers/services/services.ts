@@ -16,7 +16,7 @@ import txtField from "@/components/common/customfield/store";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { CFT } from "@/components/common/customfield/types";
 // import { AppRouterInstance } from "";
-
+import E, { throwInnerError } from "@/globals/errorMessages";
 export const signInSubmit = async (
   event: React.FormEvent<HTMLFormElement>,
   router: AppRouterInstance
@@ -36,8 +36,12 @@ export const signInSubmit = async (
 
 export const recoverPswSubmit = () => {
   if (txtField.validate([CFT.email])) {
-    resetPsw(txtField.state.email.value);
-    da.info.resetpsw(() => authForm.showSignIn());
+    try {
+      resetPsw(txtField.state.email.value);
+      da.info.resetpsw(() => authForm.showSignIn());
+    } catch (e) {
+      throw throwInnerError(e);
+    }
   }
 };
 
