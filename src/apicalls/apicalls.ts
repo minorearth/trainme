@@ -1,5 +1,7 @@
 import { GetDataFetchTypes, SetDataFetch } from "@/T/typesBasic";
 import S from "@/globals/settings";
+import E, { throwInnerError } from "@/globals/errorMessages";
+import { ServerResponseData } from "@/T/typesFetch";
 
 export const wakeUp = () => {
   fetch("/api/wakeup", {
@@ -19,7 +21,7 @@ interface setDataFetch {
 }
 export const setDataFetch = async (data: setDataFetch) => {
   wakeUp();
-  const res = await new Promise((resolve) => {
+  const res = await new Promise((resolve, reject) => {
     setTimeout(async () => {
       try {
         const response = await fetch(S.P.SETMETA, {
@@ -56,13 +58,16 @@ export const getDataFetch = async <T>(data: GetDataFetch) => {
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      const result = await response.json();
+      throw new Error(result.message);
     }
     const result = await response.json();
-    return { value: result, error: false } as { value: T; error: boolean };
+    console.log("result", result);
+    const { value } = result as ServerResponseData<T>;
+    return value;
   } catch (error) {
-    console.log(error);
-    return { error: true } as { value: T; error: boolean };
+    throw throwInnerError(error);
+    // return { error: true } as { value: T; error: boolean };
   }
 
   // https://www.reddit.com/r/nextjs/comments/1944xx3/server_actions_not_returning_an_answer/?rdt=59377

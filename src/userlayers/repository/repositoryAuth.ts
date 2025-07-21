@@ -15,7 +15,7 @@ import {
   UserCredential,
 } from "firebase/auth";
 
-import E, { handleFBError } from "@/globals/errorMessages";
+import E, { throwFBError } from "@/globals/errorMessages";
 import { login, logout } from "@/db/SA/session";
 
 export const signInUser = async ({
@@ -30,7 +30,7 @@ export const signInUser = async ({
   try {
     await signInWithEmailAndPassword(auth, email, password);
   } catch (e: unknown) {
-    throw handleFBError(e);
+    throw throwFBError(e);
   }
 };
 
@@ -67,7 +67,7 @@ export const createUser = async ({
     sendEmailVerification(userCredential.user).then(() => {});
     return userCredential.user;
   } catch (e: unknown) {
-    throw handleFBError(e);
+    throw throwFBError(e);
   }
 };
 
@@ -76,7 +76,7 @@ export const resetPsw = (email: string) => {
   try {
     sendPasswordResetEmail(auth, email);
   } catch (e) {
-    throw handleFBError(e);
+    throw throwFBError(e);
   }
 };
 
@@ -85,6 +85,6 @@ export const signOutUserRep = async () => {
     await signOut(auth);
     await logout();
   } catch (e) {
-    throw handleFBError(e);
+    throw throwFBError(e);
   }
 };

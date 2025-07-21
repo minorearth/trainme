@@ -6,29 +6,35 @@ export const revalidate = 0; //revalidate api every 0 second
 import { getDocSA, checkCoursePaidSA } from "@/db/SA/firebaseSA";
 import { CLT, UserMetaDB } from "@/T/typesDB";
 import { GetDF } from "@/T/typesBasic";
+import { NextErrorResponseHandler } from "@/globals/errorMessages";
+import { ServerResponseData } from "@/T/typesFetch";
 
 export async function POST(request: Request) {
   try {
     const reqData = await request.json();
     const { type, data } = reqData;
-    let res;
+
     if (type == GetDF.getusermetadata) {
-      res = await getDocSA<UserMetaDB>({
+      const value = await getDocSA<UserMetaDB>({
         collectionName: CLT.usermeta,
         id: data.id,
       });
+      const response: ServerResponseData<UserMetaDB> = {
+        value,
+        success: true,
+      };
+      return NextResponse.json(response, { status: 200 });
     }
 
     if (type == GetDF.checkcoursepaid) {
-      res = await checkCoursePaidSA(data);
+      const value = await checkCoursePaidSA(data);
+      const response: ServerResponseData<boolean> = {
+        value,
+        success: true,
+      };
+      return NextResponse.json(response, { status: 200 });
     }
-
-    return NextResponse.json(res);
   } catch (error) {
-    console.error("Error processing request:", error);
-    return NextResponse.json(
-      { message: "Error processing request" },
-      { status: 500 }
-    );
+    return NextErrorResponseHandler(error);
   }
 }

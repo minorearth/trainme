@@ -112,7 +112,10 @@ const L = {
       INTRO6: "В режиме повторения начисляется гораздо меньше монет",
     },
     msg: {
-      UNKNOWNERROR_CAPTION: "Ошибка",
+      FIRESTORE_ERROR_CAPTION: "Ошибка",
+      FIRESTORE_NOTFOUND_TEXT: "Документ не найден",
+
+      UNKNOWNERROR_CAPTION: "Ошибка или типа того",
       UNKNOWNERROR_TEXT: "Какая-то неведомая ошибка",
       PSW_RECOVERY_TITLE: "Проверь почту",
       PSW_TEST_ERROR: "Неверный ответ",

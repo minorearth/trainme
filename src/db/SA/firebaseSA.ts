@@ -10,6 +10,8 @@ import {
   CollectonsTypes,
   DBFormats,
 } from "@/T/typesDB";
+import { throwFBError } from "@/globals/errorMessages";
+import { FirebaseError } from "@firebase/util";
 
 export const updateDocSA = async <T extends DBFormats>({
   collectionName,
@@ -18,14 +20,13 @@ export const updateDocSA = async <T extends DBFormats>({
   collectionName: CollectonsTypes;
   dataencrypted: string;
 }) => {
-  const { data, id } = decrypt2(dataencrypted);
-  const res: CollectionWrite<T> = { data, collectionName, id };
-  const userMetaRef = db.collection(res.collectionName).doc(res.id);
   try {
+    const { data, id } = decrypt2(dataencrypted);
+    const res: CollectionWrite<T> = { data, collectionName, id };
+    const userMetaRef = db.collection("res.collectionName").doc(res.id);
     await userMetaRef.update(data as WithFieldValue<DocumentData>);
-    return "ok";
-  } catch (error) {
-    return "error";
+  } catch (error: unknown) {
+    throw throwFBError(error);
   }
 };
 

@@ -35,7 +35,7 @@ import { CS, PS, TSM } from "@/T/typesBasic";
 import S from "@/globals/settings";
 import {
   finalErrorHandler,
-  handleFBError,
+  throwFBError,
   throwInnerError,
 } from "@/globals/errorMessages";
 

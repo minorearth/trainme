@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 export const dynamic = "force-dynamic";
 export const revalidate = 1; //revalidate api every 1 second
 //https://stackoverflow.com/questions/76356803/data-not-updating-when-deployed-nextjs13-app-on-vercel-despite-using-cache-no
@@ -6,6 +7,8 @@ export const revalidate = 1; //revalidate api every 1 second
 import { updateDocSA } from "@/db/SA/firebaseSA";
 import { CLT, UserMetaDB } from "@/T/typesDB";
 import { GetDF, SetDF } from "@/T/typesBasic";
+import { FirestoreError } from "firebase/firestore";
+import E, { NextErrorResponseHandler } from "@/globals/errorMessages";
 
 interface reqData {
   type: string;
@@ -15,20 +18,14 @@ export async function POST(request: Request) {
   try {
     const reqData: reqData = await request.json();
     const { type, data } = reqData;
-    let res = "error";
     if (type == SetDF.paychapter || type == SetDF.setusermetadata) {
-      res = await updateDocSA<UserMetaDB>({
+      await updateDocSA<UserMetaDB>({
         collectionName: CLT.usermeta,
         dataencrypted: data,
       });
     }
-
-    return NextResponse.json({ res });
+    return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
-    console.error("Error processing request:", error);
-    return NextResponse.json(
-      { message: "Error processing request" },
-      { status: 500 }
-    );
+    return NextErrorResponseHandler(error);
   }
 }

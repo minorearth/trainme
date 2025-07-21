@@ -37,7 +37,7 @@ export const getUserMetaCourseProgress = async ({
     type: GetDF.getusermetadata,
   });
   //TODO:(later)keep only keys needed
-  const userProgress = ETLUserProgress(allUserMeta.value.courses[courseid]);
+  const userProgress = ETLUserProgress(allUserMeta.courses[courseid]);
   return userProgress;
 };
 
@@ -89,5 +89,5 @@ export const getUserMeta = async (uid: string) => {
     data: { id: uid },
     type: GetDF.getusermetadata,
   });
-  return userMeta.value;
+  return userMeta;
 };

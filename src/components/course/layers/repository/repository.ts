@@ -15,20 +15,6 @@ interface response {
   error: boolean;
 }
 
-export const checkCoursePaid = async ({
-  courseid,
-  uid,
-}: {
-  courseid: string;
-  uid: string;
-}): Promise<boolean> => {
-  const coursePaid = await getDataFetch<boolean>({
-    type: GetDF.checkcoursepaid,
-    data: { courseid, id: uid },
-  });
-  return coursePaid.value;
-};
-
 export const fetchFlow = async ({ courseid }: { courseid: string }) => {
   const flowDB = await getDocDataFromCollectionById<FlowDB>({
     collectionName: CLT.chapters,

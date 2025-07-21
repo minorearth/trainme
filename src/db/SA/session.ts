@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import S from "@/globals/settings";
 
 export async function login(user: string) {
+  //TODO: to settings
   const expires = new Date(Date.now() + 60 * 60 * 20 * 1000);
   // const expires = new Date(Date.now() + 10000);
   cookies().set(S.USER_SESSION, user, { expires, httpOnly: true });

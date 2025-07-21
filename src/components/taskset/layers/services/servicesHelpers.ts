@@ -40,7 +40,6 @@ export const getRandomTasks = ({
     throw new Error(E.NOT_ENOUGHT_TASKS_ERROR, {
       cause: { count: scope.length },
     });
-    // return { status: "error", count: scope.length, tasks: [] };
   }
   const numbers = getNeverRepeatIntegers(scope.length - 1, num);
   const filteredTasks = scope.filter((task, id) => numbers.includes(id));

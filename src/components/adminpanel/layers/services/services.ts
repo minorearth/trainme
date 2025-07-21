@@ -16,6 +16,8 @@ import course from "@/components/course/layers/store/course";
 import user from "@/userlayers/store/user";
 import { CLT, UserMetaDB } from "@/T/typesDB";
 
+import E, { finalErrorHandler } from "@/globals/errorMessages";
+
 export const resetCurrentUser = async () => {
   const courseid = course.state.courseid;
   await resetUser({ courseid, uid: user.userid });
@@ -45,10 +47,14 @@ export const resetUser = async ({
     },
     id: uid,
   };
-  await updateDocSA<UserMetaDB>({
-    collectionName: CLT.usermeta,
-    dataencrypted: encrypt2(data),
-  });
+  try {
+    await updateDocSA<UserMetaDB>({
+      collectionName: CLT.usermeta,
+      dataencrypted: encrypt2(data),
+    });
+  } catch (error) {
+    finalErrorHandler(error);
+  }
 };
 
 export const unlockAllChaptersCurrentUser = async () => {

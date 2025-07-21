@@ -32,7 +32,7 @@ export const checkCoursePaid = async ({
   courseid: string;
   uid: string;
 }) => {
-  const coursePaid = await getDataFetch({
+  const coursePaid = await getDataFetch<boolean>({
     type: GetDF.checkcoursepaid,
     data: { courseid, id: uid },
   });

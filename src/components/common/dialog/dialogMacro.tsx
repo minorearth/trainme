@@ -5,6 +5,16 @@ import { TasksetMode, TSM } from "@/T/typesBasic";
 
 export const da = {
   info: {
+    DBNotFound: () =>
+      alertdialog.showDialog(
+        L.ru.msg.FIRESTORE_ERROR_CAPTION,
+        L.ru.msg.FIRESTORE_NOTFOUND_TEXT,
+        1,
+        () => {
+          splash.closeProgress();
+        }
+      ),
+
     wrongpsw: () =>
       alertdialog.showDialog(
         L.ru.msg.WRONG_PSW_CAPTION,
