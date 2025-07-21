@@ -1,6 +1,9 @@
 import { GetDataFetchTypes, SetDataFetch } from "@/T/typesBasic";
 import S from "@/globals/settings";
-import E, { throwInnerError } from "@/globals/errorMessages";
+import E, {
+  throwFetchAPIError,
+  throwInnerError,
+} from "@/globals/errorMessages";
 import { ServerResponseData } from "@/T/typesFetch";
 
 export const wakeUp = () => {
@@ -20,25 +23,33 @@ interface setDataFetch {
   data: string;
 }
 export const setDataFetch = async (data: setDataFetch) => {
-  wakeUp();
-  const res = await new Promise((resolve, reject) => {
-    setTimeout(async () => {
-      try {
-        const response = await fetch(S.P.SETMETA, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-        const result = await response.json();
-        resolve(result.res);
-      } catch (error) {
-        resolve("error");
-      }
-    }, 1000);
-  });
-  return res;
+  try {
+    wakeUp();
+    const res = await new Promise((resolve, reject) => {
+      setTimeout(async () => {
+        try {
+          const response = await fetch(S.P.SETMETA, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+          if (!response.ok) {
+            const result = await response.json();
+            throw throwFetchAPIError(new Error(result.message));
+          }
+          const result = await response.json();
+          resolve(result.res);
+        } catch (error) {
+          reject(error);
+        }
+      }, 1000);
+    });
+    return res;
+  } catch (error) {
+    throw throwInnerError(error);
+  }
 };
 
 interface GetDataFetch {
@@ -59,15 +70,12 @@ export const getDataFetch = async <T>(data: GetDataFetch) => {
     });
     if (!response.ok) {
       const result = await response.json();
-      throw new Error(result.message);
+      throw throwFetchAPIError(new Error(result.message));
     }
-    const result = await response.json();
-    console.log("result", result);
-    const { value } = result as ServerResponseData<T>;
-    return value;
+    const result: ServerResponseData<T> = await response.json();
+    return result.value;
   } catch (error) {
     throw throwInnerError(error);
-    // return { error: true } as { value: T; error: boolean };
   }
 
   // https://www.reddit.com/r/nextjs/comments/1944xx3/server_actions_not_returning_an_answer/?rdt=59377
@@ -83,6 +91,6 @@ export const fetchFile = async (fileUrl: string) => {
     const data = await response.text();
     return data.replace(/\n/g, "\\n").replace(/\r/g, "\\r");
   } catch (error) {
-    console.error("Error:", error);
+    throw throwFetchAPIError(error);
   }
 };

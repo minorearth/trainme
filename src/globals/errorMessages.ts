@@ -9,6 +9,7 @@ const E = {
   EMAIL_NOT_VERIFIED: "notVerified",
   WRONG_PSW: "wrongpsw",
   UNKNOWN_FB_ERROR: "unknown_FB_error",
+  UNKNOWN_FETCH_ERROR: "unknown_fetch_error",
   INVALID_EMAIL_SIGNUP_ERROR: "invalid_email_signup_error",
   UNKNOWN_SIGNUP_ERROR: "unknown_auth_signup_error",
   NOT_ENOUGHT_TASKS_ERROR: `not_enought_tasks`,
@@ -38,6 +39,20 @@ export const throwFBError = (error: unknown): never => {
   }
 
   throw Error(E.UNKNOWN_FB_ERROR);
+};
+
+//here wee have both FB errors and common fetch errors
+export const throwFetchAPIError = (error: unknown): never => {
+  const e = error as TypeError;
+  //TODO: add impovved loggin here and everywhere
+  console.log(`"fetch error:${e.message}`);
+
+  //do not remove, will be enriched with common fetch errors
+  // if (e.code === E.FB.INVALID_SIGNIN_CREDENTIALS) {
+  //   throw new Error(E.WRONG_PSW);
+  // }
+
+  throw Error(E.UNKNOWN_FETCH_ERROR);
 };
 
 export default E;

@@ -24,6 +24,7 @@ import { ETLUserProgress } from "@/userlayers/repository/ETL";
 import { encrypt2 } from "@/globals/utils/encryption";
 import { CLT, UserMetaDB } from "@/T/typesDB";
 import { GetDF, SetDF } from "@/T/typesBasic";
+import { throwInnerError } from "@/globals/errorMessages";
 
 export const getUserMetaCourseProgress = async ({
   courseid,
@@ -53,12 +54,13 @@ export const saveUserMeta = async (dataToEncrypt: {
   data: UserMetaDB;
   id: string;
 }) => {
-  const res = await setDataFetch({
-    type: SetDF.setusermetadata,
-    data: encrypt2(dataToEncrypt),
-  });
-  if (res == "error") {
-    throw new Error("Server error");
+  try {
+    const res = await setDataFetch({
+      type: SetDF.setusermetadata,
+      data: encrypt2(dataToEncrypt),
+    });
+  } catch (error) {
+    throw throwInnerError(error);
   }
 };
 
