@@ -2,7 +2,7 @@ import { toJS } from "mobx";
 
 //repository(external)
 import { saveUserMeta } from "@/userlayers/repository/repositoryUserMeta";
-import { getChampTasksDB } from "@/components/champ/layers/repository/repository";
+import { getChampTasksDB } from "@/repository/repository";
 
 //repository(local)
 import {

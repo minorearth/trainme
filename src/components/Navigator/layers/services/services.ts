@@ -6,7 +6,7 @@ import {
   checkCourseReady,
   checkCoursePaid,
 } from "@/components/courses/layers/repository/repository";
-import { saveChampUserTaskLog } from "@/components/champ/layers/repository/repository";
+import { saveChampUserTaskLog } from "@/repository/repository";
 import { getUserMetaCourseProgress } from "@/userlayers/repository/repositoryUserMeta";
 
 //services(external)

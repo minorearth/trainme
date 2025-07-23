@@ -17,7 +17,7 @@ import {
   getUserChampStatus,
   createNewChamp,
   setChampStarted,
-} from "@/components/champ/layers/repository/repository";
+} from "@/repository/repository";
 
 //stores
 import user from "@/userlayers/store/user";
