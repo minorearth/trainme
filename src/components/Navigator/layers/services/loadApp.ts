@@ -3,8 +3,8 @@ import { da } from "@/components/common/dialog/dialogMacro";
 //globals
 
 //repository
-import { getPersistedState } from "@/components/Navigator/layers/repository/repository";
-import { checkCoursePaid } from "@/components/courses/layers/repository/repository";
+import { getPersistedState } from "@/repository/repositoryLS";
+import { checkCoursePaid } from "@/repository/repositoryFetch";
 
 //services(external)
 import { getFlow } from "@/components/course/layers/services/services";
@@ -21,7 +21,7 @@ import {
 import navigator from "@/components/Navigator/layers/store/navigator";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import taskset from "@/components/taskset/layers/store/taskset";
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";
 import chapter from "@/components/taskset/layers/store/chapter";

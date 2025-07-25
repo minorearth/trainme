@@ -2,9 +2,9 @@
 import { useState } from "react";
 
 //services
-import { addUserToGroup } from "@/components/manager/groupsNreports/groups/layers/repository/repository";
+import { addUserToGroup } from "@/repository/repositoryFB";
 
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 
 const useJoinGroup = () => {
   const [inviteAccepted, setInviteAccepted] = useState(false);

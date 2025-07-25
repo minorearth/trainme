@@ -1,5 +1,6 @@
 //utils
-import { extractChapterIdsOnly_admin } from "@/components/course/layers/services/utils";
+//TODO:crerate repository for upload courses
+import { extractChapterIdsOnly_admin } from "@/repository/ETL/ETLadmin";
 import { NodeDB, TaskDB } from "@/T/typesDB";
 import { RawTaskToUploadWithoutLevel } from "@/T/typesUpload";
 import S from "@/globals/settings";

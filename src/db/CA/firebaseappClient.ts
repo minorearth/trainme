@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { initializeFirestore } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 import { logout } from "../SA/session";
 
 const firebaseConfig = {

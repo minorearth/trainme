@@ -3,14 +3,15 @@ import { da } from "@/components/common/dialog/dialogMacro";
 
 //repository(external)
 import {
-  checkCourseReady,
   checkCoursePaid,
-} from "@/components/courses/layers/repository/repository";
-import { saveChampUserTaskLog } from "@/repository/repository";
-import { getUserMetaCourseProgress } from "@/userlayers/repository/repositoryUserMeta";
+  getUserMetaCourseProgress,
+} from "@/repository/repositoryFetch";
+import { checkCourseReady } from "@/repository/repositoryLocalFiles";
+
+import { saveChampUserTaskLog } from "@/repository/repositoryFB";
 
 //services(external)
-import { signOut } from "@/userlayers/services/servicesAuth";
+import { signOut } from "@/auth/services/servicesAuth";
 import { getFlow } from "@/components/course/layers/services/services";
 import { saveProgress } from "@/components/taskset/layers/services/services";
 import { getTasks } from "@/components/taskset/layers/services/services";
@@ -34,7 +35,7 @@ import navigator from "@/components/Navigator/layers/store/navigator";
 import taskset from "@/components/taskset/layers/store/taskset";
 import splash from "@/components/common/splash/store";
 import countdownbutton from "@/components/common/CountdownButton/store";
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 import tutorial from "@/components/tutorial/store";
 import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";

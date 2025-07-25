@@ -6,6 +6,7 @@ import E, {
 } from "@/globals/errorMessages";
 import { ServerResponseData } from "@/T/typesFetch";
 
+//TODO:DO
 export const wakeUp = () => {
   fetch("/api/wakeup", {
     method: "POST",
@@ -70,6 +71,7 @@ export const getDataFetch = async <T>(data: GetDataFetch) => {
     });
     if (!response.ok) {
       const result = await response.json();
+      //TODO: likely wrong again...
       throw throwFetchAPIError(new Error(result.message));
     }
     const result: ServerResponseData<T> = await response.json();

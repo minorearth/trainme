@@ -6,7 +6,7 @@ import {
   SubCollectionRead,
   SubCollectionWrite,
 } from "@/T/typesDB";
-import { db, auth } from "./firebaseappClient";
+import { db } from "./firebaseappClient";
 
 import {
   collection,
@@ -29,16 +29,21 @@ import {
   QuerySnapshot,
   DocumentData,
 } from "firebase/firestore";
+import { throwFBError } from "@/globals/errorMessages";
 
 export const setDocInCollection = async <T extends DBFormats>({
   collectionName,
   data,
   id,
 }: CollectionWrite<T>) => {
-  await setDoc(
-    doc(db, collectionName, id),
-    data as WithFieldValue<DocumentData>
-  );
+  try {
+    await setDoc(
+      doc(db, collectionName, id),
+      data as WithFieldValue<DocumentData>
+    );
+  } catch (error) {
+    throw throwFBError(error);
+  }
 };
 
 export const setDocInSubCollection = async <T extends DBFormats>({
@@ -48,10 +53,14 @@ export const setDocInSubCollection = async <T extends DBFormats>({
   subId,
   data,
 }: SubCollectionWrite<T>) => {
-  await setDoc(
-    doc(db, collectionName, id, subCollectionName, subId),
-    data as WithFieldValue<DocumentData>
-  );
+  try {
+    await setDoc(
+      doc(db, collectionName, id, subCollectionName, subId),
+      data as WithFieldValue<DocumentData>
+    );
+  } catch (error) {
+    throw throwFBError(error);
+  }
 };
 
 export const updateDocByid = async <T extends DBFormats>({
@@ -59,18 +68,26 @@ export const updateDocByid = async <T extends DBFormats>({
   id,
   data,
 }: CollectionWrite<Partial<T>>) => {
-  await updateDoc(
-    doc(db, collectionName, id),
-    data as WithFieldValue<DocumentData>
-  );
+  try {
+    await updateDoc(
+      doc(db, collectionName, id),
+      data as WithFieldValue<DocumentData>
+    );
+  } catch (error) {
+    throw throwFBError(error);
+  }
 };
 
 export const getDocDataFromCollectionById = async <T extends DBFormats>({
   collectionName,
   id,
 }: CollectionRead) => {
-  const docSnap = await getDoc(doc(db, collectionName, id));
-  return docSnap.data() as T;
+  try {
+    const docSnap = await getDoc(doc(db, collectionName, id));
+    return docSnap.data() as T;
+  } catch (error) {
+    throw throwFBError(error);
+  }
 };
 
 export const getDocDataFromSubCollectionById = async <T extends DBFormats>({
@@ -79,10 +96,14 @@ export const getDocDataFromSubCollectionById = async <T extends DBFormats>({
   subCollectionName,
   subId,
 }: SubCollectionRead) => {
-  const docSnap = await getDoc(
-    doc(db, collectionName, id, subCollectionName, subId)
-  );
-  return docSnap.data() as T;
+  try {
+    const docSnap = await getDoc(
+      doc(db, collectionName, id, subCollectionName, subId)
+    );
+    return docSnap.data() as T;
+  } catch (error) {
+    throw throwFBError(error);
+  }
 };
 
 export const getDocFromCollectionByIdRealtime = async <T extends DBFormats>({
@@ -94,11 +115,15 @@ export const getDocFromCollectionByIdRealtime = async <T extends DBFormats>({
   id: string;
   onChangeAction: (data: T) => void;
 }) => {
-  const unsubscribe = onSnapshot(doc(db, collectionName, id), (doc) => {
-    //confirm as
-    onChangeAction(doc.data() as T);
-  });
-  return unsubscribe;
+  try {
+    const unsubscribe = onSnapshot(doc(db, collectionName, id), (doc) => {
+      //confirm as
+      onChangeAction(doc.data() as T);
+    });
+    return unsubscribe;
+  } catch (error) {
+    throw throwFBError(error);
+  }
 };
 
 export const getMultipleDocs = async <T extends DBFormats>({
@@ -108,13 +133,13 @@ export const getMultipleDocs = async <T extends DBFormats>({
   collectionName: CollectonsTypes;
   ids: string[];
 }) => {
-  const col = collection(db, collectionName);
-  const q = query(col, where(documentId(), "in", ids));
-  return multipleDocsToArray<T>(await getDocs(q));
-};
-
-type FBResponse<T> = T & {
-  id: string;
+  try {
+    const col = collection(db, collectionName);
+    const q = query(col, where(documentId(), "in", ids));
+    return multipleDocsToArray<T>(await getDocs(q));
+  } catch (error) {
+    throw throwFBError(error);
+  }
 };
 
 const multipleDocsToArray = <T extends DBFormats>(docs: QuerySnapshot) => {

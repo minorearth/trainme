@@ -6,8 +6,6 @@ import { generateString } from "@/globals/utils/utilsRandom";
 
 //service helpers
 import { sortItems } from "@/components/champ/layers/services/servicesHelpers";
-
-//repository(external)
 import { getRandomTasksForChamp } from "@/components/taskset/layers/services/services";
 
 //repository(local)
@@ -17,10 +15,10 @@ import {
   getUserChampStatus,
   createNewChamp,
   setChampStarted,
-} from "@/repository/repository";
+} from "@/repository/repositoryFB";
 
 //stores
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import champ from "@/components/champ/layers/store/champ";
 import txtField from "@/components/common/customfield/store";

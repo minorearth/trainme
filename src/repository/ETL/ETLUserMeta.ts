@@ -1,10 +1,11 @@
-import { CourseProgressDB } from "@/T/typesDB";
+import { CourseProgressDB, CourseStatDB } from "@/T/typesDB";
 
 export const ETLUserProgress = (data: CourseProgressDB) => {
-  const stat = Object.keys(data.stat).reduce(
+  const stat: CourseStatDB = Object.keys(data.stat).reduce(
     (acc, chapterid) => ({
       ...acc,
       [chapterid]: {
+        //TODO:Tasks att missng is not detected by  typescript !?
         sum: data.stat[chapterid].sum,
       },
     }),

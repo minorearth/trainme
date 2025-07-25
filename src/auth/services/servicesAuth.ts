@@ -6,21 +6,27 @@ import {
   launchAuthStateChangeMonitor,
   createUser,
   signOutUserRep,
-} from "@/userlayers/repository/repositoryAuth";
+} from "@/auth/repository/repositoryAuth";
+import { getFreeCoursesIds } from "@/repository/repositoryLocalFiles";
+import { getUserMeta } from "@/repository/repositoryFetch";
+import { createNewUserMeta } from "@/repository/repositoryFB";
 
-import {
-  createNewUserMeta,
-  getUserMeta,
-} from "@/userlayers/repository/repositoryUserMeta";
+//services
+import { getInitalDataForFreeCourses } from "@/components/courses/layers/services/services";
 
 //stores
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 import splash from "@/components/common/splash/store";
 
+//types
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { User } from "firebase/auth";
+
+//globals
 import S from "@/globals/settings";
-import E, { finalErrorHandler, throwInnerError } from "@/globals/errorMessages";
+
+//error handling
+import { finalErrorHandler, throwInnerError } from "@/globals/errorMessages";
 
 export const signUp = async ({
   email,
@@ -33,9 +39,18 @@ export const signUp = async ({
 }) => {
   try {
     const user = await createUser({ email, password });
-    const userid = user.uid;
-    createNewUserMeta({ userId: userid, name });
-    return userid;
+    const freecoursesIds = getFreeCoursesIds();
+    const coursesInitials = getInitalDataForFreeCourses();
+    const userId = user.uid;
+    const data = {
+      name,
+      userId,
+      paidcourses: freecoursesIds,
+      courses: coursesInitials,
+    };
+
+    createNewUserMeta({ userId, data });
+    return userId;
   } catch (e: unknown) {
     finalErrorHandler(e);
   }

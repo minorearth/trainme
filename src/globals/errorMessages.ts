@@ -52,7 +52,7 @@ export const throwFetchAPIError = (error: unknown): never => {
   //   throw new Error(E.WRONG_PSW);
   // }
 
-  throw Error(E.UNKNOWN_FETCH_ERROR);
+  throw Error(e.message);
 };
 
 export default E;

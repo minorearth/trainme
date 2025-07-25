@@ -5,7 +5,7 @@ import navigator from "@/components/Navigator/layers/store/navigator";
 import course from "@/components/course/layers/store/course";
 import countdownbutton from "@/components/common/CountdownButton/store";
 import progressCircle from "@/components/common/splash/store";
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 
 //services(local)
 import { buyChapter } from "@/components/course/layers/services/services";

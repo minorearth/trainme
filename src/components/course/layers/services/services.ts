@@ -1,14 +1,12 @@
 import { toJS } from "mobx";
 
 //repository(local)
-import {
-  fetchFlow,
-  buyChapterCall,
-} from "@/components/course/layers/repository/repository";
+import { getFlowDB } from "@/repository/repositoryFB";
+import { buyChapterCall } from "@/repository/repositoryFetch";
 
 //stores
 import course from "@/components/course/layers/store/course";
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import splash from "@/components/common/splash/store";
 
@@ -26,7 +24,7 @@ export const getFlow = async ({
   progress: CourseProgressDB;
 }) => {
   if (refetchFlow) {
-    const flow = await fetchFlow({ courseid });
+    const flow = await getFlowDB({ courseid });
     const enrichedflow = enrichFlowWithUserProgress({
       ...flow,
       progress,

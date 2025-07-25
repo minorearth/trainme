@@ -1,15 +1,20 @@
+//local db
 import { courses } from "@/globals/coursesDB";
 
-//api calls
-import { getDataFetch } from "@/apicalls/apicalls";
-import { GetDF } from "@/T/typesBasic";
+//courses
 
 export const getReadyCourses = () => {
   return Object.keys(courses).filter((courseId) => courses[courseId].completed);
 };
 
-export const getFreeCourses = () => {
+export const getFreeCoursesIds = () => {
   return Object.keys(courses).filter((courseId) => courses[courseId].free);
+};
+
+export const getFreeCourses = () => {
+  return Object.keys(courses)
+    .filter((courseId) => courses[courseId].free)
+    .map((courseId) => courses[courseId]);
 };
 
 export const checkCourseReady = ({ courseid }: { courseid: string }) => {
@@ -23,18 +28,4 @@ export const getCoursesSorted = () => {
       courseid: id,
     }))
     .sort((a, b) => a.order - b.order);
-};
-
-export const checkCoursePaid = async ({
-  courseid,
-  uid,
-}: {
-  courseid: string;
-  uid: string;
-}) => {
-  const coursePaid = await getDataFetch<boolean>({
-    type: GetDF.checkcoursepaid,
-    data: { courseid, id: uid },
-  });
-  return coursePaid;
 };

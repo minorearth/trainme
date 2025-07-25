@@ -6,7 +6,7 @@ import { startListeners, stopListeners } from "@/globals/listeners/listeners";
 import { loadPyTrek } from "@/components/Navigator/layers/services/loadApp";
 
 //stores
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import splash from "@/components/common/splash/store";
 //

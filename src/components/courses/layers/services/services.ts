@@ -1,14 +1,13 @@
-import { getFreeCourses } from "@/components/courses/layers/repository/repository";
-import { courses } from "@/globals/coursesDB";
+import { getFreeCourses } from "@/repository/repositoryLocalFiles";
 
 export const getInitalDataForFreeCourses = () => {
-  const freeCoursesIds = getFreeCourses();
-  return freeCoursesIds.reduce(
+  const freeCourses = getFreeCourses();
+  return Object.keys(freeCourses).reduce(
     (acc, courseid, id) => ({
       ...acc,
       [courseid]: {
-        lastunlocked: [courses[id].firstchapter],
-        unlocked: [courses[id].firstchapter],
+        lastunlocked: [freeCourses[id].firstchapter],
+        unlocked: [freeCourses[id].firstchapter],
         completed: [],
         paid: [],
         stat: {},

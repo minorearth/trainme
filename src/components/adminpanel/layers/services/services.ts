@@ -5,7 +5,7 @@ import { courses } from "@/globals/coursesDB";
 import { updateDocSA } from "@/db/SA/firebaseSA";
 
 //repository
-import { fetchChapterIds_admin } from "@/components/course/layers/repository/repository";
+import { getChapterIds_admin } from "@/repository/repositoryFB";
 
 //utils
 import { encrypt2 } from "@/globals/utils/encryption";
@@ -13,7 +13,7 @@ import { encrypt2 } from "@/globals/utils/encryption";
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
 import course from "@/components/course/layers/store/course";
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 import { CLT, UserMetaDB } from "@/T/typesDB";
 
 import E, { finalErrorHandler } from "@/globals/errorMessages";
@@ -59,7 +59,7 @@ export const resetUser = async ({
 
 export const unlockAllChaptersCurrentUser = async () => {
   const courseid = course.state.courseid;
-  const chaptersIds = await fetchChapterIds_admin({ courseid });
+  const chaptersIds = await getChapterIds_admin({ courseid });
   const data = {
     data: {
       [`courses.${courseid}.completed`]: [],
@@ -80,7 +80,7 @@ export const unlockAllChaptersCurrentUser = async () => {
 
 export const completeAllChaptersCurrentUser = async () => {
   const courseid = course.state.courseid;
-  const chaptersIds = await fetchChapterIds_admin({ courseid });
+  const chaptersIds = await getChapterIds_admin({ courseid });
   const data = {
     data: {
       [`courses.${courseid}.completed`]: chaptersIds,

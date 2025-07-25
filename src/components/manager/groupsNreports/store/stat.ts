@@ -17,7 +17,7 @@ import {
   showReport,
 } from "@/components/manager/groupsNreports/reports/pivotreport/layers/services/services";
 
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 
 import { AllCoursesRawTaskObj, UserReport } from "@/T/Managertypes";
 import { PivotReport } from "@/T/Managertypes";

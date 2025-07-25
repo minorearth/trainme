@@ -20,7 +20,7 @@ import TurboEdge from "../components/TurboEdge";
 import AnimNode from "../components/AnimNode";
 
 // stores
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 import course from "@/components/course/layers/store/course";
 import alertdialog from "@/components/common/dialog/store";
 import { NodeDataState, NodeDBState } from "@/T/typesState";

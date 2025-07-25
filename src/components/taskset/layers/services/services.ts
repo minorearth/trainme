@@ -1,15 +1,19 @@
 import { toJS } from "mobx";
 
 //repository(external)
-import { saveUserMeta } from "@/userlayers/repository/repositoryUserMeta";
-import { getChampTasksDB } from "@/repository/repository";
+import {
+  saveProgressDB,
+  saveProgressDBNotCompletedAndSuccess,
+  saveUserMeta,
+} from "@/repository/repositoryFetch";
+import { getChampTasksDB } from "@/repository/repositoryFB";
 
 //repository(local)
 import {
   getAllTasksFromChapter,
   getTextBookTasks,
   getAllCourseTasks,
-} from "@/components/taskset/layers/repository/repository";
+} from "@/repository/repositoryFB";
 
 //service helpers(local)
 import {
@@ -17,7 +21,7 @@ import {
   getRandomTasks,
 } from "@/components/taskset/layers/services/servicesHelpers";
 
-import { taskLogToDBFormat } from "@/components/taskset/layers/repository/ETL";
+import { taskLogToDBFormat } from "@/repository/ETL/ETLTaskset";
 
 // ETL
 import { supplyFilesAndTransform } from "@/components/taskset/layers/services/ETL";
@@ -25,7 +29,7 @@ import { supplyFilesAndTransform } from "@/components/taskset/layers/services/ET
 //stores
 import taskset from "@/components/taskset/layers/store/taskset";
 import chapter from "@/components/taskset/layers/store/chapter";
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 import course from "@/components/course/layers/store/course";
 import {
   ChampStatePersisted,
@@ -177,40 +181,35 @@ export const getExamTasks = async ({
 };
 
 export const saveProgress = async () => {
-  const { pts = 0, tasklog, success } = taskset.state;
-
+  const { pts, tasklog, success } = taskset.state;
   const { chapterid, tobeunlocked, completed } = chapter.state;
   const progress = user.progress;
   const { unlocked, rating, stat, completed: completedChapters } = progress;
-  //TODO: (not captured)После фейла запроса из-за отсутвия интернета кнопка сохранить не нажимается(later)
-  let userData: UserMetaDB;
   const courseid = course.state.courseid;
-  const tasklogPrepared = taskLogToDBFormat({
-    courseid,
-    lastcompleted: chapterid,
-    tasklog,
-  });
-  userData = {
-    [`courses.${courseid}.rating`]: rating + pts,
-    [`courses.${courseid}.stat.${chapterid}.sum`]:
-      (stat[chapterid]?.sum ?? 0) + pts,
-    ...tasklogPrepared,
-  };
-  if (!completed && success == ST.success) {
-    userData = {
-      ...userData,
-      [`courses.${courseid}.completed`]: [...completedChapters, chapterid],
-      //all unlocked chapters(more than completed by lastunlocked)
-      [`courses.${courseid}.unlocked`]: [...unlocked, ...tobeunlocked],
-      //next chapters after just completed
-      [`courses.${courseid}.lastunlocked`]: tobeunlocked,
-    };
-  }
 
-  try {
-    await saveUserMeta({ data: userData, id: user.userid });
-  } catch (e) {
-    throw new Error("Server error");
+  if (!completed && success == ST.success) {
+    saveProgressDBNotCompletedAndSuccess({
+      courseid,
+      chapterid,
+      tasklog,
+      rating,
+      pts,
+      stat,
+      completedChapters,
+      unlocked,
+      tobeunlocked,
+      userid: user.userid,
+    });
+  } else {
+    saveProgressDB({
+      courseid,
+      chapterid,
+      tasklog,
+      rating,
+      pts,
+      stat,
+      userid: user.userid,
+    });
   }
 };
 

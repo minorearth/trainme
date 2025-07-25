@@ -3,7 +3,7 @@ import { Box, IconButton } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { avatars } from "./avatarsAll";
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 import { observer } from "mobx-react-lite";
 
 const AvatarSelector = observer(() => {

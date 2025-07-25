@@ -8,7 +8,7 @@ import {
   UsersMetaReportDB,
 } from "@/T/typesDB";
 
-export const extractDataNeededFromStat = (
+export const extractUsersMetaObj = (
   usersMeta: UserMetaDB[]
 ): UsersMetaReportDB => {
   const res = usersMeta.reduce(

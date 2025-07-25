@@ -5,7 +5,7 @@ import {
   uploadAllCourseTasksView,
   uploadChapterTasks,
   uploadCourseChaptersObject,
-} from "@/components/adminpanel/layers/repository/repository";
+} from "@/repository/repositoryFB";
 
 //services(local)
 import {

@@ -2,14 +2,14 @@
 
 //stores
 import stat from "@/components/manager/groupsNreports/store/stat";
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 
 //repository(local)
 import {
   saveSnapshot,
   getSnapShot,
   getUsersMetaObj,
-} from "@/components/manager/groupsNreports/reports/pivotreport/layers/repository/repository";
+} from "@/repository/repositoryFB";
 
 //services(exterenal)
 import { getGroupUsersObj } from "@/components/manager/groupsNreports/groups/layers/services/servicesTree";

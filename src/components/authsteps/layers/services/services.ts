@@ -4,10 +4,10 @@ import { da } from "@/components/common/dialog/dialogMacro";
 import { cleanUpCSP } from "@/db/localstorage";
 
 //services(external)
-import { signUp, signIn } from "@/userlayers/services/servicesAuth";
+import { signUp, signIn } from "@/auth/services/servicesAuth";
 
 //repository(external)
-import { resetPsw } from "@/userlayers/repository/repositoryAuth";
+import { resetPsw } from "@/auth/repository/repositoryAuth";
 
 // stores
 import authForm from "@/components/authsteps/layers/store/store";

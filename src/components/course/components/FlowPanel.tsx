@@ -25,7 +25,7 @@ import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 import course from "@/components/course/layers/store/course";
 import {
   CHAMP_DEFAULTS,

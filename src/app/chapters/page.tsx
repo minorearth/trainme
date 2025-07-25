@@ -1,6 +1,6 @@
 "use client";
 import Navigator from "@/components/Navigator/navigator";
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 import { observer } from "mobx-react-lite";
 import { ThemeProvider } from "@mui/material/styles";
 import { useCustomTheme } from "@/app/theme";

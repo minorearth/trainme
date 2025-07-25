@@ -1,14 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 
 //repository
-import {
-  addNewGroupDB,
-  addNewGroupDB2,
-  updateNodeLabelDB,
-} from "@/components/manager/groupsNreports/groups/layers/repository/repository";
+import { addNewGroupDB, updateNodeLabelDB } from "@/repository/repositoryFB";
 
 //stores
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 import stat from "@/components/manager/groupsNreports/store/stat";
 import { GroupArr } from "@/T/typesDB";
 import L from "@/globals/local";
@@ -23,7 +19,7 @@ export const addNewGroup = () => {
     uid: "",
   };
   try {
-    addNewGroupDB2(groupid, groupdata, user.userid);
+    addNewGroupDB(groupid, groupdata, user.userid);
     stat.refreshGroupData({ ...groupdata, id: groupid, children: [] });
   } catch (e) {}
 };

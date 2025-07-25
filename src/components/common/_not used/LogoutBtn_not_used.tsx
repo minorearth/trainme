@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
-import { signOut } from "@/userlayers/services/servicesAuth";
+import { signOut } from "@/auth/services/servicesAuth";
 import { RiLogoutCircleRLine } from "react-icons/ri";
 
 const LogoutBtn = () => {

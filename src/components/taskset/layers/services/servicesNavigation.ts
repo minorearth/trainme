@@ -2,7 +2,7 @@
 import { updateKeySCP, updateSCP } from "@/db/localstorage";
 
 //repository(external)
-import { updateChampPoints } from "@/repository/repository";
+import { updateChampPoints } from "@/repository/repositoryFB";
 
 //stores
 import task from "@/components/taskset/taskrun/layers/store/task";
@@ -10,7 +10,7 @@ import taskset from "@/components/taskset/layers/store/taskset";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import countdownbutton from "@/components/common/CountdownButton/store";
 import champ from "@/components/champ/layers/store/champ";
-import user from "@/userlayers/store/user";
+import user from "@/auth/store/user";
 
 // service helpers(local)
 import {
