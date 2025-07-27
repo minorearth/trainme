@@ -1,6 +1,6 @@
 //types
 
-import { SetDF } from "@/T/typesBasic";
+import { SetDF } from "@/T/const";
 import {
   CourseProgressDB,
   CourseStatDB,
@@ -10,7 +10,7 @@ import {
 
 //api calls
 import { setDataFetch, getDataFetch } from "@/apicalls/apicalls";
-import { GetDF } from "@/T/typesBasic";
+import { GetDF } from "@/T/const";
 
 //utils
 import { encrypt2 } from "@/globals/utils/encryption";
@@ -39,9 +39,10 @@ export const buyChapterCall = async ({
   uid: string;
 }) => {
   try {
+    console.log();
     await setDataFetch({
       type: SetDF.paychapter,
-      data: encrypt2({
+      body: encrypt2({
         data: {
           [`courses.${courseid}.rating`]: rating - unlockpts,
           [`courses.${courseid}.lastunlocked`]: [chapterid],
@@ -104,7 +105,7 @@ export const saveUserMeta = async (dataToEncrypt: {
   try {
     await setDataFetch({
       type: SetDF.setusermetadata,
-      data: encrypt2(dataToEncrypt),
+      body: encrypt2(dataToEncrypt),
     });
   } catch (error) {
     throw throwInnerError(error);

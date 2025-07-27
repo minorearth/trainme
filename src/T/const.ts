@@ -5,16 +5,12 @@ export const TS = {
   accomplishedSuspended: "accomplished_suspended",
 } as const;
 
-export type TasksetStage = (typeof TS)[keyof typeof TS];
-
 export const PS = {
   champwip: "champwip",
   champisover: "champisover",
   joined: "joined",
   undefined: "undefined",
 } as const;
-
-export type Persstatus = (typeof PS)[keyof typeof PS];
 
 export const PG = {
   testrun: "testrun",
@@ -24,8 +20,6 @@ export const PG = {
   lessonStarted: "lessonStarted",
   congrat: "congrat",
 } as const;
-
-export type Page = (typeof PG)[keyof typeof PG];
 
 //refreesh all types in excel after editing
 
@@ -49,17 +43,9 @@ export const TSM = {
   default: "default",
 } as const;
 
-export type NodeModes = (typeof NM)[keyof typeof NM];
+export const TT = { guide: "guide", task: "task" } as const;
 
-export type TasksetModeSpecific = (typeof TSM)[
-  | "champ"
-  | "textbook"
-  | "exam"
-  | "default"];
-
-export type TasksetMode =
-  | TasksetModeSpecific
-  | Extract<NodeModes, "newtopic" | "addhoc" | "exam">;
+export const CS = { started: "started", created: "created" } as const;
 
 export const ST = {
   success: "success",
@@ -67,19 +53,7 @@ export const ST = {
   undefined: "undefined",
 } as const;
 
-export type SuccessType = (typeof ST)[keyof typeof ST];
-
-export const CS = { started: "started", created: "created" } as const;
-
-export type Champstatus = (typeof CS)[keyof typeof CS];
-
 export const CT = { course: "course", champ: "champ" } as const;
-
-export type CourseType = (typeof CT)[keyof typeof CT];
-
-export const TT = { guide: "guide", task: "task" } as const;
-export type TaskType = (typeof TT)[keyof typeof TT];
-
 export const STT = {
   navigator: "navigator",
   course: "course",
@@ -89,17 +63,29 @@ export const STT = {
   user: "user",
 } as const;
 
-export type StateType = (typeof STT)[keyof typeof STT];
-
 export const GetDF = {
   getusermetadata: "getusermetadata",
   checkcoursepaid: "checkcoursepaid",
 } as const;
 
-export type GetDataFetchTypes = (typeof GetDF)[keyof typeof GetDF];
-
 export const SetDF = {
   paychapter: "paychapter",
   setusermetadata: "setusermetadata",
 } as const;
-export type SetDataFetch = (typeof SetDF)[keyof typeof SetDF];
+
+export const CLT = {
+  champ: "champ",
+  chapters: "chapters",
+  groups: "groups",
+  tasks: "tasks",
+  newtasks: "newtasks",
+  usermeta: "usermeta",
+  views: "views",
+  snapshots: "snapshots",
+  snapshot: "snapshot",
+} as const;
+
+export const URT = {
+  nottask: "nottask",
+  task: "task",
+} as const;

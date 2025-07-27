@@ -20,7 +20,7 @@ import {
   setRecapTasks,
   ok,
 } from "@/components/taskset/layers/services/servicesNavigationHelpers";
-import { ST, TS, TSM } from "@/T/typesBasic";
+import { ST, TS, TSM } from "@/T/const";
 
 export const nextTaskOrCompleteTestRun = async ({
   error,

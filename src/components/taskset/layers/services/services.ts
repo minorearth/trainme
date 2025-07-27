@@ -39,7 +39,8 @@ import {
   TasksetStatePersisted,
 } from "@/T/typesState";
 import { CourseProgressDB, TaskDB, UserMetaDB } from "@/T/typesDB";
-import { ST, TasksetStage, TS, TSM } from "@/T/typesBasic";
+import { ST, TS, TSM } from "@/T/const";
+import { TasksetStage } from "@/T/typesBasic";
 import { throwInnerError } from "@/globals/errorMessages";
 
 //types
@@ -188,7 +189,7 @@ export const saveProgress = async () => {
   const courseid = course.state.courseid;
 
   if (!completed && success == ST.success) {
-    saveProgressDBNotCompletedAndSuccess({
+    await saveProgressDBNotCompletedAndSuccess({
       courseid,
       chapterid,
       tasklog,
@@ -201,7 +202,7 @@ export const saveProgress = async () => {
       userid: user.userid,
     });
   } else {
-    saveProgressDB({
+    await saveProgressDB({
       courseid,
       chapterid,
       tasklog,

@@ -6,6 +6,8 @@ import {
   NodeDataDB,
 } from "@/T/typesDB";
 
+import { URT } from "@/T/const";
+
 export type ChapterArrReport = Pick<NodeDataDB, "maxcoins" | "order" | "id">;
 
 export interface PivotReport {
@@ -29,11 +31,6 @@ export interface CoursePivotReport {
     title: string;
   }[];
 }
-
-export const URT = {
-  nottask: "nottask",
-  task: "task",
-} as const;
 
 export type UserReportType = (typeof URT)[keyof typeof URT];
 

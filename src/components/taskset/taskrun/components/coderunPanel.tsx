@@ -10,7 +10,7 @@ import S from "@/globals/settings";
 import countdownbutton from "@/components/common/CountdownButton/store";
 import taskset from "@/components/taskset/layers/store/taskset";
 import task from "@/components/taskset/taskrun/layers/store/task";
-import { TSM, TT } from "@/T/typesBasic";
+import { TSM, TT } from "@/T/const";
 import L from "@/globals/local";
 
 const CodeRunPanel = observer(() => {

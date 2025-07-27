@@ -13,7 +13,7 @@ import TextAnimated from "@/components/common/textAnimated/textAnimated";
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
 import taskset from "@/components/taskset/layers/store/taskset";
-import { ST } from "@/T/typesBasic";
+import { ST } from "@/T/const";
 
 import L from "@/globals/local";
 

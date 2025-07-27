@@ -4,13 +4,17 @@ import { decrypt2 } from "@/globals/utils/encryption";
 
 import { db } from "./firebaseappAdmin";
 import {
-  CLT,
   CollectionRead,
-  CollectionWrite,
+  // CollectionWrite,
   CollectonsTypes,
   DBFormats,
   UserMetaDB,
 } from "@/T/typesDB";
+
+import { CollectionWrite } from "trainpythontypes";
+
+import { CLT } from "@/T/const";
+
 import { throwFBError } from "@/globals/errorMessages";
 
 export const updateDocSA = async <T extends DBFormats>({
@@ -23,7 +27,7 @@ export const updateDocSA = async <T extends DBFormats>({
   try {
     const { data, id } = decrypt2(dataencrypted);
     const res: CollectionWrite<T> = { data, collectionName, id };
-    const userMetaRef = db.collection("res.collectionName").doc(res.id);
+    const userMetaRef = db.collection(res.collectionName).doc(res.id);
     await userMetaRef.update(data as WithFieldValue<DocumentData>);
   } catch (error: unknown) {
     throw throwFBError(error);

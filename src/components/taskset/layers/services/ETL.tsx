@@ -3,7 +3,7 @@ import { fetchFile } from "@/apicalls/apicalls";
 import { TaskDB } from "@/T/typesDB";
 import { TaskDBWithFiles } from "@/T/typesState";
 import { InOutDB } from "@/T/typesUpload";
-import { TT } from "@/T/typesBasic";
+import { TT } from "@/T/const";
 
 export const supplyFilesAndTransform = async (tasks: TaskDB[]) => {
   const tasksWithFiles = await supplyWithFilesData(tasks);

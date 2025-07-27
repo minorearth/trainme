@@ -1,13 +1,4 @@
-import {
-  Page,
-  PG,
-  ST,
-  SuccessType,
-  TasksetMode,
-  TS,
-  TSM,
-  TT,
-} from "./typesBasic";
+import { PG, ST, TS, TSM, TT } from "./const";
 import { completedChapters } from "./typesDB";
 
 export const TASK_DEFAULTS = {

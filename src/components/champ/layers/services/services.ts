@@ -29,7 +29,7 @@ import {
   TASKSET_DEFAULTS,
 } from "@/T/typesdefaults";
 import { ChampDB } from "@/T/typesDB";
-import { CS, PS, TSM } from "@/T/typesBasic";
+import { CS, PS, TSM } from "@/T/const";
 import S from "@/globals/settings";
 import {
   finalErrorHandler,

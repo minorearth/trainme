@@ -53,7 +53,8 @@ import {
   TasksetStatePersisted,
 } from "@/T/typesState";
 import { CourseProgressDB } from "@/T/typesDB";
-import { Page, PG, ST, SuccessType, TSM } from "@/T/typesBasic";
+import { PG, ST, TSM } from "@/T/const";
+import { Page, SuccessType } from "@/T/typesBasic";
 import { throwInnerError } from "@/globals/errorMessages";
 
 export const openAllCoursePage = () => {

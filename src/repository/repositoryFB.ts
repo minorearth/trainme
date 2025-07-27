@@ -13,12 +13,11 @@ import {
 
 //types
 
-import { TT, CS, PS } from "@/T/typesBasic";
+import { TT, CS, PS, CLT } from "@/T/const";
 
 import {
   ChampDB,
   ChampuserDB,
-  CLT,
   TaskDB,
   TasksLogDB,
   CourseChapterObjDB,

@@ -10,7 +10,7 @@ import { runPythonCode } from "@/components/pyodide/pythonRunner";
 //Stores
 import taskset from "@/components/taskset/layers/store/taskset";
 import task from "@/components/taskset/taskrun/layers/store/task";
-import { TT } from "@/T/typesBasic";
+import { TT } from "@/T/const";
 import L from "@/globals/local";
 
 export const checkTask = async () => {

@@ -27,7 +27,7 @@ import champ from "@/components/champ/layers/store/champ";
 import chapter from "@/components/taskset/layers/store/chapter";
 import { CSP } from "@/T/typesDB";
 import { checkVersion } from "@/db/localstorage";
-import { PG, ST, TS, TSM } from "@/T/typesBasic";
+import { PG, ST, TS, TSM } from "@/T/const";
 import S from "@/globals/settings";
 
 //

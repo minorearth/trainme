@@ -1,5 +1,5 @@
 import navigator from "@/components/Navigator/layers/store/navigator";
-import { CT } from "@/T/typesBasic";
+import { CT } from "@/T/const";
 import { CoursesDBObj } from "@/T/typesDB";
 
 export const courses: CoursesDBObj = {

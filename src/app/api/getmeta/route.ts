@@ -4,8 +4,9 @@ export const revalidate = 0; //revalidate api every 0 second
 //https://stackoverflow.com/questions/76356803/data-not-updating-when-deployed-nextjs13-app-on-vercel-despite-using-cache-no
 
 import { getDocSA, checkCoursePaidSA } from "@/db/SA/firebaseSA";
-import { CLT, UserMetaDB } from "@/T/typesDB";
-import { GetDF } from "@/T/typesBasic";
+import { UserMetaDB } from "@/T/typesDB";
+import { CLT, GetDF } from "@/T/const";
+
 import { NextErrorResponseHandler } from "@/globals/errorMessages";
 import { ServerResponseData } from "@/T/typesFetch";
 

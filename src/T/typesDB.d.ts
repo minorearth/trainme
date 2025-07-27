@@ -1,4 +1,5 @@
 //////////////////////////DB
+import { CollectionWrite } from "trainpythontypes";
 
 import { Champstatus, CourseType, NodeModes, Persstatus } from "./typesBasic";
 import {
@@ -12,15 +13,13 @@ import {
 } from "./typesState";
 import { RawTaskToUploadWithoutLevel } from "./typesUpload";
 
+import { CLT } from "./const";
+
 export type Subcollection = {};
 
 export interface CollectionRead {
   id: string;
   collectionName: CollectonsTypes;
-}
-
-export interface CollectionWrite<T> extends CollectionRead {
-  data: T;
 }
 
 export interface SubCollectionRead extends CollectionRead {
@@ -32,20 +31,6 @@ export interface SubCollectionWrite<T> extends CollectionWrite<T> {
   subId: string;
   subCollectionName: CollectonsTypes;
 }
-
-// type AllValues<T> = T[keyof T];
-
-export const CLT = {
-  champ: "champ",
-  chapters: "chapters",
-  groups: "groups",
-  tasks: "tasks",
-  newtasks: "newtasks",
-  usermeta: "usermeta",
-  views: "views",
-  snapshots: "snapshots",
-  snapshot: "snapshot",
-} as const;
 
 export type CollectonsTypes = (typeof CLT)[keyof typeof CLT];
 // type CollectonsTypes = keyof Collectons;

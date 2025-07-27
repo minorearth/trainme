@@ -21,9 +21,9 @@ export const wakeUp = () => {
 
 interface setDataFetch {
   type: SetDataFetch;
-  data: string;
+  body: string;
 }
-export const setDataFetch = async (data: setDataFetch) => {
+export const setDataFetch = async (request: setDataFetch) => {
   try {
     wakeUp();
     const res = await new Promise((resolve, reject) => {
@@ -34,7 +34,7 @@ export const setDataFetch = async (data: setDataFetch) => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(request),
           });
           if (!response.ok) {
             const result = await response.json();

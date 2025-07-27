@@ -1,4 +1,5 @@
-import { AllCoursesRawTaskObj, URT, UserReportType } from "@/T/Managertypes";
+import { URT } from "@/T/const";
+import { AllCoursesRawTaskObj, UserReportType } from "@/T/Managertypes";
 import { courses } from "@/globals/coursesDB";
 import { CourseChapterObjDB, TaskLogAttrsDB, UserCoursesDB } from "@/T/typesDB";
 

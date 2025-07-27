@@ -19,7 +19,7 @@ import { GoArrowRight } from "react-icons/go";
 import { RxLayers } from "react-icons/rx";
 import { BsUnlock } from "react-icons/bs";
 import { NodeDataState } from "@/T/typesState";
-import { NM } from "@/T/typesBasic";
+import { NM } from "@/T/const";
 
 const myFont = localFont({
   src: "../../../app/Monaco.ttf",

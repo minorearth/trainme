@@ -7,7 +7,7 @@ import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";
 import chapter from "@/components/taskset/layers/store/chapter";
 import { CourseProgressDB } from "@/T/typesDB";
-import { PG } from "@/T/typesBasic";
+import { PG } from "@/T/const";
 
 //
 
