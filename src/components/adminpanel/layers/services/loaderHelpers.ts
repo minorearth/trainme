@@ -1,8 +1,8 @@
 //utils
 //TODO:crerate repository for upload courses
 import { extractChapterIdsOnly_admin } from "@/repository/ETL/ETLadmin";
-import { NodeDB, TaskDB } from "@/T/typesDB";
-import { RawTaskToUploadWithoutLevel } from "@/T/typesUpload";
+import { NodeDB, TaskDB } from "tpconst/T";
+import { RawTaskToUploadWithoutLevel } from "tpconst/T";
 import S from "@/globals/settings";
 
 export const getChaptersIdsAndTextBookId = (chapterFlowNodes: NodeDB[]) => {

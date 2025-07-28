@@ -5,9 +5,10 @@ export const revalidate = 1; //revalidate api every 1 second
 //https://stackoverflow.com/questions/76356803/data-not-updating-when-deployed-nextjs13-app-on-vercel-despite-using-cache-no
 
 import { updateDocSA } from "@/db/SA/firebaseSA";
-import { UserMetaDB } from "@/T/typesDB";
-import { SetDF, CLT } from "@/T/const";
+import { UserMetaDB } from "tpconst/T";
+import { SetDF } from "tpconst/constants";
 import E, { NextErrorResponseHandler } from "@/globals/errorMessages";
+import { CLT } from "tpconst/constants";
 
 interface reqData {
   type: string;

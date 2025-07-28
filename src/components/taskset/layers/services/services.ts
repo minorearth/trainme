@@ -37,10 +37,10 @@ import {
   CourseStatePersisted,
   Task,
   TasksetStatePersisted,
-} from "@/T/typesState";
-import { CourseProgressDB, TaskDB, UserMetaDB } from "@/T/typesDB";
-import { ST, TS, TSM } from "@/T/const";
-import { TasksetStage } from "@/T/typesBasic";
+} from "tpconst/T";
+import { CourseProgressDB, TaskDB, UserMetaDB } from "tpconst/T";
+import { ST, TS, TSM } from "tpconst/constants";
+import { TasksetStage } from "tpconst/T";
 import { throwInnerError } from "@/globals/errorMessages";
 
 //types

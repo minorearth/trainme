@@ -33,7 +33,7 @@ import TawkToChat from "@/components/common/tawkto/tawkto.js";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import course from "@/components/course/layers/store/course";
 import taskset from "@/components/taskset/layers/store/taskset";
-import { PG, ST } from "@/T/const";
+import { PG, ST } from "tpconst/constants";
 
 const Navigator = observer(() => {
   useApp();

@@ -19,14 +19,14 @@ import {
 
 import user from "@/auth/store/user";
 
-import { AllCoursesRawTaskObj, UserReport } from "@/T/Managertypes";
-import { PivotReport } from "@/T/Managertypes";
+import { AllCoursesRawTaskObj, UserReport } from "tpconst/T";
+import { PivotReport } from "tpconst/T";
 import {
   CourseChapterObjDB,
   GroupArr,
   UsersMetaReportDB,
   UsersMetaReportDBWrapper,
-} from "@/T/typesDB";
+} from "tpconst/T";
 
 class stat {
   actions = {

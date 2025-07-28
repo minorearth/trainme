@@ -13,7 +13,7 @@ import {
 
 //types
 
-import { TT, CS, PS, CLT } from "@/T/const";
+import { TT, CS, PS, CLT } from "tpconst/constants";
 
 import {
   ChampDB,
@@ -31,7 +31,7 @@ import {
   UserMetaDB,
   UsersMetaReportDB,
   completedChapters,
-} from "@/T/typesDB";
+} from "tpconst/T";
 
 //ETL
 import {

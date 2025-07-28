@@ -1,4 +1,4 @@
-import { TasksLogDB, UserMetaDB } from "@/T/typesDB";
+import { TasksLogDB, UserMetaDB } from "tpconst/T";
 
 export const taskLogToDBFormat = ({
   courseid,

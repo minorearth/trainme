@@ -4,8 +4,8 @@ import { toJS } from "mobx";
 import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
 
 //types
-import { Task } from "@/T/typesState";
-import { TaskDB } from "@/T/typesDB";
+import { Task } from "tpconst/T";
+import { TaskDB } from "tpconst/T";
 import E from "@/globals/errorMessages";
 import L from "@/globals/local";
 

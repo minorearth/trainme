@@ -7,7 +7,7 @@ import CodeRunPanel from "@/components/taskset/taskrun/components/coderunPanel";
 import styled from "styled-components";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import { observer } from "mobx-react-lite";
-import { TT } from "@/T/const";
+import { TT } from "tpconst/constants";
 import L from "@/globals/local";
 
 const Wrapper = styled.div`

@@ -1,4 +1,4 @@
-import { GroupArr, GroupDB } from "@/T/typesDB";
+import { GroupArr, GroupDB } from "tpconst/T";
 
 export const groupsObjectToArr = (data: GroupDB) => {
   const arr = Object.keys(data)

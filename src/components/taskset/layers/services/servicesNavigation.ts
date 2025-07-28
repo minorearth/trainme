@@ -20,7 +20,7 @@ import {
   setRecapTasks,
   ok,
 } from "@/components/taskset/layers/services/servicesNavigationHelpers";
-import { ST, TS, TSM } from "@/T/const";
+import { ST, TS, TSM } from "tpconst/constants";
 
 export const nextTaskOrCompleteTestRun = async ({
   error,

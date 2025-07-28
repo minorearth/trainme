@@ -1,4 +1,4 @@
-import { CourseProgressDB, CourseStatDB } from "@/T/typesDB";
+import { CourseProgressDB, CourseStatDB } from "tpconst/T";
 
 export const ETLUserProgress = (data: CourseProgressDB) => {
   const stat: CourseStatDB = Object.keys(data.stat).reduce(

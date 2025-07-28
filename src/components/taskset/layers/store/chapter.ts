@@ -12,8 +12,8 @@ interface ITask {
   // openAndRefreshFlowPage?: (courseid: string) => void;
 }
 
-import { CHAPTER_DEFAULTS } from "@/T/typesdefaults";
-import { ChapterStatePersisted } from "@/T/typesState";
+import { CHAPTER_DEFAULTS } from "tpconst/typesdefaults";
+import { ChapterStatePersisted } from "tpconst/T";
 
 class chapter {
   state: ChapterStatePersisted = CHAPTER_DEFAULTS;

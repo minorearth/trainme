@@ -6,7 +6,7 @@ import { addNewGroupDB, updateNodeLabelDB } from "@/repository/repositoryFB";
 //stores
 import user from "@/auth/store/user";
 import stat from "@/components/manager/groupsNreports/store/stat";
-import { GroupArr } from "@/T/typesDB";
+import { GroupArr } from "tpconst/T";
 import L from "@/globals/local";
 import S from "@/globals/settings";
 

@@ -5,7 +5,7 @@ import { getGroupsArr, getChaptersObjdata } from "@/repository/repositoryFB";
 //stores
 import stat from "@/components/manager/groupsNreports/store/stat";
 import user from "@/auth/store/user";
-import { RawTaskObj } from "@/T/Managertypes";
+import { RawTaskObj } from "tpconst/T";
 
 export const getAllCoursesTasks = async () => {
   const readyCourses = getReadyCourses();

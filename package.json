@@ -35,7 +35,6 @@
     "read-excel-file": "^5.8.6",
     "styled-components": "^6.1.15",
     "tinycolor2": "^1.6.0",
-    "trainpythontypes": "^1.0.1",
     "uuid": "^11.0.3"
   },
   "devDependencies": {
@@ -46,6 +45,7 @@
     "dependency-cruiser": "^16.10.2",
     "eslint": "^9",
     "eslint-config-next": "15.1.0",
+    "tpconst": "^1.0.7",
     "typescript": "^5.8.3"
   }
 }

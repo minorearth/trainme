@@ -30,7 +30,7 @@ import { TreeItemIcon } from "@mui/x-tree-view/TreeItemIcon";
 import { TreeItemProvider } from "@mui/x-tree-view/TreeItemProvider";
 import { TreeItemLabelInput } from "@mui/x-tree-view/TreeItemLabelInput";
 import stat from "@/components/manager/groupsNreports/store/stat";
-import { GroupArr } from "@/T/typesDB";
+import { GroupArr } from "tpconst/T";
 
 const CustomTreeItem = React.forwardRef(function CustomTreeItem(
   props: UseTreeItemParameters,

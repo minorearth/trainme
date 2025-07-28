@@ -1,7 +1,7 @@
 import L from "@/globals/local";
 
 import { eqArrays } from "@/globals/utils/arrUtils";
-import { Task } from "@/T/typesState";
+import { Task } from "tpconst/T";
 
 const cleanUpCode = (code: string) => {
   const lines = code.match(/[^\r\n]+/g) ?? [];

@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { toJS } from "mobx";
 import styled from "styled-components";
 import { courses } from "@/globals/coursesDB";
-import { CoursePivotReport } from "@/T/Managertypes";
+import { CoursePivotReport } from "tpconst/T";
 
 const PivotTable = observer(
   ({ data, courseid }: { data: CoursePivotReport; courseid: string }) => {

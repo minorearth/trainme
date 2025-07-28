@@ -2,7 +2,7 @@
 import Grid from "@mui/material/Grid2";
 import Card from "./courseCard";
 import { getCoursesSorted } from "@/repository/repositoryLocalFiles";
-import { CoursesDB } from "@/T/typesDB";
+import { CoursesDB } from "tpconst/T";
 
 import splash from "@/components/common/splash/store";
 

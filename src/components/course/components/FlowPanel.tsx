@@ -32,8 +32,8 @@ import {
   CHAMPUSER_DEFAULTS,
   CHAPTER_DEFAULTS,
   TASKSET_DEFAULTS,
-} from "@/T/typesdefaults";
-import { TSM } from "@/T/const";
+} from "tpconst/typesdefaults";
+import { TSM } from "tpconst/constants";
 
 const ICON_SIZE = "60px";
 const FlowPanel = observer(() => {

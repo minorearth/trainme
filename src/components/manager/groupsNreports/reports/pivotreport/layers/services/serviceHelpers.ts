@@ -1,7 +1,7 @@
 import { chaptersObjToArraySorted } from "@/components/course/layers/services/utils";
-import { ChapterArrReport, PivotReport } from "@/T/Managertypes";
+import { ChapterArrReport, PivotReport } from "tpconst/T";
 
-import { GroupUserObjReport, GroupUserObjReportAttr } from "@/T/Managertypes";
+import { GroupUserObjReport, GroupUserObjReportAttr } from "tpconst/T";
 
 import {
   ChapterObjReportDB,
@@ -9,7 +9,7 @@ import {
   CourseChapterObjDB,
   UserCoursesReportDBAttrs,
   UsersMetaReportDB,
-} from "@/T/typesDB";
+} from "tpconst/T";
 
 import L from "@/globals/local";
 

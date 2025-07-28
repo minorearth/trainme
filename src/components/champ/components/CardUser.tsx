@@ -8,7 +8,7 @@ import { GoDash } from "react-icons/go";
 
 //components
 import { avatars } from "@/components/champ/components/avatar/avatarsAll";
-import { ChampuserDB } from "@/T/typesDB";
+import { ChampuserDB } from "tpconst/T";
 
 const UserCard = ({ user }: { user: ChampuserDB }) => {
   const { name, pts, change, avatarid } = user;

@@ -28,7 +28,7 @@ import {
   CHAMP_DEFAULTS,
   COURSE_DEFAULTS,
   TASKSET_DEFAULTS,
-} from "@/T/typesdefaults";
+} from "tpconst/typesdefaults";
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
@@ -43,7 +43,7 @@ import chapter from "@/components/taskset/layers/store/chapter";
 import task from "@/components/taskset/taskrun/layers/store/task";
 //
 
-import { CHAPTER_DEFAULTS } from "@/T/typesdefaults";
+import { CHAPTER_DEFAULTS } from "tpconst/typesdefaults";
 
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import {
@@ -51,10 +51,10 @@ import {
   ChapterStatePersisted,
   CourseStatePersisted,
   TasksetStatePersisted,
-} from "@/T/typesState";
-import { CourseProgressDB } from "@/T/typesDB";
-import { PG, ST, TSM } from "@/T/const";
-import { Page, SuccessType } from "@/T/typesBasic";
+} from "tpconst/T";
+import { CourseProgressDB } from "tpconst/T";
+import { PG, ST, TSM } from "tpconst/constants";
+import { Page, SuccessType } from "tpconst/T";
 import { throwInnerError } from "@/globals/errorMessages";
 
 export const openAllCoursePage = () => {

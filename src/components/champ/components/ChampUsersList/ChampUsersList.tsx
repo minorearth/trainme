@@ -9,7 +9,7 @@ import UserCard from "@/components/champ/components/CardUser";
 
 //stores
 import champ from "@/components/champ/layers/store/champ";
-import { ChampuserDB } from "@/T/typesDB";
+import { ChampuserDB } from "tpconst/T";
 
 import L from "@/globals/local";
 

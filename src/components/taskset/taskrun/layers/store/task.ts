@@ -27,9 +27,9 @@ import {
   runTask,
 } from "@/components/taskset/taskrun/layers/services/taskCheck";
 
-import { TASK_DEFAULTS } from "@/T/typesdefaults";
-import { Task } from "@/T/typesState";
-import { TT } from "@/T/const";
+import { TASK_DEFAULTS } from "tpconst/typesdefaults";
+import { Task } from "tpconst/T";
+import { TT } from "tpconst/constants";
 
 interface HandleEditorDidMount {
   editor: editor.IStandaloneCodeEditor | null;

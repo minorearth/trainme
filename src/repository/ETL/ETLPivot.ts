@@ -1,4 +1,4 @@
-import { RawTaskObj } from "@/T/Managertypes";
+import { RawTaskObj } from "tpconst/T";
 import {
   completedChapters,
   CourseStatDB,
@@ -6,7 +6,7 @@ import {
   UserCoursesDB,
   UserMetaDB,
   UsersMetaReportDB,
-} from "@/T/typesDB";
+} from "tpconst/T";
 
 export const extractUsersMetaObj = (
   usersMeta: UserMetaDB[]

@@ -1,6 +1,6 @@
 import navigator from "@/components/Navigator/layers/store/navigator";
-import { CT } from "@/T/const";
-import { CoursesDBObj } from "@/T/typesDB";
+import { CT } from "tpconst/constants";
+import { CoursesDBObj } from "tpconst/T";
 
 export const courses: CoursesDBObj = {
   "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0": {

@@ -12,7 +12,7 @@ import splash from "@/components/common/splash/store";
 
 //service helpers
 import { enrichFlowWithUserProgress } from "@/components/course/layers/services/servicesHelpers";
-import { CourseProgressDB } from "@/T/typesDB";
+import { CourseProgressDB } from "tpconst/T";
 
 export const getFlow = async ({
   courseid,

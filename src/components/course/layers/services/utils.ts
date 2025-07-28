@@ -1,4 +1,4 @@
-import { ChapterObjReportDB } from "@/T/typesDB";
+import { ChapterObjReportDB } from "tpconst/T";
 
 export const chaptersObjToArraySorted = (chapters: ChapterObjReportDB) => {
   const res = Object.keys(chapters).map((chapterId) => ({

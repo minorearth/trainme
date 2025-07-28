@@ -23,7 +23,7 @@ import AnimNode from "../components/AnimNode";
 import user from "@/auth/store/user";
 import course from "@/components/course/layers/store/course";
 import alertdialog from "@/components/common/dialog/store";
-import { NodeDataState, NodeDBState } from "@/T/typesState";
+import { NodeDataState, NodeDBState } from "tpconst/T";
 
 const nodeTypes = {
   turbo: TurboNode,

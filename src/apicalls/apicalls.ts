@@ -1,10 +1,10 @@
-import { GetDataFetchTypes, SetDataFetch } from "@/T/typesBasic";
+import { GetDataFetchTypes, SetDataFetch } from "tpconst/T";
 import S from "@/globals/settings";
 import E, {
   throwFetchAPIError,
   throwInnerError,
 } from "@/globals/errorMessages";
-import { ServerResponseData } from "@/T/typesFetch";
+import { ServerResponseData } from "tpconst/T";
 
 //TODO:DO
 export const wakeUp = () => {

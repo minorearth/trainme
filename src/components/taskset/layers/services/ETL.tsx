@@ -1,9 +1,9 @@
 import L from "@/globals/local";
 import { fetchFile } from "@/apicalls/apicalls";
-import { TaskDB } from "@/T/typesDB";
-import { TaskDBWithFiles } from "@/T/typesState";
-import { InOutDB } from "@/T/typesUpload";
-import { TT } from "@/T/const";
+import { TaskDB } from "tpconst/T";
+import { TaskDBWithFiles } from "tpconst/T";
+import { InOutDB } from "tpconst/T";
+import { TT } from "tpconst/constants";
 
 export const supplyFilesAndTransform = async (tasks: TaskDB[]) => {
   const tasksWithFiles = await supplyWithFilesData(tasks);

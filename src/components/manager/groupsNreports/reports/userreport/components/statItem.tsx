@@ -20,8 +20,8 @@ import {
 import { TreeItemIcon } from "@mui/x-tree-view/TreeItemIcon";
 import { TreeItemProvider } from "@mui/x-tree-view/TreeItemProvider";
 import stat from "@/components/manager/groupsNreports/store/stat";
-import { UserReport } from "@/T/Managertypes";
-import { TT } from "@/T/const";
+import { UserReport } from "tpconst/T";
+import { TT } from "tpconst/constants";
 
 const CustomStatItem = React.forwardRef(function CustomStatItem(
   props: UseTreeItemParameters,

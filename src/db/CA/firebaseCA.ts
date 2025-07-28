@@ -1,13 +1,12 @@
 import {
   CollectionRead,
+  CollectionWrite,
   // CollectionWrite,
   CollectonsTypes,
   DBFormats,
   SubCollectionRead,
   SubCollectionWrite,
-} from "@/T/typesDB";
-
-import { CollectionWrite } from "trainpythontypes";
+} from "tpconst/T";
 
 import { db } from "./firebaseappClient";
 

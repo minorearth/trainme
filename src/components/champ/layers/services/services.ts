@@ -27,9 +27,9 @@ import {
   CHAPTER_DEFAULTS,
   COURSE_DEFAULTS,
   TASKSET_DEFAULTS,
-} from "@/T/typesdefaults";
-import { ChampDB } from "@/T/typesDB";
-import { CS, PS, TSM } from "@/T/const";
+} from "tpconst/typesdefaults";
+import { ChampDB } from "tpconst/T";
+import { CS, PS, TSM } from "tpconst/constants";
 import S from "@/globals/settings";
 import {
   finalErrorHandler,

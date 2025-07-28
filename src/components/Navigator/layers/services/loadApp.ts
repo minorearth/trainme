@@ -25,9 +25,9 @@ import user from "@/auth/store/user";
 import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";
 import chapter from "@/components/taskset/layers/store/chapter";
-import { CSP } from "@/T/typesDB";
+import { CSP } from "tpconst/T";
 import { checkVersion } from "@/db/localstorage";
-import { PG, ST, TS, TSM } from "@/T/const";
+import { PG, ST, TS, TSM } from "tpconst/constants";
 import S from "@/globals/settings";
 
 //

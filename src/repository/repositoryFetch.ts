@@ -1,16 +1,16 @@
 //types
 
-import { SetDF } from "@/T/const";
+import { SetDF } from "tpconst/constants";
 import {
   CourseProgressDB,
   CourseStatDB,
   TasksLogDB,
   UserMetaDB,
-} from "@/T/typesDB";
+} from "tpconst/T";
 
 //api calls
 import { setDataFetch, getDataFetch } from "@/apicalls/apicalls";
-import { GetDF } from "@/T/const";
+import { GetDF } from "tpconst/constants";
 
 //utils
 import { encrypt2 } from "@/globals/utils/encryption";

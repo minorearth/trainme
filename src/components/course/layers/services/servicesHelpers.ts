@@ -9,10 +9,10 @@ import user from "@/auth/store/user";
 
 //services(local)
 import { buyChapter } from "@/components/course/layers/services/services";
-import { NodeDataState } from "@/T/typesState";
-import { CourseProgressDB, CourseStatDB, EdgeDB, NodeDB } from "@/T/typesDB";
-import { TASKSET_DEFAULTS } from "@/T/typesdefaults";
-import { TasksetMode } from "@/T/typesBasic";
+import { NodeDataState } from "tpconst/T";
+import { CourseProgressDB, CourseStatDB, EdgeDB, NodeDB } from "tpconst/T";
+import { TASKSET_DEFAULTS } from "tpconst/typesdefaults";
+import { TasksetMode } from "tpconst/T";
 
 const buyAction = ({
   unlocked,

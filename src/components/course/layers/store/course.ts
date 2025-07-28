@@ -1,8 +1,8 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { runInAction } from "mobx";
 import { updateSCP } from "@/db/localstorage";
-import { CourseStatePersisted, FlowState } from "@/T/typesState";
-import { COURSE_DEFAULTS } from "@/T/typesdefaults";
+import { CourseStatePersisted, FlowState } from "tpconst/T";
+import { COURSE_DEFAULTS } from "tpconst/typesdefaults";
 
 const FLOW_DEFAULTS = {
   nodes: [],

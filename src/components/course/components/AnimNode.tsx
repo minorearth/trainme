@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
-import { NodeDataDB } from "@/T/typesDB";
+import { NodeDataDB } from "tpconst/T";
 
 const AnimNode = memo(({ data }: { data: NodeDataDB }) => {
   return (

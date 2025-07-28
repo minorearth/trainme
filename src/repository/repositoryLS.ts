@@ -2,7 +2,7 @@
 import { checkVersion, cleanUpCSP, getCSP } from "@/db/localstorage";
 
 //types
-import { CSP } from "@/T/typesDB";
+import { CSP } from "tpconst/T";
 
 //eror handling
 import { throwInnerError } from "@/globals/errorMessages";

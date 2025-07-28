@@ -1,8 +1,7 @@
 import { makeObservable, makeAutoObservable } from "mobx";
-import { updateSCP, updateKeySCP } from "@/db/localstorage";
-import { USERPROGRESS_DEFAULTS } from "@/T/typesdefaults";
-import { CourseProgressDB, UserName } from "@/T/typesDB";
-import { UserStatePersisted } from "@/T/typesState";
+import { updateKeySCP } from "@/db/localstorage";
+import { CourseProgressDB, UserName } from "tpconst/T";
+import { USERPROGRESS_DEFAULTS } from "tpconst/typesdefaults";
 // import { getUserMetaCourseProgress } from "@/userlayers/repository/repositoryUserMeta";
 
 class user {

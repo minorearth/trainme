@@ -5,15 +5,14 @@ import { decrypt2 } from "@/globals/utils/encryption";
 import { db } from "./firebaseappAdmin";
 import {
   CollectionRead,
+  CollectionWrite,
   // CollectionWrite,
   CollectonsTypes,
   DBFormats,
   UserMetaDB,
-} from "@/T/typesDB";
+} from "tpconst/T";
 
-import { CollectionWrite } from "trainpythontypes";
-
-import { CLT } from "@/T/const";
+import { CLT } from "tpconst/constants";
 
 import { throwFBError } from "@/globals/errorMessages";
 

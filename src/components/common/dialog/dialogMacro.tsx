@@ -1,8 +1,8 @@
 import alertdialog from "@/components/common/dialog/store";
 import splash from "@/components/common/splash/store";
 import L from "@/globals/local";
-import { TasksetMode } from "@/T/typesBasic";
-import { TSM } from "@/T/const";
+import { TasksetMode } from "tpconst/T";
+import { TSM } from "tpconst/constants";
 
 export const da = {
   info: {

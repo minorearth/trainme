@@ -14,8 +14,8 @@ import { encrypt2 } from "@/globals/utils/encryption";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import course from "@/components/course/layers/store/course";
 import user from "@/auth/store/user";
-import { UserMetaDB } from "@/T/typesDB";
-import { CLT } from "@/T/const";
+import { UserMetaDB } from "tpconst/T";
+import { CLT } from "tpconst/constants";
 
 import E, { finalErrorHandler } from "@/globals/errorMessages";
 
