@@ -13,10 +13,8 @@ import {
   getChaptersIdsAndTextBookId,
   getChapterTasks,
 } from "@/components/adminpanel/layers/services/loaderHelpers";
-import { CoursesDataToUpload } from "tpconst/T";
-import { Edge } from "@xyflow/react";
+import { CoursesDataToUpload, CourseChapterObjDB } from "tpconst/T";
 import splash from "@/components/common/splash/store";
-import { CourseChapterObjDB, TaskDB } from "tpconst/T";
 
 import S from "@/globals/settings";
 
