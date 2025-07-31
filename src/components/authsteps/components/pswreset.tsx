@@ -11,7 +11,7 @@ import { CustomLink } from "@/components/authsteps/components/customLink";
 import CustomField from "@/components/common/customfield/customField";
 
 //globals
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 
 //services(local)
 import { recoverPswSubmit } from "@/components/authsteps/layers/services/services";

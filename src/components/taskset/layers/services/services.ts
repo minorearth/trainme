@@ -5,15 +5,15 @@ import {
   saveProgressDB,
   saveProgressDBNotCompletedAndSuccess,
   saveUserMeta,
-} from "@/repository/repositoryFetch";
-import { getChampTasksDB } from "@/repository/repositoryFB";
+} from "@/db/repository/repositoryFetch";
+import { getChampTasksDB } from "@/db/repository/repositoryFBCA";
 
 //repository(local)
 import {
   getAllTasksFromChapter,
   getTextBookTasks,
   getAllCourseTasks,
-} from "@/repository/repositoryFB";
+} from "@/db/repository/repositoryFBCA";
 
 //service helpers(local)
 import {
@@ -21,7 +21,7 @@ import {
   getRandomTasks,
 } from "@/components/taskset/layers/services/servicesHelpers";
 
-import { taskLogToDBFormat } from "@/repository/ETL/ETLTaskset";
+import { taskLogToDBFormat } from "@/db/repository/ETL/ETLTaskset";
 
 // ETL
 import { supplyFilesAndTransform } from "@/components/taskset/layers/services/ETL";
@@ -41,7 +41,7 @@ import {
 import { CourseProgressDB, TaskDB, UserMetaDB } from "tpconst/T";
 import { ST, TS, TSM } from "tpconst/constants";
 import { TasksetStage } from "tpconst/T";
-import { throwInnerError } from "@/globals/errorMessages";
+import { throwInnerError } from "@/globals/errorsHandling/errorHandlers";
 
 //types
 
@@ -182,35 +182,39 @@ export const getExamTasks = async ({
 };
 
 export const saveProgress = async () => {
-  const { pts, tasklog, success } = taskset.state;
-  const { chapterid, tobeunlocked, completed } = chapter.state;
-  const progress = user.progress;
-  const { unlocked, rating, stat, completed: completedChapters } = progress;
-  const courseid = course.state.courseid;
+  try {
+    const { pts, tasklog, success } = taskset.state;
+    const { chapterid, tobeunlocked, completed } = chapter.state;
+    const progress = user.progress;
+    const { unlocked, rating, stat, completed: completedChapters } = progress;
+    const courseid = course.state.courseid;
 
-  if (!completed && success == ST.success) {
-    await saveProgressDBNotCompletedAndSuccess({
-      courseid,
-      chapterid,
-      tasklog,
-      rating,
-      pts,
-      stat,
-      completedChapters,
-      unlocked,
-      tobeunlocked,
-      userid: user.userid,
-    });
-  } else {
-    await saveProgressDB({
-      courseid,
-      chapterid,
-      tasklog,
-      rating,
-      pts,
-      stat,
-      userid: user.userid,
-    });
+    if (!completed && success == ST.success) {
+      await saveProgressDBNotCompletedAndSuccess({
+        courseid,
+        chapterid,
+        tasklog,
+        rating,
+        pts,
+        stat,
+        completedChapters,
+        unlocked,
+        tobeunlocked,
+        userid: user.userid,
+      });
+    } else {
+      await saveProgressDB({
+        courseid,
+        chapterid,
+        tasklog,
+        rating,
+        pts,
+        stat,
+        userid: user.userid,
+      });
+    }
+  } catch (error) {
+    throw throwInnerError(error);
   }
 };
 

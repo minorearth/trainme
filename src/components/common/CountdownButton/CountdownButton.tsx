@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import Button from "@mui/material/Button";
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 import S from "@/globals/settings";
 
 const CountdownButton = ({ onClick }: { onClick: () => void }) => {

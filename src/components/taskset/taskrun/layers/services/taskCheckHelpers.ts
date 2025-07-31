@@ -1,4 +1,4 @@
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 
 import { eqArrays } from "@/globals/utils/arrUtils";
 import { Task } from "tpconst/T";

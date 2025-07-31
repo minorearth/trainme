@@ -1,10 +1,9 @@
-import { GetDataFetchTypes, SetDataFetch } from "tpconst/T";
 import S from "@/globals/settings";
-import E, {
+import { GetDataFetchTypes, ServerResponseData, SetDataFetch } from "tpconst/T";
+import {
   throwFetchAPIError,
   throwInnerError,
-} from "@/globals/errorMessages";
-import { ServerResponseData } from "tpconst/T";
+} from "@/globals/errorsHandling/errorHandlers";
 
 //TODO:DO
 export const wakeUp = () => {
@@ -38,6 +37,7 @@ export const setDataFetch = async (request: setDataFetch) => {
           });
           if (!response.ok) {
             const result = await response.json();
+            console.log("я тут");
             throw throwFetchAPIError(new Error(result.message));
           }
           const result = await response.json();

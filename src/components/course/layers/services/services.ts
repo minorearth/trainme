@@ -1,8 +1,8 @@
 import { toJS } from "mobx";
 
 //repository(local)
-import { getFlowDB } from "@/repository/repositoryFB";
-import { buyChapterCall } from "@/repository/repositoryFetch";
+import { getFlowDB } from "@/db/repository/repositoryFBCA";
+import { buyChapterCall } from "@/db/repository/repositoryFetch";
 
 //stores
 import course from "@/components/course/layers/store/course";

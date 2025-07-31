@@ -8,7 +8,7 @@ import {
   checkFirstName,
   checkSecondName,
 } from "@/components/common/customfield/validators";
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 import { CFT } from "./types";
 
 export const textFieldProps: {

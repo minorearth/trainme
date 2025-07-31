@@ -1,4 +1,5 @@
-import { da } from "@/components/common/dialog/dialogMacro";
+import { dialogs } from "@/components/common/dialog/dialogMacro";
+import { L } from "tpconst/lang";
 
 // utils
 import { ObjtoArr } from "@/globals/utils/objectUtils";
@@ -15,7 +16,7 @@ import {
   getUserChampStatus,
   createNewChamp,
   setChampStarted,
-} from "@/repository/repositoryFB";
+} from "@/db/repository/repositoryFBCA";
 
 //stores
 import user from "@/auth/store/user";
@@ -31,11 +32,11 @@ import {
 import { ChampDB } from "tpconst/T";
 import { CS, PS, TSM } from "tpconst/constants";
 import S from "@/globals/settings";
+import { E_CODES } from "errorhandlers";
 import {
   finalErrorHandler,
-  throwFBError,
   throwInnerError,
-} from "@/globals/errorMessages";
+} from "@/globals/errorsHandling/errorHandlers";
 
 export const createChamp = async () => {
   try {
@@ -49,8 +50,8 @@ export const createChamp = async () => {
     champ.setChampIdP(champid);
     champ.setUsers([]);
     createNewChamp({ tasks, champid });
-  } catch (e: unknown) {
-    finalErrorHandler(e);
+  } catch (error: unknown) {
+    finalErrorHandler(error, dialogs, L.ru.msg);
   }
 };
 
@@ -66,23 +67,27 @@ export const joinChamp = async () => {
         captureUsersJoined({ champid: champ.champid });
         captureChampStart({ champid: champ.champid });
       }
-      await updateUserInChamp({
-        userid: user.userid,
-        champuserdata: {
-          uid: user.userid,
-          name: txtField.state.nickname.value,
-          change: 0,
-          pts: 0,
-          persstatus: PS.joined,
-          avatarid: user.avatarid,
-        },
-        champid: champ.champid,
-      });
+      try {
+        await updateUserInChamp({
+          userid: user.userid,
+          champuserdata: {
+            uid: user.userid,
+            name: txtField.state.nickname.value,
+            change: 0,
+            pts: 0,
+            persstatus: PS.joined,
+            avatarid: user.avatarid,
+          },
+          champid: champ.champid,
+        });
+      } catch (error) {
+        throw new Error(E_CODES.NO_CHAMP_FOUND_LIKELY);
+      }
     }
-    if (persstatus == PS.champwip) da.info.champblocked();
-    if (persstatus == PS.champisover) da.info.champover();
-  } catch (e: unknown) {
-    da.info.nochamp(e);
+    if (persstatus == PS.champwip) throw new Error(E_CODES.CHAMP_COMEBACK);
+    if (persstatus == PS.champisover) throw new Error(E_CODES.CHAMP_OVER);
+  } catch (error: unknown) {
+    finalErrorHandler(error, dialogs, L.ru.msg);
   }
 };
 

@@ -1,14 +1,19 @@
 import { toJS } from "mobx";
-import { da } from "@/components/common/dialog/dialogMacro";
+
+import { L } from "tpconst/lang";
+import {
+  dialogs,
+  getTaskSetInterruptedInfo,
+} from "@/components/common/dialog/dialogMacro";
 
 //repository(external)
 import {
   checkCoursePaid,
   getUserMetaCourseProgress,
-} from "@/repository/repositoryFetch";
-import { checkCourseReady } from "@/repository/repositoryLocalFiles";
+} from "@/db/repository/repositoryFetch";
+import { checkCourseReady } from "@/db/repository/repositoryLocalFiles";
 
-import { saveChampUserTaskLog } from "@/repository/repositoryFB";
+import { saveChampUserTaskLog } from "@/db/repository/repositoryFBCA";
 
 //services(external)
 import { signOut } from "@/auth/services/servicesAuth";
@@ -55,24 +60,29 @@ import {
 import { CourseProgressDB } from "tpconst/T";
 import { PG, ST, TSM } from "tpconst/constants";
 import { Page, SuccessType } from "tpconst/T";
-import { throwInnerError } from "@/globals/errorMessages";
+import E_CODES, {
+  finalErrorHandler,
+  throwInnerError,
+} from "@/globals/errorsHandling/errorHandlers";
 
 export const openAllCoursePage = () => {
   setAllCoursePageState();
 };
 
 export const openCourseFlowPageFromMain = async (courseid: string) => {
-  splash.showProgress(false, "progressdots", 2000);
+  try {
+    splash.showProgress(false, "progressdots", 2000);
 
-  const coursePaid = await checkCoursePaid({ courseid, uid: user.userid });
-  const courseReady = checkCourseReady({ courseid });
+    const coursePaid = await checkCoursePaid({ courseid, uid: user.userid });
+    const courseReady = checkCourseReady({ courseid });
 
-  if (!coursePaid || !courseReady) {
-    da.info.courseblocked();
-    return;
+    if (!coursePaid || !courseReady) throw Error(E_CODES.COURSE_IS_DISABLED);
+
+    await openAndRefreshFlowPage({ courseid, refetchFlow: true });
+    splash.closeProgress();
+  } catch (error) {
+    finalErrorHandler(error, dialogs, L.ru.msg);
   }
-  await openAndRefreshFlowPage({ courseid, refetchFlow: true });
-  splash.closeProgress();
 };
 
 export const openAndRefreshFlowPage = async ({
@@ -114,6 +124,9 @@ export const openLessonStartPage = async ({
       userProgress: user.progress,
     });
 
+    if (tasksetmode == TSM.textbook && !tasks.length)
+      throw Error(E_CODES.TEXTBOOK_BLOCKED);
+
     taskset.setTaskSetTasks({ tasks });
     task.setCurrTask(tasks[0]);
 
@@ -128,9 +141,7 @@ export const openLessonStartPage = async ({
 
     chapter.setChapterStateP(chapterData);
 
-    if (tasksetmode == TSM.textbook && !tasks.length) {
-      da.info.textbookblocked();
-    } else navigator.setStateP({ page: PG.lessonStarted as Page });
+    navigator.setStateP({ page: PG.lessonStarted as Page });
   } catch (error) {
     throw throwInnerError(error);
   }
@@ -168,8 +179,8 @@ export const closeCongratPage = async () => {
         courseid: course.state.courseid,
         refetchFlow: true,
       });
-    } catch (e: unknown) {
-      da.info.networkerror(e);
+    } catch (error: unknown) {
+      finalErrorHandler(error, dialogs, L.ru.msg);
     }
 
   if (tasksetmode == TSM.champ) {
@@ -186,13 +197,18 @@ export const closeCongratPage = async () => {
 export const interruptTaskSet = () => {
   const { tasksetmode } = taskset.state;
   if (tasksetmode != TSM.textbook) {
-    da.info.tasksetinterrupt({
+    const { caption = "", text = "" } = getTaskSetInterruptedInfo({
+      completed: chapter.state.completed,
+      tasksetmode,
+    });
+
+    dialogs.okCancel({
+      text,
+      caption,
       action: () =>
         openCongratPage({
           success: ST.fail,
         }),
-      tasksetmode,
-      completed: chapter.state.completed,
     });
   } else {
     openAndRefreshFlowPage({

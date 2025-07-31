@@ -9,7 +9,7 @@ import S from "@/globals/settings";
 //stores
 import navigator from "./layers/store/navigator";
 import { PG } from "tpconst/constants";
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 const RIGHT = 16;
 const TOP = 16;
 

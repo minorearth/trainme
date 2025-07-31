@@ -11,7 +11,7 @@ import { runPythonCode } from "@/components/pyodide/pythonRunner";
 import taskset from "@/components/taskset/layers/store/taskset";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import { TT } from "tpconst/constants";
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 
 export const checkTask = async () => {
   if (task.executing) return;

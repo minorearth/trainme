@@ -1,4 +1,4 @@
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 import { fetchFile } from "@/apicalls/apicalls";
 import { TaskDB } from "tpconst/T";
 import { TaskDBWithFiles } from "tpconst/T";

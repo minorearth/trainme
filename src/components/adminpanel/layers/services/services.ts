@@ -1,78 +1,37 @@
-//stores
-import { courses } from "@/globals/coursesDB";
-
-//DB
-import { updateDocSA } from "@/db/SA/firebaseSA";
-
 //repository
-import { getChapterIds_admin } from "@/repository/repositoryFB";
-
-//utils
-import { encrypt2 } from "@/globals/utils/encryption";
+import { getChapterIds_admin } from "@/db/repository/repositoryFBCA";
+import {
+  completeAllChaptersDBSA,
+  resetUser,
+  setMoneyDBSA,
+  unlockAllChaptersDBSA,
+} from "@/db/repository/repositoryFBSA";
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
 import course from "@/components/course/layers/store/course";
 import user from "@/auth/store/user";
-import { UserMetaDB } from "tpconst/T";
-import { CLT } from "tpconst/constants";
-
-import E, { finalErrorHandler } from "@/globals/errorMessages";
+import { courses } from "@/globals/coursesDB";
 
 export const resetCurrentUser = async () => {
   const courseid = course.state.courseid;
-  await resetUser({ courseid, uid: user.userid });
+  await resetUser({
+    courseid,
+    uid: user.userid,
+    firstchapter: courses[courseid].firstchapter,
+  });
   navigator.actions.openAndRefreshFlowPage({
     courseid,
     refetchFlow: true,
   });
 };
 
-export const resetUser = async ({
-  courseid,
-  uid,
-}: {
-  courseid: string;
-  uid: string;
-}) => {
-  const data = {
-    data: {
-      [`courses.${courseid}`]: {
-        completed: [],
-        unlocked: [courses[courseid].firstchapter],
-        lastunlocked: [courses[courseid].firstchapter],
-        paid: [],
-        stat: {},
-        rating: 0,
-      },
-    },
-    id: uid,
-  };
-  try {
-    await updateDocSA<UserMetaDB>({
-      collectionName: CLT.usermeta,
-      dataencrypted: encrypt2(data),
-    });
-  } catch (error) {
-    finalErrorHandler(error);
-  }
-};
-
 export const unlockAllChaptersCurrentUser = async () => {
   const courseid = course.state.courseid;
   const chaptersIds = await getChapterIds_admin({ courseid });
-  const data = {
-    data: {
-      [`courses.${courseid}.completed`]: [],
-      [`courses.${courseid}.unlocked`]: chaptersIds,
-      [`courses.${courseid}.lastunlocked`]: [courses[courseid].firstchapter],
-    },
-    id: user.userid,
-  };
-  await updateDocSA<UserMetaDB>({
-    collectionName: CLT.usermeta,
-    dataencrypted: encrypt2(data),
-  });
+
+  await unlockAllChaptersDBSA({ courseid, userid: user.userid, chaptersIds });
+
   navigator.actions.openAndRefreshFlowPage({
     courseid,
     refetchFlow: true,
@@ -82,19 +41,7 @@ export const unlockAllChaptersCurrentUser = async () => {
 export const completeAllChaptersCurrentUser = async () => {
   const courseid = course.state.courseid;
   const chaptersIds = await getChapterIds_admin({ courseid });
-  const data = {
-    data: {
-      [`courses.${courseid}.completed`]: chaptersIds,
-      [`courses.${courseid}.unlocked`]: chaptersIds,
-      [`courses.${courseid}.lastunlocked`]: [courses[courseid].firstchapter],
-      [`courses.${courseid}.paid`]: chaptersIds,
-    },
-    id: user.userid,
-  };
-  await updateDocSA<UserMetaDB>({
-    collectionName: CLT.usermeta,
-    dataencrypted: encrypt2(data),
-  });
+  await completeAllChaptersDBSA({ courseid, userid: user.userid, chaptersIds });
 
   navigator.actions.openAndRefreshFlowPage({
     courseid,
@@ -104,15 +51,7 @@ export const completeAllChaptersCurrentUser = async () => {
 
 export const setMoneyCurrentUser = async (inValue: string) => {
   const courseid = course.state.courseid;
-  const data = {
-    data: { [`courses.${courseid}.rating`]: Number(inValue) },
-    id: user.userid,
-  };
-  await updateDocSA<UserMetaDB>({
-    collectionName: CLT.usermeta,
-    dataencrypted: encrypt2(data),
-  });
-
+  await setMoneyDBSA({ courseid, userid: user.userid, inValue });
   navigator.actions.openAndRefreshFlowPage({
     courseid,
     refetchFlow: true,

@@ -8,7 +8,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { Tooltip } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 
 //css
 import "@xyflow/react/dist/base.css";

@@ -11,7 +11,7 @@ import countdownbutton from "@/components/common/CountdownButton/store";
 import taskset from "@/components/taskset/layers/store/taskset";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import { TSM, TT } from "tpconst/constants";
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 
 const CodeRunPanel = observer(() => {
   return (

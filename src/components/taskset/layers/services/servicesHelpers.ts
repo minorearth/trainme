@@ -6,8 +6,8 @@ import { getNeverRepeatIntegers } from "@/globals/utils/utilsRandom";
 //types
 import { Task } from "tpconst/T";
 import { TaskDB } from "tpconst/T";
-import E from "@/globals/errorMessages";
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
+import { E_CODES } from "@/globals/errorsHandling/errorCodes";
 
 export const getTasksRecap = <T>({
   recapTasksIds,
@@ -37,8 +37,8 @@ export const getRandomTasks = ({
     (task) => task.level <= levelEnd && task.level >= levelStart
   );
   if (scope.length < num) {
-    throw new Error(E.NOT_ENOUGHT_TASKS_ERROR, {
-      cause: { count: scope.length },
+    throw new Error(E_CODES.NOT_ENOUGHT_TASKS_ERROR, {
+      cause: { value: scope.length },
     });
   }
   const numbers = getNeverRepeatIntegers(scope.length - 1, num);

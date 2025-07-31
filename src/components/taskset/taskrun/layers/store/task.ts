@@ -3,7 +3,7 @@ import { Monaco } from "@monaco-editor/react";
 import React from "react";
 import { editor } from "monaco-editor";
 import { toJS } from "mobx";
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 
 //direct DB call
 import { updateKeySCP } from "@/db/localstorage";
@@ -14,7 +14,7 @@ import { checkOnChangeErrors } from "@/components/taskset/taskrun/layers/service
 //storee
 import taskset from "@/components/taskset/layers/store/taskset";
 import countdownbutton from "@/components/common/CountdownButton/store";
-import { da } from "@/components/common/dialog/dialogMacro";
+import { dialogs } from "@/components/common/dialog/dialogMacro";
 
 //themes
 import {
@@ -105,10 +105,14 @@ class task {
   }
 
   showRightCodeAfterError = ({ errorMsg }: { errorMsg: string }) => {
-    da.info.rightcode(() => {
-      this.showInfo(L.ru.ME.EDITOR_INFO);
-      countdownbutton.showButton();
-    }, errorMsg);
+    dialogs.action({
+      caption: L.ru.ME.TEST_ERROR,
+      text: errorMsg,
+      action: () => {
+        this.showInfo(L.ru.ME.EDITOR_INFO);
+        countdownbutton.showButton();
+      },
+    });
   };
 
   refreshEditor = () => {

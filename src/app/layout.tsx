@@ -1,4 +1,4 @@
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 
 export const metadata = {
   title: L.ru.text.APP_NAME,

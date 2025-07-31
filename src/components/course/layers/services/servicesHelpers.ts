@@ -1,4 +1,4 @@
-import { da } from "@/components/common/dialog/dialogMacro";
+import { dialogs } from "@/components/common/dialog/dialogMacro";
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
@@ -13,6 +13,7 @@ import { NodeDataState } from "tpconst/T";
 import { CourseProgressDB, CourseStatDB, EdgeDB, NodeDB } from "tpconst/T";
 import { TASKSET_DEFAULTS } from "tpconst/typesdefaults";
 import { TasksetMode } from "tpconst/T";
+import { L } from "tpconst/lang";
 
 const buyAction = ({
   unlocked,
@@ -25,12 +26,21 @@ const buyAction = ({
   unlockpts: number;
   chapterid: string;
 }) => {
-  if (!unlocked) da.info.notpaidblocked();
+  if (!unlocked)
+    dialogs.basic({
+      ...L.ru.msg["blocked_and_not_paid"].params,
+    });
 
-  if (unlocked && rating < unlockpts) da.info.nomoneytobuy();
+  if (unlocked && rating < unlockpts)
+    dialogs.basic({
+      ...L.ru.msg["notpaid_no_money"].params,
+    });
 
   if (unlocked && rating >= unlockpts && !progressCircle.shown)
-    da.info.buy(() => buyChapter({ unlockpts, chapterid }));
+    dialogs.action({
+      ...L.ru.msg["notpaid_buy"].params,
+      action: () => buyChapter({ unlockpts, chapterid }),
+    });
 };
 
 const nodeAction = (data: NodeDataState) => {
@@ -50,7 +60,10 @@ const nodeAction = (data: NodeDataState) => {
   if (!paid) {
     buyAction({ unlocked, rating, unlockpts: unlockpts || -1, chapterid: id });
   } else {
-    if (!unlocked && !completed) da.info.blocked();
+    if (!unlocked && !completed)
+      dialogs.basic({
+        ...L.ru.msg["chapter_blocked"].params,
+      });
 
     if (unlocked) {
       countdownbutton.hideButton();

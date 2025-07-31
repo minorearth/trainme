@@ -43,10 +43,10 @@
     "@types/crypto-js": "^4.2.2",
     "@types/node": "^22.15.30",
     "@types/react": "^19.1.6",
-    "dependency-cruiser": "^16.10.2",
     "eslint": "^9",
     "eslint-config-next": "15.1.0",
-    "tpconst": "^1.0.7",
+    "tpconst": "^1.0.8",
+    "errorhandlers": "file:../errors-handlers-package",
     "typescript": "^5.8.3"
   }
 }

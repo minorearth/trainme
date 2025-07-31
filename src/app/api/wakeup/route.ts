@@ -8,6 +8,7 @@ export async function POST() {
     const res = "wakeup";
     return NextResponse.json({ res });
   } catch (error) {
+    //TODO:
     console.error("Error processing request:", error);
     return NextResponse.json(
       { message: "Error processing request" },

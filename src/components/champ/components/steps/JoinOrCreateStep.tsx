@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { Button } from "@mui/material";
 
 import champ from "@/components/champ/layers/store/champ";
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 
 const CreateOrJoinStep = observer(() => {
   return (

@@ -1,10 +1,11 @@
-import { da } from "@/components/common/dialog/dialogMacro";
+import { dialogs } from "@/components/common/dialog/dialogMacro";
+import { L } from "tpconst/lang";
 
 //globals
 
 //repository
-import { getPersistedState } from "@/repository/repositoryLS";
-import { checkCoursePaid } from "@/repository/repositoryFetch";
+import { getPersistedState } from "@/db/repository/repositoryLS";
+import { checkCoursePaid } from "@/db/repository/repositoryFetch";
 
 //services(external)
 import { getFlow } from "@/components/course/layers/services/services";
@@ -95,7 +96,9 @@ const recoverTasks = async ({ CSP }: { CSP: CSP }) => {
   task.setCurrTask(tasks[CSP.taskset.currTaskId]);
 
   if (taskstage == TS.recapSuspended && tasksetmode != TSM.exam) {
-    da.info.recap();
+    dialogs.basic({
+      ...L.ru.msg["blocked_and_not_paid"].params,
+    });
     taskset.setTaskSetStateP({ ...taskset.state, taskstage: TS.recap });
   }
 };

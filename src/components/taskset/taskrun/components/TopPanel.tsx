@@ -16,7 +16,7 @@ import { observer } from "mobx-react-lite";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import taskset from "@/components/taskset/layers/store/taskset";
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 
 const TopPanel = observer(() => {
   return (

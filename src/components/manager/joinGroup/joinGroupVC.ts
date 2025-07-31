@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 //services
-import { addUserToGroup } from "@/repository/repositoryFB";
+import { addUserToGroup } from "@/db/repository/repositoryFBCA";
 
 import user from "@/auth/store/user";
 

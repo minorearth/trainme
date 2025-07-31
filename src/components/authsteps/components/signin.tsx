@@ -13,7 +13,7 @@ import CustomField from "@/components/common/customfield/customField";
 import { CustomLink } from "@/components/authsteps/components/customLink";
 
 //globals
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 
 //services(local)
 import { signInSubmit } from "@/components/authsteps/layers/services/services";

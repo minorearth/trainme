@@ -1,6 +1,9 @@
-import { getAllTasksDataObj } from "@/repository/repositoryFB";
-import { getReadyCourses } from "@/repository/repositoryLocalFiles";
-import { getGroupsArr, getChaptersObjdata } from "@/repository/repositoryFB";
+import { getAllTasksDataObj } from "@/db/repository/repositoryFBCA";
+import { getReadyCourses } from "@/db/repository/repositoryLocalFiles";
+import {
+  getGroupsArr,
+  getChaptersObjdata,
+} from "@/db/repository/repositoryFBCA";
 
 //stores
 import stat from "@/components/manager/groupsNreports/store/stat";

@@ -11,7 +11,7 @@ import CustomField from "@/components/common/customfield/customField";
 //stores
 import champ from "@/components/champ/layers/store/champ";
 import txtField from "@/components/common/customfield/store";
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 import { CFT } from "@/components/common/customfield/types";
 
 const CreateChampStep = observer(() => {

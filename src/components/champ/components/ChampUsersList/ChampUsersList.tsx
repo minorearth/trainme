@@ -11,7 +11,7 @@ import UserCard from "@/components/champ/components/CardUser";
 import champ from "@/components/champ/layers/store/champ";
 import { ChampuserDB } from "tpconst/T";
 
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 
 const ListItem = ({ user }: { user: ChampuserDB }) => {
   const { uid } = user;

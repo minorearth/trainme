@@ -8,7 +8,7 @@ import styled from "styled-components";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import { observer } from "mobx-react-lite";
 import { TT } from "tpconst/constants";
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 
 const Wrapper = styled.div`
   .tooltip {

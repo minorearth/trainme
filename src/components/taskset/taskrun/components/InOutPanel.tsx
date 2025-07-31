@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import { observer } from "mobx-react-lite";
 import { TT } from "tpconst/constants";
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 
 const InOutPanel = observer(() => {
   const handleChange = (

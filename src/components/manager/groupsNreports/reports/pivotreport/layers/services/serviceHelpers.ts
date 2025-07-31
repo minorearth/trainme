@@ -11,7 +11,7 @@ import {
   UsersMetaReportDB,
 } from "tpconst/T";
 
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 
 export const makeReport = ({
   allCoursesChaptersObj,

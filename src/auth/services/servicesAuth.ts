@@ -1,4 +1,6 @@
-import { da } from "@/components/common/dialog/dialogMacro";
+import { dialogs } from "@/components/common/dialog/dialogMacro";
+import { L } from "tpconst/lang";
+import { login } from "@/db/FB/SA/session";
 
 //repository
 import {
@@ -6,10 +8,10 @@ import {
   launchAuthStateChangeMonitor,
   createUser,
   signOutUserRep,
-} from "@/auth/repository/repositoryAuth";
-import { getFreeCoursesIds } from "@/repository/repositoryLocalFiles";
-import { getUserMeta } from "@/repository/repositoryFetch";
-import { createNewUserMeta } from "@/repository/repositoryFB";
+} from "@/db/repository/repositoryFBAuth";
+import { getFreeCoursesIds } from "@/db/repository/repositoryLocalFiles";
+import { getUserMeta } from "@/db/repository/repositoryFetch";
+import { createNewUserMeta } from "@/db/repository/repositoryFBCA";
 
 //services
 import { getInitalDataForFreeCourses } from "@/components/courses/layers/services/services";
@@ -24,9 +26,12 @@ import { User } from "firebase/auth";
 
 //globals
 import S from "@/globals/settings";
+import {
+  finalErrorHandler,
+  throwInnerError,
+} from "@/globals/errorsHandling/errorHandlers";
 
 //error handling
-import { finalErrorHandler, throwInnerError } from "@/globals/errorMessages";
 
 export const signUp = async ({
   email,
@@ -52,7 +57,7 @@ export const signUp = async ({
     createNewUserMeta({ userId, data });
     return userId;
   } catch (e: unknown) {
-    finalErrorHandler(e);
+    finalErrorHandler(e, dialogs, L.ru.msg);
   }
 };
 
@@ -72,7 +77,7 @@ export const signIn = async ({
     user.setUserNameP(userMeta.name);
     router.push(`/${S.P.CHAPTERS}`);
   } catch (e) {
-    finalErrorHandler(e);
+    finalErrorHandler(e, dialogs, L.ru.msg);
   }
 };
 
@@ -84,15 +89,16 @@ export const signOut = async (router: AppRouterInstance) => {
 
 const actionOnAuthChanged = async (
   resolved: (value: string) => void,
-  user: User | null,
-  login: (value: string) => Promise<void>
+  uid: string,
+  emailVerified: boolean
+  // login: (value: string) => Promise<void>
 ) => {
   if (user) {
-    if (user.emailVerified) {
+    if (emailVerified) {
       await login("teacher");
-      resolved(user.uid);
+      resolved(uid);
     } else {
-      resolved("notVerified");
+      resolved("email_not_veryfied");
     }
   } else {
     resolved("noUser");

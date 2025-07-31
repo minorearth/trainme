@@ -1,5 +1,5 @@
 import pyodide from "@/components/pyodide/pyodide";
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 
 // https://www.reddit.com/r/nextjs/comments/194r5jn/does_anyone_know_how_to_use_pyodide_with_nextjs/?rdt=49197
 

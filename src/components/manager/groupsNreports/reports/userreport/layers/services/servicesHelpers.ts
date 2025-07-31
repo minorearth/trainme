@@ -3,7 +3,7 @@ import { AllCoursesRawTaskObj, UserReportType } from "tpconst/T";
 import { courses } from "@/globals/coursesDB";
 import { CourseChapterObjDB, TaskLogAttrsDB, UserCoursesDB } from "tpconst/T";
 
-import L from "@/globals/local";
+import { L } from "tpconst/lang";
 
 export const getReportTree = ({
   userstat,

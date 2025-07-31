@@ -1,4 +1,3 @@
-import L from "./local";
 const S = {
   mode: {
     needCt: false,
