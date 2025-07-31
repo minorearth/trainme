@@ -21,8 +21,6 @@ import {
   getRandomTasks,
 } from "@/components/taskset/layers/services/servicesHelpers";
 
-import { taskLogToDBFormat } from "@/db/repository/ETL/ETLTaskset";
-
 // ETL
 import { supplyFilesAndTransform } from "@/components/taskset/layers/services/ETL";
 

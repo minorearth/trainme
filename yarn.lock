@@ -4444,10 +4444,9 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-tpconst@^1.0.8:
+"tpconst@file:../tpconst":
   version "1.0.8"
-  resolved "https://registry.npmjs.org/tpconst/-/tpconst-1.0.8.tgz"
-  integrity sha512-7Wdiv62jiziMBXd40QTksRECRyKfqtDGg6v65xkbINYXvrPYrLJkr0OXGqJdANCBbV/y8SbnjLECY1N7ubJrpw==
+  resolved "file:../tpconst"
 
 tr46@~0.0.3:
   version "0.0.3"
