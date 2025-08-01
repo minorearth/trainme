@@ -1,17 +1,17 @@
 //repository
 import { getChapterIds_admin } from "@/db/repository/repositoryFBCA";
-import {
-  completeAllChaptersDBSA,
-  resetUser,
-  setMoneyDBSA,
-  unlockAllChaptersDBSA,
-} from "@/db/repository/repositoryFBSA";
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
 import course from "@/components/course/layers/store/course";
 import user from "@/auth/store/user";
 import { courses } from "@/globals/coursesDB";
+import {
+  completeAllChaptersDBSA,
+  resetUser,
+  setMoneyDBSA,
+  unlockAllChaptersDBSA,
+} from "@/db/repository/repositoryFBSA";
 
 export const resetCurrentUser = async () => {
   const courseid = course.state.courseid;

@@ -1,5 +1,5 @@
 "use client";
-import { decrypt2, encrypt2 } from "@/globals/utils/encryption";
+import { decrypt2, encrypt2 } from "tpconst/utils";
 import S from "@/globals/settings";
 import { CSP_DEFAULTS } from "tpconst/typesdefaults";
 import { CSP } from "tpconst/T";

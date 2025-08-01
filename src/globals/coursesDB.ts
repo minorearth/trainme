@@ -1,5 +1,5 @@
 import navigator from "@/components/Navigator/layers/store/navigator";
-import { CT } from "tpconst/constants";
+import { CT } from "tpconst/const";
 import { CoursesDBObj } from "tpconst/T";
 
 export const courses: CoursesDBObj = {

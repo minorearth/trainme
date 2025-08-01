@@ -1,6 +1,6 @@
 //types
 
-import { SetDF } from "tpconst/constants";
+import { SetDF } from "tpconst/const";
 import {
   CourseProgressDB,
   CourseStatDB,
@@ -10,17 +10,17 @@ import {
 
 //api calls
 import { setDataFetch, getDataFetch } from "@/apicalls/apicalls";
-import { GetDF } from "tpconst/constants";
+import { GetDF } from "tpconst/const";
 
 //utils
-import { encrypt2 } from "@/globals/utils/encryption";
+import { encrypt2 } from "tpconst/utils";
 
 //ETL
 import { ETLUserProgress } from "@/db/repository/ETL/ETLUserMeta";
 
 //eror handling
 import { taskLogToDBFormat } from "./ETL/ETLTaskset";
-import { throwInnerError } from "@/globals/errorsHandling/errorHandlers";
+import { throwInnerError } from "tpconst/errorHandlers";
 
 //course
 export const buyChapterCall = async ({

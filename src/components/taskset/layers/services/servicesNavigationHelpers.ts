@@ -10,7 +10,7 @@ import splash from "@/components/common/splash/store";
 //serviceHelpers(local)
 import { getTasksRecap } from "@/components/taskset/layers/services/servicesHelpers";
 import { Task } from "tpconst/T";
-import { TS, TSM } from "tpconst/constants";
+import { TS, TSM } from "tpconst/const";
 
 export const setTaskLog = ({
   code,

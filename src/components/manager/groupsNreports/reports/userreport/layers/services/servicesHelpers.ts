@@ -1,4 +1,4 @@
-import { URT } from "tpconst/constants";
+import { URT } from "tpconst/const";
 import { AllCoursesRawTaskObj, UserReportType } from "tpconst/T";
 import { courses } from "@/globals/coursesDB";
 import { CourseChapterObjDB, TaskLogAttrsDB, UserCoursesDB } from "tpconst/T";

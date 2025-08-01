@@ -6,14 +6,14 @@ import { courses } from "@/globals/coursesDB";
 import { updateDocSA } from "@/db/FB/SA/firebaseSA";
 
 //utils
-import { encrypt2 } from "@/globals/utils/encryption";
+import { encrypt2 } from "tpconst/";
 
 //stores
 
 import { dialogs } from "@/components/common/dialog/dialogMacro";
-import { finalErrorHandler } from "@/globals/errorsHandling/errorHandlers";
+import { finalErrorHandler } from "tpconst/errorHandlers";
 import { UserMetaDB } from "tpconst/T";
-import { CLT } from "tpconst/constants";
+import { CLT } from "tpconst/const";
 import { L } from "tpconst/lang";
 
 export const resetUser = async ({

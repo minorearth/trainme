@@ -13,7 +13,7 @@ import {
 
 //types
 
-import { TT, CS, PS, CLT } from "tpconst/constants";
+import { TT, CS, PS, CLT } from "tpconst/const";
 
 import {
   ChampDB,
@@ -46,7 +46,7 @@ import {
 
 //TODO:
 import { extractChapterIdsOnly_admin } from "@/db/repository/ETL/ETLadmin";
-import { throwInnerError } from "@/globals/errorsHandling/errorHandlers";
+import { throwInnerError } from "tpconst/errorHandlers";
 
 //eror handling
 

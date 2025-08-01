@@ -6,8 +6,8 @@ export const revalidate = 1; //revalidate api every 1 second
 
 import { updateDocSA } from "@/db/FB/SA/firebaseSA";
 import { UserMetaDB } from "tpconst/T";
-import { SetDF, CLT } from "tpconst/constants";
-import { getNextErrorResponse } from "@/globals/errorsHandling/errorHandlers";
+import { SetDF, CLT } from "tpconst/const";
+import { getNextErrorResponse } from "tpconst/errorHandlers";
 
 interface reqData {
   type: string;

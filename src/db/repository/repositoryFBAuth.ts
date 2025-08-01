@@ -1,4 +1,4 @@
-import { logout } from "@/db/FB/SA/session";
+import { logout } from "@/globals/next/session";
 
 import {
   createUserDB,
@@ -7,8 +7,7 @@ import {
   signInUserDB,
   signOutUserDB,
 } from "@/db/FB/CA/fireebaseauth";
-
-import { throwInnerError } from "errorhandlers";
+import { throwInnerError } from "tpconst/errorHandlers";
 
 export const signInUser = async ({
   email,

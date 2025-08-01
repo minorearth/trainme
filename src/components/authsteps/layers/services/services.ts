@@ -16,7 +16,7 @@ import { CFT } from "@/components/common/customfield/types";
 // import { AppRouterInstance } from "";
 import { dialogs } from "@/components/common/dialog/dialogMacro";
 import { L } from "tpconst/lang";
-import { throwInnerError } from "@/globals/errorsHandling/errorHandlers";
+import { throwInnerError } from "tpconst/errorHandlers";
 export const signInSubmit = async (
   event: React.FormEvent<HTMLFormElement>,
   router: AppRouterInstance

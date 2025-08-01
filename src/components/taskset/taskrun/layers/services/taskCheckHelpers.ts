@@ -1,6 +1,6 @@
 import { L } from "tpconst/lang";
 
-import { eqArrays } from "@/globals/utils/arrUtils";
+import { eqArrays } from "tpconst/utils";
 import { Task } from "tpconst/T";
 
 const cleanUpCode = (code: string) => {

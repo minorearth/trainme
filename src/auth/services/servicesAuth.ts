@@ -1,6 +1,6 @@
 import { dialogs } from "@/components/common/dialog/dialogMacro";
 import { L } from "tpconst/lang";
-import { login } from "@/db/FB/SA/session";
+import { login } from "@/globals/next/session";
 
 //repository
 import {
@@ -26,10 +26,7 @@ import { User } from "firebase/auth";
 
 //globals
 import S from "@/globals/settings";
-import {
-  finalErrorHandler,
-  throwInnerError,
-} from "@/globals/errorsHandling/errorHandlers";
+import { finalErrorHandler, throwInnerError } from "tpconst/errorHandlers";
 
 //error handling
 

@@ -29,7 +29,7 @@ import {
 
 import { TASK_DEFAULTS } from "tpconst/typesdefaults";
 import { Task } from "tpconst/T";
-import { TT } from "tpconst/constants";
+import { TT } from "tpconst/const";
 
 interface HandleEditorDidMount {
   editor: editor.IStandaloneCodeEditor | null;

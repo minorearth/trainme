@@ -15,8 +15,8 @@ import {
   UserCredential,
 } from "firebase/auth";
 
-import E, { throwFBError } from "@/globals/errorsHandling/errorHandlers";
-import { login, logout } from "@/db/FB/SA/session";
+import E, { throwFBError } from "tpconst/errorHandlers";
+import { login, logout } from "@/globals/next/session";
 import { FirestoreError } from "firebase/firestore";
 
 export const signInUserDB = async ({

@@ -15,7 +15,7 @@ import {
 } from "@/components/Navigator/layers/services/services";
 import splash from "@/components/common/splash/store";
 import { NavigatorStatePersisted } from "tpconst/T";
-import { PG } from "tpconst/constants";
+import { PG } from "tpconst/const";
 
 class navigator {
   actions = {

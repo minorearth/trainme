@@ -31,7 +31,7 @@ import {
   DocumentData,
   FirestoreError,
 } from "firebase/firestore";
-import { throwFBError } from "@/globals/errorsHandling/errorHandlers";
+import { throwFBError } from "tpconst/errorHandlers";
 
 export const setDocInCollection = async <T extends DBFormats>({
   collectionName,

@@ -37,9 +37,9 @@ import {
   TasksetStatePersisted,
 } from "tpconst/T";
 import { CourseProgressDB, TaskDB, UserMetaDB } from "tpconst/T";
-import { ST, TS, TSM } from "tpconst/constants";
+import { ST, TS, TSM } from "tpconst/const";
 import { TasksetStage } from "tpconst/T";
-import { throwInnerError } from "@/globals/errorsHandling/errorHandlers";
+import { throwInnerError } from "tpconst/errorHandlers";
 
 //types
 

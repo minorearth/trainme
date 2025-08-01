@@ -5,10 +5,10 @@ export const revalidate = 0; //revalidate api every 0 second
 
 import { getDocSA, checkCoursePaidSA } from "@/db/FB/SA/firebaseSA";
 import { UserMetaDB } from "tpconst/T";
-import { CLT, GetDF } from "tpconst/constants";
+import { CLT, GetDF } from "tpconst/const";
 
 import { ServerResponseData } from "tpconst/T";
-import { getNextErrorResponse } from "@/globals/errorsHandling/errorHandlers";
+import { getNextErrorResponse } from "tpconst/errorHandlers";
 
 export async function POST(request: Request) {
   try {

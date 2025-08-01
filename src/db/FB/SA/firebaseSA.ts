@@ -4,20 +4,18 @@ import {
   FirestoreError,
   WithFieldValue,
 } from "firebase/firestore";
-import { decrypt2 } from "@/globals/utils/encryption";
 
-import { db } from "./firebaseappAdmin";
 import {
+  CLT,
+  decrypt2,
+  throwFBError,
+  UserMetaDB,
   CollectionRead,
   CollectionWrite,
-  // CollectionWrite,
   CollectonsTypes,
   DBFormats,
-  UserMetaDB,
-} from "tpconst/T";
-
-import { CLT } from "tpconst/constants";
-import { throwFBError } from "@/globals/errorsHandling/errorHandlers";
+} from "tpconst";
+import { db } from "./firebaseappAdmin";
 
 export const updateDocSA = async <T extends DBFormats>({
   collectionName,

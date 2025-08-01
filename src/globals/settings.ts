@@ -1,4 +1,4 @@
-const S = {
+export const S = {
   mode: {
     needCt: false,
     //isAdminNeede in adminPanel

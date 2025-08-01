@@ -1,7 +1,7 @@
 import alertdialog from "@/components/common/dialog/store";
 import { L } from "tpconst/lang";
 import { TasksetMode } from "tpconst/T";
-import { TSM } from "tpconst/constants";
+import { TSM } from "tpconst/const";
 
 export const dialogs: { [dialogtype: string]: (...params: any) => void } = {
   basic: ({ text, caption }: { text: string; caption: string }) =>

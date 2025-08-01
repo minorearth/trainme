@@ -21,7 +21,7 @@ import { TreeItemIcon } from "@mui/x-tree-view/TreeItemIcon";
 import { TreeItemProvider } from "@mui/x-tree-view/TreeItemProvider";
 import stat from "@/components/manager/groupsNreports/store/stat";
 import { UserReport } from "tpconst/T";
-import { TT } from "tpconst/constants";
+import { TT } from "tpconst/const";
 
 const CustomStatItem = React.forwardRef(function CustomStatItem(
   props: UseTreeItemParameters,

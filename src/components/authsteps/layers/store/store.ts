@@ -1,5 +1,5 @@
 import { makeObservable, makeAutoObservable } from "mobx";
-import { logout } from "@/db/FB/SA/session";
+import { logout } from "@/globals/next/session";
 
 import txtField from "@/components/common/customfield/store";
 

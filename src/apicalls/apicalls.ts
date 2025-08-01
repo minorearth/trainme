@@ -1,9 +1,6 @@
 import S from "@/globals/settings";
 import { GetDataFetchTypes, ServerResponseData, SetDataFetch } from "tpconst/T";
-import {
-  throwFetchAPIError,
-  throwInnerError,
-} from "@/globals/errorsHandling/errorHandlers";
+import { throwFetchAPIError, throwInnerError } from "tpconst/errorHandlers";
 
 //TODO:DO
 export const wakeUp = () => {

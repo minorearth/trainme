@@ -2,8 +2,8 @@ import { dialogs } from "@/components/common/dialog/dialogMacro";
 import { L } from "tpconst/lang";
 
 // utils
-import { ObjtoArr } from "@/globals/utils/objectUtils";
-import { generateString } from "@/globals/utils/utilsRandom";
+import { ObjtoArr } from "tpconst/utils";
+import { generateString } from "tpconst/utils";
 
 //service helpers
 import { sortItems } from "@/components/champ/layers/services/servicesHelpers";
@@ -30,13 +30,10 @@ import {
   TASKSET_DEFAULTS,
 } from "tpconst/typesdefaults";
 import { ChampDB } from "tpconst/T";
-import { CS, PS, TSM } from "tpconst/constants";
+import { CS, PS, TSM } from "tpconst/const";
 import S from "@/globals/settings";
-import { E_CODES } from "errorhandlers";
-import {
-  finalErrorHandler,
-  throwInnerError,
-} from "@/globals/errorsHandling/errorHandlers";
+import { E_CODES } from "tpconst/errorHandlers";
+import { finalErrorHandler, throwInnerError } from "tpconst/errorHandlers";
 
 export const createChamp = async () => {
   try {

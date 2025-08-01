@@ -58,12 +58,13 @@ import {
   TasksetStatePersisted,
 } from "tpconst/T";
 import { CourseProgressDB } from "tpconst/T";
-import { PG, ST, TSM } from "tpconst/constants";
+import { PG, ST, TSM } from "tpconst/const";
 import { Page, SuccessType } from "tpconst/T";
-import E_CODES, {
+import {
+  E_CODES,
   finalErrorHandler,
   throwInnerError,
-} from "@/globals/errorsHandling/errorHandlers";
+} from "tpconst/errorHandlers";
 
 export const openAllCoursePage = () => {
   setAllCoursePageState();

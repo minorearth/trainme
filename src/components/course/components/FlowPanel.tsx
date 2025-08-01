@@ -33,7 +33,7 @@ import {
   CHAPTER_DEFAULTS,
   TASKSET_DEFAULTS,
 } from "tpconst/typesdefaults";
-import { TSM } from "tpconst/constants";
+import { TSM } from "tpconst/const";
 
 const ICON_SIZE = "60px";
 const FlowPanel = observer(() => {

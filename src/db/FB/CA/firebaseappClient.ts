@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { initializeFirestore } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import user from "@/auth/store/user";
-import { logout } from "../SA/session";
+import { logout } from "@/globals/next/session";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
