@@ -1,7 +1,7 @@
 import { toJS } from "mobx";
 
 //repository(local)
-import { getFlowDB } from "@/db/repository/repositoryFBCA";
+import { getFlowDB } from "@/db/repository/FB/repositoryFBCA";
 import { buyChapterCall } from "@/db/repository/repositoryFetch";
 
 //stores

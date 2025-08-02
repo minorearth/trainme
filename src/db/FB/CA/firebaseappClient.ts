@@ -1,8 +1,7 @@
 "use client";
-import { initializeApp } from "firebase/app";
-import { initializeFirestore } from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import user from "@/auth/store/user";
+import { FirebaseApp, initializeApp } from "firebase/app";
+import { Firestore, initializeFirestore } from "firebase/firestore";
+import { Auth, getAuth, onAuthStateChanged } from "firebase/auth";
 import { logout } from "@/globals/next/session";
 
 const firebaseConfig = {
@@ -15,27 +14,32 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
-export const app = initializeApp(firebaseConfig);
+// User is signed in, see docs for a list of available properties
+// https://firebase.google.com/docs/reference/js/auth.user
+let app: FirebaseApp | null = null;
+let db: Firestore | null = null;
+let auth: Auth | null = null;
 
-export const db = initializeFirestore(app, {
-  experimentalForceLongPolling: true,
-  //TS error:
-  // useFetchStreams: false,
-});
+export const initializeClient = () => {
+  if (db && auth) return { db, auth };
+  app = initializeApp(firebaseConfig);
+  db = initializeFirestore(app, {
+    experimentalForceLongPolling: true,
+    //TS error:
+    // useFetchStreams: false,
+  });
+  auth = getAuth(app);
+  return { db, auth };
+};
 
-export const auth = getAuth(app);
-
-onAuthStateChanged(auth, (fbuser) => {
-  if (fbuser) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/auth.user
-    const uid = fbuser.uid;
-    user.setUserid({ id: uid });
-
-    // ...
-  } else {
-    logout();
-    // User is signed out
-    // ...
-  }
-});
+export const startUidMonitor = (setUserid: (id: string) => void) => {
+  const { auth } = initializeClient();
+  onAuthStateChanged(auth, (fbuser) => {
+    if (fbuser) {
+      const uid = fbuser.uid;
+      setUserid(uid);
+    } else {
+      logout();
+    }
+  });
+};

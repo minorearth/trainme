@@ -45,8 +45,7 @@
     "@types/react": "^19.1.6",
     "eslint": "^9",
     "eslint-config-next": "15.1.0",
-    "tpconst": "^1.0.8",
-    "errorhandlers": "file:../errors-handlers-package",
+    "tpconst": "^1.0.11",
     "typescript": "^5.8.3"
   }
 }

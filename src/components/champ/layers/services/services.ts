@@ -16,7 +16,7 @@ import {
   getUserChampStatus,
   createNewChamp,
   setChampStarted,
-} from "@/db/repository/repositoryFBCA";
+} from "@/db/repository/FB/repositoryFBCA";
 
 //stores
 import user from "@/auth/store/user";
@@ -34,6 +34,7 @@ import { CS, PS, TSM } from "tpconst/const";
 import S from "@/globals/settings";
 import { E_CODES } from "tpconst/errorHandlers";
 import { finalErrorHandler, throwInnerError } from "tpconst/errorHandlers";
+import { D } from "@/db/repository/fbconfig";
 
 export const createChamp = async () => {
   try {
@@ -41,7 +42,7 @@ export const createChamp = async () => {
       levelStart: champ.range[0],
       levelEnd: champ.range[1],
       taskCount: Number(txtField.state.tasknum.value),
-      courseid: S.CHAMP_DEFAULT_COURSEID,
+      courseid: D.CHAMP_DEFAULT_COURSEID,
     });
     const champid = generateString(7);
     champ.setChampIdP(champid);
@@ -135,6 +136,7 @@ export const captureChampStart = async ({ champid }: { champid: string }) => {
   await subscribeOnChamp({
     champid,
     action: captureAndlaunchChamp,
+    duration: S.CHAMP_SUBSCRIBE_DURATION,
   });
 };
 
@@ -155,5 +157,6 @@ export const captureUsersJoined = async ({ champid }: { champid: string }) => {
   await subscribeOnChamp({
     champid,
     action: setUsersAndsmth,
+    duration: S.CHAMP_SUBSCRIBE_DURATION,
   });
 };

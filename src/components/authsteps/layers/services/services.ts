@@ -5,7 +5,7 @@ import { cleanUpCSP } from "@/db/localstorage";
 import { signUp, signIn } from "@/auth/services/servicesAuth";
 
 //repository(external)
-import { resetPsw } from "@/db/repository/repositoryFBAuth";
+import { resetPsw } from "@/db/repository/FB/repositoryFBAuth";
 
 // stores
 import authForm from "@/components/authsteps/layers/store/store";

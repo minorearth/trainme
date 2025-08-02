@@ -1,5 +1,3 @@
-import { logout } from "@/globals/next/session";
-
 import {
   createUserDB,
   launchAuthStateChangeMonitorDB,
@@ -17,7 +15,6 @@ export const signInUser = async ({
   password: string;
 }) => {
   try {
-    await logout();
     await signInUserDB({ email, password });
   } catch (error) {
     throw throwInnerError(error);
@@ -66,7 +63,6 @@ export const resetPsw = async (email: string) => {
 export const signOutUserRep = async () => {
   try {
     await signOutUserDB();
-    await logout();
   } catch (error) {
     throw throwInnerError(error);
   }

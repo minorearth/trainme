@@ -1,4 +1,4 @@
-import { auth } from "@/db/FB/CA/firebaseappClient";
+"use client";
 
 import {
   signInWithEmailAndPassword,
@@ -15,9 +15,9 @@ import {
   UserCredential,
 } from "firebase/auth";
 
-import E, { throwFBError } from "tpconst/errorHandlers";
-import { login, logout } from "@/globals/next/session";
+import { throwFBError } from "tpconst/errorHandlers";
 import { FirestoreError } from "firebase/firestore";
+import { initializeClient } from "./firebaseappClient";
 
 export const signInUserDB = async ({
   email,
@@ -26,6 +26,8 @@ export const signInUserDB = async ({
   email: string;
   password: string;
 }) => {
+  const { auth } = initializeClient();
+
   await setPersistence(auth, browserLocalPersistence);
   try {
     await signInWithEmailAndPassword(auth, email, password);
@@ -42,13 +44,17 @@ export const launchAuthStateChangeMonitorDB = async (
     emailVerified: boolean
   ) => void
 ) => {
+  const { auth } = initializeClient();
+
+  let unsubscribe = () => {};
   const uid = await new Promise(
     (resolved: (value: string) => void, rejected) => {
-      onAuthStateChanged(auth, (user: User | null) =>
+      unsubscribe = onAuthStateChanged(auth, (user: User | null) =>
         action(resolved, user?.uid || "", user?.emailVerified || false)
       );
     }
   );
+  unsubscribe();
   return uid;
 };
 
@@ -60,6 +66,8 @@ export const createUserDB = async ({
   password: string;
 }) => {
   try {
+    const { auth } = initializeClient();
+
     const userCredential: UserCredential = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -74,6 +82,8 @@ export const createUserDB = async ({
 };
 
 export const resetPswDB = async (email: string) => {
+  const { auth } = initializeClient();
+
   auth.languageCode = "ru";
   try {
     await sendPasswordResetEmail(auth, email);
@@ -85,6 +95,8 @@ export const resetPswDB = async (email: string) => {
 
 export const signOutUserDB = async () => {
   try {
+    const { auth } = initializeClient();
+
     await signOut(auth);
   } catch (error) {
     const e = error as FirestoreError;

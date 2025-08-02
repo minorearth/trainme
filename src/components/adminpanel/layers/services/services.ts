@@ -1,5 +1,5 @@
 //repository
-import { getChapterIds_admin } from "@/db/repository/repositoryFBCA";
+import { getChapterIds_admin } from "@/db/repository/FB/repositoryFBCA";
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
@@ -11,7 +11,7 @@ import {
   resetUser,
   setMoneyDBSA,
   unlockAllChaptersDBSA,
-} from "@/db/repository/repositoryFBSA";
+} from "@/db/repository/FB/repositoryFBSA";
 
 export const resetCurrentUser = async () => {
   const courseid = course.state.courseid;
@@ -30,7 +30,12 @@ export const unlockAllChaptersCurrentUser = async () => {
   const courseid = course.state.courseid;
   const chaptersIds = await getChapterIds_admin({ courseid });
 
-  await unlockAllChaptersDBSA({ courseid, userid: user.userid, chaptersIds });
+  await unlockAllChaptersDBSA({
+    courseid,
+    userid: user.userid,
+    chaptersIds,
+    firstchapter: courses[courseid].firstchapter,
+  });
 
   navigator.actions.openAndRefreshFlowPage({
     courseid,
@@ -41,7 +46,12 @@ export const unlockAllChaptersCurrentUser = async () => {
 export const completeAllChaptersCurrentUser = async () => {
   const courseid = course.state.courseid;
   const chaptersIds = await getChapterIds_admin({ courseid });
-  await completeAllChaptersDBSA({ courseid, userid: user.userid, chaptersIds });
+  await completeAllChaptersDBSA({
+    courseid,
+    userid: user.userid,
+    chaptersIds,
+    firstchapter: courses[courseid].firstchapter,
+  });
 
   navigator.actions.openAndRefreshFlowPage({
     courseid,

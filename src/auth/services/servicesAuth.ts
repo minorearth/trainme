@@ -1,6 +1,6 @@
 import { dialogs } from "@/components/common/dialog/dialogMacro";
 import { L } from "tpconst/lang";
-import { login } from "@/globals/next/session";
+import { login, logout } from "@/globals/next/session";
 
 //repository
 import {
@@ -8,10 +8,10 @@ import {
   launchAuthStateChangeMonitor,
   createUser,
   signOutUserRep,
-} from "@/db/repository/repositoryFBAuth";
+} from "@/db/repository/FB/repositoryFBAuth";
 import { getFreeCoursesIds } from "@/db/repository/repositoryLocalFiles";
 import { getUserMeta } from "@/db/repository/repositoryFetch";
-import { createNewUserMeta } from "@/db/repository/repositoryFBCA";
+import { createNewUserMeta } from "@/db/repository/FB/repositoryFBCA";
 
 //services
 import { getInitalDataForFreeCourses } from "@/components/courses/layers/services/services";
@@ -22,7 +22,6 @@ import splash from "@/components/common/splash/store";
 
 //types
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { User } from "firebase/auth";
 
 //globals
 import S from "@/globals/settings";
@@ -68,8 +67,8 @@ export const signIn = async ({
   router: AppRouterInstance;
 }) => {
   try {
-    const response = await getUidAuth({ email, password });
-    const userMeta = await getUserMeta(response);
+    const uid = await getUidAuth({ email, password });
+    const userMeta = await getUserMeta(uid);
 
     user.setUserNameP(userMeta.name);
     router.push(`/${S.P.CHAPTERS}`);
@@ -79,6 +78,8 @@ export const signIn = async ({
 };
 
 export const signOut = async (router: AppRouterInstance) => {
+  splash.showProgress(false, "progressdots", 0);
+  await logout();
   await signOutUserRep();
   splash.closeProgress();
   router.push(`/${S.P.LOGIN}/`);
@@ -90,15 +91,15 @@ const actionOnAuthChanged = async (
   emailVerified: boolean
   // login: (value: string) => Promise<void>
 ) => {
-  if (user) {
-    if (emailVerified) {
-      await login("teacher");
-      resolved(uid);
-    } else {
-      resolved("email_not_veryfied");
-    }
-  } else {
+  if (emailVerified && uid) {
+    await login("teacher");
+    // user.setUserid({ id: uid });
+    resolved(uid);
+  } else if (!uid) {
     resolved("noUser");
+    logout();
+  } else {
+    resolved("email_not_veryfied");
   }
 };
 
@@ -111,6 +112,7 @@ const getUidAuth = async ({
   password: string;
 }) => {
   try {
+    await logout();
     await signInUser({ email, password });
     return await launchAuthStateChangeMonitor(actionOnAuthChanged);
   } catch (e: unknown) {

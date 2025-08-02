@@ -1,6 +1,4 @@
-import S from "@/globals/settings";
-
-//FB DB
+"use client";
 import {
   getDocDataFromCollectionById,
   getDocFromCollectionByIdRealtime,
@@ -44,9 +42,9 @@ import {
   allTasksArrToObj,
 } from "@/db/repository/ETL/ETLPivot";
 
-//TODO:
 import { extractChapterIdsOnly_admin } from "@/db/repository/ETL/ETLadmin";
 import { throwInnerError } from "tpconst/errorHandlers";
+import { D } from "@/db/repository/fbconfig";
 
 //eror handling
 
@@ -110,9 +108,11 @@ export const getChampTasksDB = async ({ champid }: { champid: string }) => {
 export const subscribeOnChamp = async ({
   champid,
   action,
+  duration,
 }: {
   champid: string;
   action: (docdata: ChampDB) => void;
+  duration: number;
 }) => {
   try {
     const unsubscribe = await getDocFromCollectionByIdRealtime<ChampDB>({
@@ -123,7 +123,7 @@ export const subscribeOnChamp = async ({
     //TODO: (later)test
     setInterval(() => {
       unsubscribe();
-    }, S.CHAMP_SUBSCRIBE_DURATION);
+    }, duration);
   } catch (error) {
     throw throwInnerError(error);
   }
@@ -246,7 +246,7 @@ export const uploadAllCourseTasksView = async ({
       collectionName: CLT.newtasks,
       id: courseid,
       subCollectionName: CLT.chapters,
-      subId: S.db.ALLTASKS_DOC_ID,
+      subId: D.ALLTASKS_DOC_ID,
       data: {
         tasks: allTasksNoGuides,
       },
@@ -287,7 +287,7 @@ export const uploadCourseChaptersObject = async (
     await setDocInCollection<CourseChapterObjDB>({
       collectionName: CLT.views,
       data: chapterCourseObjectModel,
-      id: S.db.CHAPTER_OBJ_VIEW_ID,
+      id: D.CHAPTER_OBJ_VIEW_ID,
     });
   } catch (error) {
     throw throwInnerError(error);
@@ -345,7 +345,7 @@ export const getChaptersObjdata = async (): Promise<CourseChapterObjDB> => {
   try {
     const chaptersObj = await getDocDataFromCollectionById<CourseChapterObjDB>({
       collectionName: CLT.views,
-      id: S.db.CHAPTER_OBJ_VIEW_ID,
+      id: D.CHAPTER_OBJ_VIEW_ID,
     });
     return chaptersObj || {};
   } catch (error) {
@@ -480,7 +480,7 @@ export const getAllTasksDataObj = async (courseid: string) => {
       collectionName: CLT.newtasks,
       id: courseid,
       subCollectionName: CLT.chapters,
-      subId: S.db.ALLTASKS_DOC_ID,
+      subId: D.ALLTASKS_DOC_ID,
     });
     return allTasksArrToObj(allTasks?.tasks);
   } catch (error) {
@@ -522,7 +522,7 @@ export const getTextBookTasks = async ({
       collectionName: CLT.newtasks,
       id: courseid,
       subCollectionName: CLT.chapters,
-      subId: S.db.TEXT_BOOK_TASKS_ID,
+      subId: D.TEXT_BOOK_TASKS_ID,
     });
     const unlockedTheory = tasks?.tasks.filter((task: TaskDB) =>
       completed.includes(task.chapterparentid)
@@ -542,7 +542,7 @@ export const getAllCourseTasks = async (courseid: string) => {
       collectionName: CLT.newtasks,
       id: courseid,
       subCollectionName: CLT.chapters,
-      subId: S.db.ALLTASKS_DOC_ID,
+      subId: D.ALLTASKS_DOC_ID,
     });
     return allTasks?.tasks;
   } catch (error) {

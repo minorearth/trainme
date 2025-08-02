@@ -1,3 +1,5 @@
+"use client";
+
 import {
   CollectionRead,
   CollectionWrite,
@@ -7,7 +9,7 @@ import {
   SubCollectionWrite,
 } from "tpconst/T";
 
-import { db } from "./firebaseappClient";
+// import { db } from "./firebaseappClient";
 
 import {
   collection,
@@ -32,6 +34,7 @@ import {
   FirestoreError,
 } from "firebase/firestore";
 import { throwFBError } from "tpconst/errorHandlers";
+import { initializeClient } from "./firebaseappClient";
 
 export const setDocInCollection = async <T extends DBFormats>({
   collectionName,
@@ -39,6 +42,7 @@ export const setDocInCollection = async <T extends DBFormats>({
   id,
 }: CollectionWrite<T>) => {
   try {
+    const { db } = initializeClient();
     await setDoc(
       doc(db, collectionName, id),
       data as WithFieldValue<DocumentData>
@@ -56,6 +60,8 @@ export const setDocInSubCollection = async <T extends DBFormats>({
   data,
 }: SubCollectionWrite<T>) => {
   try {
+    const { db } = initializeClient();
+
     await setDoc(
       doc(db, collectionName, id, subCollectionName, subId),
       data as WithFieldValue<DocumentData>
@@ -72,6 +78,8 @@ export const updateDocByid = async <T extends DBFormats>({
   data,
 }: CollectionWrite<Partial<T>>) => {
   try {
+    const { db } = initializeClient();
+
     await updateDoc(
       doc(db, collectionName, id),
       data as WithFieldValue<DocumentData>
@@ -87,6 +95,8 @@ export const getDocDataFromCollectionById = async <T extends DBFormats>({
   id,
 }: CollectionRead) => {
   try {
+    const { db } = initializeClient();
+
     const docSnap = await getDoc(doc(db, collectionName, id));
     return docSnap.data() as T;
   } catch (error) {
@@ -102,6 +112,8 @@ export const getDocDataFromSubCollectionById = async <T extends DBFormats>({
   subId,
 }: SubCollectionRead) => {
   try {
+    const { db } = initializeClient();
+
     const docSnap = await getDoc(
       doc(db, collectionName, id, subCollectionName, subId)
     );
@@ -122,6 +134,8 @@ export const getDocFromCollectionByIdRealtime = async <T extends DBFormats>({
   onChangeAction: (data: T) => void;
 }) => {
   try {
+    const { db } = initializeClient();
+
     const unsubscribe = onSnapshot(doc(db, collectionName, id), (doc) => {
       //confirm as
       onChangeAction(doc.data() as T);
@@ -141,6 +155,8 @@ export const getMultipleDocs = async <T extends DBFormats>({
   ids: string[];
 }) => {
   try {
+    const { db } = initializeClient();
+
     const col = collection(db, collectionName);
     const q = query(col, where(documentId(), "in", ids));
     return multipleDocsToArray<T>(await getDocs(q));

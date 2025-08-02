@@ -20,7 +20,7 @@ class user {
     this.progress = data;
   }
 
-  setUserid({ id }: { id: string }) {
+  setUserid(id: string) {
     this.userid = id;
   }
 

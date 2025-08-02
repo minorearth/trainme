@@ -9,7 +9,7 @@ import {
   saveSnapshot,
   getSnapShot,
   getUsersMetaObj,
-} from "@/db/repository/repositoryFBCA";
+} from "@/db/repository/FB/repositoryFBCA";
 
 //services(exterenal)
 import { getGroupUsersObj } from "@/components/manager/groupsNreports/groups/layers/services/servicesTree";

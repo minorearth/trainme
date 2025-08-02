@@ -6,14 +6,14 @@ import {
   saveProgressDBNotCompletedAndSuccess,
   saveUserMeta,
 } from "@/db/repository/repositoryFetch";
-import { getChampTasksDB } from "@/db/repository/repositoryFBCA";
+import { getChampTasksDB } from "@/db/repository/FB/repositoryFBCA";
 
 //repository(local)
 import {
   getAllTasksFromChapter,
   getTextBookTasks,
   getAllCourseTasks,
-} from "@/db/repository/repositoryFBCA";
+} from "@/db/repository/FB/repositoryFBCA";
 
 //service helpers(local)
 import {
@@ -80,7 +80,8 @@ export const getTasks = async ({
         recapTasksIds,
       });
 
-    if (tasksetmode == TSM.default) {
+    if (tasksetmode == TSM.textbook) {
+      console.log(userProgress.completed, courseid);
       const tasks = await getTextBookTasks({
         completed: userProgress.completed,
         courseid,

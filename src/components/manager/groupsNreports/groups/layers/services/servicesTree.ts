@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import {
   addNewGroupDB,
   updateNodeLabelDB,
-} from "@/db/repository/repositoryFBCA";
+} from "@/db/repository/FB/repositoryFBCA";
 
 //stores
 import user from "@/auth/store/user";

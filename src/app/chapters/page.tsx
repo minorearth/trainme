@@ -6,10 +6,14 @@ import { ThemeProvider } from "@mui/material/styles";
 import { useCustomTheme } from "@/app/theme";
 import { CssBaseline } from "@mui/material";
 import splash from "@/components/common/splash/store";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
+import { startUidMonitor } from "@/db/FB/CA/firebaseappClient";
 
 const Page = observer(({}) => {
   const { customTheme } = useCustomTheme();
+  useEffect(() => {
+    startUidMonitor((id) => user.setUserid(id));
+  }, []);
 
   // useCallback(() => splash.showAppLoader(true), []);
 

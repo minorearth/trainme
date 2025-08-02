@@ -13,7 +13,7 @@ import {
 } from "@/db/repository/repositoryFetch";
 import { checkCourseReady } from "@/db/repository/repositoryLocalFiles";
 
-import { saveChampUserTaskLog } from "@/db/repository/repositoryFBCA";
+import { saveChampUserTaskLog } from "@/db/repository/FB/repositoryFBCA";
 
 //services(external)
 import { signOut } from "@/auth/services/servicesAuth";
@@ -117,6 +117,15 @@ export const openLessonStartPage = async ({
 
     splash.showProgress();
 
+    console.log(
+      "tasks",
+      champData,
+      courseData,
+      chapterData,
+      tasksetData,
+      toJS(user.progress)
+    );
+
     const { tasks, tasksuuids } = await getTasks({
       champData,
       courseData,
@@ -126,7 +135,7 @@ export const openLessonStartPage = async ({
     });
 
     if (tasksetmode == TSM.textbook && !tasks.length)
-      throw Error(E_CODES.TEXTBOOK_BLOCKED);
+      throw new Error(E_CODES.TEXTBOOK_BLOCKED);
 
     taskset.setTaskSetTasks({ tasks });
     task.setCurrTask(tasks[0]);
@@ -143,10 +152,12 @@ export const openLessonStartPage = async ({
     chapter.setChapterStateP(chapterData);
 
     navigator.setStateP({ page: PG.lessonStarted as Page });
+    splash.closeProgress();
   } catch (error) {
-    throw throwInnerError(error);
+    splash.closeProgress();
+
+    throw finalErrorHandler(error, dialogs, L.ru.msg);
   }
-  splash.closeProgress();
 };
 
 export const openTaskSetPage = async () => {
