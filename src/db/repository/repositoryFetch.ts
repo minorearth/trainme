@@ -16,10 +16,11 @@ import { GetDF } from "tpconst/const";
 import { encrypt2 } from "tpconst/utils";
 
 //ETL
-import { ETLUserProgress } from "@/db/repository/ETL/ETLUserMeta";
+//TODO: remove whole repo to ...
+import { ETLUserProgress } from "tpconst/RP/FB";
 
 //eror handling
-import { taskLogToDBFormat } from "./ETL/ETLTaskset";
+import { taskLogToDBFormat } from "tpconst/RP/FB";
 import { throwInnerError } from "tpconst/errorHandlers";
 
 //course

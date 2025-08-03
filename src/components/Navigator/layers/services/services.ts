@@ -13,7 +13,7 @@ import {
 } from "@/db/repository/repositoryFetch";
 import { checkCourseReady } from "@/db/repository/repositoryLocalFiles";
 
-import { saveChampUserTaskLog } from "@/db/repository/FB/repositoryFBCA";
+import { saveChampUserTaskLog } from "tpconst/RP/FB";
 
 //services(external)
 import { signOut } from "@/auth/services/servicesAuth";

@@ -4440,10 +4440,9 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-tpconst@^1.0.12:
-  version "1.0.12"
-  resolved "https://registry.npmjs.org/tpconst/-/tpconst-1.0.12.tgz"
-  integrity sha512-PPlN+vM8FbPOqDgjbJTevQk05MRjdyMcGwx0dLp2VNX0S+IbuS4jdMjiBz0qtjWARc8kEIS7VRZLc29i3stNMw==
+"tpconst@file:../tpconst":
+  version "1.0.14"
+  resolved "file:../tpconst"
   dependencies:
     crypto-js "^4.2.0"
     firebase "^11.1.0"

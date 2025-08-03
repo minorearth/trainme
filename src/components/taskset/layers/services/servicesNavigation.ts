@@ -2,7 +2,7 @@
 import { updateKeySCP, updateSCP } from "@/db/localstorage";
 
 //repository(external)
-import { updateChampPoints } from "@/db/repository/FB/repositoryFBCA";
+import { updateChampPoints } from "tpconst/RP/FB";
 
 //stores
 import task from "@/components/taskset/taskrun/layers/store/task";

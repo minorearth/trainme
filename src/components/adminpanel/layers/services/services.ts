@@ -1,5 +1,5 @@
 //repository
-import { getChapterIds_admin } from "@/db/repository/FB/repositoryFBCA";
+import { getChapterIds_admin } from "tpconst/RP/FB";
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
@@ -11,7 +11,7 @@ import {
   resetUser,
   setMoneyDBSA,
   unlockAllChaptersDBSA,
-} from "@/db/repository/FB/repositoryFBSA";
+} from "tpconst/RP/FB";
 
 export const resetCurrentUser = async () => {
   const courseid = course.state.courseid;

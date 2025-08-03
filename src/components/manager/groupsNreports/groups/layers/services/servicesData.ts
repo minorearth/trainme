@@ -1,16 +1,11 @@
-import { getAllTasksDataObj } from "@/db/repository/FB/repositoryFBCA";
+import { getAllTasksDataObj } from "tpconst/RP/FB";
 import { getReadyCourses } from "@/db/repository/repositoryLocalFiles";
-import {
-  getGroupsArr,
-  getChaptersObjdata,
-} from "@/db/repository/FB/repositoryFBCA";
-import S from "@/globals/settings";
+import { getGroupsArr, getChaptersObjdata } from "tpconst/RP/FB";
 
 //stores
 import stat from "@/components/manager/groupsNreports/store/stat";
 import user from "@/auth/store/user";
 import { RawTaskObj } from "tpconst/T";
-import { D } from "@/db/repository/fbconfig";
 
 export const getAllCoursesTasks = async () => {
   const readyCourses = getReadyCourses();

@@ -5,17 +5,20 @@ import { observer } from "mobx-react-lite";
 import { ThemeProvider } from "@mui/material/styles";
 import { useCustomTheme } from "@/app/theme";
 import { CssBaseline } from "@mui/material";
-import splash from "@/components/common/splash/store";
-import { useCallback, useEffect } from "react";
-import { startUidMonitor } from "@/db/FB/CA/firebaseappClient";
+import { useEffect } from "react";
+// import { startUidMonitor } from "tpconst/DB/FB/CA";
+import { startUidMonitor } from "tpconst/DB/FB/CA";
+
+import { logout } from "@/globals/next/session";
 
 const Page = observer(({}) => {
   const { customTheme } = useCustomTheme();
   useEffect(() => {
-    startUidMonitor((id) => user.setUserid(id));
+    startUidMonitor(
+      (id) => user.setUserid(id),
+      () => logout()
+    );
   }, []);
-
-  // useCallback(() => splash.showAppLoader(true), []);
 
   return (
     <>

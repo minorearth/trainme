@@ -8,10 +8,10 @@ import {
   launchAuthStateChangeMonitor,
   createUser,
   signOutUserRep,
-} from "@/db/repository/FB/repositoryFBAuth";
+} from "tpconst/RP/FB";
 import { getFreeCoursesIds } from "@/db/repository/repositoryLocalFiles";
 import { getUserMeta } from "@/db/repository/repositoryFetch";
-import { createNewUserMeta } from "@/db/repository/FB/repositoryFBCA";
+import { createNewUserMeta } from "tpconst/RP/FB";
 
 //services
 import { getInitalDataForFreeCourses } from "@/components/courses/layers/services/services";

@@ -1,10 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 
 //repository
-import {
-  addNewGroupDB,
-  updateNodeLabelDB,
-} from "@/db/repository/FB/repositoryFBCA";
+import { addNewGroupDB, updateNodeLabelDB } from "tpconst/RP/FB";
 
 //stores
 import user from "@/auth/store/user";

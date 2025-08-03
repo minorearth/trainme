@@ -6,14 +6,14 @@ import {
   saveProgressDBNotCompletedAndSuccess,
   saveUserMeta,
 } from "@/db/repository/repositoryFetch";
-import { getChampTasksDB } from "@/db/repository/FB/repositoryFBCA";
+import { getChampTasksDB } from "tpconst/RP/FB";
 
 //repository(local)
 import {
   getAllTasksFromChapter,
   getTextBookTasks,
   getAllCourseTasks,
-} from "@/db/repository/FB/repositoryFBCA";
+} from "tpconst/RP/FB";
 
 //service helpers(local)
 import {

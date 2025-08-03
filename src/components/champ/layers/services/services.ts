@@ -16,7 +16,7 @@ import {
   getUserChampStatus,
   createNewChamp,
   setChampStarted,
-} from "@/db/repository/FB/repositoryFBCA";
+} from "tpconst/RP/FB";
 
 //stores
 import user from "@/auth/store/user";
@@ -34,7 +34,8 @@ import { CS, PS, TSM } from "tpconst/const";
 import S from "@/globals/settings";
 import { E_CODES } from "tpconst/errorHandlers";
 import { finalErrorHandler, throwInnerError } from "tpconst/errorHandlers";
-import { D } from "@/db/repository/fbconfig";
+//TODO: remove
+import { D } from "tpconst/RP/FB/fbconfig.js";
 
 export const createChamp = async () => {
   try {
