@@ -6,6 +6,7 @@ import { TSM } from "tpconst/const";
 export const dialogs: { [dialogtype: string]: (...params: any) => void } = {
   basic: ({ text, caption }: { text: string; caption: string }) =>
     alertdialog.showDialog(caption, text, 1, () => {}),
+
   action: ({
     text,
     caption,
@@ -15,6 +16,7 @@ export const dialogs: { [dialogtype: string]: (...params: any) => void } = {
     caption: string;
     action: () => void;
   }) => alertdialog.showDialog(caption, text, 1, () => action()),
+
   twojoin: ({
     text1,
     text2,
@@ -27,6 +29,16 @@ export const dialogs: { [dialogtype: string]: (...params: any) => void } = {
     caption: string;
   }) =>
     alertdialog.showDialog(caption, `${text1} ${value} ${text2}`, 1, () => {}),
+
+  textnvalue: ({
+    text,
+    value,
+    caption,
+  }: {
+    text: string;
+    value: string;
+    caption: string;
+  }) => alertdialog.showDialog(caption, `${text} ${value}`, 1, () => {}),
 
   okCancel: ({
     action,

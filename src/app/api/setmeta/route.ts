@@ -14,20 +14,20 @@ import { getNextErrorResponse } from "tpconst/errorHandlers";
 
 interface reqData {
   type: string;
-  body: string;
+  data: string;
 }
 export async function POST(request: Request) {
   try {
     const reqData: reqData = await request.json();
-    const { type, body } = reqData;
+    const { type, data } = reqData;
     if (type == SetDF.paychapter) {
-      await paychapterDBSA({ dataEncrypted: body });
+      await paychapterDBSA({ dataEncrypted: data });
     }
     if (type == SetDF.setProgress) {
-      await saveProgressDBSA({ dataEncrypted: body });
+      await saveProgressDBSA({ dataEncrypted: data });
     }
     if (type == SetDF.setProgressDBFull) {
-      await saveProgressDBSAFull({ dataEncrypted: body });
+      await saveProgressDBSAFull({ dataEncrypted: data });
     }
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {

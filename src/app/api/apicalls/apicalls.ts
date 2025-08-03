@@ -22,6 +22,7 @@ interface setDataFetch {
   data: string;
 }
 export const setDataFetch = async (request: setDataFetch) => {
+  console.log("request", request);
   try {
     wakeUp();
     const res = await new Promise((resolve, reject) => {
@@ -54,7 +55,6 @@ export const setDataFetch = async (request: setDataFetch) => {
 
 interface GetDataFetch {
   type: GetDataFetchTypes;
-  //not encrypted
   //(later)TODO: do types
   data: Object;
 }
@@ -70,7 +70,7 @@ export const getDataFetch = async <T>(request: GetDataFetch) => {
     if (!response.ok) {
       const result = await response.json();
       //TODO: likely wrong again...
-      throw throwFetchAPIError(new Error(result.message));
+      throw throwFetchAPIError(result);
     }
     const result: ServerResponseData<T> = await response.json();
     return result.value;

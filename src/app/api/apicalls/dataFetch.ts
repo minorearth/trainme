@@ -47,6 +47,7 @@ export const getUserMetaCourseProgress = async ({
   uid: string;
 }) => {
   try {
+    console.log("im here");
     const userProgress = await getDataFetch<CourseProgressDB>({
       data: { id: uid, courseid },
       type: GetDF.getuserCoursemetadata,
@@ -179,6 +180,7 @@ export const buyChapterCall = async ({
 
 const saveUserMeta = async (dataToEncrypt: Object, type: SetDataFetch) => {
   try {
+    console.log("type", type, dataToEncrypt);
     await setDataFetch({
       type,
       data: encrypt2(dataToEncrypt),

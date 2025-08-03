@@ -31,7 +31,8 @@ export async function POST(request: Request) {
     }
 
     if (type == GetDF.getuserCoursemetadata) {
-      const value = await getUserCourseMetaDBSA(data.id);
+      console.log("now there", data);
+      const value = await getUserCourseMetaDBSA(data.id, data.courseid);
       const response: ServerResponseData<CourseProgressDB> = {
         value,
         success: true,

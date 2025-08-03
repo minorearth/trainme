@@ -97,7 +97,7 @@ const recoverTasks = async ({ CSP }: { CSP: CSP }) => {
 
   if (taskstage == TS.recapSuspended && tasksetmode != TSM.exam) {
     dialogs.basic({
-      ...L.ru.msg["blocked_and_not_paid"].params,
+      ...L.ru.msg["recap"].params,
     });
     taskset.setTaskSetStateP({ ...taskset.state, taskstage: TS.recap });
   }

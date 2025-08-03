@@ -1,6 +1,3 @@
-//data model
-import { updateKeySCP, updateSCP } from "@/db/localstorageDB";
-
 //repository(external)
 import { updateChampPoints } from "tpconst/RP/FB";
 
@@ -21,6 +18,8 @@ import {
   ok,
 } from "@/components/taskset/layers/services/servicesNavigationHelpers";
 import { ST, TS, TSM } from "tpconst/const";
+import { dialogs } from "@/components/common/dialog/dialogMacro";
+import { L } from "tpconst/lang";
 
 export const nextTaskOrCompleteTestRun = async ({
   error,
@@ -129,14 +128,19 @@ export const errorCountDownPressed = async () => {
     return;
   }
   if (taskstage == TS.recapSuspended) {
-    tasksetmode == TSM.exam
-      ? navigator.actions.openCongratPage({
-          success: ST.fail,
-        })
-      : setRecapTasks({
-          recapTasksIds: taskset.state.recapTasksIds,
-          tasks: taskset.tasks,
-        });
+    if (tasksetmode == TSM.exam) {
+      navigator.actions.openCongratPage({
+        success: ST.fail,
+      });
+    } else {
+      dialogs.basic({
+        ...L.ru.msg["recap"].params,
+      });
+      setRecapTasks({
+        recapTasksIds: taskset.state.recapTasksIds,
+        tasks: taskset.tasks,
+      });
+    }
 
     return;
   }
