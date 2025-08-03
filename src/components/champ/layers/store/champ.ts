@@ -1,5 +1,5 @@
 import { makeObservable, makeAutoObservable } from "mobx";
-import { updateSCP } from "@/db/localstorage";
+import { updateSCP } from "@/db/localstorageDB";
 import {
   createChamp,
   joinChamp,

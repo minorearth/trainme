@@ -1,5 +1,5 @@
 import { getAllTasksDataObj } from "tpconst/RP/FB";
-import { getReadyCourses } from "@/db/repository/repositoryLocalFiles";
+import { getReadyCourses } from "@/db/localRepository/repositoryLocalFiles";
 import { getGroupsArr, getChaptersObjdata } from "tpconst/RP/FB";
 
 //stores

@@ -1,7 +1,7 @@
 "use client";
 import Grid from "@mui/material/Grid2";
 import Card from "./courseCard";
-import { getCoursesSorted } from "@/db/repository/repositoryLocalFiles";
+import { getCoursesSorted } from "@/db/localRepository/repositoryLocalFiles";
 import { CoursesDB } from "tpconst/T";
 
 import splash from "@/components/common/splash/store";

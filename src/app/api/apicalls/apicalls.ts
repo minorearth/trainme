@@ -19,7 +19,7 @@ export const wakeUp = () => {
 
 interface setDataFetch {
   type: SetDataFetch;
-  body: string;
+  data: string;
 }
 export const setDataFetch = async (request: setDataFetch) => {
   try {
@@ -58,15 +58,14 @@ interface GetDataFetch {
   //(later)TODO: do types
   data: Object;
 }
-
-export const getDataFetch = async <T>(data: GetDataFetch) => {
+export const getDataFetch = async <T>(request: GetDataFetch) => {
   try {
     const response = await fetch(S.P.GETMETA, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(request),
     });
     if (!response.ok) {
       const result = await response.json();

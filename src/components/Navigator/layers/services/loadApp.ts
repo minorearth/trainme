@@ -4,8 +4,8 @@ import { L } from "tpconst/lang";
 //globals
 
 //repository
-import { getPersistedState } from "@/db/repository/repositoryLS";
-import { checkCoursePaid } from "@/db/repository/repositoryFetch";
+import { getPersistedState } from "@/db/localRepository/repositoryLS";
+import { checkCoursePaid } from "@/app/api/apicalls/dataFetch";
 
 //services(external)
 import { getFlow } from "@/components/course/layers/services/services";
@@ -27,7 +27,7 @@ import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";
 import chapter from "@/components/taskset/layers/store/chapter";
 import { CSP } from "tpconst/T";
-import { checkVersion } from "@/db/localstorage";
+import { checkVersion } from "@/db/localstorageDB";
 import { PG, ST, TS, TSM } from "tpconst/const";
 import S from "@/globals/settings";
 

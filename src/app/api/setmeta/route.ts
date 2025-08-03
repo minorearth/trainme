@@ -4,9 +4,12 @@ export const dynamic = "force-dynamic";
 export const revalidate = 1; //revalidate api every 1 second
 //https://stackoverflow.com/questions/76356803/data-not-updating-when-deployed-nextjs13-app-on-vercel-despite-using-cache-no
 
-import { updateDocSA } from "tpconst/DB/FB/SA";
-import { UserMetaDB } from "tpconst/T";
-import { SetDF, CLT } from "tpconst/const";
+import {
+  paychapterDBSA,
+  saveProgressDBSA,
+  saveProgressDBSAFull,
+} from "tpconst/RP/FB/repositoryFBSA.js";
+import { SetDF } from "tpconst/const";
 import { getNextErrorResponse } from "tpconst/errorHandlers";
 
 interface reqData {
@@ -17,11 +20,14 @@ export async function POST(request: Request) {
   try {
     const reqData: reqData = await request.json();
     const { type, body } = reqData;
-    if (type == SetDF.paychapter || type == SetDF.setusermetadata) {
-      await updateDocSA<UserMetaDB>({
-        collectionName: CLT.usermeta,
-        dataencrypted: body,
-      });
+    if (type == SetDF.paychapter) {
+      await paychapterDBSA({ dataEncrypted: body });
+    }
+    if (type == SetDF.setProgress) {
+      await saveProgressDBSA({ dataEncrypted: body });
+    }
+    if (type == SetDF.setProgressDBFull) {
+      await saveProgressDBSAFull({ dataEncrypted: body });
     }
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {

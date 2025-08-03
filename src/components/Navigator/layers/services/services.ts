@@ -10,8 +10,8 @@ import {
 import {
   checkCoursePaid,
   getUserMetaCourseProgress,
-} from "@/db/repository/repositoryFetch";
-import { checkCourseReady } from "@/db/repository/repositoryLocalFiles";
+} from "@/app/api/apicalls/dataFetch";
+import { checkCourseReady } from "@/db/localRepository/repositoryLocalFiles";
 
 import { saveChampUserTaskLog } from "tpconst/RP/FB";
 

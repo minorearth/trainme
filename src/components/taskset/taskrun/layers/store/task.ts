@@ -6,7 +6,7 @@ import { toJS } from "mobx";
 import { L } from "tpconst/lang";
 
 //direct DB call
-import { updateKeySCP } from "@/db/localstorage";
+import { updateKeySCP } from "@/db/localstorageDB";
 
 //service utils
 import { checkOnChangeErrors } from "@/components/taskset/taskrun/layers/services/taskCheck";

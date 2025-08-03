@@ -3,9 +3,8 @@ import { toJS } from "mobx";
 //repository(external)
 import {
   saveProgressDB,
-  saveProgressDBNotCompletedAndSuccess,
-  saveUserMeta,
-} from "@/db/repository/repositoryFetch";
+  saveProgressDBFull,
+} from "@/app/api/apicalls/dataFetch";
 import { getChampTasksDB } from "tpconst/RP/FB";
 
 //repository(local)
@@ -189,7 +188,7 @@ export const saveProgress = async () => {
     const courseid = course.state.courseid;
 
     if (!completed && success == ST.success) {
-      await saveProgressDBNotCompletedAndSuccess({
+      await saveProgressDBFull({
         courseid,
         chapterid,
         tasklog,

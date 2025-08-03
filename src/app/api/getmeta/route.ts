@@ -3,12 +3,17 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0; //revalidate api every 0 second
 //https://stackoverflow.com/questions/76356803/data-not-updating-when-deployed-nextjs13-app-on-vercel-despite-using-cache-no
 
-import { getDocSA, checkCoursePaidSA } from "tpconst/DB/FB/SA";
-import { UserMetaDB } from "tpconst/T";
-import { CLT, GetDF } from "tpconst/const";
+import { CourseProgressDB, UserMetaDB } from "tpconst/T";
+import { GetDF } from "tpconst/const";
 
 import { ServerResponseData } from "tpconst/T";
 import { getNextErrorResponse } from "tpconst/errorHandlers";
+
+import {
+  checkCoursePaidDBSA,
+  getUserCourseMetaDBSA,
+  getUserMetaDBSA,
+} from "tpconst/RP/FB/repositoryFBSA.js";
 
 export async function POST(request: Request) {
   try {
@@ -16,10 +21,8 @@ export async function POST(request: Request) {
     const { type, data } = reqData;
 
     if (type == GetDF.getusermetadata) {
-      const value = await getDocSA<UserMetaDB>({
-        collectionName: CLT.usermeta,
-        id: data.id,
-      });
+      const value = await getUserMetaDBSA(data.id);
+
       const response: ServerResponseData<UserMetaDB> = {
         value,
         success: true,
@@ -27,8 +30,17 @@ export async function POST(request: Request) {
       return NextResponse.json(response, { status: 200 });
     }
 
+    if (type == GetDF.getuserCoursemetadata) {
+      const value = await getUserCourseMetaDBSA(data.id);
+      const response: ServerResponseData<CourseProgressDB> = {
+        value,
+        success: true,
+      };
+      return NextResponse.json(response, { status: 200 });
+    }
+
     if (type == GetDF.checkcoursepaid) {
-      const value = await checkCoursePaidSA(data);
+      const value = await checkCoursePaidDBSA(data.courseid, data.id);
       const response: ServerResponseData<boolean> = {
         value,
         success: true,

@@ -2,7 +2,7 @@ import { toJS } from "mobx";
 
 //repository(local)
 import { getFlowDB } from "tpconst/RP/FB";
-import { buyChapterCall } from "@/db/repository/repositoryFetch";
+import { buyChapterCall } from "@/app/api/apicalls/dataFetch";
 
 //stores
 import course from "@/components/course/layers/store/course";

@@ -9,8 +9,8 @@ import {
   createUser,
   signOutUserRep,
 } from "tpconst/RP/FB";
-import { getFreeCoursesIds } from "@/db/repository/repositoryLocalFiles";
-import { getUserMeta } from "@/db/repository/repositoryFetch";
+import { getFreeCoursesIds } from "@/db/localRepository/repositoryLocalFiles";
+import { getUserMeta } from "@/app/api/apicalls/dataFetch";
 import { createNewUserMeta } from "tpconst/RP/FB";
 
 //services

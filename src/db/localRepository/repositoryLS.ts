@@ -1,5 +1,5 @@
 //LS
-import { checkVersion, cleanUpCSP, getCSP } from "@/db/localstorage";
+import { checkVersion, cleanUpCSP, getCSP } from "@/db/localstorageDB";
 
 //types
 import { CSP } from "tpconst/T";

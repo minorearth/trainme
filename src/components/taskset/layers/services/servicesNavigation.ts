@@ -1,5 +1,5 @@
 //data model
-import { updateKeySCP, updateSCP } from "@/db/localstorage";
+import { updateKeySCP, updateSCP } from "@/db/localstorageDB";
 
 //repository(external)
 import { updateChampPoints } from "tpconst/RP/FB";

@@ -1,4 +1,4 @@
-import { getFreeCourses } from "@/db/repository/repositoryLocalFiles";
+import { getFreeCourses } from "@/db/localRepository/repositoryLocalFiles";
 
 export const getInitalDataForFreeCourses = () => {
   const freeCourses = getFreeCourses();

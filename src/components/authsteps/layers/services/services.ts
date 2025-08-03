@@ -1,5 +1,5 @@
 //DB direct call
-import { cleanUpCSP } from "@/db/localstorage";
+import { cleanUpCSP } from "@/db/localstorageDB";
 
 //services(external)
 import { signUp, signIn } from "@/auth/services/servicesAuth";

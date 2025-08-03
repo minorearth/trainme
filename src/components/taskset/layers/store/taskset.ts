@@ -1,7 +1,7 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { runInAction } from "mobx";
 import task from "@/components/taskset/taskrun/layers/store/task";
-import { updateKeySCP, updateSCP } from "@/db/localstorage";
+import { updateKeySCP, updateSCP } from "@/db/localstorageDB";
 import { getStarPageIntro } from "@/components/common/dialog/dialogMacro";
 
 import {

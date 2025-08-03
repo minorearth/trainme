@@ -1,6 +1,6 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { runInAction } from "mobx";
-import { updateSCP } from "@/db/localstorage";
+import { updateSCP } from "@/db/localstorageDB";
 import { CourseStatePersisted, FlowState } from "tpconst/T";
 import { COURSE_DEFAULTS } from "tpconst/typesdefaults";
 
