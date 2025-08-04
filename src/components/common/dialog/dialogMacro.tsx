@@ -91,8 +91,8 @@ export const getTaskSetInterruptedInfo = ({
   }
 
   if (tasksetmode == TSM.champ) {
-    caption = L.ru.msg.INTERRUPT_CHAMP_CAPTION;
-    text = L.ru.msg.INTERRUPT_CHAMP_TEXT;
+    caption = L.ru.INTERRUPT.INTERRUPT_CHAMP_CAPTION;
+    text = L.ru.INTERRUPT.INTERRUPT_CHAMP_TEXT;
   }
 
   return { caption, text };

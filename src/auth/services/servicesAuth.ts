@@ -25,7 +25,11 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 
 //globals
 import S from "@/globals/settings";
-import { finalErrorHandler, throwInnerError } from "tpconst/errorHandlers";
+import {
+  E_CODES,
+  finalErrorHandler,
+  throwInnerError,
+} from "tpconst/errorHandlers";
 
 //error handling
 
@@ -99,7 +103,7 @@ const actionOnAuthChanged = async (
     resolved("noUser");
     logout();
   } else {
-    resolved("email_not_veryfied");
+    resolved(E_CODES.EMAIL_NOT_VERIFIED);
   }
 };
 

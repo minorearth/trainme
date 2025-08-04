@@ -20,6 +20,7 @@ import {
 import { ST, TS, TSM } from "tpconst/const";
 import { dialogs } from "@/components/common/dialog/dialogMacro";
 import { L } from "tpconst/lang";
+import { E_CODES } from "tpconst/errorHandlers";
 
 export const nextTaskOrCompleteTestRun = async ({
   error,
@@ -134,7 +135,7 @@ export const errorCountDownPressed = async () => {
       });
     } else {
       dialogs.basic({
-        ...L.ru.msg["recap"].params,
+        ...L.ru.msg[E_CODES.RECAP].params,
       });
       setRecapTasks({
         recapTasksIds: taskset.state.recapTasksIds,

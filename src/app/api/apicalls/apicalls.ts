@@ -69,7 +69,6 @@ export const getDataFetch = async <T>(request: GetDataFetch) => {
     });
     if (!response.ok) {
       const result = await response.json();
-      //TODO: likely wrong again...
       throw throwFetchAPIError(result);
     }
     const result: ServerResponseData<T> = await response.json();

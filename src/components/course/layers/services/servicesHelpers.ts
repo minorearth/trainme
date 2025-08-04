@@ -14,6 +14,7 @@ import { CourseProgressDB, CourseStatDB, EdgeDB, NodeDB } from "tpconst/T";
 import { TASKSET_DEFAULTS } from "tpconst/typesdefaults";
 import { TasksetMode } from "tpconst/T";
 import { L } from "tpconst/lang";
+import { E_CODES } from "tpconst/errorHandlers";
 
 const buyAction = ({
   unlocked,
@@ -28,17 +29,17 @@ const buyAction = ({
 }) => {
   if (!unlocked)
     dialogs.basic({
-      ...L.ru.msg["blocked_and_not_paid"].params,
+      ...L.ru.msg[E_CODES.BLOCKED_AND_NOT_PAID].params,
     });
 
   if (unlocked && rating < unlockpts)
     dialogs.basic({
-      ...L.ru.msg["notpaid_no_money"].params,
+      ...L.ru.msg[E_CODES.NOT_PAID_NO_MONEY].params,
     });
 
   if (unlocked && rating >= unlockpts && !progressCircle.shown)
     dialogs.action({
-      ...L.ru.msg["notpaid_buy"].params,
+      ...L.ru.msg[E_CODES.NOT_PAID_BUY].params,
       action: () => buyChapter({ unlockpts, chapterid }),
     });
 };
@@ -62,7 +63,7 @@ const nodeAction = (data: NodeDataState) => {
   } else {
     if (!unlocked && !completed)
       dialogs.basic({
-        ...L.ru.msg["chapter_blocked"].params,
+        ...L.ru.msg[E_CODES.CHAPTER_BLOCKED].params,
       });
 
     if (unlocked) {

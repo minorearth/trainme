@@ -9,7 +9,7 @@ interface Fieldstate {
   helperText: string;
 }
 class txtField {
-  state: { [key: string]: Fieldstate } = {
+  state: { [key in FieldType]: Fieldstate } = {
     email: DEFAULT,
     name: DEFAULT,
     password: DEFAULT,
@@ -21,7 +21,9 @@ class txtField {
   };
 
   resetState() {
-    Object.keys(this.state).forEach((field) => (this.state[field] = DEFAULT));
+    Object.keys(this.state).forEach(
+      (field) => (this.state[field as FieldType] = DEFAULT)
+    );
   }
 
   handleChange2(value: string, type: FieldType) {

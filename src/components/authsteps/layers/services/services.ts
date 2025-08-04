@@ -16,7 +16,7 @@ import { CFT } from "@/components/common/customfield/types";
 // import { AppRouterInstance } from "";
 import { dialogs } from "@/components/common/dialog/dialogMacro";
 import { L } from "tpconst/lang";
-import { throwInnerError } from "tpconst/errorHandlers";
+import { E_CODES, throwInnerError } from "tpconst/errorHandlers";
 export const signInSubmit = async (
   event: React.FormEvent<HTMLFormElement>,
   router: AppRouterInstance
@@ -39,7 +39,7 @@ export const recoverPswSubmit = () => {
     try {
       resetPsw(txtField.state.email.value);
       dialogs.action({
-        ...L.ru.msg["psw_recovery"].params,
+        ...L.ru.msg[E_CODES.PSW_RECOVERY].params,
         action: () => authForm.showSignIn(),
       });
     } catch (e) {
@@ -59,7 +59,7 @@ export const signUpSubmit = async (
       name: txtField.state.name.value,
     });
     dialogs.action({
-      ...L.ru.msg["account_created"].params,
+      ...L.ru.msg[E_CODES.ACCOUNT_CREATED].params,
       action: () => authForm.showSignIn(),
     });
   }

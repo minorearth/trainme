@@ -30,6 +30,7 @@ import { CSP } from "tpconst/T";
 import { checkVersion } from "@/db/localstorageDB";
 import { PG, ST, TS, TSM } from "tpconst/const";
 import S from "@/globals/settings";
+import { E_CODES } from "tpconst/errorHandlers";
 
 //
 export const loadPyTrek = async () => {
@@ -97,7 +98,7 @@ const recoverTasks = async ({ CSP }: { CSP: CSP }) => {
 
   if (taskstage == TS.recapSuspended && tasksetmode != TSM.exam) {
     dialogs.basic({
-      ...L.ru.msg["recap"].params,
+      ...L.ru.msg[E_CODES.RECAP].params,
     });
     taskset.setTaskSetStateP({ ...taskset.state, taskstage: TS.recap });
   }
