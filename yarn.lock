@@ -3071,8 +3071,8 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-tpconst@1.0.20:
-  version "1.0.20"
+tpconst@1.0.21:
+  version "1.0.21"
   resolved "file:../tpconst"
   dependencies:
     crypto-js "^4.2.0"
