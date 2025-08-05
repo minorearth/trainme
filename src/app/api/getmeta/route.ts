@@ -11,6 +11,7 @@ import { getNextErrorResponse } from "tpconst/errorHandlers";
 
 import {
   checkCoursePaidDBSA,
+  getPaymentIdDBSA,
   getUserCourseMetaDBSA,
   getUserMetaDBSA,
 } from "tpconst/RP/FB/repositoryFBSA.js";
@@ -22,7 +23,6 @@ export async function POST(request: Request) {
 
     if (type == GetDF.getusermetadata) {
       const value = await getUserMetaDBSA(data.id);
-
       const response: ServerResponseData<UserMetaDB> = {
         value,
         success: true,
@@ -31,7 +31,6 @@ export async function POST(request: Request) {
     }
 
     if (type == GetDF.getuserCoursemetadata) {
-      console.log("now there", data);
       const value = await getUserCourseMetaDBSA(data.id, data.courseid);
       const response: ServerResponseData<CourseProgressDB> = {
         value,
@@ -43,6 +42,15 @@ export async function POST(request: Request) {
     if (type == GetDF.checkcoursepaid) {
       const value = await checkCoursePaidDBSA(data.courseid, data.id);
       const response: ServerResponseData<boolean> = {
+        value,
+        success: true,
+      };
+      return NextResponse.json(response, { status: 200 });
+    }
+
+    if (type == GetDF.getpaymentid) {
+      const value = await getPaymentIdDBSA(data);
+      const response: ServerResponseData<any> = {
         value,
         success: true,
       };

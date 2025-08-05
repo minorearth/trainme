@@ -1,13 +1,83 @@
+import { getDataFetch } from "@/app/api/apicalls/apicalls";
+import { getPaymentId } from "@/app/api/apicalls/dataFetch";
+import S from "@/globals/settings";
 import React from "react";
 import styled from "styled-components";
+import { GetDF } from "tpconst/const";
+import { throwInnerError } from "tpconst/errorHandlers";
+import user from "@/auth/store/user";
 
 interface cardProps {
   title: string;
   text: string;
+  courseid: string;
   onClick: () => void;
 }
 
-const Card = ({ title, text, onClick }: cardProps) => {
+// export const getPaymentIdDBSA = async (data: string) => {
+//   const myHeaders = new Headers();
+//   const user = "1138711";
+//   const password = "test_U5BQCbtM-8EbukKeHySB89i58dxNUV4O0_QzxK0vq2Q";
+//   const idempotenceKey = uuidv4();
+
+//   myHeaders.append("Idempotence-Key", idempotenceKey);
+//   myHeaders.append("Content-Type", "application/json");
+//   myHeaders.append("Authorization", `Basic ${btoa(`${user}:${password}`)}`);
+
+//   const requestOptions: RequestInit = {
+//     method: "POST",
+//     headers: myHeaders,
+//     body: data,
+//     redirect: "follow",
+//   };
+
+//   try {
+//     const response = await fetch("/v3/payments", requestOptions);
+//     const res = await response.json();
+//     return res;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+//   const id = await getPaymentIdDBSA(
+//                     JSON.stringify({
+//                       amount: {
+//                         value: "2.00",
+//                         currency: "RUB",
+//                       },
+//                       confirmation: {
+//                         type: "embedded",
+//                       },
+//                       capture: true,
+//                       description: "Заказ №72",
+//                     })
+//                   );
+
+export const startPayment = async (id: string) => {
+  window.open(
+    `${process.env.NEXT_PUBLIC_DOMAIN}/${S.P.PURCHASE}/${id}`,
+    "_blank"
+  );
+  // await setChampStarted({ champid });
+};
+
+const openPaymentWindow = async (courseid: string, uid: string) => {
+  const id = await getPaymentId({
+    amount: {
+      value: "2.00",
+      currency: "RUB",
+    },
+    confirmation: {
+      type: "embedded",
+    },
+    capture: true,
+    description: `${uid}@${courseid}`,
+  });
+  startPayment(id);
+};
+
+const Card = ({ title, text, courseid, onClick }: cardProps) => {
   return (
     <StyledWrapper>
       <div
@@ -56,7 +126,13 @@ const Card = ({ title, text, onClick }: cardProps) => {
           </div>
           <div className="bottom">
             <div className="social-buttons-container">
-              <button className="social-button .social-button1"></button>
+              <button
+                className="social-button .social-button1"
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  openPaymentWindow(courseid, user.userid);
+                }}
+              ></button>
               <button className="social-button .social-button2"></button>
               <button className="social-button .social-button3"></button>
             </div>
@@ -252,7 +328,7 @@ const StyledWrapper = styled.div`
   }
 
   .bottom .social-buttons-container .social-button:hover {
-    /* background: black; */
+    background: black;
   }
 
   .bottom .social-buttons-container .social-button:hover .svg {

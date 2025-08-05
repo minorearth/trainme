@@ -38,6 +38,18 @@ export const checkCoursePaid = async ({
   }
 };
 
+export const getPaymentId = async (paymentRequst: Object) => {
+  try {
+    const paymentId = await getDataFetch<string>({
+      type: GetDF.getpaymentid,
+      data: paymentRequst,
+    });
+    return paymentId;
+  } catch (error) {
+    throw throwInnerError(error);
+  }
+};
+
 //usermeta
 export const getUserMetaCourseProgress = async ({
   courseid,

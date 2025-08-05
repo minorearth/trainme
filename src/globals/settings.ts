@@ -29,6 +29,7 @@ export const S = {
     DASHBOARD: "dashboard",
     SETMETA: `/api/setmeta`,
     GETMETA: "/api/getmeta",
+    PURCHASE: "purchase",
   },
   PYODIDE_VERSION: "0.26.4",
   CURRENT_LS_VERSION: "0.14",

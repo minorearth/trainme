@@ -34,6 +34,7 @@ const Courses = () => {
               onClick={crs.coursesAction}
               title={crs.title}
               text={crs.text}
+              courseid={crs.courseid}
             />
           </Grid>
         ))}
