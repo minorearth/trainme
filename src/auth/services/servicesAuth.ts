@@ -54,7 +54,6 @@ export const signUp = async ({
       courses: coursesInitials,
       paidcourses2: {},
     };
-    //hello
     createNewUserMeta({ userId, data });
     return userId;
   } catch (e: unknown) {
