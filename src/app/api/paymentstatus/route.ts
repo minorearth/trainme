@@ -2,6 +2,7 @@
 
 import { NextResponse } from "next/server";
 import { getNextErrorResponse } from "tpconst/errorHandlers";
+import { buyCourseDBSA } from "tpconst/RP/FB/repositoryFBSA.js";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 1; //revalidate api every 1 second
@@ -75,12 +76,12 @@ interface reqData {
 
 function getFirstWord(str: string) {
   const match = str.match(/^([^@]+)@/);
-  return match ? match[1] : null;
+  return match ? match[1] : "null";
 }
 // Функция для извлечения второго слова после '@'
 function getSecondWord(str: string) {
   const match = str.match(/@([^@]+)$/);
-  return match ? match[1] : null;
+  return match ? match[1] : "null";
 }
 
 export async function POST(request: Request) {
@@ -90,6 +91,10 @@ export async function POST(request: Request) {
     const desc = reqData.object.description;
     console.log("payment", desc);
     console.log(getFirstWord(desc), getSecondWord(desc));
+    await buyCourseDBSA({
+      uid: getFirstWord(desc),
+      courseid: getSecondWord(desc),
+    });
     // `${uid}@${courseid}`
 
     return NextResponse.json(reqData, { status: 200 });
