@@ -66,10 +66,17 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 
 const DLSwitch = observer(({ sx }: { sx: SxProps }) => {
   const { mode, setMode } = useColorScheme();
+  console.log("mode", mode);
 
   useEffect(() => {
-    task.setTheme(mode == "dark");
+    task.setDarkTheme(mode == "dark");
   }, [task.editorRef.current]);
+
+  useEffect(() => {
+    if (mode == "system") {
+      setMode("dark");
+    }
+  }, [mode]);
 
   if (!mode) {
     return null;
@@ -78,7 +85,7 @@ const DLSwitch = observer(({ sx }: { sx: SxProps }) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const mode = event.target.checked ? "dark" : "light";
     setMode(mode);
-    task.setTheme(mode == "dark");
+    task.setDarkTheme(mode == "dark");
   };
 
   return (

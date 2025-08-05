@@ -52,6 +52,7 @@ export const signUp = async ({
       userId,
       paidcourses: freecoursesIds,
       courses: coursesInitials,
+      paidcourses2: {},
     };
 
     createNewUserMeta({ userId, data });

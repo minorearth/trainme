@@ -80,7 +80,7 @@ class task {
     );
   }
 
-  setTheme(darkmode: boolean) {
+  setDarkTheme(darkmode: boolean) {
     darkmode
       ? this.monacoRef.current?.editor.setTheme("dark")
       : this.monacoRef.current?.editor.setTheme("light");

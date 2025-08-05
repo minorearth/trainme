@@ -73,16 +73,18 @@ export const openAllCoursePage = () => {
 export const openCourseFlowPageFromMain = async (courseid: string) => {
   try {
     splash.showProgress(false, "progressdots", 2000);
+    console.log("courseid", courseid);
+    const courseReady = checkCourseReady({ courseid });
+    if (!courseReady) throw Error(E_CODES.COURSE_IS_DISABLED);
 
     const coursePaid = await checkCoursePaid({ courseid, uid: user.userid });
-    const courseReady = checkCourseReady({ courseid });
-
-    if (!coursePaid || !courseReady) throw Error(E_CODES.COURSE_IS_DISABLED);
+    if (!coursePaid) throw Error(E_CODES.COURSE_IS_NOT_PAID);
 
     await openAndRefreshFlowPage({ courseid, refetchFlow: true });
-    splash.closeProgress();
   } catch (error) {
     finalErrorHandler(error, dialogs, L.ru.msg);
+  } finally {
+    splash.closeProgress();
   }
 };
 
