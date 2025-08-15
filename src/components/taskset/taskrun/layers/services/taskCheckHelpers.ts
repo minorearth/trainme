@@ -31,16 +31,16 @@ interface CheckMustHave {
 const checkMustHave = ({ code, musthave, musthaveRe }: CheckMustHave) => {
   const codeLines = cleanUpCode(code).join("\n");
 
-  const musthaveCheck = musthave
-    .map((item) => codeLines.includes(item))
-    .every(Boolean);
+  // const musthaveCheck = musthave
+  //   .map((item) => codeLines.includes(item))
+  //   .every(Boolean);
   const musthaveReCheck = musthaveRe
     .map((item) => {
-      const regex = new RegExp(item, "g");
+      const regex = new RegExp(item.slice(1, -1), "g");
       return codeLines.match(regex) != null;
     })
     .every(Boolean);
-  return musthaveCheck && musthaveReCheck;
+  return musthaveReCheck;
 };
 
 interface checkForbidden {
@@ -51,14 +51,16 @@ interface checkForbidden {
 
 const checkForbidden = ({ code, forbidden, forbiddenRe }: checkForbidden) => {
   const codeLines = cleanUpCode(code).join("\n");
-  const forbiddenCheck1 = forbidden.map((item) => !codeLines.includes(item));
-  const forbiddenCheck = forbiddenCheck1.every(Boolean);
+  // const forbiddenCheck1 = forbidden.map((item) => !codeLines.includes(item));
+  // const forbiddenCheck = forbiddenCheck1.every(Boolean);
   const forbiddenReCheck1 = forbiddenRe.map((item) => {
-    const regex = new RegExp(item, "g");
+    const regex = new RegExp(item.slice(1, -1), "g");
+    console.log("regex", regex, codeLines.match(regex));
+
     return codeLines.match(regex) == null;
   });
   const forbiddenReCheck = forbiddenReCheck1.every(Boolean);
-  return forbiddenCheck && forbiddenReCheck;
+  return forbiddenReCheck;
 };
 
 interface CheckCode {

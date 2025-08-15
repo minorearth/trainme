@@ -1,6 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   productionBrowserSourceMaps: true,
+  async headers() {
+    return [
+      {
+        source: "/pyodide/pyodide.asm.wasm", // путь к вашему wasm файлу
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable", // кешировать 1 год
+          },
+        ],
+      },
+    ];
+  },
   async rewrites() {
     return [
       {

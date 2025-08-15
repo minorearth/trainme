@@ -13,6 +13,7 @@ import task from "@/components/taskset/taskrun/layers/store/task";
 import { TSM, TT } from "tpconst/const";
 import { L } from "tpconst/lang";
 
+//TODO: add task version(must)
 const CodeRunPanel = observer(() => {
   return (
     <Box
@@ -50,13 +51,23 @@ const CodeRunPanel = observer(() => {
           {L.ru.buttons.CHECK_TASK}
         </Button>
       )}
-      {(taskset.state.tasksetmode == TSM.textbook || S.mode.DEV_MODE) && (
+      {taskset.state.tasksetmode == TSM.textbook && (
         <Button
           onClick={() => {
             taskset.prevTaskNoPts_admin();
           }}
           variant="outlined"
           disabled={taskset.prevdisabled}
+        >
+          {L.ru.buttons.BACK_CHAMP}
+        </Button>
+      )}
+      {S.mode.DEV_MODE && (
+        <Button
+          onClick={() => {
+            taskset.prevTaskNoPts_admin();
+          }}
+          variant="outlined"
         >
           {L.ru.buttons.BACK_CHAMP}
         </Button>

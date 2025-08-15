@@ -4,6 +4,7 @@ import { TaskDB } from "tpconst/T";
 import { TaskDBWithFiles } from "tpconst/T";
 import { InOutDB } from "tpconst/T";
 import { TT } from "tpconst/const";
+import { allregex } from "./allregex";
 
 export const supplyFilesAndTransform = async (tasks: TaskDB[]) => {
   const tasksWithFiles = await supplyWithFilesData(tasks);
@@ -13,6 +14,14 @@ export const supplyFilesAndTransform = async (tasks: TaskDB[]) => {
 
 interface FileNamesAndUrls {
   [filename: string]: { fileurl: string; data: string };
+}
+
+interface allregex {
+  [key: string]: {
+    caption: string;
+    ex: string;
+    rgx: string[];
+  };
 }
 
 //Tranform Data
@@ -25,6 +34,7 @@ const supplyWithFriendlyText = (tasksWithFiles: TaskDBWithFiles[]) => {
         forbidden: task.restrictions.forbidden,
         maxlines: task.restrictions.maxlines,
         tasktype: task.tasktype,
+        allregex,
       }),
   }));
   return enrichedTasks;
@@ -34,10 +44,12 @@ const formatForbidden = ({
   forbidden,
   maxlines,
   tasktype,
+  allregex,
 }: {
   forbidden: string[];
   maxlines: number;
   tasktype: string;
+  allregex: allregex;
 }) => {
   let res = "";
   if (tasktype != TT.task) {
@@ -45,15 +57,20 @@ const formatForbidden = ({
   }
 
   res += `\n\n<b>${L.ru.TR.LIMITATIONS_CAPTION}</b>:\n${L.ru.TR.LIMITATIONS_MAXLINES} ${maxlines}`;
-
+  console.log("forbidden", forbidden);
   if (forbidden.length) {
-    const forbiddentsample = L.ru.forbiddentsample;
-    res += `\n${L.ru.TR.LIMITATIONS_FORBIDDEN}`;
-    for (let i = 0; i < forbidden.length; i++) {
-      res += `<div class="tooltip">${forbidden[i]}, <span class="tooltiptext">${
-        forbiddentsample[forbidden[i]]
-      }</span></div>`;
-    }
+    // const forbiddentsample = L.ru.forbiddentsample;
+    res += `\n\n${L.ru.TR.LIMITATIONS_FORBIDDEN}\n`;
+    const frbdn = forbidden.map(
+      (forbidden) =>
+        `<div class="tooltip">${allregex[forbidden].caption} <span class="tooltiptext">${allregex[forbidden].ex}</span></div>`
+    );
+    res += frbdn.join(", ");
+    // for (let i = 0; i < forbidden.length; i++) {
+    //   res += `<div class="tooltip">${
+    //     allregex[forbidden[i]].caption
+    //   }, <span class="tooltiptext">${allregex[forbidden[i]].ex}</span></div>`;
+    // }
   }
   return res;
 };

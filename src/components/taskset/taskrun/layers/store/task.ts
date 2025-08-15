@@ -3,18 +3,9 @@ import { Monaco } from "@monaco-editor/react";
 import React from "react";
 import { editor } from "monaco-editor";
 import { toJS } from "mobx";
-import { L } from "tpconst/lang";
 
-//direct DB call
-import { updateKeySCP } from "@/db/localstorageDB";
-
-//service utils
-import { checkOnChangeErrors } from "@/components/taskset/taskrun/layers/services/taskCheck";
-
-//storee
-import taskset from "@/components/taskset/layers/store/taskset";
+//stores
 import countdownbutton from "@/components/common/CountdownButton/store";
-import { dialogs } from "@/components/common/dialog/dialogMacro";
 
 //themes
 import {
@@ -22,14 +13,20 @@ import {
   monacoLighttheme,
 } from "@/components/taskset/taskrun/components/monaco/themesetter";
 
+//services
+import { dialogs } from "@/components/common/dialog/dialogMacro";
+
 import {
   checkTask,
   runTask,
+  checkOnChangeErrors,
 } from "@/components/taskset/taskrun/layers/services/taskCheck";
 
+//tpconst
 import { TASK_DEFAULTS } from "tpconst/typesdefaults";
 import { Task } from "tpconst/T";
 import { TT } from "tpconst/const";
+import { L } from "tpconst/lang";
 
 interface HandleEditorDidMount {
   editor: editor.IStandaloneCodeEditor | null;

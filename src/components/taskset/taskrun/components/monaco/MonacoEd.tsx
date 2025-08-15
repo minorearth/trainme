@@ -1,7 +1,8 @@
 "use client";
 //github.com/alankrantas/monaco-python-live-editor?tab=readme-ov-file
 // https://alankrantas.github.io/monaco-python-live-editor/
-import Editor from "@monaco-editor/react";
+// import Editor from "@monaco-editor/react";
+
 import { EditorOptions } from "@/components/taskset/taskrun/components/monaco/MonacoEditorOptions";
 import { useColorScheme } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
@@ -10,6 +11,19 @@ import IconButton from "@mui/material/IconButton";
 import CachedIcon from "@mui/icons-material/Cached";
 import { Watcher } from "@/components/taskset/taskrun/components/monaco/watcher/watcher";
 import Box from "@mui/material/Box";
+
+import dynamic from "next/dynamic";
+
+const Editor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
+
+import { loader } from "@monaco-editor/react";
+
+import * as monaco from "monaco-editor";
+
+//TODO:??devmode
+// if (typeof window !== "undefined") {
+//   loader.config({ monaco });
+// }
 
 import { observer } from "mobx-react-lite";
 
@@ -67,6 +81,12 @@ const MonacoEd = observer(() => {
             darkmode: mode == "dark" ? true : false,
           })
         }
+        // beforeMount={(monaco) => {
+        //   (window as any).require.config({
+        //     paths: { vs: "/monaco/vs/" },
+        //   });
+        //   (window as any).require(["vs/editor/editor.main.js"], () => {});
+        // }}
       />
     </Box>
   );
