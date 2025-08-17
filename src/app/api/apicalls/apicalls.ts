@@ -22,7 +22,6 @@ interface setDataFetch {
   data: string;
 }
 export const setDataFetch = async (request: setDataFetch) => {
-  console.log("request", request);
   try {
     wakeUp();
     const res = await new Promise((resolve, reject) => {
@@ -37,7 +36,6 @@ export const setDataFetch = async (request: setDataFetch) => {
           });
           if (!response.ok) {
             const result = await response.json();
-            console.log("я тут");
             throw throwFetchAPIError(new Error(result.message));
           }
           const result = await response.json();

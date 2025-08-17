@@ -80,7 +80,6 @@ export const getTasks = async ({
       });
 
     if (tasksetmode == TSM.textbook) {
-      console.log(userProgress.completed, courseid);
       const tasks = await getTextBookTasks({
         completed: userProgress.completed,
         courseid,

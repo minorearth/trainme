@@ -25,7 +25,6 @@ export const getFlow = async ({
 }) => {
   if (refetchFlow) {
     const flow = await getFlowDB({ courseid });
-    console.log("flow", flow);
     const enrichedflow = enrichFlowWithUserProgress({
       ...flow,
       progress,

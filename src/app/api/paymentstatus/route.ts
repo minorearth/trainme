@@ -87,10 +87,7 @@ function getSecondWord(str: string) {
 export async function POST(request: Request) {
   try {
     const reqData: reqData = await request.json();
-    console.log("2ok2");
     const desc = reqData.object.description;
-    console.log("payment", desc);
-    console.log(getFirstWord(desc), getSecondWord(desc));
     await buyCourseDBSA({
       uid: getFirstWord(desc),
       courseid: getSecondWord(desc),

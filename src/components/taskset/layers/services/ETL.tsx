@@ -57,7 +57,6 @@ const formatForbidden = ({
   }
 
   res += `\n\n<b>${L.ru.TR.LIMITATIONS_CAPTION}</b>:\n${L.ru.TR.LIMITATIONS_MAXLINES} ${maxlines}`;
-  console.log("forbidden", forbidden);
   if (forbidden.length) {
     // const forbiddentsample = L.ru.forbiddentsample;
     res += `\n\n${L.ru.TR.LIMITATIONS_FORBIDDEN}\n`;

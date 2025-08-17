@@ -18,12 +18,6 @@ import {
 
 export async function resetCurrentUser() {
   const courseid = course.state.courseid;
-  console.log(
-    "reser user",
-    resetUser,
-    courses[courseid].firstchapter,
-    user.userid
-  );
   await resetUser(
     encrypt2({
       courseid,

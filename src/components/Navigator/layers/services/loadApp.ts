@@ -50,7 +50,6 @@ export const loadPyTrek = async () => {
       courseid: CSP.course.courseid,
       uid: user.userid,
     });
-    console.log("coursePaidcoursePaid", coursePaid);
     if (coursePaid) {
       await openAndRefreshFlowPage({
         courseid: CSP.course.courseid,

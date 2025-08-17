@@ -73,7 +73,6 @@ export const openAllCoursePage = () => {
 export const openCourseFlowPageFromMain = async (courseid: string) => {
   try {
     splash.showProgress(false, "progressdots", 2000);
-    console.log("courseid", courseid);
     const courseReady = checkCourseReady({ courseid });
     if (!courseReady) throw Error(E_CODES.COURSE_IS_DISABLED);
 
@@ -118,16 +117,6 @@ export const openLessonStartPage = async ({
     const { tasksetmode, taskstage } = tasksetData;
 
     splash.showProgress();
-
-    console.log(
-      "tasks",
-      champData,
-      courseData,
-      chapterData,
-      tasksetData,
-      toJS(user.progress)
-    );
-
     const { tasks, tasksuuids } = await getTasks({
       champData,
       courseData,

@@ -55,8 +55,6 @@ const checkForbidden = ({ code, forbidden, forbiddenRe }: checkForbidden) => {
   // const forbiddenCheck = forbiddenCheck1.every(Boolean);
   const forbiddenReCheck1 = forbiddenRe.map((item) => {
     const regex = new RegExp(item.slice(1, -1), "g");
-    console.log("regex", regex, codeLines.match(regex));
-
     return codeLines.match(regex) == null;
   });
   const forbiddenReCheck = forbiddenReCheck1.every(Boolean);
