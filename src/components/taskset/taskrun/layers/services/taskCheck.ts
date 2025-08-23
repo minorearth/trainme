@@ -46,7 +46,6 @@ export const runTask = async () => {
     code: task.currTask.filedata + task.code,
     stdIn: task.input,
   });
-
   task.setOutput(outputTxt);
   task.setExecuting(false);
 };

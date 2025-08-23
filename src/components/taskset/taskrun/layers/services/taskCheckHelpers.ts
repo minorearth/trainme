@@ -2,6 +2,8 @@ import { L } from "tpconst/lang";
 
 import { eqArrays } from "tpconst/utils";
 import { Task } from "tpconst/T";
+import { allregex } from "@/components/taskset/layers/services/allregex";
+import { ast } from "@/components/taskset/taskrun/layers/services/ast";
 
 const cleanUpCode = (code: string) => {
   const lines = code.match(/[^\r\n]+/g) ?? [];
@@ -22,55 +24,90 @@ const checkLines = ({ code, maxlines }: CheckLines) => {
   return maxlines >= codeLines.length;
 };
 
-interface CheckMustHave {
+type runPythonCode = ({
+  code,
+  stdIn,
+}: {
   code: string;
-  musthave: string[];
-  musthaveRe: string[];
+  stdIn: string;
+}) => Promise<{ outputTxt: string; outputArr: string[] }>;
+
+interface checkEntities {
+  code: string;
+  entities: string[];
+  runPythonCode: runPythonCode;
 }
 
-const checkMustHave = ({ code, musthave, musthaveRe }: CheckMustHave) => {
+const checkEntities = async ({
+  code,
+  entities,
+  runPythonCode,
+}: checkEntities) => {
   const codeLines = cleanUpCode(code).join("\n");
+  const onelinecode = cleanUpCode(code)
+    .join("\\n")
+    .replaceAll("\\\\", "\\\\\\");
+  // console.log(onelinecode);
+  const checks = await Promise.all(
+    entities.map(async (item) => {
+      if (allregex[item].findmode == "regex") {
+        const regex = new RegExp(allregex[item].rgx[0], "gs");
+        return codeLines.match(regex) != null;
+      } else {
+        const { nm, param, type } = allregex[item];
 
-  // const musthaveCheck = musthave
-  //   .map((item) => codeLines.includes(item))
-  //   .every(Boolean);
-  const musthaveReCheck = musthaveRe
-    .map((item) => {
-      const regex = new RegExp(item.slice(1, -1), "g");
-      return codeLines.match(regex) != null;
+        const { outputArr } = await runPythonCode({
+          code: ast({ code: onelinecode, nm, param, type }),
+          stdIn: "",
+        });
+        //  if (code.includes("число делится на 5"))
+        if (outputArr[0].includes("Возникла ошибка!")) {
+          console.log(
+            "code",
+            entities,
+            onelinecode,
+            cleanUpCode(code),
+            code,
+            nm,
+            param,
+            type,
+            outputArr
+          );
+        }
+        return outputArr[0] == "True";
+      }
     })
-    .every(Boolean);
-  return musthaveReCheck;
+  );
+  //   const forbiddenReCheck1 = forbiddenRe.map((item) => {
+  //   const regex = new RegExp(item.slice(1, -1), "g");
+  //   return codeLines.match(regex) != null;
+  // });
+  return checks;
 };
 
-interface checkForbidden {
-  code: string;
-  forbidden: string[];
-  forbiddenRe: string[];
-}
+const checkForbidden = async ({
+  code,
+  entities,
+  runPythonCode,
+}: checkEntities) => {
+  const checks = await checkEntities({ code, entities, runPythonCode });
 
-const checkForbidden = ({ code, forbidden, forbiddenRe }: checkForbidden) => {
-  const codeLines = cleanUpCode(code).join("\n");
-  // const forbiddenCheck1 = forbidden.map((item) => !codeLines.includes(item));
-  // const forbiddenCheck = forbiddenCheck1.every(Boolean);
-  const forbiddenReCheck1 = forbiddenRe.map((item) => {
-    const regex = new RegExp(item.slice(1, -1), "g");
-    return codeLines.match(regex) == null;
-  });
-  const forbiddenReCheck = forbiddenReCheck1.every(Boolean);
-  return forbiddenReCheck;
+  return !checks.some(Boolean);
+};
+
+const checkMustHave = async ({
+  code,
+  entities,
+  runPythonCode,
+}: checkEntities) => {
+  const checks = await checkEntities({ code, entities, runPythonCode });
+  return checks.every(Boolean);
 };
 
 interface CheckCode {
   code: string;
   task: Task;
-  runPythonCode: ({
-    code,
-    stdIn,
-  }: {
-    code: string;
-    stdIn: string;
-  }) => Promise<{ outputTxt: string; outputArr: string[] }>;
+  runPythonCode: runPythonCode;
 }
 
 const checkCode = async ({ code, task, runPythonCode }: CheckCode) => {
@@ -92,15 +129,15 @@ export const runCheckers = async ({ code, task, runPythonCode }: CheckCode) => {
     code,
     maxlines: task.restrictions.maxlines,
   });
-  const mustHaveChecked = checkMustHave({
+  const mustHaveChecked = await checkMustHave({
     code,
-    musthave: task.restrictions.musthave,
-    musthaveRe: task.restrictions.musthaveRe,
+    entities: task.restrictions.musthave,
+    runPythonCode,
   });
-  const forbiddenChecked = checkForbidden({
+  const forbiddenChecked = await checkForbidden({
     code,
-    forbidden: task.restrictions.forbidden,
-    forbiddenRe: task.restrictions.forbiddenRe,
+    entities: task.restrictions.forbidden,
+    runPythonCode,
   });
   return { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked };
 };

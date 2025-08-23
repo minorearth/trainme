@@ -65,9 +65,10 @@ const InOutPanel = observer(() => {
           <Box
             sx={{
               height: "100%",
+              width: "100%",
               maxHeight: "200px",
-              overflow: "hidden",
               overflowY: "auto",
+              overflowX: "auto",
             }}
           >
             <Typography

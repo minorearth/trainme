@@ -15,6 +15,7 @@ import {
   setMoneyDBSA,
   unlockAllChaptersDBSA,
 } from "@/app/serverActons";
+import { checkAllCode } from "@/components/taskset/taskrun/layers/services/allchecker";
 
 export async function resetCurrentUser() {
   const courseid = course.state.courseid;
@@ -49,6 +50,10 @@ export const unlockAllChaptersCurrentUser = async () => {
     courseid,
     refetchFlow: true,
   });
+};
+
+export const checkAlltasks = async () => {
+  checkAllCode(course.state.courseid);
 };
 
 export const completeAllChaptersCurrentUser = async () => {

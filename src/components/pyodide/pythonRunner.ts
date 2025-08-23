@@ -36,12 +36,18 @@ export const runPythonCode = async ({
       });
 
       await runCodeNoGLobals({ pyodide: pyodide.pyodide, code });
-      return { outputTxt: output.join("\n"), outputArr: output };
+      return {
+        outputTxt: output.join("\n"),
+        outputArr: output,
+      };
     } catch (e) {
       if (e instanceof Error) {
         const error = e.message.split("\n").slice(-2)[0];
         output.push(L.ru.CE.error5 + error);
-        return { outputTxt: output.join("\n"), outputArr: output };
+        return {
+          outputTxt: output.join("\n"),
+          outputArr: output,
+        };
       } else {
         return { outputTxt: "some error", outputArr: [] };
       }
@@ -60,11 +66,18 @@ const runCodeNoGLobals = async ({
   code: string;
 }) => {
   // https://github.com/pyodide/pyodide/issues/703
-
+  // https://github.com/pyodide/pyodide/issues/4139
   const dict = pyodide.globals.get("dict");
   const globals = dict();
-  await pyodide.runPython(code, { globals, locals: globals });
-
+  await pyodide.runPython(
+    // code,
+    code +
+      "\nimport os\nimport sys\nsys.stdout.flush()\nos.fsync(sys.stdout.fileno())",
+    {
+      globals,
+      locals: globals,
+    }
+  );
   globals.destroy();
   dict.destroy();
 };

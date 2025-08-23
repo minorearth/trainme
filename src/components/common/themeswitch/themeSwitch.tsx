@@ -66,7 +66,6 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 
 const DLSwitch = observer(({ sx }: { sx: SxProps }) => {
   const { mode, setMode } = useColorScheme();
-  console.log("mode", mode);
 
   useEffect(() => {
     task.setDarkTheme(mode == "dark");

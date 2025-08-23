@@ -11,6 +11,7 @@ import {
   unlockAllChaptersCurrentUser,
   completeAllChaptersCurrentUser,
   setMoneyCurrentUser,
+  checkAlltasks,
 } from "@/components/adminpanel/layers/services/services";
 
 import taskset from "@/components/taskset/layers/store/taskset";
@@ -26,6 +27,7 @@ const AdminPanel = () => {
 
   return (
     <>
+      <Button onClick={() => checkAlltasks()}>checkAll</Button>
       <Button onClick={() => resetCurrentUser()}>reset</Button>
       <Button onClick={() => unlockAllChaptersCurrentUser()}>unlockAll</Button>
       <Button onClick={() => completeAllChaptersCurrentUser()}>

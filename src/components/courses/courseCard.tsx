@@ -36,7 +36,6 @@ interface cardProps {
 //     const res = await response.json();
 //     return res;
 //   } catch (error) {
-//     console.log(error);
 //   }
 // };
 

@@ -6,6 +6,7 @@ export const Watcher = () => {
     const targetNode = document.getElementById("watchmonaco");
 
     const observer = new MutationObserver((mutationsList) => {
+      console.log("once");
       for (const mutation of mutationsList) {
         if (mutation.type === "childList") {
           mutation.addedNodes.forEach((node) => {
@@ -13,18 +14,43 @@ export const Watcher = () => {
               node.nodeType === Node.ELEMENT_NODE &&
               node.textContent?.includes("'''")
             ) {
-              //Property 'style' does not exist on type 'ChildNode'
-              //  node.firstChild instanceof HTMLElement &&
-              //   node.firstChild.firstChild instanceof HTMLElement
-              // ) {
-              //   node.firstChild.firstChild.style.display = "none";
-              // }
+              // const walker = document.createTreeWalker(
+              //   node,
+              //   NodeFilter.SHOW_TEXT,
+              //   null
+              // );
 
+              // let textNode = walker.nextNode();
+              // while (textNode) {
+              //   if (textNode.nodeValue?.includes("'''")) {
+              //     console.log(textNode);
+              //     textNode.innerHTML = `<p>${textNode.innerHTML}</p> `;
+              // const element = textNode.parentElement; // приведение типа
+              // const parent = element.parentElement;
+              // if (parent) {
+              //   const parentColor =
+              //     window.getComputedStyle(parent).backgroundColor;
+              //   element.style.color = parentColor;
+              // }
+              //   }
+              //   textNode = walker.nextNode();
+              // }
               //confirm  as
-              const element = node.firstChild?.firstChild as HTMLElement | null;
-              if (element) {
-                element.style.display = "none";
-              }
+
+              const element = node as Element; // приведение типа
+              element.innerHTML = element.innerHTML.replace(/'''/g, "   ");
+              // element.innerHTML = element.innerHTML.replace(/'''/g, "&#128280");
+
+              // const element = node.firstChild?.firstChild as HTMLElement | null;
+              // if (element) {
+              //   // element.style.display = "none";
+              //   const parent = element.parentElement;
+              //   if (parent) {
+              //     const parentColor =
+              //       window.getComputedStyle(parent).backgroundColor;
+              //     element.style.color = parentColor;
+              //   }
+              // }
             }
           });
         }

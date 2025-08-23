@@ -5,7 +5,7 @@ export const S = {
     DEV_MODE: process.env.NEXT_PUBLIC_DEV_MODE == "YES",
     allowcopy: true,
     allowpaste: true,
-    pyodideCDN: false,
+    pyodideCDN: true,
   },
   USER_SESSION: "session",
   typepicker: { TYPE_PICKER_TIMEOUT: 400 },
@@ -31,7 +31,7 @@ export const S = {
     GETMETA: "/api/getmeta",
     PURCHASE: "purchase",
   },
-  PYODIDE_VERSION: "0.26.4",
+  PYODIDE_VERSION: "0.28.2",
   CURRENT_LS_VERSION: "0.14",
 
   FLOW_AREA_SIZE: [
