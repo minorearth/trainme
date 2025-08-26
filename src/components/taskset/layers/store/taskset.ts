@@ -34,6 +34,7 @@ class taskset {
   startPageIntro() {
     const { tasksetmode } = this.state;
     const { completed, overflow } = chapter.state;
+    this.nextdisabled = false;
 
     return getStarPageIntro({
       tasksetmode,
