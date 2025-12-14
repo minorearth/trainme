@@ -28,6 +28,7 @@ import S from "@/globals/settings";
 import {
   E_CODES,
   finalErrorHandler,
+  throwErrorValue,
   throwInnerError,
 } from "tpconst/errorHandlers";
 
@@ -54,8 +55,14 @@ export const signUp = async ({
       courses: coursesInitials,
       paidcourses2: {},
     };
-    //hello
-    createNewUserMeta({ userId, data });
+    try {
+      createNewUserMeta({ userId, data });
+    } catch (e) {
+      throw throwErrorValue(
+        E_CODES.PROCEDURE_ERROR,
+        `usermetaCreationError: ${JSON.stringify(data)}`
+      );
+    }
     return userId;
   } catch (e: unknown) {
     finalErrorHandler(e, dialogs, L.ru.msg);
@@ -79,6 +86,7 @@ export const signIn = async ({
     router.push(`/${S.P.CHAPTERS}`);
   } catch (e) {
     finalErrorHandler(e, dialogs, L.ru.msg);
+    splash.closeProgress();
   }
 };
 

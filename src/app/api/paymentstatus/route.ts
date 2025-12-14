@@ -2,7 +2,8 @@
 
 import { NextResponse } from "next/server";
 import { getNextErrorResponse } from "tpconst/errorHandlers";
-import { buyCourseDBSA } from "tpconst/RP/FB/repositoryFBSA.js";
+// import { buyCourseDBSA } from "tpconst/RP/FB/repositoryFBSA.js";
+import { buyCourseDBSA } from "tpconst/RP/FB";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 1; //revalidate api every 1 second

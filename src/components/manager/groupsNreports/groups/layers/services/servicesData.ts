@@ -1,5 +1,5 @@
 import { getAllTasksDataObj } from "tpconst/RP/FB";
-import { getReadyCourses } from "@/db/localRepository/repositoryLocalFiles";
+import { getReadyCoursesIds } from "@/db/localRepository/repositoryLocalFiles";
 import { getGroupsArr, getChaptersObjdata } from "tpconst/RP/FB";
 
 //stores
@@ -8,7 +8,7 @@ import user from "@/auth/store/user";
 import { RawTaskObj } from "tpconst/T";
 
 export const getAllCoursesTasks = async () => {
-  const readyCourses = getReadyCourses();
+  const readyCourses = getReadyCoursesIds();
   let allCoursesTasksObj: { [key: string]: RawTaskObj } = {};
   await Promise.all(
     readyCourses.map(async (courseid) => {

@@ -70,6 +70,7 @@ export const getDataFetch = async <T>(request: GetDataFetch) => {
       throw throwFetchAPIError(result);
     }
     const result: ServerResponseData<T> = await response.json();
+    console.log("result.value;", result);
     return result.value;
   } catch (error) {
     throw throwInnerError(error);

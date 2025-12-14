@@ -1,19 +1,22 @@
 import { getFreeCourses } from "@/db/localRepository/repositoryLocalFiles";
+import { UserCoursesDB } from "tpconst/T";
 
-export const getInitalDataForFreeCourses = () => {
+//TODO: assign type to all reducers ex. {} as UserCoursesDB
+export const getInitalDataForFreeCourses = (): UserCoursesDB => {
   const freeCourses = getFreeCourses();
+
   return Object.keys(freeCourses).reduce(
-    (acc, courseid, id) => ({
+    (acc, courseid) => ({
       ...acc,
       [courseid]: {
-        lastunlocked: [freeCourses[id].firstchapter],
-        unlocked: [freeCourses[id].firstchapter],
+        lastunlocked: [freeCourses[courseid].firstchapter],
+        unlocked: [freeCourses[courseid].firstchapter],
         completed: [],
         paid: [],
         stat: {},
         rating: 0,
       },
     }),
-    {}
+    {} as UserCoursesDB
   );
 };
