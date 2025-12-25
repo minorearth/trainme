@@ -58,7 +58,7 @@ export const getReportTree = ({
                   .map((taskid) => ({
                     id: `${chapterId}_${taskid}`,
                     label: L.ru.RT.TASK,
-                    order: allCoursesTasks[courseId][taskid].id,
+                    order: allCoursesTasks[courseId][taskid].taskorder,
                     type: URT.task,
                     code: prepareStatTaskCode(
                       userstat[courseId].stat[chapterId].tasks[taskid],
