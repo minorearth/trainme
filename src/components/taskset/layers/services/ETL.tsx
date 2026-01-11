@@ -9,7 +9,11 @@ import { allregex } from "./allregex";
 export const supplyFilesAndTransform = async (tasks: TaskDB[]) => {
   const tasksWithFiles = await supplyWithFilesData(tasks);
   const enrichedTasks = supplyWithFriendlyText(tasksWithFiles);
-  return enrichedTasks;
+  console.log(
+    "et",
+    enrichedTasks.sort((a, b) => a.taskorder - b.taskorder)
+  );
+  return enrichedTasks.sort((a, b) => a.taskorder - b.taskorder);
 };
 
 interface FileNamesAndUrls {
@@ -37,6 +41,7 @@ const supplyWithFriendlyText = (tasksWithFiles: TaskDBWithFiles[]) => {
         allregex,
       }),
   }));
+  console.log("enrichedTasks", enrichedTasks);
   return enrichedTasks;
 };
 

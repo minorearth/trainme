@@ -117,6 +117,13 @@ export const openLessonStartPage = async ({
     const { tasksetmode, taskstage } = tasksetData;
 
     splash.showProgress();
+    console.log({
+      champData,
+      courseData,
+      chapterData,
+      tasksetData,
+      userProgress: user.progress,
+    });
     const { tasks, tasksuuids } = await getTasks({
       champData,
       courseData,
@@ -124,6 +131,7 @@ export const openLessonStartPage = async ({
       tasksetData,
       userProgress: user.progress,
     });
+    console.log("im here");
 
     if (tasksetmode == TSM.textbook && !tasks.length)
       throw new Error(E_CODES.TEXTBOOK_BLOCKED);
@@ -146,7 +154,6 @@ export const openLessonStartPage = async ({
     splash.closeProgress();
   } catch (error) {
     splash.closeProgress();
-
     throw finalErrorHandler(error, dialogs, L.ru.msg);
   }
 };

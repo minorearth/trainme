@@ -57,8 +57,12 @@ const TaskAndCodePanel = observer(() => {
                 dangerouslySetInnerHTML={{
                   __html: `<p>${task.currTask.tasktext}</p>`,
                 }}
-                sx={{ display: "inline-block", whiteSpace: "pre-line" }}
-              />
+                sx={{
+                  display: "inline-block",
+                  whiteSpace: "pre-wrap",
+                  wordWrap: "break-word",
+                }}
+              ></Typography>
             </Wrapper>
           </Panel>
         </Grid>

@@ -97,6 +97,8 @@ export const getTasks = async ({
     }
     if (tasksetmode == TSM.addhoc || tasksetmode == TSM.newtopic) {
       const tasks = await getAllTasksFromChapter({ chapterid, courseid });
+      console.log("im here 5 ", tasks);
+
       if (taskstage == TS.recap || taskstage == TS.recapSuspended) {
         const recapTasks = await supplyFilesAndTransform(
           getTasksRecap({ recapTasksIds, tasks })
