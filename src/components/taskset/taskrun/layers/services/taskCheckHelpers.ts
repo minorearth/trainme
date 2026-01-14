@@ -7,9 +7,12 @@ import { ast } from "@/components/taskset/taskrun/layers/services/ast";
 
 const cleanUpCode = (code: string) => {
   const lines = code.match(/[^\r\n]+/g) ?? [];
+  console.log("lines", lines);
   const res = lines
     .map((line) => line.replaceAll(/#.*/g, ""))
-    .map((line) => line.replaceAll(/[\n\t]/g, ""))
+    //sep='\n' trouble
+    .map((line) => line.replaceAll("\\n", "\\\\n"))
+    // .map((line) => line.replaceAll(/[\n\t]/g, ""))
     .filter((line) => line != "");
   return res;
 };
@@ -43,11 +46,11 @@ const checkEntities = async ({
   entities,
   runPythonCode,
 }: checkEntities) => {
+  //TODO: remade
   const codeLines = cleanUpCode(code).join("\n");
-  const onelinecode = cleanUpCode(code)
-    .join("\\n")
-    .replaceAll("\\\\", "\\\\\\");
-  // console.log(onelinecode);
+  const onelinecode = cleanUpCode(code).join("\\n");
+  // .replaceAll("\\\\", "\\\\\\");
+  console.log("onelinecode", onelinecode);
   const checks = await Promise.all(
     entities.map(async (item) => {
       if (allregex[item].findmode == "regex") {
@@ -60,20 +63,22 @@ const checkEntities = async ({
           code: ast({ code: onelinecode, nm, param, type }),
           stdIn: "",
         });
+        // console.log("outputArr", outputArr);
+        // console.log(outputArr, onelinecode, nm, param, type);
         //  if (code.includes("число делится на 5"))
-        if (outputArr[0].includes("Возникла ошибка!")) {
-          console.log(
-            "code",
-            entities,
-            onelinecode,
-            cleanUpCode(code),
-            code,
-            nm,
-            param,
-            type,
-            outputArr
-          );
-        }
+        // if (outputArr[0].includes("Возникла ошибка!")) {
+        //   console.log(
+        //     "code",
+        //     entities,
+        //     onelinecode,
+        //     cleanUpCode(code),
+        //     code,
+        //     nm,
+        //     param,
+        //     type,
+        //     outputArr
+        //   );
+        // }
         return outputArr[0] == "True";
       }
     })
