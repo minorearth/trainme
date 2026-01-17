@@ -1,9 +1,9 @@
-import { L } from "tpconst/lang";
+import { L } from "@/tpconst/src/lang";
 import { fetchFile } from "@/app/api/apicalls/apicalls";
-import { TaskDB } from "tpconst/T";
-import { TaskDBWithFiles } from "tpconst/T";
-import { InOutDB } from "tpconst/T";
-import { TT } from "tpconst/const";
+import { TaskDB } from "@/tpconst/src/T";
+import { TaskDBWithFiles } from "@/tpconst/src/T";
+import { InOutDB } from "@/tpconst/src/T";
+import { TT } from "@/tpconst/src/const";
 import { allregex } from "./allregex";
 
 export const supplyFilesAndTransform = async (tasks: TaskDB[]) => {

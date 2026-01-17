@@ -24,10 +24,10 @@ import {
 } from "@/components/taskset/taskrun/layers/services/taskCheck";
 
 //tpconst
-import { TASK_DEFAULTS } from "tpconst/typesdefaults";
-import { Task } from "tpconst/T";
-import { TT } from "tpconst/const";
-import { L } from "tpconst/lang";
+import { TASK_DEFAULTS } from "@/tpconst/src/typesdefaults";
+import { Task } from "@/tpconst/src/T";
+import { TT } from "@/tpconst/src/const";
+import { L } from "@/tpconst/src/lang";
 
 interface HandleEditorDidMount {
   editor: editor.IStandaloneCodeEditor | null;

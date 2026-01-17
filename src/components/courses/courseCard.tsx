@@ -3,8 +3,8 @@ import { getPaymentId } from "@/app/api/apicalls/dataFetch";
 import S from "@/globals/settings";
 import React from "react";
 import styled from "styled-components";
-import { GetDF } from "tpconst/const";
-import { throwInnerError } from "tpconst/errorHandlers";
+import { GetDF } from "@/tpconst/src/const";
+import { throwInnerError } from "@/tpconst/src/errorHandlers";
 import user from "@/auth/store/user";
 
 interface cardProps {

@@ -1,7 +1,14 @@
 import S from "@/globals/settings";
-import { GetDataFetchTypes, ServerResponseData, SetDataFetch } from "tpconst/T";
-import { throwFetchAPIError, throwInnerError } from "tpconst/errorHandlers";
-import { E_CODES } from "tpconst/errorHandlers";
+import {
+  GetDataFetchTypes,
+  ServerResponseData,
+  SetDataFetch,
+} from "@/tpconst/src/T";
+import {
+  throwFetchAPIError,
+  throwInnerError,
+} from "@/tpconst/src/errorHandlers";
+import { E_CODES } from "@/tpconst/src/errorHandlers";
 
 export const wakeUp = () => {
   fetch("/api/wakeup", {

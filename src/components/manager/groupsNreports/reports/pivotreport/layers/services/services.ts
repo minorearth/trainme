@@ -5,7 +5,11 @@ import stat from "@/components/manager/groupsNreports/store/stat";
 import user from "@/auth/store/user";
 
 //repository(local)
-import { saveSnapshot, getSnapShot, getUsersMetaObj } from "tpconst/RP/FB";
+import {
+  saveSnapshot,
+  getSnapShot,
+  getUsersMetaObj,
+} from "@/tpconst/src/RP/FB";
 
 //services(exterenal)
 import { getGroupUsersObj } from "@/components/manager/groupsNreports/groups/layers/services/servicesTree";

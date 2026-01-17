@@ -10,10 +10,10 @@ import {
 } from "@/components/taskset/layers/services/servicesNavigation";
 
 import chapter from "@/components/taskset/layers/store/chapter";
-import { TASKSET_DEFAULTS } from "tpconst/typesdefaults";
-import { Task, TasksetStatePersisted } from "tpconst/T";
-import { STT } from "tpconst/const";
-import { TasksetMode, TasksetStage } from "tpconst/T";
+import { TASKSET_DEFAULTS } from "@/tpconst/src/typesdefaults";
+import { Task, TasksetStatePersisted } from "@/tpconst/src/T";
+import { STT } from "@/tpconst/src/const";
+import { TasksetMode, TasksetStage } from "@/tpconst/src/T";
 
 const DEFAULT_STATE = {
   tasksetmode: "" as TasksetMode,

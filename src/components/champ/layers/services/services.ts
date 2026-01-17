@@ -1,9 +1,9 @@
 import { dialogs } from "@/components/common/dialog/dialogMacro";
-import { L } from "tpconst/lang";
+import { L } from "@/tpconst/src/lang";
 
 // utils
-import { ObjtoArr } from "tpconst/utils";
-import { generateString } from "tpconst/utils";
+import { ObjtoArr } from "@/tpconst/src/utils";
+import { generateString } from "@/tpconst/src/utils";
 
 //service helpers
 import { sortItems } from "@/components/champ/layers/services/servicesHelpers";
@@ -16,7 +16,7 @@ import {
   getUserChampStatus,
   createNewChamp,
   setChampStarted,
-} from "tpconst/RP/FB";
+} from "@/tpconst/src/RP/FB";
 
 //stores
 import user from "@/auth/store/user";
@@ -28,14 +28,17 @@ import {
   CHAPTER_DEFAULTS,
   COURSE_DEFAULTS,
   TASKSET_DEFAULTS,
-} from "tpconst/typesdefaults";
-import { ChampDB } from "tpconst/T";
-import { CS, PS, TSM } from "tpconst/const";
+} from "@/tpconst/src/typesdefaults";
+import { ChampDB } from "@/tpconst/src/T";
+import { CS, PS, TSM } from "@/tpconst/src/const";
 import S from "@/globals/settings";
-import { E_CODES } from "tpconst/errorHandlers";
-import { finalErrorHandler, throwInnerError } from "tpconst/errorHandlers";
+import { E_CODES } from "@/tpconst/src/errorHandlers";
+import {
+  finalErrorHandler,
+  throwInnerError,
+} from "@/tpconst/src/errorHandlers";
 //TODO: (later)remove
-import { D } from "tpconst/RP/FB/fbconfig.js";
+import { D } from "@/tpconst/src/RP/FB/fbconfig";
 
 export const createChamp = async () => {
   try {
@@ -93,7 +96,7 @@ export const joinChamp = async () => {
 export const startChamp = async (champid: string) => {
   window.open(
     `${process.env.NEXT_PUBLIC_DOMAIN}/${S.P.DASHBOARD}/${champid}`,
-    "_blank"
+    "_blank",
   );
   await setChampStarted({ champid });
 };

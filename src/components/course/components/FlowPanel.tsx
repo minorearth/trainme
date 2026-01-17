@@ -8,7 +8,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { Tooltip } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { L } from "tpconst/lang";
+import { L } from "@/tpconst/src/lang";
 
 //css
 import "@xyflow/react/dist/base.css";
@@ -32,8 +32,8 @@ import {
   CHAMPUSER_DEFAULTS,
   CHAPTER_DEFAULTS,
   TASKSET_DEFAULTS,
-} from "tpconst/typesdefaults";
-import { TSM } from "tpconst/const";
+} from "@/tpconst/src/typesdefaults";
+import { TSM } from "@/tpconst/src/const";
 
 const ICON_SIZE = "60px";
 const FlowPanel = observer(() => {

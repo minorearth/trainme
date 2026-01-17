@@ -1,11 +1,11 @@
 import { toJS } from "mobx";
 
 //utils
-import { getNeverRepeatIntegers } from "tpconst/utils";
+import { getNeverRepeatIntegers } from "@/tpconst/src/utils";
 
 //types
-import { TaskDB } from "tpconst/T";
-import { E_CODES, throwErrorValue } from "tpconst/errorHandlers";
+import { TaskDB } from "@/tpconst/src/T";
+import { E_CODES, throwErrorValue } from "@/tpconst/src/errorHandlers";
 
 export const getTasksRecap = <T>({
   recapTasksIds,

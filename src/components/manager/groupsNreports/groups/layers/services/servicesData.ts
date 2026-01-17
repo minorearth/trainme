@@ -1,11 +1,11 @@
-import { getAllTasksDataObj } from "tpconst/RP/FB";
+import { getAllTasksDataObj } from "@/tpconst/src/RP/FB";
 import { getReadyCoursesIds } from "@/db/localRepository/repositoryLocalFiles";
-import { getGroupsArr, getChaptersObjdata } from "tpconst/RP/FB";
+import { getGroupsArr, getChaptersObjdata } from "@/tpconst/src/RP/FB";
 
 //stores
 import stat from "@/components/manager/groupsNreports/store/stat";
 import user from "@/auth/store/user";
-import { RawTaskObj } from "tpconst/T";
+import { RawTaskObj } from "@/tpconst/src/T";
 
 export const getAllCoursesTasks = async () => {
   const readyCourses = getReadyCoursesIds();

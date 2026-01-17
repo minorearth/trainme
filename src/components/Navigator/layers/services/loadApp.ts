@@ -1,5 +1,5 @@
 import { dialogs } from "@/components/common/dialog/dialogMacro";
-import { L } from "tpconst/lang";
+import { L } from "@/tpconst/src/lang";
 
 //globals
 
@@ -26,11 +26,11 @@ import user from "@/auth/store/user";
 import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";
 import chapter from "@/components/taskset/layers/store/chapter";
-import { CSP } from "tpconst/T";
+import { CSP } from "@/tpconst/src/T";
 import { checkVersion } from "@/db/localstorageDB";
-import { PG, ST, TS, TSM } from "tpconst/const";
+import { PG, ST, TS, TSM } from "@/tpconst/src/const";
 import S from "@/globals/settings";
-import { E_CODES } from "tpconst/errorHandlers";
+import { E_CODES } from "@/tpconst/src/errorHandlers";
 
 //
 export const loadPyTrek = async () => {

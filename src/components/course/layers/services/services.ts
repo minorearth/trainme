@@ -1,7 +1,7 @@
 import { toJS } from "mobx";
 
 //repository(local)
-import { getFlowDB } from "tpconst/RP/FB";
+import { getFlowDB } from "@/tpconst/src/RP/FB";
 import { buyChapterCall } from "@/app/api/apicalls/dataFetch";
 
 //stores
@@ -12,7 +12,7 @@ import splash from "@/components/common/splash/store";
 
 //service helpers
 import { enrichFlowWithUserProgress } from "@/components/course/layers/services/servicesHelpers";
-import { CourseProgressDB } from "tpconst/T";
+import { CourseProgressDB } from "@/tpconst/src/T";
 
 export const getFlow = async ({
   courseid,

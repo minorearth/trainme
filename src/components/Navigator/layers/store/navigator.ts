@@ -14,8 +14,8 @@ import {
   interruptTaskSet,
 } from "@/components/Navigator/layers/services/services";
 import splash from "@/components/common/splash/store";
-import { NavigatorStatePersisted } from "tpconst/T";
-import { PG } from "tpconst/const";
+import { NavigatorStatePersisted } from "@/tpconst/src/T";
+import { PG } from "@/tpconst/src/const";
 
 class navigator {
   actions = {

@@ -1,6 +1,6 @@
 "use client";
 //repository
-import { getChapterIds_admin } from "tpconst/RP/FB";
+import { getChapterIds_admin } from "@/tpconst/src/RP/FB";
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
@@ -8,7 +8,7 @@ import course from "@/components/course/layers/store/course";
 import user from "@/auth/store/user";
 import { courses } from "@/globals/coursesDB";
 
-import { encrypt2 } from "tpconst/utils";
+import { encrypt2 } from "@/tpconst/src/utils";
 import {
   resetUser,
   completeAllChaptersDBSA,

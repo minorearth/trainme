@@ -8,8 +8,8 @@ import S from "@/globals/settings";
 
 //stores
 import navigator from "./layers/store/navigator";
-import { PG } from "tpconst/const";
-import { L } from "tpconst/lang";
+import { PG } from "@/tpconst/src/const";
+import { L } from "@/tpconst/src/lang";
 const RIGHT = 16;
 const TOP = 16;
 

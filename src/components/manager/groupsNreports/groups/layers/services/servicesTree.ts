@@ -1,13 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
 
 //repository
-import { addNewGroupDB, updateNodeLabelDB } from "tpconst/RP/FB";
+import { addNewGroupDB, updateNodeLabelDB } from "@/tpconst/src/RP/FB";
 
 //stores
 import user from "@/auth/store/user";
 import stat from "@/components/manager/groupsNreports/store/stat";
-import { GroupArr } from "tpconst/T";
-import { L } from "tpconst/lang";
+import { GroupArr } from "@/tpconst/src/T";
+import { L } from "@/tpconst/src/lang";
 import S from "@/globals/settings";
 
 export const addNewGroup = () => {

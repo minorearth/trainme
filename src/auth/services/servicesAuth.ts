@@ -1,5 +1,5 @@
 import { dialogs } from "@/components/common/dialog/dialogMacro";
-import { L } from "tpconst/lang";
+import { L } from "@/tpconst/src/lang";
 import { login, logout } from "@/globals/next/session";
 
 //repository
@@ -8,10 +8,10 @@ import {
   launchAuthStateChangeMonitor,
   createUser,
   signOutUserRep,
-} from "tpconst/RP/FB";
+} from "@/tpconst/src/RP/FB";
 import { getFreeCoursesIds } from "@/db/localRepository/repositoryLocalFiles";
 import { getUserMeta } from "@/app/api/apicalls/dataFetch";
-import { createNewUserMeta } from "tpconst/RP/FB";
+import { createNewUserMeta } from "@/tpconst/src/RP/FB";
 
 //services
 import { getInitalDataForFreeCourses } from "@/components/courses/layers/services/services";
@@ -30,7 +30,7 @@ import {
   finalErrorHandler,
   throwErrorValue,
   throwInnerError,
-} from "tpconst/errorHandlers";
+} from "@/tpconst/src/errorHandlers";
 
 //error handling
 

@@ -2,7 +2,7 @@
 import { checkVersion, cleanUpCSP, getCSP } from "@/db/localstorageDB";
 
 //types
-import { CSP } from "tpconst/T";
+import { CSP } from "@/tpconst/src/T";
 
 //navigator
 

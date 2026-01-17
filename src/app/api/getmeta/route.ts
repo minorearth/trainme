@@ -3,18 +3,18 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0; //revalidate api every 0 second
 //https://stackoverflow.com/questions/76356803/data-not-updating-when-deployed-nextjs13-app-on-vercel-despite-using-cache-no
 
-import { CourseProgressDB, UserMetaDB } from "tpconst/T";
-import { GetDF } from "tpconst/const";
+import { CourseProgressDB, UserMetaDB } from "@/tpconst/src/T";
+import { GetDF } from "@/tpconst/src/const";
 
-import { ServerResponseData } from "tpconst/T";
-import { getNextErrorResponse } from "tpconst/errorHandlers";
+import { ServerResponseData } from "@/tpconst/src/T";
+import { getNextErrorResponse } from "@/tpconst/src/errorHandlers";
 
 import {
   checkCoursePaidDBSA,
   getPaymentIdDBSA,
   getUserCourseMetaDBSA,
   getUserMetaDBSA,
-} from "tpconst/RP/FB/repositoryFBSA.js";
+} from "@/tpconst/src/RP/FB/repositoryFBSA";
 
 export async function POST(request: Request) {
   try {

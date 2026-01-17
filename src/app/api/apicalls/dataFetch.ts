@@ -1,23 +1,23 @@
 //types
 
-import { SetDF } from "tpconst/const";
+import { SetDF } from "@/tpconst/src/const";
 import {
   CourseProgressDB,
   CourseStatDB,
   SetDataFetch,
   TasksLogDB,
   UserMetaDB,
-} from "tpconst/T";
+} from "@/tpconst/src/T";
 
 //api calls
 import { setDataFetch, getDataFetch } from "@/app/api/apicalls/apicalls";
-import { GetDF } from "tpconst/const";
+import { GetDF } from "@/tpconst/src/const";
 
 //utils
-import { encrypt2 } from "tpconst/utils";
+import { encrypt2 } from "@/tpconst/src/utils";
 
 //eror handling
-import { throwInnerError } from "tpconst/errorHandlers";
+import { throwInnerError } from "@/tpconst/src/errorHandlers";
 
 //courses
 export const checkCoursePaid = async ({

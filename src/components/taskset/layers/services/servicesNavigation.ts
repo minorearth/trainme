@@ -1,5 +1,5 @@
 //repository(external)
-import { updateChampPoints } from "tpconst/RP/FB";
+import { updateChampPoints } from "@/tpconst/src/RP/FB";
 
 //stores
 import task from "@/components/taskset/taskrun/layers/store/task";
@@ -17,10 +17,10 @@ import {
   setRecapTasks,
   ok,
 } from "@/components/taskset/layers/services/servicesNavigationHelpers";
-import { ST, TS, TSM } from "tpconst/const";
+import { ST, TS, TSM } from "@/tpconst/src/const";
 import { dialogs } from "@/components/common/dialog/dialogMacro";
-import { L } from "tpconst/lang";
-import { E_CODES } from "tpconst/errorHandlers";
+import { L } from "@/tpconst/src/lang";
+import { E_CODES } from "@/tpconst/src/errorHandlers";
 
 export const nextTaskOrCompleteTestRun = async ({
   error,

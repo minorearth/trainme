@@ -1,9 +1,9 @@
 "use client";
-import { decrypt2, encrypt2 } from "tpconst/utils";
+import { decrypt2, encrypt2 } from "@/tpconst/src/utils";
 import S from "@/globals/settings";
-import { CSP_DEFAULTS } from "tpconst/typesdefaults";
-import { CSP } from "tpconst/T";
-import { StateType } from "tpconst/T";
+import { CSP_DEFAULTS } from "@/tpconst/src/typesdefaults";
+import { CSP } from "@/tpconst/src/T";
+import { StateType } from "@/tpconst/src/T";
 
 export const setCSP = (state: CSP) => {
   if (S.mode.needCt) {

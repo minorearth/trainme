@@ -1,8 +1,8 @@
 //move to tpconst
 //local db
 import { courses } from "@/globals/coursesDB";
-import { CoursesDB } from "tpconst/T";
-import { CoursesDBObj } from "tpconst/T";
+import { CoursesDB } from "@/tpconst/src/T";
+import { CoursesDBObj } from "@/tpconst/src/T";
 
 //courses
 

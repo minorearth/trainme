@@ -1,6 +1,6 @@
 import { toJS } from "mobx";
 
-import { L } from "tpconst/lang";
+import { L } from "@/tpconst/src/lang";
 import {
   dialogs,
   getTaskSetInterruptedInfo,
@@ -13,7 +13,7 @@ import {
 } from "@/app/api/apicalls/dataFetch";
 import { checkCourseReady } from "@/db/localRepository/repositoryLocalFiles";
 
-import { saveChampUserTaskLog } from "tpconst/RP/FB";
+import { saveChampUserTaskLog } from "@/tpconst/src/RP/FB";
 
 //services(external)
 import { signOut } from "@/auth/services/servicesAuth";
@@ -33,7 +33,7 @@ import {
   CHAMP_DEFAULTS,
   COURSE_DEFAULTS,
   TASKSET_DEFAULTS,
-} from "tpconst/typesdefaults";
+} from "@/tpconst/src/typesdefaults";
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
@@ -48,7 +48,7 @@ import chapter from "@/components/taskset/layers/store/chapter";
 import task from "@/components/taskset/taskrun/layers/store/task";
 //
 
-import { CHAPTER_DEFAULTS } from "tpconst/typesdefaults";
+import { CHAPTER_DEFAULTS } from "@/tpconst/src/typesdefaults";
 
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import {
@@ -56,15 +56,15 @@ import {
   ChapterStatePersisted,
   CourseStatePersisted,
   TasksetStatePersisted,
-} from "tpconst/T";
-import { CourseProgressDB } from "tpconst/T";
-import { PG, ST, TSM } from "tpconst/const";
-import { Page, SuccessType } from "tpconst/T";
+} from "@/tpconst/src/T";
+import { CourseProgressDB } from "@/tpconst/src/T";
+import { PG, ST, TSM } from "@/tpconst/src/const";
+import { Page, SuccessType } from "@/tpconst/src/T";
 import {
   E_CODES,
   finalErrorHandler,
   throwInnerError,
-} from "tpconst/errorHandlers";
+} from "@/tpconst/src/errorHandlers";
 
 export const openAllCoursePage = () => {
   setAllCoursePageState();

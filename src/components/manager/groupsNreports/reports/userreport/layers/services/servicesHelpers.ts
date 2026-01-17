@@ -1,9 +1,13 @@
-import { URT } from "tpconst/const";
-import { AllCoursesRawTaskObj, UserReportType } from "tpconst/T";
+import { URT } from "@/tpconst/src/const";
+import { AllCoursesRawTaskObj, UserReportType } from "@/tpconst/src/T";
 import { courses } from "@/globals/coursesDB";
-import { CourseChapterObjDB, TaskLogAttrsDB, UserCoursesDB } from "tpconst/T";
+import {
+  CourseChapterObjDB,
+  TaskLogAttrsDB,
+  UserCoursesDB,
+} from "@/tpconst/src/T";
 
-import { L } from "tpconst/lang";
+import { L } from "@/tpconst/src/lang";
 
 export const getReportTree = ({
   userstat,

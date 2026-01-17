@@ -1,8 +1,8 @@
 //repository
-import { getAllCourseTasks } from "tpconst/RP/FB";
+import { getAllCourseTasks } from "@/tpconst/src/RP/FB";
 
-import { Task } from "tpconst/T";
-import { D } from "tpconst/RP/FB/fbconfig.js";
+import { Task } from "@/tpconst/src/T";
+import { D } from "@/tpconst/src/RP/FB/fbconfig.js";
 import { runCheckers } from "./taskCheckHelpers";
 import { supplyFilesAndTransform } from "@/components/taskset/layers/services/ETL";
 import { runPythonCode } from "@/components/pyodide/pythonRunner";

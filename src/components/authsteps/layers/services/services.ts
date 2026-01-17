@@ -5,7 +5,7 @@ import { cleanUpCSP } from "@/db/localstorageDB";
 import { signUp, signIn } from "@/auth/services/servicesAuth";
 
 //repository(external)
-import { resetPsw } from "tpconst/RP/FB";
+import { resetPsw } from "@/tpconst/src/RP/FB";
 
 // stores
 import authForm from "@/components/authsteps/layers/store/store";
@@ -15,8 +15,8 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { CFT } from "@/components/common/customfield/types";
 // import { AppRouterInstance } from "";
 import { dialogs } from "@/components/common/dialog/dialogMacro";
-import { L } from "tpconst/lang";
-import { E_CODES, throwInnerError } from "tpconst/errorHandlers";
+import { L } from "@/tpconst/src/lang";
+import { E_CODES, throwInnerError } from "@/tpconst/src/errorHandlers";
 
 export const signInSubmit = async (
   event: React.FormEvent<HTMLFormElement>,

@@ -6,8 +6,8 @@ import user from "@/auth/store/user";
 import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";
 import chapter from "@/components/taskset/layers/store/chapter";
-import { CourseProgressDB } from "tpconst/T";
-import { PG } from "tpconst/const";
+import { CourseProgressDB } from "@/tpconst/src/T";
+import { PG } from "@/tpconst/src/const";
 
 //
 

@@ -8,9 +8,9 @@ import {
   paychapterDBSA,
   saveProgressDBSA,
   saveProgressDBSAFull,
-} from "tpconst/RP/FB/repositoryFBSA.js";
-import { SetDF } from "tpconst/const";
-import { getNextErrorResponse } from "tpconst/errorHandlers";
+} from "@/tpconst/src/RP/FB/repositoryFBSA";
+import { SetDF } from "@/tpconst/src/const";
+import { getNextErrorResponse } from "@/tpconst/src/errorHandlers";
 
 interface reqData {
   type: string;

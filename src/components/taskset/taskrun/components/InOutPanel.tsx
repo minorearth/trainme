@@ -8,8 +8,8 @@ import CachedIcon from "@mui/icons-material/Cached";
 import Box from "@mui/material/Box";
 import task from "@/components/taskset/taskrun/layers/store/task";
 import { observer } from "mobx-react-lite";
-import { TT } from "tpconst/const";
-import { L } from "tpconst/lang";
+import { TT } from "@/tpconst/src/const";
+import { L } from "@/tpconst/src/lang";
 
 const InOutPanel = observer(() => {
   const handleChange = (

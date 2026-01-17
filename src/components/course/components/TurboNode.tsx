@@ -18,8 +18,8 @@ import { BiCoinStack } from "react-icons/bi";
 import { GoArrowRight } from "react-icons/go";
 import { RxLayers } from "react-icons/rx";
 import { BsUnlock } from "react-icons/bs";
-import { NodeDataState } from "tpconst/T";
-import { NM } from "tpconst/const";
+import { NodeDataState } from "@/tpconst/src/T";
+import { NM } from "@/tpconst/src/const";
 
 const myFont = localFont({
   src: "../../../app/Monaco.ttf",

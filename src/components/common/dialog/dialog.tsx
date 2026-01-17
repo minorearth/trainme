@@ -15,7 +15,7 @@ import alertdialog from "@/components/common/dialog/store";
 import DialogWrapper from "./dialogWrapper";
 
 //globals
-import { L } from "tpconst/lang";
+import { L } from "@/tpconst/src/lang";
 
 const AlertDialog = observer(() => {
   return (

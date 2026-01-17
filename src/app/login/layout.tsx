@@ -9,7 +9,7 @@ import Grid from "@mui/material/Grid2";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
-import { L } from "tpconst/lang";
+import { L } from "@/tpconst/src/lang";
 import background from "./background.json";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";

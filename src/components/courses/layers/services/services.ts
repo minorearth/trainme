@@ -1,5 +1,5 @@
 import { getFreeCourses } from "@/db/localRepository/repositoryLocalFiles";
-import { UserCoursesDB } from "tpconst/T";
+import { UserCoursesDB } from "@/tpconst/src/T";
 
 //TODO: assign type to all reducers ex. {} as UserCoursesDB
 export const getInitalDataForFreeCourses = (): UserCoursesDB => {

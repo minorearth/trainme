@@ -1,4 +1,4 @@
-import { ChampuserDB } from "tpconst/T";
+import { ChampuserDB } from "@/tpconst/src/T";
 
 interface GetChange {
   champstarted: boolean;

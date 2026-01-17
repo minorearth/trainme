@@ -5,14 +5,14 @@ import {
   saveProgressDB,
   saveProgressDBFull,
 } from "@/app/api/apicalls/dataFetch";
-import { getChampTasksDB } from "tpconst/RP/FB";
+import { getChampTasksDB } from "@/tpconst/src/RP/FB";
 
 //repository(local)
 import {
   getAllTasksFromChapter,
   getTextBookTasks,
   getAllCourseTasks,
-} from "tpconst/RP/FB";
+} from "@/tpconst/src/RP/FB";
 
 //service helpers(local)
 import {
@@ -34,11 +34,11 @@ import {
   CourseStatePersisted,
   Task,
   TasksetStatePersisted,
-} from "tpconst/T";
-import { CourseProgressDB, TaskDB, UserMetaDB } from "tpconst/T";
-import { ST, TS, TSM } from "tpconst/const";
-import { TasksetStage } from "tpconst/T";
-import { throwInnerError } from "tpconst/errorHandlers";
+} from "@/tpconst/src/T";
+import { CourseProgressDB, TaskDB, UserMetaDB } from "@/tpconst/src/T";
+import { ST, TS, TSM } from "@/tpconst/src/const";
+import { TasksetStage } from "@/tpconst/src/T";
+import { throwInnerError } from "@/tpconst/src/errorHandlers";
 
 //types
 

@@ -7,7 +7,7 @@ import {
   captureUsersJoined,
 } from "@/components/champ/layers/services/services";
 
-import { ChampuserDB } from "tpconst/T";
+import { ChampuserDB } from "@/tpconst/src/T";
 import S from "@/globals/settings";
 
 class champ {

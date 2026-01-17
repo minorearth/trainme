@@ -1,10 +1,10 @@
-import { L } from "tpconst/lang";
+import { L } from "@/tpconst/src/lang";
 
-import { eqArrays } from "tpconst/utils";
-import { Task } from "tpconst/T";
+import { eqArrays } from "@/tpconst/src/utils";
+import { Task } from "@/tpconst/src/T";
 import { allregex } from "@/components/taskset/layers/services/allregex";
 import { ast } from "@/components/taskset/taskrun/layers/services/ast";
-import { E_CODES, throwInnerError } from "tpconst/errorHandlers";
+import { E_CODES, throwInnerError } from "@/tpconst/src/errorHandlers";
 
 const cleanUpCode = (code: string) => {
   const lines = code.match(/[^\r\n]+/g) ?? [];

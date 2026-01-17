@@ -13,7 +13,7 @@ import CustomField from "@/components/common/customfield/customField";
 //stores
 import txtField from "@/components/common/customfield/store";
 
-import { L } from "tpconst/lang";
+import { L } from "@/tpconst/src/lang";
 import { CFT } from "@/components/common/customfield/types";
 
 const Joingroup = observer(

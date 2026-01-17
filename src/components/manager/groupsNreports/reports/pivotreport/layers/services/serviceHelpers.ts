@@ -1,7 +1,7 @@
 import { chaptersObjToArraySorted } from "@/components/course/layers/services/utils";
-import { ChapterArrReport, PivotReport } from "tpconst/T";
+import { ChapterArrReport, PivotReport } from "@/tpconst/src/T";
 
-import { GroupUserObjReport, GroupUserObjReportAttr } from "tpconst/T";
+import { GroupUserObjReport, GroupUserObjReportAttr } from "@/tpconst/src/T";
 
 import {
   ChapterObjReportDB,
@@ -9,9 +9,9 @@ import {
   CourseChapterObjDB,
   UserCoursesReportDBAttrs,
   UsersMetaReportDB,
-} from "tpconst/T";
+} from "@/tpconst/src/T";
 
-import { L } from "tpconst/lang";
+import { L } from "@/tpconst/src/lang";
 
 export const makeReport = ({
   allCoursesChaptersObj,

@@ -5,7 +5,7 @@ import {
   setMoneyDBSA as extsetMoneyDBSA,
   unlockAllChaptersDBSA as extunlockAllChaptersDBSA,
   resetUser as externalResetUser,
-} from "tpconst/RP/FB/repositoryFBSA.js";
+} from "@/tpconst/src/RP/FB/repositoryFBSA";
 
 export async function resetUser(dataEncrypted: string) {
   return externalResetUser(dataEncrypted);

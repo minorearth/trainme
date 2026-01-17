@@ -10,8 +10,8 @@ import S from "@/globals/settings";
 import countdownbutton from "@/components/common/CountdownButton/store";
 import taskset from "@/components/taskset/layers/store/taskset";
 import task from "@/components/taskset/taskrun/layers/store/task";
-import { TSM, TT } from "tpconst/const";
-import { L } from "tpconst/lang";
+import { TSM, TT } from "@/tpconst/src/const";
+import { L } from "@/tpconst/src/lang";
 
 //TODO: add task version(must)
 const CodeRunPanel = observer(() => {

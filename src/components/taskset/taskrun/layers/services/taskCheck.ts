@@ -10,10 +10,10 @@ import { runPythonCode } from "@/components/pyodide/pythonRunner";
 //Stores
 import taskset from "@/components/taskset/layers/store/taskset";
 import task from "@/components/taskset/taskrun/layers/store/task";
-import { TT } from "tpconst/const";
-import { L } from "tpconst/lang";
+import { TT } from "@/tpconst/src/const";
+import { L } from "@/tpconst/src/lang";
 import { dialogs } from "@/components/common/dialog/dialogMacro";
-import { E_CODES } from "tpconst/errorHandlers";
+import { E_CODES } from "@/tpconst/src/errorHandlers";
 
 const performTests = async () => {
   if (task.executing) {

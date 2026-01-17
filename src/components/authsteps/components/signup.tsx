@@ -10,7 +10,7 @@ import CustomField from "@/components/common/customfield/customField";
 import { CustomLink } from "@/components/authsteps/components/customLink";
 
 //globals
-import { L } from "tpconst/lang";
+import { L } from "@/tpconst/src/lang";
 
 //services(local)
 import { signUpSubmit } from "@/components/authsteps/layers/services/services";
