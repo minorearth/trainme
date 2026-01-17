@@ -6,8 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { useCustomTheme } from "@/app/theme";
 import { CssBaseline } from "@mui/material";
 import { useEffect } from "react";
-// import { startUidMonitor } from "@/tpconst/src/DB/FB/CA";
-import { startUidMonitor } from "@/tpconst/src/DB/FB/CA";
+import { startUidMonitor } from "../../tpconst/src/DB/FB/CA";
 
 import { logout } from "@/globals/next/session";
 
@@ -16,7 +15,7 @@ const Page = observer(({}) => {
   useEffect(() => {
     startUidMonitor(
       (id) => user.setUserid(id),
-      () => logout()
+      () => logout(),
     );
   }, []);
 
