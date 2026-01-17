@@ -41,7 +41,6 @@ const supplyWithFriendlyText = (tasksWithFiles: TaskDBWithFiles[]) => {
         allregex,
       }),
   }));
-  console.log("enrichedTasks", enrichedTasks);
   return enrichedTasks;
 };
 

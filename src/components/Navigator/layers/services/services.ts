@@ -131,7 +131,6 @@ export const openLessonStartPage = async ({
       tasksetData,
       userProgress: user.progress,
     });
-    console.log("im here");
 
     if (tasksetmode == TSM.textbook && !tasks.length)
       throw new Error(E_CODES.TEXTBOOK_BLOCKED);

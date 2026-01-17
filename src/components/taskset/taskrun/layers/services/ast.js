@@ -1,4 +1,4 @@
-export const ast = ({code, nm, param, type}) => { return ` import ast
+export const ast = ({code, nm, param, type}) => { return `import ast
 
 
 def has_decorator(parsed_ast, nm):
@@ -328,4 +328,5 @@ def parse(code, nm, param, type):
     elif type == 'decorator':
         return has_decorator(parsed, nm)
     return False
- print(parse("${code}", "${nm}", "${param}", "${type}"))`;};
+ 
+print(parse("${code}", "${nm}", "${param}", "${type}"))`;};

@@ -19,7 +19,6 @@ const checktasks = async ({ tasks }: { tasks: Task[] }) => {
     if (task.rightcode) {
       const { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked } =
         await runCheckers({ code: task.rightcode, task, runPythonCode });
-      console.log(codeChecked, linesChecked, mustHaveChecked, forbiddenChecked);
     }
 
     if (!task.forbiddencode.includes("pass")) {

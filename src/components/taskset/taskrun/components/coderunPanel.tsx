@@ -35,11 +35,21 @@ const CodeRunPanel = observer(() => {
           {task.executing ? L.ru.buttons.TASK_EXECUTING : L.ru.buttons.RUNTASSK}
         </Button>
       )}
-
       {!countdownbutton.state.visible && task.currTask.tasktype == TT.task && (
         <Button
           onClick={(e) => {
-            task.actions.checkTask();
+            task.actions.preCheckTaskAction();
+          }}
+          disabled={task.executing}
+          variant="outlined"
+        >
+          {L.ru.buttons.PRE_CHECK_TASK}
+        </Button>
+      )}
+      {!countdownbutton.state.visible && task.currTask.tasktype == TT.task && (
+        <Button
+          onClick={(e) => {
+            task.actions.checkTaskAction();
           }}
           disabled={task.executing}
           variant="outlined"
@@ -83,7 +93,6 @@ const CodeRunPanel = observer(() => {
           {L.ru.buttons.PROCEED}
         </Button>
       )}
-
       {countdownbutton.state.visible && (
         <CountdownButton
           onClick={() => {
@@ -92,7 +101,6 @@ const CodeRunPanel = observer(() => {
           // variant="outlined"
         />
       )}
-
       {S.mode.DEV_MODE && (
         <Button
           onClick={() => {

@@ -4,10 +4,10 @@ import { eqArrays } from "tpconst/utils";
 import { Task } from "tpconst/T";
 import { allregex } from "@/components/taskset/layers/services/allregex";
 import { ast } from "@/components/taskset/taskrun/layers/services/ast";
+import { E_CODES, throwInnerError } from "tpconst/errorHandlers";
 
 const cleanUpCode = (code: string) => {
   const lines = code.match(/[^\r\n]+/g) ?? [];
-  console.log("lines", lines);
   const res = lines
     .map((line) => line.replaceAll(/#.*/g, ""))
     //sep='\n' trouble
@@ -50,7 +50,6 @@ const checkEntities = async ({
   const codeLines = cleanUpCode(code).join("\n");
   const onelinecode = cleanUpCode(code).join("\\n");
   // .replaceAll("\\\\", "\\\\\\");
-  console.log("onelinecode", onelinecode);
   const checks = await Promise.all(
     entities.map(async (item) => {
       if (allregex[item].findmode == "regex") {
@@ -63,30 +62,11 @@ const checkEntities = async ({
           code: ast({ code: onelinecode, nm, param, type }),
           stdIn: "",
         });
-        // console.log("outputArr", outputArr);
-        // console.log(outputArr, onelinecode, nm, param, type);
-        //  if (code.includes("число делится на 5"))
-        // if (outputArr[0].includes("Возникла ошибка!")) {
-        //   console.log(
-        //     "code",
-        //     entities,
-        //     onelinecode,
-        //     cleanUpCode(code),
-        //     code,
-        //     nm,
-        //     param,
-        //     type,
-        //     outputArr
-        //   );
-        // }
+
         return outputArr[0] == "True";
       }
     })
   );
-  //   const forbiddenReCheck1 = forbiddenRe.map((item) => {
-  //   const regex = new RegExp(item.slice(1, -1), "g");
-  //   return codeLines.match(regex) != null;
-  // });
   return checks;
 };
 
@@ -159,30 +139,19 @@ export const getErrorMessage = ({
   mustHaveChecked,
   forbiddenChecked,
 }: GetErrorMessage) => {
-  const intro = L.ru.CE.CODE_ERROR_INTRO;
-  const errorList = [];
-  !codeChecked && errorList.push(`☹️ ${L.ru.CE.error4}\n`);
-  !mustHaveChecked && errorList.push(`😢 ${L.ru.CE.error1}\n`);
-  !linesChecked && errorList.push(`🫤 ${L.ru.CE.error2}\n\n`);
-  !forbiddenChecked && errorList.push(`🫢 ${L.ru.CE.error6}`);
+  if (!(codeChecked && linesChecked && mustHaveChecked && forbiddenChecked)) {
+    const errorList = [];
+    !codeChecked && errorList.push(`☹️ ${L.ru.CE.error4}\n`);
+    !mustHaveChecked && errorList.push(`😢 ${L.ru.CE.error1}\n`);
+    !linesChecked && errorList.push(`🫤 ${L.ru.CE.error2}\n`);
+    !forbiddenChecked && errorList.push(`🫢 ${L.ru.CE.error6}`);
 
-  let errorMsg = "";
-  if (errorList.length != 0) {
-    errorList.push(L.ru.CE.CODE_ERROR_FOOTER);
+    const errorMsg =
+      L.ru.CE.CODE_ERROR_INTRO + errorList.join("") + L.ru.CE.CODE_ERROR_FOOTER;
 
-    errorMsg = intro + errorList.join("");
+    throw new Error(E_CODES.INVALID_EMAIL_SIGNUP_ERROR, { cause: errorMsg });
   }
-
-  switch (true) {
-    case errorMsg != "":
-      return errorMsg;
-    case [
-      codeChecked && linesChecked && mustHaveChecked && forbiddenChecked,
-    ].every(Boolean):
-      return "";
-    default:
-      return "some error in default";
-  }
+  return "";
 };
 
 //TODO: (later) game

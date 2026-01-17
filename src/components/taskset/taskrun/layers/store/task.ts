@@ -17,7 +17,8 @@ import {
 import { dialogs } from "@/components/common/dialog/dialogMacro";
 
 import {
-  checkTask,
+  checkTaskAction,
+  preCheckTaskAction,
   runTask,
   checkOnChangeErrors,
 } from "@/components/taskset/taskrun/layers/services/taskCheck";
@@ -47,8 +48,9 @@ class task {
   editordisabled: boolean = false;
   info: string = "";
   actions: any = {
-    checkTask,
+    checkTaskAction,
     runTask,
+    preCheckTaskAction,
   };
 
   setRightCode_admin() {

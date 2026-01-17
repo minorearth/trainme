@@ -6,7 +6,6 @@ export const Watcher = () => {
     const targetNode = document.getElementById("watchmonaco");
 
     const observer = new MutationObserver((mutationsList) => {
-      console.log("once");
       for (const mutation of mutationsList) {
         if (mutation.type === "childList") {
           mutation.addedNodes.forEach((node) => {

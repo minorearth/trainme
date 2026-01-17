@@ -32,7 +32,6 @@ export const checkCoursePaid = async ({
       type: GetDF.checkcoursepaid,
       data: { courseid, id: uid },
     });
-    console.log("coursePaid", coursePaid, courseid, uid);
     return coursePaid;
   } catch (error) {
     throw throwInnerError(error);

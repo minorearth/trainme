@@ -24,64 +24,65 @@ import { E_CODES } from "tpconst/errorHandlers";
 
 export const nextTaskOrCompleteTestRun = async ({
   error,
-  errorMsg,
+  errorMsg = "",
   code,
 }: {
   error: boolean;
-  errorMsg: string;
+  errorMsg?: string;
   code: string;
 }) => {
   const pts = calcEarned(error);
   const tasklog = setTaskLog({ error, code });
   const fixed = setTaskNumErrorFixed(error);
   const { taskstage, tasksetmode } = taskset.state;
-
-  if (tasksetmode == TSM.champ && !error)
-    //In order to save champ points on every task execution
-    await updateChampPoints({
-      pts,
-      champid: champ.champid,
-      userid: user.userid,
-    });
   taskset.setTaskSetStateP({ ...taskset.state, fixed, tasklog, pts });
-
   const tasknum = taskset.tasks.length;
   const recapTaskNum = taskset.state.recapTasksIds?.length;
   const currTaskId = taskset.state.currTaskId;
 
   switch (true) {
-    case currTaskId != tasknum - 1 && !error:
-      ok();
-      taskset.nextTask();
-      return;
-    case currTaskId == tasknum - 1 && !error:
-      if (taskstage == TS.recap) {
-        ok(() =>
-          navigator.actions.openCongratPage({
-            success: recapTaskNum == fixed ? ST.success : ST.fail,
-          })
-        );
+    case !error:
+      if (tasksetmode == TSM.champ)
+        //In order to save champ points on every task execution
+        await updateChampPoints({
+          pts,
+          champid: champ.champid,
+          userid: user.userid,
+        });
+      if (currTaskId != tasknum - 1) {
+        ok();
+        taskset.nextTask();
+        return;
       }
-      if (recapTaskNum == 0 && taskstage == TS.WIP) {
-        ok(() =>
-          navigator.actions.openCongratPage({
-            success: ST.success,
-          })
-        );
-      }
-      if (recapTaskNum != 0 && taskstage == TS.WIP) {
-        taskset.state.tasksetmode == TSM.exam
-          ? ok(() =>
-              navigator.actions.openCongratPage({
-                success: ST.fail,
-              })
-            )
-          : ok(() =>
-              setRecapTasks({
-                recapTasksIds: taskset.state.recapTasksIds,
-                tasks: taskset.tasks,
-              })
-            );
+      if (currTaskId == tasknum - 1) {
+        if (taskstage == TS.recap) {
+          ok(() =>
+            navigator.actions.openCongratPage({
+              success: recapTaskNum == fixed ? ST.success : ST.fail,
+            })
+          );
+        }
+        if (recapTaskNum == 0 && taskstage == TS.WIP) {
+          ok(() =>
+            navigator.actions.openCongratPage({
+              success: ST.success,
+            })
+          );
+        }
+        if (recapTaskNum != 0 && taskstage == TS.WIP) {
+          taskset.state.tasksetmode == TSM.exam
+            ? ok(() =>
+                navigator.actions.openCongratPage({
+                  success: ST.fail,
+                })
+              )
+            : ok(() =>
+                setRecapTasks({
+                  recapTasksIds: taskset.state.recapTasksIds,
+                  tasks: taskset.tasks,
+                })
+              );
+        }
       }
       return;
     case error:
@@ -92,7 +93,6 @@ export const nextTaskOrCompleteTestRun = async ({
           cspcurrtask: currTaskId + 1,
         });
       }
-
       if (taskstage == TS.recap && currTaskId != tasknum - 1) {
         taskset.setCurrTaskCSPOnly(currTaskId + 1);
       }
@@ -109,7 +109,6 @@ export const nextTaskOrCompleteTestRun = async ({
         });
       }
       return;
-
     default:
       return "";
   }
