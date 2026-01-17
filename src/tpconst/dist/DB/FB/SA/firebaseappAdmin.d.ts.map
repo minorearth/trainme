@@ -1,0 +1,1 @@
+{"version":3,"file":"firebaseappAdmin.d.ts","sourceRoot":"","sources":["../../../../src/DB/FB/SA/firebaseappAdmin.ts"],"names":[],"mappings":"AAGA,OAAO,KAAK,MAAM,gBAAgB,CAAC;AAMnC,wBAAsB,sBAAsB,CAAC,MAAM,EAAE,SAAS,yCAkB7D;AAED,UAAU,SAAS;IACjB,SAAS,EAAE,MAAM,CAAC;IAClB,WAAW,EAAE,MAAM,CAAC;IACpB,aAAa,EAAE,MAAM,CAAC;IACtB,UAAU,EAAE,MAAM,CAAC;CACpB;AAID,wBAAsB,SAAS,uCAa9B"}

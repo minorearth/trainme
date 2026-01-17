@@ -1,0 +1,86 @@
+{
+  "name": "tpconst",
+  "version": "1.0.42",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./const": {
+      "import": "./dist/const/index.js",
+      "require": "./dist/const/index.js"
+    },
+    "./lang": {
+      "import": "./dist/lang/index.js",
+      "require": "./dist/lang/index.js"
+    },
+    "./typesdefaults": {
+      "import": "./dist/typesdefaults/index.js",
+      "require": "./dist/typesdefaults/index.js"
+    },
+    "./T": {
+      "import": "./dist/T/index.js",
+      "require": "./dist/T/index.js"
+    },
+    "./errorHandlers": {
+      "import": "./dist/errorHandlers/index.js",
+      "require": "./dist/errorHandlers/index.js"
+    },
+    "./utils": {
+      "import": "./dist/utils/index.js",
+      "require": "./dist/utils/index.js"
+    },
+    "./DB": {
+      "import": "./dist/DB/index.js",
+      "require": "./dist/DB/index.js"
+    },
+    "./DB/*": "./dist/DB/*",
+    "./DB/FB": {
+      "import": "./dist/DB/FB/index.js",
+      "require": "./dist/DB/FB/index.js"
+    },
+    "./DB/FB/CA": {
+      "import": "./dist/DB/FB/CA/index.js",
+      "require": "./dist/DB/FB/CA/index.js"
+    },
+    "./DB/FB/SA": {
+      "import": "./dist/DB/FB/SA/index.js",
+      "require": "./dist/DB/FB/SA/index.js"
+    },
+    "./RP": {
+      "import": "./dist/RP/index.js",
+      "require": "./dist/RP/index.js"
+    },
+    "./RP/*": "./dist/RP/*",
+    "./RP/FB": {
+      "import": "./dist/RP/FB/index.js",
+      "require": "./dist/RP/FB/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "crypto-js": "^4.2.0",
+    "dotenv": "^17.2.1",
+    "firebase": "^11.1.0",
+    "firebase-admin": "^13.2.0",
+    "tpconst": "^1.0.39"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
+    "@types/node": "^22.15.30",
+    "typescript": "^5.8.3"
+  }
+}
