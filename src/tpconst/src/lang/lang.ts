@@ -240,7 +240,7 @@ export const L = {
       PROCEED: "Продолжить",
       NEXT_TASK: "Дальше",
       CHECK_TASK: "Отправить!",
-      PRE_CHECK_TASK: "Проверить",
+      PRE_CHECK_TASK: "Проверить ограничения",
 
       //champ pagee
       CREATE_CHAMP: "Создать чемпионат",
@@ -286,9 +286,10 @@ export const L = {
       EDITOR: "Редактор кода",
 
       //Task limitations
-      LIMITATIONS_CAPTION: "Ограничения",
-      LIMITATIONS_MAXLINES: "Максимальное количество строк кода:",
-      LIMITATIONS_FORBIDDEN: "Запрещенные приёмы:",
+      LIMITATIONS_CAPTION: "‼️ Что нужно и что нельзя:\n",
+      LIMITATIONS_MAXLINES: "🔢 Максимальное количество строк кода:",
+      LIMITATIONS_FORBIDDEN: "❌ Нельзя использовать:",
+      LIMITATIONS_MUSTHAVE: "✅ Нужно использовать:",
     },
     // Congrat page
     CG: {

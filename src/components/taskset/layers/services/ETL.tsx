@@ -11,7 +11,7 @@ export const supplyFilesAndTransform = async (tasks: TaskDB[]) => {
   const enrichedTasks = supplyWithFriendlyText(tasksWithFiles);
   console.log(
     "et",
-    enrichedTasks.sort((a, b) => a.taskorder - b.taskorder)
+    enrichedTasks.sort((a, b) => a.taskorder - b.taskorder),
   );
   return enrichedTasks.sort((a, b) => a.taskorder - b.taskorder);
 };
@@ -36,6 +36,7 @@ const supplyWithFriendlyText = (tasksWithFiles: TaskDBWithFiles[]) => {
       task.task +
       formatForbidden({
         forbidden: task.restrictions.forbidden,
+        musthave: task.restrictions.musthave,
         maxlines: task.restrictions.maxlines,
         tasktype: task.tasktype,
         allregex,
@@ -46,11 +47,13 @@ const supplyWithFriendlyText = (tasksWithFiles: TaskDBWithFiles[]) => {
 
 const formatForbidden = ({
   forbidden,
+  musthave,
   maxlines,
   tasktype,
   allregex,
 }: {
   forbidden: string[];
+  musthave: string[];
   maxlines: number;
   tasktype: string;
   allregex: allregex;
@@ -60,20 +63,23 @@ const formatForbidden = ({
     return "";
   }
 
-  res += `\n\n<b>${L.ru.TR.LIMITATIONS_CAPTION}</b>:\n${L.ru.TR.LIMITATIONS_MAXLINES} ${maxlines}`;
+  res += `\n\n<div>${L.ru.TR.LIMITATIONS_CAPTION}</div>\n<div>${L.ru.TR.LIMITATIONS_MAXLINES} ${maxlines}</div>`;
   if (forbidden.length) {
-    // const forbiddentsample = L.ru.forbiddentsample;
-    res += `\n\n${L.ru.TR.LIMITATIONS_FORBIDDEN}\n`;
+    res += `\n<div>${L.ru.TR.LIMITATIONS_FORBIDDEN}</div>`;
     const frbdn = forbidden.map(
       (forbidden) =>
-        `<div class="tooltip">${allregex[forbidden].caption} <span class="tooltiptext">${allregex[forbidden].ex}</span></div>`
+        `<div class="tooltip">${allregex[forbidden].caption}<span class="tooltiptext">${allregex[forbidden].ex}</span></div>\n`,
     );
     res += frbdn.join(", ");
-    // for (let i = 0; i < forbidden.length; i++) {
-    //   res += `<div class="tooltip">${
-    //     allregex[forbidden[i]].caption
-    //   }, <span class="tooltiptext">${allregex[forbidden[i]].ex}</span></div>`;
-    // }
+  }
+
+  if (musthave.length) {
+    res += `\n<div>${L.ru.TR.LIMITATIONS_MUSTHAVE}</div>`;
+    const frbdn = musthave.map(
+      (musthave) =>
+        `<div class="tooltip">${allregex[musthave].caption}<span class="tooltiptext">${allregex[musthave].ex}</span></div>`,
+    );
+    res += frbdn.join(", ");
   }
   return res;
 };
@@ -115,13 +121,13 @@ const enrichTaskWithFileLoadCode = ({
 
 const getFilesData = (
   inouttest: InOutDB,
-  filesAndFileContent: FileNamesAndUrls
+  filesAndFileContent: FileNamesAndUrls,
 ) => {
   let filesdata: string[] = [];
   inouttest.inv.forEach((filename) => {
     filename.includes(".txt")
       ? filesdata.push(
-          `f=open("${filename}", 'w')\nf.write("${filesAndFileContent[filename].data}")\nf.close()\n`
+          `f=open("${filename}", 'w')\nf.write("${filesAndFileContent[filename].data}")\nf.close()\n`,
         )
       : filesdata.push("");
   });
@@ -139,7 +145,7 @@ const getTaskFilesData = async ({
         ...filesAndUrls[file],
         data: (await fetchFile(filesAndUrls[file].fileurl)) || "",
       };
-    })
+    }),
   );
   return filesAndUrls;
 };
@@ -157,7 +163,7 @@ const extractFileNames = ({ tasks }: { tasks: TaskDB[] }) => {
             (files[filename] = {
               fileurl: `${process.env.NEXT_PUBLIC_DOMAIN}/${filename}`,
               data: "",
-            })
+            }),
         );
     });
   });

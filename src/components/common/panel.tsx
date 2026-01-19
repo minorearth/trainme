@@ -7,9 +7,11 @@ import { useTheme } from "@mui/material";
 export const Panel = ({
   children,
   label,
+  sx = {},
 }: {
   children: React.ReactNode;
   label: string;
+  sx?: any;
 }) => {
   const theme = useTheme();
 
@@ -17,6 +19,7 @@ export const Panel = ({
     <FormControl
       component="fieldset"
       sx={{
+        ...sx,
         width: "100%",
         padding: "10px",
         paddingLeft: "20px",

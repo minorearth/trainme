@@ -13,21 +13,21 @@ export const courses: CoursesDBObj = {
     free: true,
     coursesAction: () =>
       navigator.actions.openCourseFlowPageFromMain(
-        "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0"
+        "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0",
       ),
   },
 
   "a3905595-437e-47f3-b749-28ea5362bd39": {
     title: "ПРОДВИНУТОЕ ПРОГРАММИРОВАНИЕ",
     text: "Постигаем продвинутые функции языка Python",
-    firstchapter: "d06b8c0d-4837-484a-ad85-9257e0e6af01",
+    firstchapter: "1185fbd6-1e7f-450c-9311-6870e8e137bd",
     completed: true,
     type: CT.course,
     order: 2,
     free: true,
     coursesAction: () =>
       navigator.actions.openCourseFlowPageFromMain(
-        "a3905595-437e-47f3-b749-28ea5362bd39"
+        "a3905595-437e-47f3-b749-28ea5362bd39",
       ),
   },
   555: {

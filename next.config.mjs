@@ -8,7 +8,8 @@ const nextConfig = {
         headers: [
           {
             key: "Cache-Control",
-            value: "public, max-age=31536000, immutable", // кешировать 1 год
+            value: "no-store",
+            // value: "public, max-age=31536000, immutable", // кешировать 1 год
           },
         ],
       },

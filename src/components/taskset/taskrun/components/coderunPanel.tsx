@@ -35,7 +35,7 @@ const CodeRunPanel = observer(() => {
           {task.executing ? L.ru.buttons.TASK_EXECUTING : L.ru.buttons.RUNTASSK}
         </Button>
       )}
-      {!countdownbutton.state.visible && task.currTask.tasktype == TT.task && (
+      {/* {!countdownbutton.state.visible && task.currTask.tasktype == TT.task && (
         <Button
           onClick={(e) => {
             task.actions.preCheckTaskAction();
@@ -45,7 +45,7 @@ const CodeRunPanel = observer(() => {
         >
           {L.ru.buttons.PRE_CHECK_TASK}
         </Button>
-      )}
+      )} */}
       {!countdownbutton.state.visible && task.currTask.tasktype == TT.task && (
         <Button
           onClick={(e) => {

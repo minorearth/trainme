@@ -9,6 +9,9 @@ import task from "@/components/taskset/taskrun/layers/store/task";
 import { observer } from "mobx-react-lite";
 import { TT } from "@/tpconst/src/const";
 import { L } from "@/tpconst/src/lang";
+import countdownbutton from "@/components/common/CountdownButton/store";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
 const Wrapper = styled.div`
   .tooltip {
@@ -51,19 +54,52 @@ const TaskAndCodePanel = observer(() => {
       {task.currTask.tasktype != TT.guide && (
         <Grid size={{ xs: 1, md: 1 }}>
           <Panel label={L.ru.TR.TASK}>
-            <Wrapper>
-              <Typography
-                variant="body1"
-                dangerouslySetInnerHTML={{
-                  __html: `<p>${task.currTask.tasktext}</p>`,
-                }}
-                sx={{
-                  display: "inline-block",
-                  whiteSpace: "pre-wrap",
-                  wordWrap: "break-word",
-                }}
-              ></Typography>
-            </Wrapper>
+            <Box
+              sx={{
+                flexDirection: "column",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
+              <Wrapper>
+                <Typography
+                  variant="body1"
+                  dangerouslySetInnerHTML={{
+                    __html: `<p>${task.currTask.tasktext}</p>`,
+                  }}
+                  sx={{
+                    display: "inline-block",
+                    whiteSpace: "pre-wrap",
+                    wordWrap: "break-word",
+                  }}
+                ></Typography>
+              </Wrapper>
+
+              {!countdownbutton.state.visible &&
+                task.currTask.tasktype == TT.task && (
+                  <Box
+                    sx={{
+                      flexDirection: "row",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginBottom: "15px",
+                    }}
+                  >
+                    <Button
+                      onClick={(e) => {
+                        task.actions.preCheckTaskAction();
+                      }}
+                      disabled={task.executing}
+                      variant="outlined"
+                    >
+                      {L.ru.buttons.PRE_CHECK_TASK}
+                    </Button>
+                  </Box>
+                )}
+            </Box>
           </Panel>
         </Grid>
       )}
