@@ -5,6 +5,12 @@ const msg: { [K in ECodeKey]: { dialog: string; params: any } } = {
     params: { caption: "Ошибка", text: "Документ не найден" },
   },
 
+  //not used in reality
+  no_user: {
+    dialog: "basic",
+    params: { caption: "Ошибка", text: "Пользователь не найден" },
+  },
+
   course_is_not_paid: {
     dialog: "basic",
     params: {
