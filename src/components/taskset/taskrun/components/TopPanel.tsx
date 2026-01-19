@@ -18,6 +18,7 @@ import task from "@/components/taskset/taskrun/layers/store/task";
 import taskset from "@/components/taskset/layers/store/taskset";
 import { L } from "@/tpconst/src/lang";
 
+const HEIGHT = "80px";
 const TopPanel = observer(() => {
   return (
     <Grid
@@ -36,7 +37,7 @@ const TopPanel = observer(() => {
           }}
         >
           <AnimationLottie
-            style={{ height: "80px", width: "80px" }}
+            style={{ height: HEIGHT, width: HEIGHT }}
             name={"sheep"}
           />
           <LinearProgressWithLabel
@@ -52,6 +53,7 @@ const TopPanel = observer(() => {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
+            height: HEIGHT,
           }}
         >
           <AnimationLottie
@@ -64,7 +66,6 @@ const TopPanel = observer(() => {
           >
             {taskset.state.pts}
           </Typography>
-
           <IconButtonNoRipple>
             <Tooltip title={L.ru.TT.HOWTO_GUIDE}>
               <LightbulbIcon
@@ -79,7 +80,6 @@ const TopPanel = observer(() => {
               />
             </Tooltip>
           </IconButtonNoRipple>
-
           <IconButtonNoRipple>
             <Tooltip title={L.ru.TT.INTERRUPT_CHAPTER}>
               <HomeIcon

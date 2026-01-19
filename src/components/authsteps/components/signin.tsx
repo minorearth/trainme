@@ -27,6 +27,8 @@ const SignIn = observer(() => {
   // import splash from "@/components/common/splash/store"
 
   React.useEffect(() => {
+    splash.closeProgress();
+
     // splash.showAppLoader(true);
   }, []);
 

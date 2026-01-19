@@ -63,23 +63,23 @@ const formatForbidden = ({
     return "";
   }
 
-  res += `\n\n<div>${L.ru.TR.LIMITATIONS_CAPTION}</div>\n<div>${L.ru.TR.LIMITATIONS_MAXLINES} ${maxlines}</div>`;
+  res += `\n\n<div><b>${L.ru.TR.LIMITATIONS_CAPTION}</b></div>\n<div>  ${L.ru.TR.LIMITATIONS_MAXLINES} ${maxlines}</div>`;
   if (forbidden.length) {
-    res += `\n<div>${L.ru.TR.LIMITATIONS_FORBIDDEN}</div>`;
+    res += `\n<div class="tooltip">  ${L.ru.TR.LIMITATIONS_FORBIDDEN}</div>`;
     const frbdn = forbidden.map(
       (forbidden) =>
-        `<div class="tooltip">${allregex[forbidden].caption}<span class="tooltiptext">${allregex[forbidden].ex}</span></div>\n`,
+        `<div class="tooltip">${allregex[forbidden].caption}<span class="tooltiptext">${allregex[forbidden].ex}</span></div>`,
     );
-    res += frbdn.join(", ");
+    res += ` ${frbdn.join(", ")}\n`;
   }
 
   if (musthave.length) {
-    res += `\n<div>${L.ru.TR.LIMITATIONS_MUSTHAVE}</div>`;
+    res += `\n<div class="tooltip">  ${L.ru.TR.LIMITATIONS_MUSTHAVE}</div>`;
     const frbdn = musthave.map(
       (musthave) =>
         `<div class="tooltip">${allregex[musthave].caption}<span class="tooltiptext">${allregex[musthave].ex}</span></div>`,
     );
-    res += frbdn.join(", ");
+    res += ` ${frbdn.join(", ")}`;
   }
   return res;
 };

@@ -24,13 +24,14 @@ export const signInUser = async ({
 export const launchAuthStateChangeMonitor = async (
   action: (
     resolved: (value: string) => void,
+    rejected: (value: string) => void,
     uid: string,
-    emailVerified: boolean
-  ) => void
+    emailVerified: boolean,
+  ) => void,
 ) => {
   try {
     return await launchAuthStateChangeMonitorDB(action);
-  } catch (error) {
+  } catch (error: unknown) {
     throw throwInnerError(error);
   }
 };

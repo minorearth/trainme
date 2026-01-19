@@ -83,9 +83,10 @@ const TaskAndCodePanel = observer(() => {
                     sx={{
                       flexDirection: "row",
                       display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginBottom: "15px",
+                      // justifyContent: "center",
+                      // alignItems: "center",
+                      marginBottom: "10px",
+                      marginTop: "15px",
                     }}
                   >
                     <Button
@@ -105,8 +106,19 @@ const TaskAndCodePanel = observer(() => {
       )}
       <Grid size={{ xs: 1, md: 2 }}>
         <Panel label={L.ru.TR.EDITOR}>
-          <MonacoEd />
-          <CodeRunPanel />
+          <Box
+            sx={{
+              flexDirection: "column",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              height: "100%",
+            }}
+          >
+            <MonacoEd />
+
+            <CodeRunPanel />
+          </Box>
         </Panel>
       </Grid>
     </Grid>

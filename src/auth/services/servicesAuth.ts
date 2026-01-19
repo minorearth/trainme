@@ -60,7 +60,7 @@ export const signUp = async ({
     } catch (e) {
       throw throwErrorValue(
         E_CODES.PROCEDURE_ERROR,
-        `usermetaCreationError: ${JSON.stringify(data)}`
+        `usermetaCreationError: ${JSON.stringify(data)}`,
       );
     }
     return userId;
@@ -81,7 +81,6 @@ export const signIn = async ({
   try {
     const uid = await getUidAuth({ email, password });
     const userMeta = await getUserMeta(uid);
-
     user.setUserNameP(userMeta.name);
     router.push(`/${S.P.CHAPTERS}`);
   } catch (e) {
@@ -94,25 +93,25 @@ export const signOut = async (router: AppRouterInstance) => {
   splash.showProgress(false, "progressdots", 0);
   await logout();
   await signOutUserRep();
-  splash.closeProgress();
+  // splash.closeProgress();
   router.push(`/${S.P.LOGIN}/`);
 };
 
 const actionOnAuthChanged = async (
   resolved: (value: string) => void,
+  rejected: (value: string) => void,
   uid: string,
-  emailVerified: boolean
+  emailVerified: boolean,
   // login: (value: string) => Promise<void>
 ) => {
   if (emailVerified && uid) {
     await login("teacher");
-    // user.setUserid({ id: uid });
     resolved(uid);
   } else if (!uid) {
-    resolved("noUser");
+    rejected(E_CODES.NO_USER);
     logout();
   } else {
-    resolved(E_CODES.EMAIL_NOT_VERIFIED);
+    rejected(E_CODES.EMAIL_NOT_VERIFIED);
   }
 };
 

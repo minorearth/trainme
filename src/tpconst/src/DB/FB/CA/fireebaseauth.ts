@@ -15,7 +15,7 @@ import {
   UserCredential,
 } from "firebase/auth";
 
-import { throwFBError } from "../../../errorHandlers";
+import { E_CODES, throwFBError, throwInnerError } from "../../../errorHandlers";
 import { FirestoreError } from "firebase/firestore";
 import { initializeClient } from "./firebaseappClient";
 
@@ -40,22 +40,36 @@ export const signInUserDB = async ({
 export const launchAuthStateChangeMonitorDB = async (
   action: (
     resolved: (value: string) => void,
+    rejected: (value: string) => void,
     uid: string,
-    emailVerified: boolean
-  ) => void
+    emailVerified: boolean,
+  ) => void,
 ) => {
   const { auth } = initializeClient();
 
   let unsubscribe = () => {};
-  const uid = await new Promise(
-    (resolved: (value: string) => void, rejected) => {
-      unsubscribe = onAuthStateChanged(auth, (user: User | null) =>
-        action(resolved, user?.uid || "", user?.emailVerified || false)
-      );
-    }
-  );
-  unsubscribe();
-  return uid;
+  try {
+    const uid = await new Promise(
+      (
+        resolved: (value: string) => void,
+        rejected: (value: string) => void,
+      ) => {
+        unsubscribe = onAuthStateChanged(auth, (user: User | null) =>
+          action(
+            resolved,
+            rejected,
+            user?.uid || "",
+            user?.emailVerified || false,
+          ),
+        );
+      },
+    );
+    return uid;
+  } catch (e: unknown) {
+    throw new Error(E_CODES.EMAIL_NOT_VERIFIED);
+  } finally {
+    unsubscribe();
+  }
 };
 
 export const createUserDB = async ({
@@ -71,7 +85,7 @@ export const createUserDB = async ({
     const userCredential: UserCredential = await createUserWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     sendEmailVerification(userCredential.user).then(() => {});
     return userCredential.user;
@@ -106,7 +120,7 @@ export const signOutUserDB = async () => {
 
 export const startUidMonitor = (
   setUserid: (id: string) => void,
-  logout: () => void
+  logout: () => void,
 ) => {
   const { auth } = initializeClient();
   onAuthStateChanged(auth, (fbuser) => {

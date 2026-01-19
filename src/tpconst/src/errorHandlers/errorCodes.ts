@@ -1,6 +1,7 @@
 export const E_CODES = {
   RESTRICTIONS_PASSED: "restrictions_passed",
   RESTRICTIONS_NOT_PASSED: "restrictions_not_passed",
+  NO_USER: "no_user",
   EMAIL_NOT_VERIFIED: "email_not_veryfied",
   PSW_RECOVERY: "psw_recovery",
   WRONG_PSW: "wrong_psw",
