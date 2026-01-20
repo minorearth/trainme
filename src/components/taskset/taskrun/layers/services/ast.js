@@ -35,7 +35,6 @@ def import_spec_ent(tree, nm, param):
     for node in ast.walk(tree):
         if isinstance(node, ast.ImportFrom):
             if node.module == nm:
-                print([alias.name for alias in node.names])
                 if any(param == alias.name for alias in node.names):
                     return True
     return False

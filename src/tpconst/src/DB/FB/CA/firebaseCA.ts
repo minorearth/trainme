@@ -14,16 +14,10 @@ import {
   doc,
   query,
   where,
-  addDoc,
-  deleteDoc,
   getDoc,
   updateDoc,
   onSnapshot,
-  arrayUnion,
-  increment,
   documentId,
-  Firestore,
-  UpdateData,
   WithFieldValue,
   QuerySnapshot,
   DocumentData,
@@ -41,7 +35,7 @@ export const setDocInCollection = async <T extends DBFormats>({
     const { db } = initializeClient();
     await setDoc(
       doc(db, collectionName, id),
-      data as WithFieldValue<DocumentData>
+      data as WithFieldValue<DocumentData>,
     );
   } catch (error) {
     throw throwFBError(error as FirestoreError);
@@ -60,7 +54,7 @@ export const setDocInSubCollection = async <T extends DBFormats>({
 
     await setDoc(
       doc(db, collectionName, id, subCollectionName, subId),
-      data as WithFieldValue<DocumentData>
+      data as WithFieldValue<DocumentData>,
     );
   } catch (error) {
     const e = error as FirestoreError;
@@ -78,7 +72,7 @@ export const updateDocByid = async <T extends DBFormats>({
 
     await updateDoc(
       doc(db, collectionName, id),
-      data as WithFieldValue<DocumentData>
+      data as WithFieldValue<DocumentData>,
     );
   } catch (error) {
     const e = error as FirestoreError;
@@ -111,7 +105,7 @@ export const getDocDataFromSubCollectionById = async <T extends DBFormats>({
     const { db } = initializeClient();
 
     const docSnap = await getDoc(
-      doc(db, collectionName, id, subCollectionName, subId)
+      doc(db, collectionName, id, subCollectionName, subId),
     );
     return docSnap.data() as T;
   } catch (error) {
