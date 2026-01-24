@@ -34,6 +34,8 @@ import navigator from "@/components/Navigator/layers/store/navigator";
 import course from "@/components/course/layers/store/course";
 import taskset from "@/components/taskset/layers/store/taskset";
 import { PG, ST } from "@/tpconst/src/const";
+import task from "@/components/taskset/taskrun/layers/store/task";
+import Guide from "../taskset/guide/Guide";
 
 const Navigator = observer(() => {
   useApp();
@@ -74,6 +76,10 @@ const Navigator = observer(() => {
           )}
           {navigator.state.page == PG.lessonStarted && <Start />}
           {navigator.state.page == PG.testrun && <Taskrun />}
+          {/* {navigator.state.page == PG.testrun &&
+            task.currTask.tasktype == "task" && <Taskrun />} */}
+          {/* {navigator.state.page == PG.testrun &&
+            task.currTask.tasktype == "guide" && <Guide />} */}
           {navigator.state.page == PG.congrat &&
             taskset.state.success != ST.undefined && <CongratPage />}
         </Box>
