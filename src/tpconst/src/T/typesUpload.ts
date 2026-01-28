@@ -33,6 +33,19 @@ export interface RawTaskToUploadWithoutLevel {
   taskorder: number;
 }
 
+export interface Guidepart {
+  inout: { inv: string[] }[];
+  part: string;
+}
+
+export interface RawGuideToUpload extends Omit<
+  RawTaskToUploadWithoutLevel,
+  "inout" | "restrictions" | "task" | "rightcode" | "forbiddencode"
+> {
+  parts: Guidepart[];
+  inout: { inv: string[] }[];
+}
+
 export interface InOutDB {
   inv: string[];
   outv: string[];

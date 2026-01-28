@@ -10,7 +10,7 @@ import {
   TasksetStatePersisted,
   UserStatePersisted,
 } from "./typesState";
-import { RawTaskToUploadWithoutLevel } from "./typesUpload";
+import { RawGuideToUpload, RawTaskToUploadWithoutLevel } from "./typesUpload";
 
 import { CLT } from "../const/const";
 
@@ -53,13 +53,14 @@ export type CollectonsTypes = (typeof CLT)[keyof typeof CLT];
 
 export type DBFormats =
   | CoursesDBObj
-  | TaskDBWraper
+  | UnitDBWraper
   | FlowDB
   | ChampDB
   | UserMetaDB
   | GroupDB
   | UsersMetaReportDB
-  | CourseChapterObjDB;
+  | CourseChapterObjDB
+  | TaskDBWraper;
 
 //Flow
 export type FlowDB = {
@@ -100,12 +101,28 @@ export interface EdgeDB {
 
 //Task
 
+export interface UnitDBWraper {
+  tasks: UnitDB[];
+}
+
+// export interface TextBookDB extends GuideDB {
+//   tasks: GuideDB[];
+// }
+
+export interface GuideDBWraper {
+  tasks: GuideDB[];
+}
+
 export interface TaskDBWraper {
   tasks: TaskDB[];
 }
 
-export interface TaskDB
-  extends Omit<RawTaskToUploadWithoutLevel, "restrictions"> {
+export type UnitDB = TaskDB | GuideDB;
+
+export interface TaskDB extends Omit<
+  RawTaskToUploadWithoutLevel,
+  "restrictions"
+> {
   level: number;
   restrictions: {
     maxlines: number;
@@ -113,6 +130,8 @@ export interface TaskDB
     forbidden: string[];
   };
 }
+
+export interface GuideDB extends RawGuideToUpload {}
 
 //Champ
 export interface ChampDB {

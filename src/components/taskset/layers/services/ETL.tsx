@@ -1,18 +1,14 @@
 import { L } from "@/tpconst/src/lang";
 import { fetchFile } from "@/app/api/apicalls/apicalls";
-import { TaskDB } from "@/tpconst/src/T";
+import { Guide, GuideDBWithFiles, Task, TaskDB, UnitDB } from "@/tpconst/src/T";
 import { TaskDBWithFiles } from "@/tpconst/src/T";
 import { InOutDB } from "@/tpconst/src/T";
 import { TT } from "@/tpconst/src/const";
 import { allregex } from "./allregex";
 
-export const supplyFilesAndTransform = async (tasks: TaskDB[]) => {
+export const supplyFilesAndTransform = async (tasks: UnitDB[]) => {
   const tasksWithFiles = await supplyWithFilesData(tasks);
   const enrichedTasks = supplyWithFriendlyText(tasksWithFiles);
-  console.log(
-    "et",
-    enrichedTasks.sort((a, b) => a.taskorder - b.taskorder),
-  );
   return enrichedTasks.sort((a, b) => a.taskorder - b.taskorder);
 };
 
@@ -29,19 +25,28 @@ interface allregex {
 }
 
 //Tranform Data
-const supplyWithFriendlyText = (tasksWithFiles: TaskDBWithFiles[]) => {
-  const enrichedTasks = tasksWithFiles.map((task) => ({
-    ...task,
-    tasktext:
-      task.task +
-      formatForbidden({
-        forbidden: task.restrictions.forbidden,
-        musthave: task.restrictions.musthave,
-        maxlines: task.restrictions.maxlines,
-        tasktype: task.tasktype,
-        allregex,
-      }),
-  }));
+const supplyWithFriendlyText = (
+  tasksWithFiles: TaskDBWithFiles[] | GuideDBWithFiles[],
+) => {
+  const enrichedTasks = tasksWithFiles.map((task) => {
+    if (task.tasktype == "task") {
+      const t = task as TaskDBWithFiles;
+      return {
+        ...t,
+        tasktext:
+          t.task +
+          formatForbidden({
+            forbidden: t.restrictions.forbidden,
+            musthave: t.restrictions.musthave,
+            maxlines: t.restrictions.maxlines,
+            tasktype: t.tasktype,
+            allregex,
+          }),
+      } as Task;
+    } else {
+      return task as Guide;
+    }
+  });
   return enrichedTasks;
 };
 
@@ -86,45 +91,42 @@ const formatForbidden = ({
 
 //Upload files data
 
-const supplyWithFilesData = async (tasks: TaskDB[]) => {
+const supplyWithFilesData = async (tasks: UnitDB[]) => {
   const filesAndUrls = extractFileNames({ tasks });
   const filesAndFileContent = await getTaskFilesData({ filesAndUrls });
   const { tasksWithFiles } = enrichTaskWithFileLoadCode({
     tasks,
     filesAndFileContent,
   });
-  return tasksWithFiles;
+  return tasksWithFiles as GuideDBWithFiles[] | TaskDBWithFiles[];
 };
 
 const enrichTaskWithFileLoadCode = ({
   tasks,
   filesAndFileContent,
 }: {
-  tasks: TaskDB[];
+  tasks: UnitDB[];
   filesAndFileContent: FileNamesAndUrls;
 }) => {
   const tasksWithFiles = tasks.map((task) => ({
     ...task,
-    inout: task.inout.map((inouttest: InOutDB) => {
-      const filesdata = getFilesData(inouttest, filesAndFileContent);
+    inout: task.inout.map((inouttest) => {
+      const filesdata = getFilesData(inouttest.inv, filesAndFileContent);
       return {
         filesdata,
+        ...inouttest,
         inv: inouttest.inv,
-        outv: inouttest.outv,
       };
     }),
-    filedata: getFilesData(task.inout[0], filesAndFileContent).join("\n"),
+    filedata: getFilesData(task.inout[0].inv, filesAndFileContent).join("\n"),
   }));
 
   return { tasksWithFiles };
 };
 
-const getFilesData = (
-  inouttest: InOutDB,
-  filesAndFileContent: FileNamesAndUrls,
-) => {
+const getFilesData = (inv: string[], filesAndFileContent: FileNamesAndUrls) => {
   let filesdata: string[] = [];
-  inouttest.inv.forEach((filename) => {
+  inv.forEach((filename) => {
     filename.includes(".txt")
       ? filesdata.push(
           `f=open("${filename}", 'w')\nf.write("${filesAndFileContent[filename].data}")\nf.close()\n`,
@@ -152,8 +154,9 @@ const getTaskFilesData = async ({
 
 // "https://hog6lcngzkudsdma.public.blob.vercel-storage.com/a3905595-437e-47f3-b749-28ea5362bd39/d06b8c0d-4837-484a-ad85-9257e0e6af01/" +
 
-const extractFileNames = ({ tasks }: { tasks: TaskDB[] }) => {
+const extractFileNames = ({ tasks }: { tasks: UnitDB[] }) => {
   const files: FileNamesAndUrls = {};
+  console.log("tasks", tasks);
   tasks.forEach((task) => {
     task.inout.forEach((inout) => {
       inout.inv

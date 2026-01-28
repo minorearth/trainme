@@ -23,10 +23,10 @@ export const Panel = ({
         width: "100%",
         padding: "10px",
         paddingLeft: "20px",
+        paddingRight: "20px",
         border: `1px solid  ${theme.palette.divider}`,
         borderRadius: "3px",
-        height: "100%",
-        minHeight: "200px",
+        minHeight: "150px",
         "& .MuiFormGroup-root": { height: "100%" },
       }}
     >

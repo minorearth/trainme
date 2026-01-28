@@ -222,6 +222,7 @@ export const L = {
       GOMAINPAGE: "Вернуться на главную",
       TEXTBOOK: "Учебник",
       HOWTO_GUIDE: "Как проходить курс",
+      CODE_RUN: "Выполнить код",
       INTERRUPT_CHAPTER: "Заверить прохождение",
 
       EXIT: "Выйти",
@@ -289,7 +290,7 @@ export const L = {
       OUTPUTT_DATA: "Выходные данные",
       EXPECTED_OUTPUT: "Ожидаемый результат",
       TASK: "Выполни задание",
-      EDITOR: "Редактор кода",
+      EDITOR: "Код",
 
       //Task limitations
       LIMITATIONS_CAPTION: "‼️ Что нужно и что нельзя:\n",

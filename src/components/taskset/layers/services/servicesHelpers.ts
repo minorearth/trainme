@@ -4,7 +4,7 @@ import { toJS } from "mobx";
 import { getNeverRepeatIntegers } from "@/tpconst/src/utils";
 
 //types
-import { TaskDB } from "@/tpconst/src/T";
+import { TaskDB, UnitDB } from "@/tpconst/src/T";
 import { E_CODES, throwErrorValue } from "@/tpconst/src/errorHandlers";
 
 export const getTasksRecap = <T>({
@@ -15,7 +15,7 @@ export const getTasksRecap = <T>({
   tasks: T[];
 }): T[] => {
   const filteredTasks: T[] = tasks.filter((_: T, id: number) =>
-    recapTasksIds.includes(id)
+    recapTasksIds.includes(id),
   );
   return filteredTasks;
 };
@@ -32,12 +32,12 @@ export const getRandomTasks = ({
   num: number;
 }) => {
   const scope = allTasks.filter(
-    (task) => task.level <= levelEnd && task.level >= levelStart
+    (task) => task.level <= levelEnd && task.level >= levelStart,
   );
   if (scope.length < num) {
     throw throwErrorValue(
       E_CODES.NOT_ENOUGHT_TASKS_ERROR,
-      scope.length.toString()
+      scope.length.toString(),
     );
   }
   const numbers = getNeverRepeatIntegers(scope.length - 1, num);

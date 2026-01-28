@@ -39,6 +39,12 @@ def import_spec_ent(tree, nm, param):
                     return True
     return False
 
+def has_variable_with_name(tree, nm):
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Name):
+            if node.id == nm:
+                return True
+    return False
 
 def has_operation(node, op_type):
     if isinstance(node, ast.BinOp):
@@ -326,6 +332,8 @@ def parse(code, nm, param, type):
         return has_named_args(parsed)
     elif type == 'decorator':
         return has_decorator(parsed, nm)
+    elif type == 'variable':
+        return has_variable_with_name(parsed, nm)
     return False
  
 print(parse("${code}", "${nm}", "${param}", "${type}"))`;};

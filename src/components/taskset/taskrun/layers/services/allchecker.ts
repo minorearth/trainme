@@ -8,9 +8,9 @@ import { supplyFilesAndTransform } from "@/components/taskset/layers/services/ET
 import { runPythonCode } from "@/components/pyodide/pythonRunner";
 
 export const checkAllCode = async (courseid: string) => {
-  const tasks = await supplyFilesAndTransform(
-    await getAllCourseTasks(courseid)
-  );
+  const tasks = (await supplyFilesAndTransform(
+    await getAllCourseTasks(courseid),
+  )) as Task[];
   await checktasks({ tasks });
 };
 
@@ -32,7 +32,7 @@ const checktasks = async ({ tasks }: { tasks: Task[] }) => {
           codeChecked,
           mustHaveChecked,
           forbiddenChecked,
-          task.taskuuid
+          task.taskuuid,
         );
     }
   });

@@ -9,7 +9,7 @@ import splash from "@/components/common/splash/store";
 
 //serviceHelpers(local)
 import { getTasksRecap } from "@/components/taskset/layers/services/servicesHelpers";
-import { Task } from "@/tpconst/src/T";
+import { Task, Unit } from "@/tpconst/src/T";
 import { TS, TSM } from "@/tpconst/src/const";
 
 export const setTaskLog = ({
@@ -33,9 +33,9 @@ export const setRecapTasks = ({
   tasks,
 }: {
   recapTasksIds: number[];
-  tasks: Task[];
+  tasks: Unit[];
 }) => {
-  const recapTasks = getTasksRecap<Task>({
+  const recapTasks = getTasksRecap<Unit>({
     recapTasksIds,
     tasks,
   });

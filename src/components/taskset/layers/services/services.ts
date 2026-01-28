@@ -34,6 +34,8 @@ import {
   CourseStatePersisted,
   Task,
   TasksetStatePersisted,
+  Unit,
+  UnitDB,
 } from "@/tpconst/src/T";
 import { CourseProgressDB, TaskDB, UserMetaDB } from "@/tpconst/src/T";
 import { ST, TS, TSM } from "@/tpconst/src/const";
@@ -43,7 +45,7 @@ import { throwInnerError } from "@/tpconst/src/errorHandlers";
 //types
 
 interface GetTasksResult {
-  tasks: Task[];
+  tasks: Unit[];
   tasksuuids: string[];
 }
 
@@ -100,7 +102,7 @@ export const getTasks = async ({
 
       if (taskstage == TS.recap || taskstage == TS.recapSuspended) {
         const recapTasks = await supplyFilesAndTransform(
-          getTasksRecap({ recapTasksIds, tasks })
+          getTasksRecap({ recapTasksIds, tasks }),
         );
         return { tasks: recapTasks, tasksuuids: [] };
       } else
@@ -130,7 +132,7 @@ export const getRandomTasksForChamp = async ({
       levelStart,
       levelEnd,
       num: taskCount,
-    });
+    }) as TaskDB[];
 
     return randomTasks;
   } catch (error) {
@@ -152,11 +154,11 @@ export const getExamTasks = async ({
   levelEnd,
   randomsaved,
 }: getRandomTasksForExamParams) => {
-  const allTasks: TaskDB[] = await getAllCourseTasks(courseid);
+  const allTasks = (await getAllCourseTasks(courseid)) as TaskDB[];
 
   if (randomsaved && randomsaved?.length != 0) {
-    const savedTasks = allTasks.filter((task: TaskDB) =>
-      randomsaved.includes(task.taskuuid)
+    const savedTasks = allTasks.filter((task) =>
+      randomsaved.includes(task.taskuuid),
     );
     return {
       tasksuuids: randomsaved,
@@ -170,7 +172,9 @@ export const getExamTasks = async ({
         levelEnd,
         num: 5,
       });
-      const tasksFetched = await supplyFilesAndTransform(randomTasks);
+      const tasksFetched = (await supplyFilesAndTransform(
+        randomTasks,
+      )) as Task[];
       const tasksuuids = tasksFetched.map((task: TaskDB) => task.taskuuid);
       return { tasksuuids, tasksFetched };
     } catch (e: unknown) {
@@ -235,13 +239,13 @@ const getChampTasks = async ({
       recapTasksIds,
       tasks: rawTasks,
     });
-    const tasks: Task[] = await supplyFilesAndTransform(rawRecapTasks);
+    const tasks = (await supplyFilesAndTransform(rawRecapTasks)) as Task[];
     return {
       tasks,
       tasksuuids: [],
     };
   } else {
-    const tasks: Task[] = await supplyFilesAndTransform(rawTasks);
+    const tasks = (await supplyFilesAndTransform(rawTasks)) as Task[];
 
     return { tasks, tasksuuids: [] };
   }

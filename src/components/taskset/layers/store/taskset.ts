@@ -1,6 +1,7 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { runInAction } from "mobx";
 import task from "@/components/taskset/taskrun/layers/store/task";
+
 import { updateKeySCP, updateSCP } from "@/db/localstorageDB";
 import { getStarPageIntro } from "@/components/common/dialog/dialogMacro";
 
@@ -11,7 +12,7 @@ import {
 
 import chapter from "@/components/taskset/layers/store/chapter";
 import { TASKSET_DEFAULTS } from "@/tpconst/src/typesdefaults";
-import { Task, TasksetStatePersisted } from "@/tpconst/src/T";
+import { Task, TasksetStatePersisted, Unit } from "@/tpconst/src/T";
 import { STT } from "@/tpconst/src/const";
 import { TasksetMode, TasksetStage } from "@/tpconst/src/T";
 
@@ -21,7 +22,7 @@ const DEFAULT_STATE = {
 };
 
 class taskset {
-  tasks: Task[] = [];
+  tasks: Unit[] = [];
   tasknum: number = -1;
   nextdisabled: boolean = false;
   prevdisabled: boolean = true;
@@ -62,7 +63,7 @@ class taskset {
     });
   }
 
-  async setTaskSetTasks({ tasks }: { tasks: Task[] }) {
+  async setTaskSetTasks({ tasks }: { tasks: Unit[] }) {
     runInAction(() => {
       if (tasks.length != 0) {
         this.tasks = tasks;
@@ -72,7 +73,7 @@ class taskset {
   }
 
   switchTaskP = (id: number) => {
-    task.editorRef.current?.setValue("");
+    // task.monaco.editorRef.current?.setValue("");
     if (id != this.tasks.length) {
       this.state.currTaskId = id;
       task.setCurrTask(this.tasks[id]);
@@ -80,7 +81,7 @@ class taskset {
         {
           taskset: { currTaskId: id },
         },
-        STT.taskset
+        STT.taskset,
       );
     }
   };
@@ -109,7 +110,7 @@ class taskset {
       {
         taskset: { currTaskId: id },
       },
-      STT.taskset
+      STT.taskset,
     );
   };
 

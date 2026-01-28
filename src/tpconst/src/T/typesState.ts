@@ -4,10 +4,12 @@ import {
   CourseProgressDB,
   CoursesDB,
   EdgeDB,
+  GuideDB,
   NodeDataDB,
   NodeDB,
   TaskDB,
   TasksLogDB,
+  UnitDB,
 } from "./typesDB";
 import { InOutDB } from "./typesUpload";
 
@@ -15,7 +17,11 @@ import { InOutDB } from "./typesUpload";
 
 //Task
 export interface TaskDBWithFiles extends TaskDB {
-  ///////////////////////////////////////////////////////////////
+  inout: InOutWithFilesDataState[];
+  filedata: string;
+}
+
+export interface GuideDBWithFiles extends GuideDB {
   inout: InOutWithFilesDataState[];
   filedata: string;
 }
@@ -27,6 +33,17 @@ export interface InOutWithFilesDataState extends InOutDB {
 export interface Task extends TaskDBWithFiles {
   tasktext: string;
 }
+
+export interface Guide extends GuideDBWithFiles {}
+
+export type Unit = Task | Guide;
+
+// export interface Guide extends Omit<
+//   TaskDBWithFiles,
+//   "inout" | "restrictions" | "level" | "task" | "rightcode" | "forbiddencode"
+// > {
+//   parts: Guidepart[];
+// }
 
 //Flow(enriched with progress)
 

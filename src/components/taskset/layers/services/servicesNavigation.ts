@@ -3,6 +3,7 @@ import { updateChampPoints } from "@/tpconst/src/RP/FB";
 
 //stores
 import task from "@/components/taskset/taskrun/layers/store/task";
+
 import taskset from "@/components/taskset/layers/store/taskset";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import countdownbutton from "@/components/common/CountdownButton/store";
@@ -59,14 +60,14 @@ export const nextTaskOrCompleteTestRun = async ({
           ok(() =>
             navigator.actions.openCongratPage({
               success: recapTaskNum == fixed ? ST.success : ST.fail,
-            })
+            }),
           );
         }
         if (recapTaskNum == 0 && taskstage == TS.WIP) {
           ok(() =>
             navigator.actions.openCongratPage({
               success: ST.success,
-            })
+            }),
           );
         }
         if (recapTaskNum != 0 && taskstage == TS.WIP) {
@@ -74,13 +75,13 @@ export const nextTaskOrCompleteTestRun = async ({
             ? ok(() =>
                 navigator.actions.openCongratPage({
                   success: ST.fail,
-                })
+                }),
               )
             : ok(() =>
                 setRecapTasks({
                   recapTasksIds: taskset.state.recapTasksIds,
                   tasks: taskset.tasks,
-                })
+                }),
               );
         }
       }
@@ -115,7 +116,7 @@ export const nextTaskOrCompleteTestRun = async ({
 };
 
 export const errorCountDownPressed = async () => {
-  task.editorRef.current?.setValue("");
+  // task.monaco.editorRef.current?.setValue("");
   countdownbutton.hideButton();
   task.hideInfo();
   // task.actions.setEditorDisabled(false);

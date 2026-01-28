@@ -14,17 +14,21 @@ import { TT } from "@/tpconst/src/const";
 import { L } from "@/tpconst/src/lang";
 import { dialogs } from "@/components/common/dialog/dialogMacro";
 import { E_CODES } from "@/tpconst/src/errorHandlers";
+import { Task } from "@/tpconst/src";
 
 const performTests = async () => {
-  if (task.executing) {
+  if (!task.monaco) {
     throw new Error();
   }
-  if (!task.code) {
+  if (task.monaco.executing) {
+    throw new Error();
+  }
+  if (!task.monaco.code) {
     throw new Error();
   }
   return await runCheckers({
-    code: task.code,
-    task: task.currTask,
+    code: task.monaco.code,
+    task: task.currTask as Task,
     runPythonCode,
   });
 };
@@ -42,14 +46,14 @@ export const checkTaskAction = async () => {
       });
       await taskset.actions.nextTaskOrCompleteTestRun({
         error: false,
-        code: task.code,
+        code: task.monaco?.code || "",
       });
     } catch (error: unknown) {
       const e = error as Error;
       await taskset.actions.nextTaskOrCompleteTestRun({
         error: true,
         errorMsg: e.cause as string,
-        code: task.code,
+        code: task.monaco?.code || "",
       });
     }
   } catch (e: unknown) {
@@ -62,9 +66,6 @@ export const preCheckTaskAction = async () => {
     const { linesChecked, mustHaveChecked, forbiddenChecked } =
       await performTests();
     const res = !linesChecked || !mustHaveChecked || !forbiddenChecked;
-    console.log("res", "asas");
-
-    console.log("res", L.ru.msg[E_CODES.RESTRICTIONS_NOT_PASSED].params);
     if (res) {
       dialogs.basic({
         ...L.ru.msg[E_CODES.RESTRICTIONS_NOT_PASSED].params,
@@ -79,19 +80,8 @@ export const preCheckTaskAction = async () => {
   }
 };
 
-export const runTask = async () => {
-  if (task.executing) return;
-  task.setExecuting(true);
-  const { outputTxt } = await runPythonCode({
-    code: task.currTask.filedata + task.code,
-    stdIn: task.input,
-  });
-  task.setOutput(outputTxt);
-  task.setExecuting(false);
-};
-
 export const checkOnChangeErrors = ({ lineCount }: { lineCount: number }) => {
-  return lineCount > task.currTask.restrictions.maxlines &&
+  return lineCount > (task.currTask as Task).restrictions.maxlines &&
     task.currTask.tasktype != TT.guide
     ? L.ru.ME.MAX_LINES_ERROR
     : "";

@@ -21,13 +21,17 @@ import {
   EdgeDB,
   FlowDB,
   NodeDB,
-  TaskDBWraper,
+  UnitDBWraper,
   GroupArr,
   GroupDB,
   GroupUserDBAttrs,
   UserMetaDB,
   UsersMetaReportDB,
   completedChapters,
+  TaskDBWraper,
+  GuideDB,
+  Task,
+  GuideDBWraper,
 } from "../../T";
 
 //ETL
@@ -228,14 +232,14 @@ export const uploadAllCourseTasksView = async ({
 }) => {
   try {
     const allTasksNoGuides = allTasksAndGuidesWithLevels.filter(
-      (task) => task.tasktype == TT.task
+      (task) => task.tasktype == TT.task,
     );
     await setDocInCollection({
       collectionName: CLT.newtasks,
       data: {},
       id: courseid,
     });
-    await setDocInSubCollection<TaskDBWraper>({
+    await setDocInSubCollection<UnitDBWraper>({
       collectionName: CLT.newtasks,
       id: courseid,
       subCollectionName: CLT.chapters,
@@ -259,7 +263,7 @@ export const uploadChapterTasks = async ({
   chapterTasks: TaskDB[];
 }) => {
   try {
-    await setDocInSubCollection<TaskDBWraper>({
+    await setDocInSubCollection<UnitDBWraper>({
       collectionName: CLT.newtasks,
       id: courseid,
       subCollectionName: CLT.chapters,
@@ -274,7 +278,7 @@ export const uploadChapterTasks = async ({
 };
 
 export const uploadCourseChaptersObject = async (
-  chapterCourseObjectModel: CourseChapterObjDB
+  chapterCourseObjectModel: CourseChapterObjDB,
 ) => {
   try {
     await setDocInCollection<CourseChapterObjDB>({
@@ -344,7 +348,7 @@ export const getChaptersObjdata = async (): Promise<CourseChapterObjDB> => {
 export const addNewGroupDB = async (
   groupid: string,
   groupdata: GroupUserDBAttrs,
-  uuid: string
+  uuid: string,
 ) => {
   try {
     await updateDocByid<GroupDB>({
@@ -449,7 +453,7 @@ export const getSnapShot = async ({
 };
 
 export const getUsersMetaObj = async (
-  uids: string[]
+  uids: string[],
 ): Promise<UsersMetaReportDB> => {
   try {
     const usersMeta = await getMultipleDocs<UserMetaDB>({
@@ -486,7 +490,7 @@ export const getAllTasksFromChapter = async ({
   courseid: string;
 }) => {
   try {
-    const tasks = await getDocDataFromSubCollectionById<TaskDBWraper>({
+    const tasks = await getDocDataFromSubCollectionById<UnitDBWraper>({
       collectionName: CLT.newtasks,
       id: courseid,
       subCollectionName: CLT.chapters,
@@ -506,14 +510,14 @@ export const getTextBookTasks = async ({
   courseid: string;
 }) => {
   try {
-    const tasks = await getDocDataFromSubCollectionById<TaskDBWraper>({
+    const tasks = await getDocDataFromSubCollectionById<GuideDBWraper>({
       collectionName: CLT.newtasks,
       id: courseid,
       subCollectionName: CLT.chapters,
       subId: D.TEXT_BOOK_TASKS_ID,
     });
-    const unlockedTheory = tasks?.tasks.filter((task: TaskDB) =>
-      completed.includes(task.chapterparentid)
+    const unlockedTheory = tasks?.tasks.filter((task: GuideDB) =>
+      completed.includes(task.chapterparentid),
     );
     if (!tasks) {
       return [];
@@ -532,7 +536,7 @@ export const getAllCourseTasks = async (courseid: string) => {
       subCollectionName: CLT.chapters,
       subId: D.ALLTASKS_DOC_ID,
     });
-    return allTasks?.tasks;
+    return allTasks?.tasks as Task[];
   } catch (error) {
     throw throwInnerError(error);
   }

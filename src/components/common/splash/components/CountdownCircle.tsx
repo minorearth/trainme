@@ -80,7 +80,6 @@ const CountdownCircle = observer(() => {
           variant="h2"
           component="div"
           sx={{
-            color: "yellow",
             fontWeight: "bold",
             textShadow: "-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black",
           }}

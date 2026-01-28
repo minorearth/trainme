@@ -35,6 +35,7 @@
     "react-icons": "^5.4.0",
     "styled-components": "^6.1.15",
     "tinycolor2": "^1.6.0",
+    "tpconst": "^1.0.42",
     "uuid": "^11.0.3"
   },
   "devDependencies": {

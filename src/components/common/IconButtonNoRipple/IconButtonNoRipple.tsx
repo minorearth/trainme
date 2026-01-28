@@ -4,10 +4,17 @@
 import React from "react";
 import IconButton from "@mui/material/IconButton";
 
-const IconButtonNoRipple = ({ children }: { children: React.ReactNode }) => {
+const IconButtonNoRipple = ({
+  children,
+  disabled = false,
+}: {
+  children: React.ReactNode;
+  disabled?: boolean;
+}) => {
   return (
     <IconButton
       disableRipple
+      disabled={disabled}
       sx={{
         color: "inherit",
         "&:hover": {
