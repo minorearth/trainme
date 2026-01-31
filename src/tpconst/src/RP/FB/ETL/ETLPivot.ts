@@ -9,14 +9,14 @@ import {
 } from "../../../T";
 
 export const extractUsersMetaObj = (
-  usersMeta: UserMetaDB[]
+  usersMeta: UserMetaDB[],
 ): UsersMetaReportDB => {
   const res = usersMeta.reduce(
     (acc, user) => ({
       ...acc,
       [user.userId]: getCourseChapters(user.courses),
     }),
-    {}
+    {},
   );
   return res;
 };
@@ -30,7 +30,7 @@ const getCourseChapters = (courses: UserCoursesDB) => {
         stat: getChaptersData(courses[courseid].stat),
       },
     }),
-    {}
+    {},
   );
   return res;
 };
@@ -41,17 +41,17 @@ const getChaptersData = (chapters: CourseStatDB) => {
       ...acc,
       [chapterid]: { sum: chapters[chapterid].sum },
     }),
-    {}
+    {},
   );
 };
 
-export const allTasksArrToObj = (tasks: TaskDB[]) => {
-  const alltasksObj = tasks.reduce(
-    (acc, task) => ({
+export const allTasksArrToObj = (units: TaskDB[]) => {
+  const alltasksObj = units.reduce(
+    (acc, unit) => ({
       ...acc,
-      [task.taskuuid]: { task: task.task, taskorder: task.taskorder },
+      [unit.unituuid]: { task: unit.task, unitorder: unit.unitorder },
     }),
-    {} as RawTaskObj
+    {} as RawTaskObj,
   );
 
   return alltasksObj;

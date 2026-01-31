@@ -232,7 +232,7 @@ export const uploadAllCourseTasksView = async ({
 }) => {
   try {
     const allTasksNoGuides = allTasksAndGuidesWithLevels.filter(
-      (task) => task.tasktype == TT.task,
+      (task) => task.unittype == TT.task,
     );
     await setDocInCollection({
       collectionName: CLT.newtasks,

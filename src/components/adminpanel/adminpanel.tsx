@@ -14,9 +14,9 @@ import {
   checkAlltasks,
 } from "@/components/adminpanel/layers/services/services";
 
-import task from "@/components/taskset/taskrun/layers/store/task";
+import unit from "@/components/unitset/unitrun/layers/store/unit";
 
-import taskset from "@/components/taskset/layers/store/taskset";
+import unitset from "@/components/unitset/layers/store/unitset";
 import S from "@/globals/settings";
 import { L, Task } from "@/tpconst/src";
 
@@ -52,22 +52,32 @@ const AdminPanel = () => {
         }}
       />
       <Button onClick={() => setMoneyCurrentUser(inValue)}>money</Button>
-      <Button onClick={() => taskset.gotoLastTask()}>lasttask</Button>
+      <Button onClick={() => unitset.gotoLastTask()}>lasttask</Button>
       {S.mode.DEV_MODE && (
         <Button
           onClick={() => {
-            taskset.prevTaskNoPts_admin();
+            unitset.prevTaskNoPts_admin();
           }}
           variant="outlined"
         >
-          {L.ru.buttons.BACK_CHAMP}
+          {L.ru.buttons.BACK_ADMIN}
+        </Button>
+      )}
+      {S.mode.DEV_MODE && (
+        <Button
+          onClick={() => {
+            unitset.nextTaskNoPts_admin();
+          }}
+          variant="outlined"
+        >
+          {L.ru.buttons.FWD_ADMIN}
         </Button>
       )}
 
       {S.mode.DEV_MODE && (
         <Button
           onClick={() => {
-            task.monaco?.setRightCode_admin((task.currTask as Task).rightcode);
+            unit.setRightCode_admin((unit.currUnit as Task).rightcode);
           }}
           variant="outlined"
         >
@@ -77,9 +87,7 @@ const AdminPanel = () => {
       {S.mode.DEV_MODE && (
         <Button
           onClick={() => {
-            task.monaco?.setForbiddenCode_admin(
-              (task.currTask as Task).forbiddencode,
-            );
+            unit.setForbiddenCode_admin((unit.currUnit as Task).forbiddencode);
           }}
           variant="outlined"
         >

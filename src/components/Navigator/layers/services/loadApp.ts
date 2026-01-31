@@ -9,7 +9,7 @@ import { checkCoursePaid } from "@/app/api/apicalls/dataFetch";
 
 //services(external)
 import { getFlow } from "@/components/course/layers/services/services";
-import { getTasks } from "@/components/taskset/layers/services/services";
+import { getTasks } from "@/components/unitset/layers/services/services";
 
 //services(local)
 import {
@@ -20,12 +20,12 @@ import {
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
-import task from "@/components/taskset/taskrun/layers/store/task";
-import taskset from "@/components/taskset/layers/store/taskset";
+import unit from "@/components/unitset/unitrun/layers/store/unit";
+import unitset from "@/components/unitset/layers/store/unitset";
 import user from "@/auth/store/user";
 import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";
-import chapter from "@/components/taskset/layers/store/chapter";
+import chapter from "@/components/unitset/layers/store/chapter";
 import { CSP } from "@/tpconst/src/T";
 import { checkVersion } from "@/db/localstorageDB";
 import { PG, ST, TS, TSM } from "@/tpconst/src/const";
@@ -36,7 +36,7 @@ import { E_CODES } from "@/tpconst/src/errorHandlers";
 export const loadPyTrek = async () => {
   const CSP = getPersistedState(S.CURRENT_LS_VERSION);
   CSP.navigator && navigator.setNavigatorState(CSP.navigator);
-  CSP.taskset && taskset.setTaskSetState(CSP.taskset);
+  CSP.taskset && unitset.setTaskSetState(CSP.taskset);
   CSP.user.username && user.setUserName(CSP.user.username);
   CSP.user.progress && user.setProgress(CSP.user.progress);
   CSP.course && course.setCourseState(CSP.course);
@@ -92,13 +92,13 @@ const recoverTasks = async ({ CSP }: { CSP: CSP }) => {
     tasksetData: CSP.taskset,
   });
 
-  taskset.setTaskSetTasks({ tasks });
-  task.setCurrTask(tasks[CSP.taskset.currTaskId]);
+  unitset.setTaskSetTasks({ tasks });
+  unit.setCurrUnit(tasks[CSP.taskset.currTaskId]);
 
   if (taskstage == TS.recapSuspended && tasksetmode != TSM.exam) {
     dialogs.basic({
       ...L.ru.msg[E_CODES.RECAP].params,
     });
-    taskset.setTaskSetStateP({ ...taskset.state, taskstage: TS.recap });
+    unitset.setTaskSetStateP({ ...unitset.state, taskstage: TS.recap });
   }
 };

@@ -4273,7 +4273,7 @@ to-regex-range@^5.0.1:
     is-number "^7.0.0"
 
 tpconst@^1.0.39, "tpconst@file:/Users/dayfireacad/multiTrain/trainpython/src/tpconst":
-  version "1.0.42"
+  version "1.0.44"
   resolved "file:src/tpconst"
   dependencies:
     crypto-js "^4.2.0"

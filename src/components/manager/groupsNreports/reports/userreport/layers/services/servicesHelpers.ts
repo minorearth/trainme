@@ -19,7 +19,7 @@ export const getReportTree = ({
   allCoursesTasks: AllCoursesRawTaskObj;
 }) => {
   const courcesIds = Object.keys(userstat).sort(
-    (a, b) => courses[a].order - courses[b].order
+    (a, b) => courses[a].order - courses[b].order,
   );
 
   const res = courcesIds.map((courseId) => ({
@@ -62,11 +62,11 @@ export const getReportTree = ({
                   .map((taskid) => ({
                     id: `${chapterId}_${taskid}`,
                     label: L.ru.RT.TASK,
-                    order: allCoursesTasks[courseId][taskid].taskorder,
+                    order: allCoursesTasks[courseId][taskid].unitorder,
                     type: URT.task,
                     code: prepareStatTaskCode(
                       userstat[courseId].stat[chapterId].tasks[taskid],
-                      allCoursesTasks[courseId][taskid].task
+                      allCoursesTasks[courseId][taskid].task,
                     ),
                     children: [],
                   }))

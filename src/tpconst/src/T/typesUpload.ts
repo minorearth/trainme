@@ -1,4 +1,4 @@
-import { TaskType } from "./typesBasic";
+import { UnitType } from "./typesBasic";
 import { ChapterObjReportDB, EdgeDB, NodeDB } from "./typesDB";
 
 //////////////////////////upload(admin)
@@ -24,13 +24,13 @@ export interface RawTaskToUploadWithoutLevel {
   inout: InOutDB[];
   chapterid: string;
   task: string;
-  taskuuid: string;
-  tasktype: TaskType;
+  unituuid: string;
+  unittype: UnitType;
   defaultcode: string;
   rightcode: string;
   forbiddencode: string;
   defaultoutput: string[];
-  taskorder: number;
+  unitorder: number;
 }
 
 export interface Guidepart {

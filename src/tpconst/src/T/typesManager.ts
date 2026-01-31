@@ -56,6 +56,6 @@ export type AllCoursesRawTaskObj = {
 export type RawTaskObj = {
   [uuid: string]: {
     task: string;
-    taskorder: number;
+    unitorder: number;
   };
 };

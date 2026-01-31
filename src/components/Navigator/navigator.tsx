@@ -15,10 +15,10 @@ import usePyodide from "@/components/pyodide/usePyodide";
 //stores
 
 //components
-import Start from "@/components/taskset/start";
-import Taskrun from "@/components/taskset/taskrun/Taskrun";
+import Start from "@/components/unitset/start";
+import Unitrun from "@/components/unitset/unitrun/Unitrun";
 import Course from "@/components/course/course";
-import CongratPage from "@/components/taskset/congrat";
+import CongratPage from "@/components/unitset/congrat";
 import Splash from "@/components/common/splash/splash";
 import AlertDialog from "@/components/common/dialog/dialog";
 import AdminPanel from "@/components/adminpanel/adminpanel";
@@ -32,11 +32,8 @@ import TawkToChat from "@/components/common/tawkto/tawkto.js";
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
 import course from "@/components/course/layers/store/course";
-import taskset from "@/components/taskset/layers/store/taskset";
+import unitset from "@/components/unitset/layers/store/unitset";
 import { PG, ST } from "@/tpconst/src/const";
-import task from "@/components/taskset/taskrun/layers/store/task";
-import GuideForm from "../taskset/taskrun/components/BottomPanel/guide/guide";
-// import Guide from "../taskset/guide/Guide";
 
 const Navigator = observer(() => {
   useApp();
@@ -76,13 +73,9 @@ const Navigator = observer(() => {
             </ReactFlowProvider>
           )}
           {navigator.state.page == PG.lessonStarted && <Start />}
-          {navigator.state.page == PG.testrun && <Taskrun />}
-          {/* {navigator.state.page == PG.testrun &&
-            task.currTask.tasktype == "task" && <Taskrun />}
-          {navigator.state.page == PG.testrun &&
-            task.currTask.tasktype == "guide" && <Guide />} */}
+          {navigator.state.page == PG.testrun && <Unitrun />}
           {navigator.state.page == PG.congrat &&
-            taskset.state.success != ST.undefined && <CongratPage />}
+            unitset.state.success != ST.undefined && <CongratPage />}
         </Box>
       )}
     </Box>

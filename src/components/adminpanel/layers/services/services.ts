@@ -15,7 +15,7 @@ import {
   setMoneyDBSA,
   unlockAllChaptersDBSA,
 } from "@/app/serverActons";
-import { checkAllCode } from "@/components/taskset/taskrun/layers/services/allchecker";
+import { checkAllCode } from "@/components/unitset/unitrun/layers/services/allchecker";
 
 export async function resetCurrentUser() {
   const courseid = course.state.courseid;
@@ -24,7 +24,7 @@ export async function resetCurrentUser() {
       courseid,
       uid: user.userid,
       firstchapter: courses[courseid].firstchapter,
-    })
+    }),
   );
 
   navigator.actions.openAndRefreshFlowPage({
@@ -43,7 +43,7 @@ export const unlockAllChaptersCurrentUser = async () => {
       userid: user.userid,
       chaptersIds,
       firstchapter: courses[courseid].firstchapter,
-    })
+    }),
   );
 
   navigator.actions.openAndRefreshFlowPage({
@@ -65,7 +65,7 @@ export const completeAllChaptersCurrentUser = async () => {
       userid: user.userid,
       chaptersIds,
       firstchapter: courses[courseid].firstchapter,
-    })
+    }),
   );
 
   navigator.actions.openAndRefreshFlowPage({

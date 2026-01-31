@@ -1,9 +1,9 @@
 import { PG, ST, TS, TSM, TT } from "../const/const";
 
-export const TASK_DEFAULTS = {
-  taskorder: -1,
+export const UNIT_DEFAULTS = {
+  unitorder: -1,
   defaultcode: "",
-  taskuuid: "",
+  unituuid: "",
   inout: [
     {
       outv: [""],
@@ -11,7 +11,7 @@ export const TASK_DEFAULTS = {
       filesdata: [""],
     },
   ],
-  tasktype: TT.task,
+  unittype: TT.task,
   level: -1,
   restrictions: {
     musthave: [""],

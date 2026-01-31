@@ -18,7 +18,7 @@ export const wakeUp = () => {
     },
     body: "",
   })
-    .then((res) => console.log("Pinged API to keep awake"))
+    .then((res) => console.info("Pinged API to keep awake"))
     .catch((error) => {
       throw throwInnerError(new Error(E_CODES.WAKEUP_API_FAILED));
     });

@@ -254,6 +254,8 @@ export const L = {
       START_CHAMP: "Начать",
       JOINCHAMP: "Присоединиться",
       BACK_CHAMP: "Назад",
+      BACK_ADMIN: "Назад",
+      FWD_ADMIN: "Вперед",
 
       //join group
       JOIN_GROUP: "Присоединиться",

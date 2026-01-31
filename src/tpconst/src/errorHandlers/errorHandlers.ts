@@ -7,7 +7,7 @@ export const throwFBError = ({
   code: string;
   message: string;
 }): never => {
-  console.log(`"FB error:${message}, FB error code: ${code}"`);
+  console.error(`"FB error:${message}, FB error code: ${code}"`);
 
   if (code === E_FB_CODES.INVALID_SIGNIN_CREDENTIALS) {
     throw new Error(E_CODES.WRONG_PSW);
@@ -25,7 +25,7 @@ export const throwFBError = ({
 };
 
 export const throwFetchAPIError = (result: any): never => {
-  console.log(`"fetch error:${result.message} ${result.cause}`);
+  console.error(`"fetch error:${result.message} ${result.cause}`);
 
   //do not remove, will be enriched with common fetch errors
   // if (e.code === E.FB.INVALID_SIGNIN_CREDENTIALS) {
@@ -51,17 +51,17 @@ export const throwErrorValue = (code: string, value: string) => {
 
 export const throwInnerError = (e: unknown) => {
   const error = e as Error;
-  console.log("Interim error:", error.message);
+  console.error("Interim error:", error.message);
   throw e;
 };
 
 export const finalErrorHandler = (
   e: unknown,
   dialogs: { [key: string]: (...params: any) => void },
-  msg: any
+  msg: any,
 ) => {
   const error = e as Error;
-  console.log("final", error.message, error);
+  console.error("final", error.message, error);
   const errorParams = msg[error.message] || undefined;
   if (!errorParams) {
     dialogs["basic"](msg[E_CODES.UNKNOWN_ERROR].params);

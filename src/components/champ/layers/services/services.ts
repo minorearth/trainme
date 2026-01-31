@@ -7,7 +7,7 @@ import { generateString } from "@/tpconst/src/utils";
 
 //service helpers
 import { sortItems } from "@/components/champ/layers/services/servicesHelpers";
-import { getRandomTasksForChamp } from "@/components/taskset/layers/services/services";
+import { getRandomTasksForChamp } from "@/components/unitset/layers/services/services";
 
 //repository(local)
 import {

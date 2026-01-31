@@ -18,8 +18,8 @@ import { saveChampUserTaskLog } from "@/tpconst/src/RP/FB";
 //services(external)
 import { signOut } from "@/auth/services/servicesAuth";
 import { getFlow } from "@/components/course/layers/services/services";
-import { saveProgress } from "@/components/taskset/layers/services/services";
-import { getTasks } from "@/components/taskset/layers/services/services";
+import { saveProgress } from "@/components/unitset/layers/services/services";
+import { getTasks } from "@/components/unitset/layers/services/services";
 
 //service helpers
 import {
@@ -37,15 +37,15 @@ import {
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
-import taskset from "@/components/taskset/layers/store/taskset";
+import unitset from "@/components/unitset/layers/store/unitset";
 import splash from "@/components/common/splash/store";
 import countdownbutton from "@/components/common/CountdownButton/store";
 import user from "@/auth/store/user";
 import tutorial from "@/components/tutorial/store";
 import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";
-import chapter from "@/components/taskset/layers/store/chapter";
-import task from "@/components/taskset/taskrun/layers/store/task";
+import chapter from "@/components/unitset/layers/store/chapter";
+import unit from "@/components/unitset/unitrun/layers/store/unit";
 //
 
 import { CHAPTER_DEFAULTS } from "@/tpconst/src/typesdefaults";
@@ -117,13 +117,7 @@ export const openLessonStartPage = async ({
     const { tasksetmode, taskstage } = tasksetData;
 
     splash.showProgress();
-    console.log({
-      champData,
-      courseData,
-      chapterData,
-      tasksetData,
-      userProgress: user.progress,
-    });
+
     const { tasks, tasksuuids } = await getTasks({
       champData,
       courseData,
@@ -135,10 +129,10 @@ export const openLessonStartPage = async ({
     if (tasksetmode == TSM.textbook && !tasks.length)
       throw new Error(E_CODES.TEXTBOOK_BLOCKED);
 
-    taskset.setTaskSetTasks({ tasks });
-    task.setCurrTask(tasks[0]);
+    unitset.setTaskSetTasks({ tasks });
+    unit.setCurrUnit(tasks[0]);
 
-    taskset.setTaskSetStateP({
+    unitset.setTaskSetStateP({
       ...TASKSET_DEFAULTS,
       tasksetmode,
       taskstage,
@@ -170,11 +164,11 @@ export const openCongratPage = async ({
 }) => {
   countdownbutton.hideButton();
   navigator.setStateP({ page: PG.congrat });
-  taskset.setTaskSetStateP({ ...taskset.state, success });
+  unitset.setTaskSetStateP({ ...unitset.state, success });
 };
 
 export const closeCongratPage = async () => {
-  const { tasksetmode } = taskset.state;
+  const { tasksetmode } = unitset.state;
   splash.showProgress();
 
   if (
@@ -194,7 +188,7 @@ export const closeCongratPage = async () => {
 
   if (tasksetmode == TSM.champ) {
     saveChampUserTaskLog({
-      tasklog: taskset.state.tasklog,
+      tasklog: unitset.state.tasklog,
       champid: champ.champid,
       userid: user.userid,
     });
@@ -204,7 +198,7 @@ export const closeCongratPage = async () => {
 };
 
 export const interruptTaskSet = () => {
-  const { tasksetmode } = taskset.state;
+  const { tasksetmode } = unitset.state;
   if (tasksetmode != TSM.textbook) {
     const { caption = "", text = "" } = getTaskSetInterruptedInfo({
       completed: chapter.state.completed,

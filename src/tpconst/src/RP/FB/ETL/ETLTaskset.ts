@@ -13,7 +13,7 @@ export const taskLogToDBFormat = ({
   let res: any = {};
   const dest = `courses.${courseid}.stat.${lastcompleted}.tasks`;
   Object.keys(tasklog).forEach(
-    (taskuuid: string) => (res[`${dest}.${taskuuid}`] = tasklog[taskuuid])
+    (unituuid: string) => (res[`${dest}.${unituuid}`] = tasklog[unituuid]),
   );
   return res as UserMetaDB;
 };
