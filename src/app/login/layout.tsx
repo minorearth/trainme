@@ -15,7 +15,6 @@ import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import { useCustomTheme } from "@/app/theme";
-import splash from "@/components/common/splash/store";
 
 import dynamic from "next/dynamic";
 

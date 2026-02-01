@@ -1,4 +1,4 @@
-import { Page, SuccessType, TasksetMode, TasksetStage } from "./typesBasic";
+import { Page, SuccessType, UnitsetMode, UnitsetStage } from "./typesBasic";
 import { ChapterProgressDB, CourseProgressDB, CoursesDB, EdgeDB, GuideDB, NodeDataDB, NodeDB, TaskDB, TasksLogDB } from "./typesDB";
 import { InOutDB } from "./typesUpload";
 export interface TaskDBWithFiles extends TaskDB {
@@ -35,16 +35,16 @@ export interface NodeDataState extends NodeDataDB {
     remainsum: number;
     action: (data: NodeDataState) => void;
 }
-export interface TasksetStatePersisted {
-    tasksetmode: TasksetMode;
+export interface UnitsetStatePersisted {
+    unitsetmode: UnitsetMode;
     recapTasksIds: number[];
-    taskstage: TasksetStage;
+    unitsetstage: UnitsetStage;
     pts: number;
     tasklog: TasksLogDB;
     randomsaved: string[];
     fixed: number;
     success: SuccessType;
-    currTaskId: number;
+    currUnitId: number;
 }
 export interface UserStatePersisted {
     username: string;

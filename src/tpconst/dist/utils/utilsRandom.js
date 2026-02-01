@@ -315,7 +315,7 @@ const spreadNumbersOverNodesRandomly = (leafNum, total) => {
     return res;
 };
 exports.spreadNumbersOverNodesRandomly = spreadNumbersOverNodesRandomly;
-//ex.  n-number of tasks to allocate, length-folders  num   n<length
+//ex.  n-number of units to allocate, length-folders  num   n<length
 //n=4 length=7
 //res=[3,1,6,5]
 const getNeverRepeatIntegers = (length, n) => {

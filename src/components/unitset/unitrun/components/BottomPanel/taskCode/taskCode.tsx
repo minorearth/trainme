@@ -7,12 +7,6 @@ import { L } from "@/tpconst/src/lang";
 import CodePanel from "../editor/CodePanel";
 
 const TaskCode = observer(() => {
-  // const [monacoStore] = useState(() => new monacostore());
-  // useEffect(() => {
-  //   const monacoStore = new monacostore();
-  //   task.setMonacoStore(monacoStore);
-  // }, []);
-
   return (
     <Panel label={L.ru.TR.EDITOR} sx={{ height: "100%" }}>
       <CodePanel

@@ -32,7 +32,7 @@ export default function Start() {
     >
       <Button
         onClick={() => {
-          navigator.actions.openTaskSetPage();
+          navigator.actions.openUnitSetPage();
         }}
         variant="outlined"
       >

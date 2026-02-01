@@ -307,18 +307,18 @@ const words = [
 //[3,4,3,4,3,4,4]
 export const spreadNumbersOverNodesRandomly = (
   leafNum: number,
-  total: number
+  total: number,
 ) => {
   const remainder = total % leafNum;
   const base = Math.floor(total / leafNum);
   const res = Array(leafNum).fill(base);
   getNeverRepeatIntegers(leafNum, remainder).forEach(
-    (item) => (res[item] += 1)
+    (item) => (res[item] += 1),
   );
   return res;
 };
 
-//ex.  n-number of tasks to allocate, length-folders  num   n<length
+//ex.  n-number of units to allocate, length-folders  num   n<length
 //n=4 length=7
 //res=[3,1,6,5]
 export const getNeverRepeatIntegers = (length: number, n: number) => {
@@ -340,12 +340,12 @@ export const randomNum = (length: number) => {
 //res=>['a','c']
 export const pickRandomItemsFromList = (
   numToPick: number,
-  listToPickFrom: number[]
+  listToPickFrom: number[],
 ) => {
   if (numToPick < listToPickFrom.length) {
     const NeverRepeatIntegers = getNeverRepeatIntegers(
       listToPickFrom.length,
-      numToPick
+      numToPick,
     );
     return NeverRepeatIntegers.map((dd) => listToPickFrom[dd]);
   } else {

@@ -13,7 +13,7 @@ import {
   SetDF,
 } from "../const/const";
 
-export type TasksetStage = (typeof TS)[keyof typeof TS];
+export type UnitsetStage = (typeof TS)[keyof typeof TS];
 
 export type Persstatus = (typeof PS)[keyof typeof PS];
 
@@ -21,14 +21,14 @@ export type Page = (typeof PG)[keyof typeof PG];
 
 export type NodeModes = (typeof NM)[keyof typeof NM];
 
-export type TasksetModeSpecific = (typeof TSM)[
+export type UnitsetModeSpecific = (typeof TSM)[
   | "champ"
   | "textbook"
   | "exam"
   | "default"];
 
-export type TasksetMode =
-  | TasksetModeSpecific
+export type UnitsetMode =
+  | UnitsetModeSpecific
   | Extract<NodeModes, "newtopic" | "addhoc" | "exam">;
 
 export type SuccessType = (typeof ST)[keyof typeof ST];

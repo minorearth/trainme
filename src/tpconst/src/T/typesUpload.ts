@@ -8,7 +8,7 @@ export interface CoursesDataToUpload {
     nodes: NodeDB[];
     chapterFlowNodesObj: ChapterObjReportDB;
     edges: EdgeDB[];
-    tasksall: RawTaskToUploadWithoutLevel[];
+    unitsall: (RawTaskToUploadWithoutLevel | RawGuideToUpload)[];
     skipupload: boolean;
     specificchapters: string[];
   };

@@ -16,8 +16,8 @@ import {
   EdgeDB,
   NodeDB,
 } from "@/tpconst/src/T";
-import { TASKSET_DEFAULTS } from "@/tpconst/src/typesdefaults";
-import { TasksetMode } from "@/tpconst/src/T";
+import { UNITSET_DEFAULTS } from "@/tpconst/src/typesdefaults";
+import { UnitsetMode } from "@/tpconst/src/T";
 import { L } from "@/tpconst/src/lang";
 import { E_CODES } from "@/tpconst/src/errorHandlers";
 
@@ -82,9 +82,9 @@ const nodeAction = (data: NodeDataState) => {
           level,
           tobeunlocked: completed ? [] : tobeunlocked,
         },
-        tasksetData: {
-          ...TASKSET_DEFAULTS,
-          tasksetmode: nodemode as TasksetMode,
+        unitsetData: {
+          ...UNITSET_DEFAULTS,
+          unitsetmode: nodemode as UnitsetMode,
         },
         courseData: { courseid: course.state.courseid },
         champData: { champid: "" },

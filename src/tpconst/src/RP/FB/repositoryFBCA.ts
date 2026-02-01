@@ -32,6 +32,7 @@ import {
   GuideDB,
   Task,
   GuideDBWraper,
+  UnitDB,
 } from "../../T";
 
 //ETL
@@ -225,22 +226,22 @@ export const uploadCourseChapters = async ({
 
 export const uploadAllCourseTasksView = async ({
   courseid,
-  allTasksAndGuidesWithLevels,
+  allUnitsWithLevels,
 }: {
   courseid: string;
-  allTasksAndGuidesWithLevels: TaskDB[];
+  allUnitsWithLevels: UnitDB[];
 }) => {
   try {
-    const allTasksNoGuides = allTasksAndGuidesWithLevels.filter(
+    const allTasksNoGuides = allUnitsWithLevels.filter(
       (task) => task.unittype == TT.task,
-    );
+    ) as TaskDB[];
     await setDocInCollection({
-      collectionName: CLT.newtasks,
+      collectionName: CLT.units,
       data: {},
       id: courseid,
     });
-    await setDocInSubCollection<UnitDBWraper>({
-      collectionName: CLT.newtasks,
+    await setDocInSubCollection<TaskDBWraper>({
+      collectionName: CLT.units,
       id: courseid,
       subCollectionName: CLT.chapters,
       subId: D.ALLTASKS_DOC_ID,
@@ -253,25 +254,37 @@ export const uploadAllCourseTasksView = async ({
   }
 };
 
-export const uploadChapterTasks = async ({
+export const uploadChapterUnits = async ({
   courseid,
   chapterid,
-  chapterTasks,
+  chapterUnits,
 }: {
   courseid: string;
   chapterid: string;
-  chapterTasks: TaskDB[];
+  chapterUnits: UnitDB[];
 }) => {
   try {
-    await setDocInSubCollection<UnitDBWraper>({
-      collectionName: CLT.newtasks,
-      id: courseid,
-      subCollectionName: CLT.chapters,
-      subId: chapterid,
-      data: {
-        tasks: chapterTasks,
-      },
-    });
+    if (chapterid == "textbook") {
+      await setDocInSubCollection<GuideDBWraper>({
+        collectionName: CLT.units,
+        id: courseid,
+        subCollectionName: CLT.chapters,
+        subId: chapterid,
+        data: {
+          guides: chapterUnits as GuideDB[],
+        },
+      });
+    } else {
+      await setDocInSubCollection<UnitDBWraper>({
+        collectionName: CLT.units,
+        id: courseid,
+        subCollectionName: CLT.chapters,
+        subId: chapterid,
+        data: {
+          units: chapterUnits,
+        },
+      });
+    }
   } catch (error) {
     throw throwInnerError(error);
   }
@@ -469,7 +482,7 @@ export const getUsersMetaObj = async (
 export const getAllTasksDataObj = async (courseid: string) => {
   try {
     const allTasks = await getDocDataFromSubCollectionById<TaskDBWraper>({
-      collectionName: CLT.newtasks,
+      collectionName: CLT.units,
       id: courseid,
       subCollectionName: CLT.chapters,
       subId: D.ALLTASKS_DOC_ID,
@@ -480,7 +493,7 @@ export const getAllTasksDataObj = async (courseid: string) => {
   }
 };
 
-//taskset
+//unitset
 
 export const getAllTasksFromChapter = async ({
   chapterid,
@@ -490,19 +503,19 @@ export const getAllTasksFromChapter = async ({
   courseid: string;
 }) => {
   try {
-    const tasks = await getDocDataFromSubCollectionById<UnitDBWraper>({
-      collectionName: CLT.newtasks,
+    const { units } = await getDocDataFromSubCollectionById<UnitDBWraper>({
+      collectionName: CLT.units,
       id: courseid,
       subCollectionName: CLT.chapters,
       subId: chapterid,
     });
-    return !tasks ? [] : tasks.tasks;
+    return !units ? [] : units;
   } catch (error) {
     throw throwInnerError(error);
   }
 };
 
-export const getTextBookTasks = async ({
+export const getTextBookGuides = async ({
   completed,
   courseid,
 }: {
@@ -510,16 +523,16 @@ export const getTextBookTasks = async ({
   courseid: string;
 }) => {
   try {
-    const tasks = await getDocDataFromSubCollectionById<GuideDBWraper>({
-      collectionName: CLT.newtasks,
+    const { guides } = await getDocDataFromSubCollectionById<GuideDBWraper>({
+      collectionName: CLT.units,
       id: courseid,
       subCollectionName: CLT.chapters,
-      subId: D.TEXT_BOOK_TASKS_ID,
+      subId: D.TEXT_BOOK_DOC_ID,
     });
-    const unlockedTheory = tasks?.tasks.filter((task: GuideDB) =>
-      completed.includes(task.chapterparentid),
+    const unlockedTheory = guides.filter((guide: GuideDB) =>
+      completed.includes(guide.chapterparentid),
     );
-    if (!tasks) {
+    if (!guides) {
       return [];
     }
     return unlockedTheory;
@@ -531,7 +544,7 @@ export const getTextBookTasks = async ({
 export const getAllCourseTasks = async (courseid: string) => {
   try {
     const allTasks = await getDocDataFromSubCollectionById<TaskDBWraper>({
-      collectionName: CLT.newtasks,
+      collectionName: CLT.units,
       id: courseid,
       subCollectionName: CLT.chapters,
       subId: D.ALLTASKS_DOC_ID,

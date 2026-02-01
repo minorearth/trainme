@@ -1,4 +1,4 @@
-import { ChampDB, ChampuserDB, TaskDB, TasksLogDB, CourseChapterObjDB, EdgeDB, FlowDB, NodeDB, GroupArr, GroupUserDBAttrs, UserMetaDB, UsersMetaReportDB, completedChapters, GuideDB, Task } from "../../T";
+import { ChampDB, ChampuserDB, TaskDB, TasksLogDB, CourseChapterObjDB, EdgeDB, FlowDB, NodeDB, GroupArr, GroupUserDBAttrs, UserMetaDB, UsersMetaReportDB, completedChapters, GuideDB, Task, UnitDB } from "../../T";
 export declare const updateChampPoints: ({ pts, champid, userid, }: {
     pts: number;
     champid: string;
@@ -38,14 +38,14 @@ export declare const uploadCourseChapters: ({ nodes, edges, courseid, }: {
     edges: EdgeDB[];
     courseid: string;
 }) => Promise<void>;
-export declare const uploadAllCourseTasksView: ({ courseid, allTasksAndGuidesWithLevels, }: {
+export declare const uploadAllCourseTasksView: ({ courseid, allUnitsWithLevels, }: {
     courseid: string;
-    allTasksAndGuidesWithLevels: TaskDB[];
+    allUnitsWithLevels: UnitDB[];
 }) => Promise<void>;
-export declare const uploadChapterTasks: ({ courseid, chapterid, chapterTasks, }: {
+export declare const uploadChapterUnits: ({ courseid, chapterid, chapterUnits, }: {
     courseid: string;
     chapterid: string;
-    chapterTasks: TaskDB[];
+    chapterUnits: UnitDB[];
 }) => Promise<void>;
 export declare const uploadCourseChaptersObject: (chapterCourseObjectModel: CourseChapterObjDB) => Promise<void>;
 export declare const getFlowDB: ({ courseid }: {
@@ -91,8 +91,8 @@ export declare const getAllTasksDataObj: (courseid: string) => Promise<import(".
 export declare const getAllTasksFromChapter: ({ chapterid, courseid, }: {
     chapterid: string;
     courseid: string;
-}) => Promise<import("../../T").UnitDB[]>;
-export declare const getTextBookTasks: ({ completed, courseid, }: {
+}) => Promise<UnitDB[]>;
+export declare const getTextBookGuides: ({ completed, courseid, }: {
     completed: completedChapters;
     courseid: string;
 }) => Promise<GuideDB[]>;

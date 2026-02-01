@@ -1,20 +1,10 @@
-import {
-  makeObservable,
-  makeAutoObservable,
-  autorun,
-  toJS,
-  reaction,
-  runInAction,
-} from "mobx";
+import { makeAutoObservable, toJS, reaction, runInAction } from "mobx";
 
 //themes
 import {
   monacoDarktheme,
   monacoLighttheme,
 } from "@/components/unitset/unitrun/components/BottomPanel/editor/monaco/themesetter";
-
-//tpconst
-import dynamic from "next/dynamic";
 
 interface HandleEditorDidMount {
   editor: editor.IStandaloneCodeEditor | null;
@@ -51,12 +41,14 @@ import { runPythonCode } from "@/components/pyodide/pythonRunner";
 import themeSwitchStore from "@/components/common/themeswitch/themeSwitchStore";
 
 interface Editors {
+  defaultcode: string; //to refresh
   code: string;
-  defaultcode: string;
-  inv: string[];
-  outv: string[];
+
+  inv: string[]; //to refresh
   input: string;
+
   output: string;
+
   unittype: string;
   monacoRef: React.RefObject<Monaco | null>;
   editorRef: React.RefObject<editor.IStandaloneCodeEditor | null>;
@@ -78,6 +70,148 @@ class unitstore {
     checkTaskAction,
     preCheckTaskAction,
   };
+
+  setCurrUnit(unit: Unit) {
+    this.currUnit = unit;
+    if (unit.unittype == "guide") {
+      this.editors = (unit as Guide).parts.map((part) => ({
+        code: part.part,
+        defaultcode: part.part,
+        unittype: unit.unittype,
+        input: part.inout[0].inv.join("\n"),
+        output: "",
+        inv: part.inout[0].inv,
+        executing: false,
+        editordisabled: false,
+        errorMessage: "",
+        info: "",
+      })) as Editors[];
+    } else {
+      this.editors = [
+        {
+          code: unit.defaultcode,
+          defaultcode: unit.defaultcode,
+          unittype: unit.unittype,
+          input: unit.inout[0].inv.join("\n"),
+          output: "",
+          inv: unit.inout[0].inv,
+        },
+      ] as Editors[];
+    }
+  }
+
+  eraseState() {
+    this.currUnit = UNIT_DEFAULTS;
+  }
+
+  //common
+  setOutput = (monacoid: number, value: string) => {
+    this.editors[monacoid].output = value;
+  };
+
+  refreshInput = (monacoid: number) => {
+    this.editors[monacoid].input = this.editors[monacoid].inv.join("\n");
+  };
+
+  setExecuting(monacoid: number, executing: boolean) {
+    this.editors[monacoid].executing = executing;
+  }
+
+  setEditorCode = (monacoid: number) => {
+    this.editors[monacoid].editorRef.current?.setValue(
+      this.editors[monacoid].code,
+    );
+    this.editors[monacoid].unittype == TT.guide
+      ? this.editors[monacoid].editorRef.current?.updateOptions({
+          lineNumbers: "off",
+        })
+      : this.editors[monacoid].editorRef.current?.updateOptions({
+          lineNumbers: "on",
+        });
+  };
+
+  runCode = async (monacoid: number) => {
+    if (this.editors[monacoid].executing) return;
+    this.setExecuting(monacoid, true);
+    const { outputTxt } = await runPythonCode({
+      code: this.currUnit.filedata + this.editors[monacoid].code,
+      stdIn: this.editors[monacoid].input,
+    });
+    this.setOutput(monacoid, outputTxt);
+    this.setExecuting(monacoid, false);
+  };
+
+  refreshEditor = (monacoid: number) => {
+    this.editors[monacoid].editorRef.current?.setValue(
+      (this.editors[monacoid].code = this.editors[monacoid].defaultcode),
+    );
+  };
+
+  handleChangeMonacoContent = (
+    value: string,
+    monacoid: number,
+    errorHandler: () => void,
+  ) => {
+    errorHandler();
+    this.editors[monacoid].code = value;
+  };
+
+  handleEditorDidMount({
+    editor,
+    monaco,
+    monacoid,
+    containerRef,
+  }: HandleEditorDidMount) {
+    this.editors[monacoid].monacoRef = React.createRef();
+    this.editors[monacoid].editorRef = React.createRef();
+    this.editors[monacoid].monacoRef.current = monaco;
+    this.editors[monacoid].editorRef.current = editor;
+    this.setEditorCode(monacoid);
+    this.defineTheme(monaco);
+    this.setDarkTheme(monaco, themeSwitchStore.darkmode);
+
+    if (editor) {
+      editor.layout({
+        width: containerRef?.current?.clientWidth ?? 0,
+        height: 300,
+      });
+      editor.onDidContentSizeChange((e) => {
+        const newHeight = e.contentHeight;
+        editor.layout({
+          width: containerRef?.current?.clientWidth ?? 0,
+          height: newHeight,
+        });
+      });
+    }
+  }
+
+  defineTheme(monaco: Monaco | null) {
+    monaco?.editor.defineTheme(
+      "dark",
+      monacoDarktheme as editor.IStandaloneThemeData,
+    );
+    monaco?.editor.defineTheme(
+      "light",
+      monacoLighttheme as editor.IStandaloneThemeData,
+    );
+  }
+
+  setDarkTheme = (monaco: Monaco | null, darkmode: boolean) => {
+    if (darkmode) {
+      monaco?.editor.setTheme("dark");
+    } else {
+      monaco?.editor.setTheme("light");
+    }
+  };
+
+  // task related
+  setRightCode_admin(value: string) {
+    this.editors[0].editorRef.current?.setValue(value);
+  }
+
+  setForbiddenCode_admin(value: string) {
+    this.editors[0].editorRef.current?.setValue(value);
+  }
 
   errorHandler = () => {
     if (this.editors[0].editorRef.current) {
@@ -124,150 +258,6 @@ class unitstore {
     this.editors[0].editorRef.current?.updateOptions({ lineNumbers: "on" });
     this.editors[0].editorRef.current?.updateOptions({ readOnly: false });
   }
-
-  setOutput = (monacoid: number, value: string) => {
-    this.editors[monacoid].output = value;
-  };
-
-  setRightCode_admin(value: string) {
-    this.editors[0].editorRef.current?.setValue(value);
-  }
-
-  setForbiddenCode_admin(value: string) {
-    this.editors[0].editorRef.current?.setValue(value);
-  }
-
-  refreshInput = (monacoid: number) => {
-    this.editors[monacoid].input = this.editors[monacoid].inv.join("\n");
-  };
-
-  setExecuting(monacoid: number, executing: boolean) {
-    this.editors[monacoid].executing = executing;
-  }
-
-  setEditorCode = (monacoid: number) => {
-    this.editors[monacoid].editorRef.current?.setValue(
-      this.editors[monacoid].code,
-    );
-    this.editors[monacoid].unittype == TT.guide
-      ? this.editors[monacoid].editorRef.current?.updateOptions({
-          lineNumbers: "off",
-        })
-      : this.editors[monacoid].editorRef.current?.updateOptions({
-          lineNumbers: "on",
-        });
-  };
-
-  runCode = async (monacoid: number) => {
-    if (this.editors[monacoid].executing) return;
-    this.setExecuting(monacoid, true);
-    const { outputTxt } = await runPythonCode({
-      code: this.currUnit.filedata + this.editors[monacoid].code,
-      stdIn: this.editors[monacoid].input,
-    });
-    this.setOutput(monacoid, outputTxt);
-    this.setExecuting(monacoid, false);
-  };
-
-  refreshEditor = (monacoid: number) => {
-    this.editors[monacoid].editorRef.current?.setValue(
-      (this.editors[monacoid].code = this.editors[monacoid].defaultcode),
-    );
-  };
-
-  setCurrUnit(unit: Unit) {
-    this.currUnit = unit;
-    if (unit.unittype == "guide") {
-      this.editors = (unit as Guide).parts.map((part) => ({
-        code: part.part,
-        defaultcode: part.part,
-        unittype: unit.unittype,
-        outv: [""],
-        input: part.inout[0].inv.join("\n"),
-        output: "",
-        inv: part.inout[0].inv,
-        executing: false,
-        editordisabled: false,
-        errorMessage: "",
-        info: "",
-      })) as Editors[];
-    } else {
-      this.editors = [
-        {
-          code: unit.defaultcode,
-          defaultcode: unit.defaultcode,
-          unittype: unit.unittype,
-          outv: unit.inout[0].outv,
-          input: unit.inout[0].inv.join("\n"),
-          output: "",
-          inv: unit.inout[0].inv,
-        },
-      ] as Editors[];
-    }
-  }
-
-  eraseState() {
-    this.currUnit = UNIT_DEFAULTS;
-  }
-
-  handleChangeMonacoContent = (
-    value: string,
-    monacoid: number,
-    errorHandler: () => void,
-  ) => {
-    errorHandler();
-    this.editors[monacoid].code = value;
-    // this.code = value;
-  };
-
-  handleEditorDidMount({
-    editor,
-    monaco,
-    monacoid,
-    containerRef,
-  }: HandleEditorDidMount) {
-    // this.filedata = task.editors[monacoid].filedata;
-    this.editors[monacoid].monacoRef = React.createRef();
-    this.editors[monacoid].editorRef = React.createRef();
-    this.editors[monacoid].monacoRef.current = monaco;
-    this.editors[monacoid].editorRef.current = editor;
-    this.setEditorCode(monacoid);
-    this.defineTheme(monaco);
-    this.setDarkTheme(monaco, themeSwitchStore.darkmode);
-
-    if (editor) {
-      editor.layout({
-        width: containerRef?.current?.clientWidth ?? 0,
-        height: 300,
-      });
-      editor.onDidContentSizeChange((e) => {
-        const newHeight = e.contentHeight;
-        editor.layout({
-          width: containerRef?.current?.clientWidth ?? 0,
-          height: newHeight,
-        });
-      });
-    }
-  }
-
-  defineTheme(monaco: Monaco | null) {
-    monaco?.editor.defineTheme(
-      "dark",
-      monacoDarktheme as editor.IStandaloneThemeData,
-    );
-    monaco?.editor.defineTheme(
-      "light",
-      monacoLighttheme as editor.IStandaloneThemeData,
-    );
-  }
-
-  setDarkTheme = (monaco: Monaco | null, darkmode: boolean) => {
-    if (darkmode) {
-      monaco?.editor.setTheme("dark");
-    } else {
-      monaco?.editor.setTheme("light");
-    }
-  };
 
   constructor() {
     makeAutoObservable(this);

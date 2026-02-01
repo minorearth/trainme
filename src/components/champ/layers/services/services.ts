@@ -27,7 +27,7 @@ import splash from "@/components/common/splash/store";
 import {
   CHAPTER_DEFAULTS,
   COURSE_DEFAULTS,
-  TASKSET_DEFAULTS,
+  UNITSET_DEFAULTS,
 } from "@/tpconst/src/typesdefaults";
 import { ChampDB } from "@/tpconst/src/T";
 import { CS, PS, TSM } from "@/tpconst/src/const";
@@ -114,7 +114,7 @@ const launchChamp = () => {
   try {
     navigator.actions.openLessonStartPage({
       champData: { champid: champ.champid },
-      tasksetData: { ...TASKSET_DEFAULTS, tasksetmode: TSM.champ },
+      unitsetData: { ...UNITSET_DEFAULTS, unitsetmode: TSM.champ },
       courseData: COURSE_DEFAULTS,
       chapterData: CHAPTER_DEFAULTS,
     });

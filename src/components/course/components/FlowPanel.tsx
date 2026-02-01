@@ -31,7 +31,7 @@ import {
   CHAMP_DEFAULTS,
   CHAMPUSER_DEFAULTS,
   CHAPTER_DEFAULTS,
-  TASKSET_DEFAULTS,
+  UNITSET_DEFAULTS,
 } from "@/tpconst/src/typesdefaults";
 import { TSM } from "@/tpconst/src/const";
 
@@ -80,9 +80,9 @@ const FlowPanel = observer(() => {
               sx={{ fontSize: ICON_SIZE }}
               onClick={async () => {
                 navigator.actions.openLessonStartPage({
-                  tasksetData: {
-                    ...TASKSET_DEFAULTS,
-                    tasksetmode: TSM.textbook,
+                  unitsetData: {
+                    ...UNITSET_DEFAULTS,
+                    unitsetmode: TSM.textbook,
                   },
                   chapterData: CHAPTER_DEFAULTS,
                   champData: CHAMP_DEFAULTS,

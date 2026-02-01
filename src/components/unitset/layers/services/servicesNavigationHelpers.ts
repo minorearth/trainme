@@ -30,28 +30,28 @@ export const setTaskLog = ({
 
 export const setRecapTasks = ({
   recapTasksIds,
-  tasks,
+  units,
 }: {
   recapTasksIds: number[];
-  tasks: Unit[];
+  units: Unit[];
 }) => {
   const recapTasks = getTasksRecap<Unit>({
     recapTasksIds,
-    tasks,
+    units,
   });
-  unitset.setTaskSetTasks({ tasks: recapTasks });
+  unitset.setUnitSetUnits({ units: recapTasks });
   unit.setCurrUnit(recapTasks[0]);
-  unitset.setTaskSetStateP({
+  unitset.setUnitSetStateP({
     ...unitset.state,
-    taskstage: TS.recap,
-    currTaskId: 0,
+    unitsetstage: TS.recap,
+    currUnitId: 0,
   });
 };
 
 export const setTaskNumErrorFixed = (error: boolean) => {
   const fixed = unitset.state.fixed;
-  if (unitset.state.taskstage == TS.recap && !error) return fixed + 1;
-  if (unitset.state.taskstage == TS.recap && error) return fixed;
+  if (unitset.state.unitsetstage == TS.recap && !error) return fixed + 1;
+  if (unitset.state.unitsetstage == TS.recap && error) return fixed;
   return fixed;
 };
 
@@ -60,45 +60,45 @@ export const ok = (action = () => {}) => {
 };
 
 export const calcEarned = (error: boolean) => {
-  const { tasksetmode, pts = 0, taskstage } = unitset.state;
+  const { unitsetmode, pts = 0, unitsetstage } = unitset.state;
   const { completed, overflow, remainsum } = chapter.state;
   let income = 0;
   if (overflow) {
     return pts;
   }
   if (!error) {
-    if (taskstage == TS.WIP && !completed && tasksetmode != TSM.exam) {
+    if (unitsetstage == TS.WIP && !completed && unitsetmode != TSM.exam) {
       income = 10;
     }
-    if (taskstage == TS.WIP && !completed && tasksetmode == TSM.exam) {
+    if (unitsetstage == TS.WIP && !completed && unitsetmode == TSM.exam) {
       income = 2;
     }
-    if (taskstage == TS.WIP && completed && tasksetmode != TSM.exam) {
+    if (unitsetstage == TS.WIP && completed && unitsetmode != TSM.exam) {
       income = 2;
     }
-    if (taskstage == TS.WIP && completed && tasksetmode == TSM.exam) {
+    if (unitsetstage == TS.WIP && completed && unitsetmode == TSM.exam) {
       income = 1;
     }
 
-    if (taskstage == TS.recap && !completed && tasksetmode != TSM.exam) {
+    if (unitsetstage == TS.recap && !completed && unitsetmode != TSM.exam) {
       income = 2;
     }
 
-    if (taskstage == TS.recap && !completed && tasksetmode == TSM.exam) {
+    if (unitsetstage == TS.recap && !completed && unitsetmode == TSM.exam) {
       income = 1;
     }
 
-    if (taskstage == TS.recap && completed) {
+    if (unitsetstage == TS.recap && completed) {
       income = 1;
     }
     if (
-      tasksetmode == TSM.addhoc ||
-      tasksetmode == TSM.newtopic ||
-      tasksetmode == TSM.exam
+      unitsetmode == TSM.addhoc ||
+      unitsetmode == TSM.newtopic ||
+      unitsetmode == TSM.exam
     ) {
       return Math.min(pts + income, remainsum);
     }
-    if (tasksetmode == TSM.champ) {
+    if (unitsetmode == TSM.champ) {
       return pts + income;
     } else return 0;
   } else {

@@ -5,13 +5,13 @@ import {
   openAndRefreshFlowPage,
   openCourseFlowPageFromMain,
   openLessonStartPage,
-  openTaskSetPage,
+  openUnitSetPage,
   openCongratPage,
   closeCongratPage,
   openTutorial,
   openLoginPageSignOut,
   openChampPage,
-  interruptTaskSet,
+  interruptUnitSet,
 } from "@/components/Navigator/layers/services/services";
 import splash from "@/components/common/splash/store";
 import { NavigatorStatePersisted } from "@/tpconst/src/T";
@@ -23,13 +23,13 @@ class navigator {
     openAndRefreshFlowPage,
     openCourseFlowPageFromMain,
     openLessonStartPage,
-    openTaskSetPage,
+    openUnitSetPage,
     openCongratPage,
     closeCongratPage,
     openTutorial,
     openLoginPageSignOut,
     openChampPage,
-    interruptTaskSet,
+    interruptUnitSet,
   };
   state: NavigatorStatePersisted = { page: PG.courses };
   dataloaded = false;

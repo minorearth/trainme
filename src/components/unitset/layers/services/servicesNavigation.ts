@@ -23,7 +23,7 @@ import { dialogs } from "@/components/common/dialog/dialogMacro";
 import { L } from "@/tpconst/src/lang";
 import { E_CODES } from "@/tpconst/src/errorHandlers";
 
-export const nextTaskOrCompleteTestRun = async ({
+export const nextUnitOrCompleteUnitsRun = async ({
   error,
   errorMsg = "",
   code,
@@ -35,43 +35,43 @@ export const nextTaskOrCompleteTestRun = async ({
   const pts = calcEarned(error);
   const tasklog = setTaskLog({ error, code });
   const fixed = setTaskNumErrorFixed(error);
-  const { taskstage, tasksetmode } = unitset.state;
-  unitset.setTaskSetStateP({ ...unitset.state, fixed, tasklog, pts });
-  const tasknum = unitset.tasks.length;
+  const { unitsetstage, unitsetmode } = unitset.state;
+  unitset.setUnitSetStateP({ ...unitset.state, fixed, tasklog, pts });
+  const unitnum = unitset.units.length;
   const recapTaskNum = unitset.state.recapTasksIds?.length;
-  const currTaskId = unitset.state.currTaskId;
+  const currUnitId = unitset.state.currUnitId;
 
   switch (true) {
     case !error:
-      if (tasksetmode == TSM.champ)
+      if (unitsetmode == TSM.champ)
         //In order to save champ points on every task execution
         await updateChampPoints({
           pts,
           champid: champ.champid,
           userid: user.userid,
         });
-      if (currTaskId != tasknum - 1) {
+      if (currUnitId != unitnum - 1) {
         ok();
-        unitset.nextTask();
+        unitset.nextUnit();
         return;
       }
-      if (currTaskId == tasknum - 1) {
-        if (taskstage == TS.recap) {
+      if (currUnitId == unitnum - 1) {
+        if (unitsetstage == TS.recap) {
           ok(() =>
             navigator.actions.openCongratPage({
               success: recapTaskNum == fixed ? ST.success : ST.fail,
             }),
           );
         }
-        if (recapTaskNum == 0 && taskstage == TS.WIP) {
+        if (recapTaskNum == 0 && unitsetstage == TS.WIP) {
           ok(() =>
             navigator.actions.openCongratPage({
               success: ST.success,
             }),
           );
         }
-        if (recapTaskNum != 0 && taskstage == TS.WIP) {
-          unitset.state.tasksetmode == TSM.exam
+        if (recapTaskNum != 0 && unitsetstage == TS.WIP) {
+          unitset.state.unitsetmode == TSM.exam
             ? ok(() =>
                 navigator.actions.openCongratPage({
                   success: ST.fail,
@@ -80,7 +80,7 @@ export const nextTaskOrCompleteTestRun = async ({
             : ok(() =>
                 setRecapTasks({
                   recapTasksIds: unitset.state.recapTasksIds,
-                  tasks: unitset.tasks,
+                  units: unitset.units,
                 }),
               );
         }
@@ -88,25 +88,25 @@ export const nextTaskOrCompleteTestRun = async ({
       return;
     case error:
       unit.showRightCodeAfterError({ errorMsg });
-      if (taskstage == TS.WIP && currTaskId != tasknum - 1) {
+      if (unitsetstage == TS.WIP && currUnitId != unitnum - 1) {
         unitset.addErrorTaskToRecap({
           data: {},
-          cspcurrtask: currTaskId + 1,
+          cspcurrtask: currUnitId + 1,
         });
       }
-      if (taskstage == TS.recap && currTaskId != tasknum - 1) {
-        unitset.setCurrTaskCSPOnly(currTaskId + 1);
+      if (unitsetstage == TS.recap && currUnitId != unitnum - 1) {
+        unitset.setCurrUnitCSPOnly(currUnitId + 1);
       }
-      if (taskstage == TS.WIP && currTaskId == tasknum - 1) {
+      if (unitsetstage == TS.WIP && currUnitId == unitnum - 1) {
         unitset.addErrorTaskToRecap({
-          data: { taskstage: TS.recapSuspended },
+          data: { unitsetstage: TS.recapSuspended },
           cspcurrtask: 0,
         });
       }
-      if (taskstage == TS.recap && currTaskId == tasknum - 1) {
-        unitset.setTaskSetStateP({
+      if (unitsetstage == TS.recap && currUnitId == unitnum - 1) {
+        unitset.setUnitSetStateP({
           ...unitset.state,
-          taskstage: TS.accomplishedSuspended,
+          unitsetstage: TS.accomplishedSuspended,
         });
       }
       return;
@@ -123,16 +123,16 @@ export const errorCountDownPressed = async () => {
   countdownbutton.hideButton();
   unit.hideInfo();
   // task.actions.setEditorDisabled(false);
-  const { tasksetmode, taskstage } = unitset.state;
+  const { unitsetmode, unitsetstage } = unitset.state;
 
-  if (taskstage == TS.accomplishedSuspended) {
+  if (unitsetstage == TS.accomplishedSuspended) {
     navigator.actions.openCongratPage({
       success: ST.fail,
     });
     return;
   }
-  if (taskstage == TS.recapSuspended) {
-    if (tasksetmode == TSM.exam) {
+  if (unitsetstage == TS.recapSuspended) {
+    if (unitsetmode == TSM.exam) {
       navigator.actions.openCongratPage({
         success: ST.fail,
       });
@@ -142,14 +142,14 @@ export const errorCountDownPressed = async () => {
       });
       setRecapTasks({
         recapTasksIds: unitset.state.recapTasksIds,
-        tasks: unitset.tasks,
+        units: unitset.units,
       });
     }
 
     return;
   }
-  if (unitset.state.currTaskId != unitset.tasks.length) {
-    unitset.switchTaskP(unitset.state.currTaskId + 1);
+  if (unitset.state.currUnitId != unitset.units.length) {
+    unitset.switchTaskP(unitset.state.currUnitId + 1);
     return;
   }
 };

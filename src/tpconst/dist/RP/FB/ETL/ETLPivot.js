@@ -25,10 +25,10 @@ const getChaptersData = (chapters) => {
         [chapterid]: { sum: chapters[chapterid].sum },
     }), {});
 };
-const allTasksArrToObj = (units) => {
-    const alltasksObj = units.reduce((acc, unit) => ({
+const allTasksArrToObj = (tasks) => {
+    const alltasksObj = tasks.reduce((acc, task) => ({
         ...acc,
-        [unit.unituuid]: { task: unit.task, unitorder: unit.unitorder },
+        [task.unituuid]: { task: task.task, unitorder: task.unitorder },
     }), {});
     return alltasksObj;
 };

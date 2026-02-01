@@ -4,4 +4,4 @@ export declare const taskLogToDBFormat: ({ courseid, lastcompleted, tasklog, }: 
     lastcompleted: string;
     tasklog: TasksLogDB;
 }) => UserMetaDB;
-//# sourceMappingURL=ETLTaskset.d.ts.map
+//# sourceMappingURL=ETLUnitset.d.ts.map

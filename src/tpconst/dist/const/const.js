@@ -52,7 +52,7 @@ exports.STT = {
     course: "course",
     champ: "champ",
     chapter: "chapter",
-    taskset: "taskset",
+    unitset: "unitset",
     user: "user",
 };
 exports.GetDF = {
@@ -70,8 +70,7 @@ exports.CLT = {
     champ: "champ",
     chapters: "chapters",
     groups: "groups",
-    tasks: "tasks",
-    newtasks: "newtasks",
+    units: "units",
     usermeta: "usermeta",
     views: "views",
     snapshots: "snapshots",

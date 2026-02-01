@@ -4,6 +4,7 @@ import Input from "@mui/material/Input";
 import IconButton from "@mui/material/IconButton";
 import CachedIcon from "@mui/icons-material/Cached";
 import unit from "@/components/unitset/unitrun/layers/store/unit";
+import Box from "@mui/material/Box";
 
 import { observer } from "mobx-react-lite";
 import { L } from "@/tpconst/src/lang";
@@ -23,37 +24,47 @@ const InPanel = observer(({ monacoid }: { monacoid: number }) => {
 
   return (
     <Panel label={L.ru.TR.INPUT_DATA} sx={{ height: "150px" }}>
-      <IconButton
-        aria-label="toggle password visibility"
-        onClick={() => {
-          unit.refreshInput(monacoid);
-        }}
+      <Box
         sx={{
-          position: "absolute",
-          right: "10px",
-          top: "-5px",
-          zIndex: 100,
+          height: "100%",
+          width: "100%",
+          maxHeight: "150px",
+          overflowY: "auto",
+          overflowX: "auto",
         }}
-        edge="end"
-        size="small"
       >
-        <CachedIcon />
-      </IconButton>
+        <IconButton
+          aria-label="toggle password visibility"
+          onClick={() => {
+            unit.refreshInput(monacoid);
+          }}
+          sx={{
+            position: "absolute",
+            right: "10px",
+            top: "-5px",
+            zIndex: 100,
+          }}
+          edge="end"
+          size="small"
+        >
+          <CachedIcon />
+        </IconButton>
 
-      <Input
-        id="standard-multiline-flexible"
-        multiline
-        fullWidth
-        // height="100%"
-        disableUnderline
-        rows={7}
-        onChange={(e) => handleChange(e)}
-        value={unit.editors[monacoid].input}
-        sx={{
-          display: "inline-block",
-          whiteSpace: "pre-wrap",
-        }}
-      />
+        <Input
+          id="standard-multiline-flexible"
+          multiline
+          fullWidth
+          // height="100%"
+          disableUnderline
+          rows={7}
+          onChange={(e) => handleChange(e)}
+          value={unit.editors[monacoid].input}
+          sx={{
+            display: "inline-block",
+            whiteSpace: "pre-wrap",
+          }}
+        />
+      </Box>
     </Panel>
   );
 });

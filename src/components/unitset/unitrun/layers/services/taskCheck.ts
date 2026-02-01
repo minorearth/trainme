@@ -40,13 +40,13 @@ export const checkTaskAction = async () => {
         mustHaveChecked,
         forbiddenChecked,
       });
-      await unitset.actions.nextTaskOrCompleteTestRun({
+      await unitset.actions.nextUnitOrCompleteUnitsRun({
         error: false,
         code: unit.editors[0].code || "",
       });
     } catch (error: unknown) {
       const e = error as Error;
-      await unitset.actions.nextTaskOrCompleteTestRun({
+      await unitset.actions.nextUnitOrCompleteUnitsRun({
         error: true,
         errorMsg: e.cause as string,
         code: unit.editors[0].code || "",

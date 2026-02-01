@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CSP_DEFAULTS = exports.CHAMPUSER_DEFAULTS = exports.USERPROGRESS_DEFAULTS = exports.TASKSET_DEFAULTS = exports.NAVIGATOR_DEFAULTS = exports.COURSE_DEFAULTS = exports.CHAMP_DEFAULTS = exports.CHAPTER_DEFAULTS = exports.UNIT_DEFAULTS = void 0;
+exports.CSP_DEFAULTS = exports.CHAMPUSER_DEFAULTS = exports.USERPROGRESS_DEFAULTS = exports.UNITSET_DEFAULTS = exports.NAVIGATOR_DEFAULTS = exports.COURSE_DEFAULTS = exports.CHAMP_DEFAULTS = exports.CHAPTER_DEFAULTS = exports.UNIT_DEFAULTS = void 0;
 const const_1 = require("../const/const");
 exports.UNIT_DEFAULTS = {
-    taskorder: -1,
+    unitorder: -1,
     defaultcode: "",
-    taskuuid: "",
+    unituuid: "",
     inout: [
         {
             outv: [""],
@@ -49,16 +49,16 @@ exports.COURSE_DEFAULTS = {
 exports.NAVIGATOR_DEFAULTS = {
     page: const_1.PG.courses,
 };
-exports.TASKSET_DEFAULTS = {
-    tasksetmode: const_1.TSM.default,
+exports.UNITSET_DEFAULTS = {
+    unitsetmode: const_1.TSM.default,
     recapTasksIds: [],
-    taskstage: const_1.TS.WIP,
+    unitsetstage: const_1.TS.WIP,
     pts: 0,
     tasklog: {},
     randomsaved: [],
     fixed: 0,
     success: const_1.ST.undefined,
-    currTaskId: -1,
+    currUnitId: -1,
 };
 exports.USERPROGRESS_DEFAULTS = {
     completed: [],
@@ -79,14 +79,7 @@ exports.CSP_DEFAULTS = {
     course: exports.COURSE_DEFAULTS,
     champ: exports.CHAMP_DEFAULTS,
     chapter: exports.CHAPTER_DEFAULTS,
-    taskset: exports.TASKSET_DEFAULTS,
+    unitset: exports.UNITSET_DEFAULTS,
     user: { username: "", progress: exports.USERPROGRESS_DEFAULTS },
 };
-// export const nodeModePages: { [K in TasksetMode]: { page: string } } = {
-//   champ: { page: PG.lessonStarted },
-//   addhoc: { page: PG.lessonStarted },
-//   exam: { page: PG.lessonStarted },
-//   newtopic: { page: PG.lessonStarted },
-//   textbook: { page: PG.lessonStarted },
-// };
 //# sourceMappingURL=typesdefaults.js.map

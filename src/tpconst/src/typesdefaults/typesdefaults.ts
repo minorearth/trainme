@@ -52,16 +52,16 @@ export const NAVIGATOR_DEFAULTS = {
   page: PG.courses,
 };
 
-export const TASKSET_DEFAULTS = {
-  tasksetmode: TSM.default,
+export const UNITSET_DEFAULTS = {
+  unitsetmode: TSM.default,
   recapTasksIds: [],
-  taskstage: TS.WIP,
+  unitsetstage: TS.WIP,
   pts: 0,
   tasklog: {},
   randomsaved: [],
   fixed: 0,
   success: ST.undefined,
-  currTaskId: -1,
+  currUnitId: -1,
 };
 
 export const USERPROGRESS_DEFAULTS = {
@@ -85,14 +85,6 @@ export const CSP_DEFAULTS = {
   course: COURSE_DEFAULTS,
   champ: CHAMP_DEFAULTS,
   chapter: CHAPTER_DEFAULTS,
-  taskset: TASKSET_DEFAULTS,
+  unitset: UNITSET_DEFAULTS,
   user: { username: "", progress: USERPROGRESS_DEFAULTS },
 };
-
-// export const nodeModePages: { [K in TasksetMode]: { page: string } } = {
-//   champ: { page: PG.lessonStarted },
-//   addhoc: { page: PG.lessonStarted },
-//   exam: { page: PG.lessonStarted },
-//   newtopic: { page: PG.lessonStarted },
-//   textbook: { page: PG.lessonStarted },
-// };

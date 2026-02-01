@@ -2,14 +2,13 @@ import { L } from "@/tpconst/src/lang";
 import { fetchFile } from "@/app/api/apicalls/apicalls";
 import { Guide, GuideDBWithFiles, Task, TaskDB, UnitDB } from "@/tpconst/src/T";
 import { TaskDBWithFiles } from "@/tpconst/src/T";
-import { InOutDB } from "@/tpconst/src/T";
 import { TT } from "@/tpconst/src/const";
 import { allregex } from "./allregex";
 
-export const supplyFilesAndTransform = async (tasks: UnitDB[]) => {
-  const tasksWithFiles = await supplyWithFilesData(tasks);
-  const enrichedTasks = supplyWithFriendlyText(tasksWithFiles);
-  return enrichedTasks.sort((a, b) => a.unitorder - b.unitorder);
+export const supplyFilesAndTransform = async (units: UnitDB[]) => {
+  const unitsWithFiles = await supplyWithFilesData(units);
+  const enrichedUnits = supplyTasksWithFriendlyText(unitsWithFiles);
+  return enrichedUnits.sort((a, b) => a.unitorder - b.unitorder);
 };
 
 interface FileNamesAndUrls {
@@ -25,29 +24,29 @@ interface allregex {
 }
 
 //Tranform Data
-const supplyWithFriendlyText = (
-  tasksWithFiles: TaskDBWithFiles[] | GuideDBWithFiles[],
+const supplyTasksWithFriendlyText = (
+  unitsWithFiles: TaskDBWithFiles[] | GuideDBWithFiles[],
 ) => {
-  const enrichedTasks = tasksWithFiles.map((task) => {
-    if (task.unittype == "task") {
-      const t = task as TaskDBWithFiles;
+  const enrichedUnits = unitsWithFiles.map((unit) => {
+    if (unit.unittype == TT.task) {
+      const task = unit as TaskDBWithFiles;
       return {
-        ...t,
+        ...task,
         tasktext:
-          t.task +
+          task.task +
           formatForbidden({
-            forbidden: t.restrictions.forbidden,
-            musthave: t.restrictions.musthave,
-            maxlines: t.restrictions.maxlines,
-            unittype: t.unittype,
+            forbidden: task.restrictions.forbidden,
+            musthave: task.restrictions.musthave,
+            maxlines: task.restrictions.maxlines,
+            unittype: task.unittype,
             allregex,
           }),
       } as Task;
     } else {
-      return task as Guide;
+      return unit as Guide;
     }
   });
-  return enrichedTasks;
+  return enrichedUnits;
 };
 
 const formatForbidden = ({
@@ -91,26 +90,26 @@ const formatForbidden = ({
 
 //Upload files data
 
-const supplyWithFilesData = async (tasks: UnitDB[]) => {
-  const filesAndUrls = extractFileNames({ tasks });
-  const filesAndFileContent = await getTaskFilesData({ filesAndUrls });
-  const { tasksWithFiles } = enrichTaskWithFileLoadCode({
-    tasks,
+const supplyWithFilesData = async (units: UnitDB[]) => {
+  const filesAndUrls = extractFileNames({ units: units });
+  const filesAndFileContent = await getUnitFilesData({ filesAndUrls });
+  const { unitsWithFiles } = enrichUnitWithFileLoadCode({
+    units,
     filesAndFileContent,
   });
-  return tasksWithFiles as GuideDBWithFiles[] | TaskDBWithFiles[];
+  return unitsWithFiles as GuideDBWithFiles[] | TaskDBWithFiles[];
 };
 
-const enrichTaskWithFileLoadCode = ({
-  tasks,
+const enrichUnitWithFileLoadCode = ({
+  units,
   filesAndFileContent,
 }: {
-  tasks: UnitDB[];
+  units: UnitDB[];
   filesAndFileContent: FileNamesAndUrls;
 }) => {
-  const tasksWithFiles = tasks.map((task) => ({
-    ...task,
-    inout: task.inout.map((inouttest) => {
+  const tasksWithFiles = units.map((unit) => ({
+    ...unit,
+    inout: unit.inout.map((inouttest) => {
       const filesdata = getFilesData(inouttest.inv, filesAndFileContent);
       return {
         filesdata,
@@ -118,10 +117,10 @@ const enrichTaskWithFileLoadCode = ({
         inv: inouttest.inv,
       };
     }),
-    filedata: getFilesData(task.inout[0].inv, filesAndFileContent).join("\n"),
+    filedata: getFilesData(unit.inout[0].inv, filesAndFileContent).join("\n"),
   }));
 
-  return { tasksWithFiles };
+  return { unitsWithFiles: tasksWithFiles };
 };
 
 const getFilesData = (inv: string[], filesAndFileContent: FileNamesAndUrls) => {
@@ -136,7 +135,7 @@ const getFilesData = (inv: string[], filesAndFileContent: FileNamesAndUrls) => {
   return filesdata;
 };
 
-const getTaskFilesData = async ({
+const getUnitFilesData = async ({
   filesAndUrls,
 }: {
   filesAndUrls: FileNamesAndUrls;
@@ -154,10 +153,10 @@ const getTaskFilesData = async ({
 
 // "https://hog6lcngzkudsdma.public.blob.vercel-storage.com/a3905595-437e-47f3-b749-28ea5362bd39/d06b8c0d-4837-484a-ad85-9257e0e6af01/" +
 
-const extractFileNames = ({ tasks }: { tasks: UnitDB[] }) => {
+const extractFileNames = ({ units }: { units: UnitDB[] }) => {
   const files: FileNamesAndUrls = {};
-  tasks.forEach((task) => {
-    task.inout.forEach((inout) => {
+  units.forEach((unit) => {
+    unit.inout.forEach((inout) => {
       inout.inv
         .filter((item) => item.includes(".txt"))
         .forEach(

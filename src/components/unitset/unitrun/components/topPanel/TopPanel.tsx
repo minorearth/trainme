@@ -27,6 +27,7 @@ import { L } from "@/tpconst/src/lang";
 import { TSM, TT } from "@/tpconst/src";
 import CountdownButton from "@/components/common/CountdownButton/CountdownButton";
 import { IoArrowForwardCircle } from "react-icons/io5";
+import { IoArrowBackCircle } from "react-icons/io5";
 
 const HEIGHT = "80px";
 const TopPanel = observer(() => {
@@ -51,19 +52,32 @@ const TopPanel = observer(() => {
             name={"sheep"}
           />
           <LinearProgressWithLabel
-            value={((unitset.state.currTaskId + 1) / unitset.tasknum) * 100}
-            label={`${unitset.state.currTaskId + 1}\\${unitset.tasknum}`}
+            value={((unitset.state.currUnitId + 1) / unitset.unitsnum) * 100}
+            label={`${unitset.state.currUnitId + 1}\\${unitset.unitsnum}`}
           />
-          {unitset.state.tasksetmode == TSM.textbook && (
-            <Button
-              onClick={() => {
-                unitset.prevTaskNoPts_admin();
-              }}
-              variant="outlined"
-              disabled={unitset.prevdisabled}
-            >
-              {L.ru.buttons.BACK_CHAMP}
-            </Button>
+          {unitset.state.unitsetmode == TSM.textbook && (
+            <IconButtonNoRipple disabled={unitset.prevdisabled}>
+              <Tooltip title={L.ru.TT.CODE_RUN}>
+                <span style={{ display: "inline-flex", alignItems: "center" }}>
+                  <IoArrowBackCircle
+                    style={{ fontSize: "40px" }}
+                    onClick={() => {
+                      unitset.prevUnitNoPts_admin();
+                    }}
+                  />
+                </span>
+              </Tooltip>
+            </IconButtonNoRipple>
+
+            // <Button
+            //   onClick={() => {
+            //     unitset.prevUnitNoPts_admin();
+            //   }}
+            //   variant="outlined"
+            //   disabled={unitset.prevdisabled}
+            // >
+            //   {L.ru.buttons.BACK_CHAMP}
+            // </Button>
           )}
           {!countdownbutton.state.visible &&
             unit.currUnit.unittype == TT.task && (
@@ -111,21 +125,12 @@ const TopPanel = observer(() => {
                     //   marginRight: "15px",
                     // }}
                     onClick={() => {
-                      unitset.nextTask();
+                      unitset.nextUnit();
                     }}
                   />
                 </span>
               </Tooltip>
             </IconButtonNoRipple>
-            // <Button
-            //   onClick={() => {
-            //     taskset.nextTask();
-            //   }}
-            //   variant="outlined"
-            //   disabled={taskset.nextdisabled}
-            // >
-            //   {L.ru.buttons.PROCEED}
-            // </Button>
           )}
         </Box>
       </Grid>
@@ -168,7 +173,7 @@ const TopPanel = observer(() => {
               <HomeIcon
                 sx={{ fontSize: "40px", marginRight: "15px" }}
                 onClick={() => {
-                  navigator.actions.interruptTaskSet();
+                  navigator.actions.interruptUnitSet();
                 }}
               />
             </Tooltip>

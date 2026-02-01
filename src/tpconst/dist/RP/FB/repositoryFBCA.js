@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createNewUserMeta = exports.getUserMetaDataCA = exports.getAllCourseTasks = exports.getTextBookTasks = exports.getAllTasksFromChapter = exports.getAllTasksDataObj = exports.getUsersMetaObj = exports.getSnapShot = exports.saveSnapshot = exports.addUserToGroup = exports.updateNodeLabelDB = exports.addNewGroupDB = exports.getChaptersObjdata = exports.getGroupsArr = exports.getChapterIds_admin = exports.getFlowDB = exports.uploadCourseChaptersObject = exports.uploadChapterTasks = exports.uploadAllCourseTasksView = exports.uploadCourseChapters = exports.setChampStarted = exports.createNewChamp = exports.getUserChampStatus = exports.updateUserInChamp = exports.subscribeOnChamp = exports.getChampTasksDB = exports.saveChampUserTaskLog = exports.updateChampPoints = void 0;
+exports.createNewUserMeta = exports.getUserMetaDataCA = exports.getAllCourseTasks = exports.getTextBookGuides = exports.getAllTasksFromChapter = exports.getAllTasksDataObj = exports.getUsersMetaObj = exports.getSnapShot = exports.saveSnapshot = exports.addUserToGroup = exports.updateNodeLabelDB = exports.addNewGroupDB = exports.getChaptersObjdata = exports.getGroupsArr = exports.getChapterIds_admin = exports.getFlowDB = exports.uploadCourseChaptersObject = exports.uploadChapterUnits = exports.uploadAllCourseTasksView = exports.uploadCourseChapters = exports.setChampStarted = exports.createNewChamp = exports.getUserChampStatus = exports.updateUserInChamp = exports.subscribeOnChamp = exports.getChampTasksDB = exports.saveChampUserTaskLog = exports.updateChampPoints = void 0;
 const CA_1 = require("../../DB/FB/CA");
 //types
 const const_1 = require("../../const");
@@ -147,16 +147,16 @@ const uploadCourseChapters = async ({ nodes, edges, courseid, }) => {
     }
 };
 exports.uploadCourseChapters = uploadCourseChapters;
-const uploadAllCourseTasksView = async ({ courseid, allTasksAndGuidesWithLevels, }) => {
+const uploadAllCourseTasksView = async ({ courseid, allUnitsWithLevels, }) => {
     try {
-        const allTasksNoGuides = allTasksAndGuidesWithLevels.filter((task) => task.unittype == const_1.TT.task);
+        const allTasksNoGuides = allUnitsWithLevels.filter((task) => task.unittype == const_1.TT.task);
         await (0, CA_1.setDocInCollection)({
-            collectionName: const_1.CLT.newtasks,
+            collectionName: const_1.CLT.units,
             data: {},
             id: courseid,
         });
         await (0, CA_1.setDocInSubCollection)({
-            collectionName: const_1.CLT.newtasks,
+            collectionName: const_1.CLT.units,
             id: courseid,
             subCollectionName: const_1.CLT.chapters,
             subId: fbconfig_1.D.ALLTASKS_DOC_ID,
@@ -170,23 +170,36 @@ const uploadAllCourseTasksView = async ({ courseid, allTasksAndGuidesWithLevels,
     }
 };
 exports.uploadAllCourseTasksView = uploadAllCourseTasksView;
-const uploadChapterTasks = async ({ courseid, chapterid, chapterTasks, }) => {
+const uploadChapterUnits = async ({ courseid, chapterid, chapterUnits, }) => {
     try {
-        await (0, CA_1.setDocInSubCollection)({
-            collectionName: const_1.CLT.newtasks,
-            id: courseid,
-            subCollectionName: const_1.CLT.chapters,
-            subId: chapterid,
-            data: {
-                tasks: chapterTasks,
-            },
-        });
+        if (chapterid == "textbook") {
+            await (0, CA_1.setDocInSubCollection)({
+                collectionName: const_1.CLT.units,
+                id: courseid,
+                subCollectionName: const_1.CLT.chapters,
+                subId: chapterid,
+                data: {
+                    guides: chapterUnits,
+                },
+            });
+        }
+        else {
+            await (0, CA_1.setDocInSubCollection)({
+                collectionName: const_1.CLT.units,
+                id: courseid,
+                subCollectionName: const_1.CLT.chapters,
+                subId: chapterid,
+                data: {
+                    units: chapterUnits,
+                },
+            });
+        }
     }
     catch (error) {
         throw (0, errorHandlers_1.throwInnerError)(error);
     }
 };
-exports.uploadChapterTasks = uploadChapterTasks;
+exports.uploadChapterUnits = uploadChapterUnits;
 const uploadCourseChaptersObject = async (chapterCourseObjectModel) => {
     try {
         await (0, CA_1.setDocInCollection)({
@@ -348,7 +361,7 @@ exports.getUsersMetaObj = getUsersMetaObj;
 const getAllTasksDataObj = async (courseid) => {
     try {
         const allTasks = await (0, CA_1.getDocDataFromSubCollectionById)({
-            collectionName: const_1.CLT.newtasks,
+            collectionName: const_1.CLT.units,
             id: courseid,
             subCollectionName: const_1.CLT.chapters,
             subId: fbconfig_1.D.ALLTASKS_DOC_ID,
@@ -360,32 +373,32 @@ const getAllTasksDataObj = async (courseid) => {
     }
 };
 exports.getAllTasksDataObj = getAllTasksDataObj;
-//taskset
+//unitset
 const getAllTasksFromChapter = async ({ chapterid, courseid, }) => {
     try {
-        const tasks = await (0, CA_1.getDocDataFromSubCollectionById)({
-            collectionName: const_1.CLT.newtasks,
+        const { units } = await (0, CA_1.getDocDataFromSubCollectionById)({
+            collectionName: const_1.CLT.units,
             id: courseid,
             subCollectionName: const_1.CLT.chapters,
             subId: chapterid,
         });
-        return !tasks ? [] : tasks.tasks;
+        return !units ? [] : units;
     }
     catch (error) {
         throw (0, errorHandlers_1.throwInnerError)(error);
     }
 };
 exports.getAllTasksFromChapter = getAllTasksFromChapter;
-const getTextBookTasks = async ({ completed, courseid, }) => {
+const getTextBookGuides = async ({ completed, courseid, }) => {
     try {
-        const tasks = await (0, CA_1.getDocDataFromSubCollectionById)({
-            collectionName: const_1.CLT.newtasks,
+        const { guides } = await (0, CA_1.getDocDataFromSubCollectionById)({
+            collectionName: const_1.CLT.units,
             id: courseid,
             subCollectionName: const_1.CLT.chapters,
-            subId: fbconfig_1.D.TEXT_BOOK_TASKS_ID,
+            subId: fbconfig_1.D.TEXT_BOOK_DOC_ID,
         });
-        const unlockedTheory = tasks?.tasks.filter((task) => completed.includes(task.chapterparentid));
-        if (!tasks) {
+        const unlockedTheory = guides.filter((guide) => completed.includes(guide.chapterparentid));
+        if (!guides) {
             return [];
         }
         return unlockedTheory;
@@ -394,11 +407,11 @@ const getTextBookTasks = async ({ completed, courseid, }) => {
         throw (0, errorHandlers_1.throwInnerError)(error);
     }
 };
-exports.getTextBookTasks = getTextBookTasks;
+exports.getTextBookGuides = getTextBookGuides;
 const getAllCourseTasks = async (courseid) => {
     try {
         const allTasks = await (0, CA_1.getDocDataFromSubCollectionById)({
-            collectionName: const_1.CLT.newtasks,
+            collectionName: const_1.CLT.units,
             id: courseid,
             subCollectionName: const_1.CLT.chapters,
             subId: fbconfig_1.D.ALLTASKS_DOC_ID,

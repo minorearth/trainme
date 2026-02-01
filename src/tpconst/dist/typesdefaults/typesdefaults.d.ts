@@ -1,7 +1,7 @@
 export declare const UNIT_DEFAULTS: {
-    taskorder: number;
+    unitorder: number;
     defaultcode: string;
-    taskuuid: string;
+    unituuid: string;
     inout: {
         outv: string[];
         inv: string[];
@@ -43,16 +43,16 @@ export declare const COURSE_DEFAULTS: {
 export declare const NAVIGATOR_DEFAULTS: {
     page: "courses";
 };
-export declare const TASKSET_DEFAULTS: {
-    tasksetmode: "default";
+export declare const UNITSET_DEFAULTS: {
+    unitsetmode: "default";
     recapTasksIds: never[];
-    taskstage: "WIP";
+    unitsetstage: "WIP";
     pts: number;
     tasklog: {};
     randomsaved: never[];
     fixed: number;
     success: "undefined";
-    currTaskId: number;
+    currUnitId: number;
 };
 export declare const USERPROGRESS_DEFAULTS: {
     completed: never[];
@@ -86,16 +86,16 @@ export declare const CSP_DEFAULTS: {
         completed: boolean;
         overflow: boolean;
     };
-    taskset: {
-        tasksetmode: "default";
+    unitset: {
+        unitsetmode: "default";
         recapTasksIds: never[];
-        taskstage: "WIP";
+        unitsetstage: "WIP";
         pts: number;
         tasklog: {};
         randomsaved: never[];
         fixed: number;
         success: "undefined";
-        currTaskId: number;
+        currUnitId: number;
     };
     user: {
         username: string;

@@ -54,7 +54,7 @@ export declare const STT: {
     readonly course: "course";
     readonly champ: "champ";
     readonly chapter: "chapter";
-    readonly taskset: "taskset";
+    readonly unitset: "unitset";
     readonly user: "user";
 };
 export declare const GetDF: {
@@ -72,8 +72,7 @@ export declare const CLT: {
     readonly champ: "champ";
     readonly chapters: "chapters";
     readonly groups: "groups";
-    readonly tasks: "tasks";
-    readonly newtasks: "newtasks";
+    readonly units: "units";
     readonly usermeta: "usermeta";
     readonly views: "views";
     readonly snapshots: "snapshots";

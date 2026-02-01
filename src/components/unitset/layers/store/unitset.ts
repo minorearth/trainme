@@ -6,116 +6,110 @@ import { updateKeySCP, updateSCP } from "@/db/localstorageDB";
 import { getStarPageIntro } from "@/components/common/dialog/dialogMacro";
 
 import {
-  nextTaskOrCompleteTestRun,
+  nextUnitOrCompleteUnitsRun,
   errorCountDownPressed,
 } from "@/components/unitset/layers/services/servicesNavigation";
 
 import chapter from "@/components/unitset/layers/store/chapter";
-import { TASKSET_DEFAULTS } from "@/tpconst/src/typesdefaults";
-import { Task, TasksetStatePersisted, Unit } from "@/tpconst/src/T";
+import { UNITSET_DEFAULTS } from "@/tpconst/src/typesdefaults";
+import { UnitsetStatePersisted, Unit } from "@/tpconst/src/T";
 import { STT } from "@/tpconst/src/const";
-import { TasksetMode, TasksetStage } from "@/tpconst/src/T";
+import { UnitsetMode, UnitsetStage } from "@/tpconst/src/T";
 
-const DEFAULT_STATE = {
-  tasksetmode: "" as TasksetMode,
-  taskstage: "" as TasksetStage,
-};
-
-class taskset {
-  tasks: Unit[] = [];
-  tasknum: number = -1;
+class unitset {
+  units: Unit[] = [];
+  unitsnum: number = -1;
   nextdisabled: boolean = false;
   prevdisabled: boolean = true;
   actions = {
-    nextTaskOrCompleteTestRun,
+    nextUnitOrCompleteUnitsRun,
     errorCountDownPressed,
   };
-  state: TasksetStatePersisted = TASKSET_DEFAULTS;
+  state: UnitsetStatePersisted = UNITSET_DEFAULTS;
 
   startPageIntro() {
-    const { tasksetmode } = this.state;
+    const { unitsetmode } = this.state;
     const { completed, overflow } = chapter.state;
     this.nextdisabled = false;
 
     return getStarPageIntro({
-      tasksetmode,
+      unitsetmode,
       completed,
       overflow,
     });
   }
 
-  setTaskSetStateP(data: TasksetStatePersisted) {
+  setUnitSetStateP(data: UnitsetStatePersisted) {
     this.state = data;
     updateSCP({
-      taskset: data,
+      unitset: data,
     });
   }
 
-  setTaskSetState(data: TasksetStatePersisted) {
+  setUnitSetState(data: UnitsetStatePersisted) {
     this.state = data;
   }
 
-  eraseTaskSetStateP() {
-    this.state = TASKSET_DEFAULTS;
-    this.tasks = [];
+  eraseUnitSetStateP() {
+    this.state = UNITSET_DEFAULTS;
+    this.units = [];
     updateSCP({
-      taskset: TASKSET_DEFAULTS,
+      unitset: UNITSET_DEFAULTS,
     });
   }
 
-  async setTaskSetTasks({ tasks }: { tasks: Unit[] }) {
+  async setUnitSetUnits({ units }: { units: Unit[] }) {
     runInAction(() => {
-      if (tasks.length != 0) {
-        this.tasks = tasks;
-        this.tasknum = tasks.length;
+      if (units.length != 0) {
+        this.units = units;
+        this.unitsnum = units.length;
       }
     });
   }
 
   switchTaskP = (id: number) => {
-    // task.monaco.editorRef.current?.setValue("");
-    if (id != this.tasks.length) {
-      this.state.currTaskId = id;
-      unit.setCurrUnit(this.tasks[id]);
+    if (id != this.units.length) {
+      this.state.currUnitId = id;
+      unit.setCurrUnit(this.units[id]);
       updateKeySCP(
         {
-          taskset: { currTaskId: id },
+          unitset: { currUnitId: id },
         },
-        STT.taskset,
+        STT.unitset,
       );
     }
   };
 
-  gotoLastTask = () => {
-    this.switchTaskP(this.tasks.length - 1);
+  gotoLastUnit = () => {
+    this.switchTaskP(this.units.length - 1);
   };
 
   setNavButtonsDisabled = () => {
-    this.nextdisabled = this.state.currTaskId >= this.tasknum - 1;
-    this.prevdisabled = this.state.currTaskId <= 0;
+    this.nextdisabled = this.state.currUnitId >= this.unitsnum - 1;
+    this.prevdisabled = this.state.currUnitId <= 0;
   };
 
-  nextTask = () => {
-    this.switchTaskP(this.state.currTaskId + 1);
+  nextUnit = () => {
+    this.switchTaskP(this.state.currUnitId + 1);
     this.setNavButtonsDisabled();
   };
 
-  prevTaskNoPts_admin = () => {
-    this.switchTaskP(this.state.currTaskId - 1);
+  prevUnitNoPts_admin = () => {
+    this.switchTaskP(this.state.currUnitId - 1);
     this.setNavButtonsDisabled();
   };
 
-  nextTaskNoPts_admin = () => {
-    this.switchTaskP(this.state.currTaskId + 1);
+  nextUnitNoPts_admin = () => {
+    this.switchTaskP(this.state.currUnitId + 1);
     this.setNavButtonsDisabled();
   };
 
-  setCurrTaskCSPOnly = (id: number) => {
+  setCurrUnitCSPOnly = (id: number) => {
     updateKeySCP(
       {
-        taskset: { currTaskId: id },
+        unitset: { currUnitId: id },
       },
-      STT.taskset,
+      STT.unitset,
     );
   };
 
@@ -123,16 +117,16 @@ class taskset {
     data,
     cspcurrtask,
   }: {
-    data?: Partial<TasksetStatePersisted>;
+    data?: Partial<UnitsetStatePersisted>;
     cspcurrtask: number;
   }) => {
     const datastate = {
       ...this.state,
       ...data,
-      recapTasksIds: [...this.state.recapTasksIds, this.state.currTaskId],
+      recapTasksIds: [...this.state.recapTasksIds, this.state.currUnitId],
     };
-    this.setTaskSetState(datastate);
-    updateSCP({ taskset: { ...datastate, currTaskId: cspcurrtask } });
+    this.setUnitSetState(datastate);
+    updateSCP({ unitset: { ...datastate, currUnitId: cspcurrtask } });
     // this.setCurrTaskCSPOnly();
   };
 
@@ -141,5 +135,5 @@ class taskset {
   }
 }
 
-const intsance = new taskset();
+const intsance = new unitset();
 export default intsance;

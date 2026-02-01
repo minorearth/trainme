@@ -13,7 +13,7 @@ import { PG } from "@/tpconst/src/const";
 
 export const setChampPageState = () => {
   course.eraseStateP();
-  unitset.eraseTaskSetStateP();
+  unitset.eraseUnitSetStateP();
   unit.eraseState();
   chapter.eraseStateP();
   navigator.setStateP({ page: PG.champ });
@@ -28,7 +28,7 @@ export const setFlowPageState = ({
 }) => {
   course.setStateP({ ...course.state, courseid });
   navigator.setStateP({ page: PG.flow });
-  unitset.eraseTaskSetStateP();
+  unitset.eraseUnitSetStateP();
   unit.eraseState();
   chapter.eraseStateP();
   user.setProgressP(progress);
@@ -38,7 +38,7 @@ export const setAllCoursePageState = () => {
   navigator.setStateP({ page: PG.courses });
   course.eraseStateP();
   champ.eraseStateP();
-  unitset.eraseTaskSetStateP();
+  unitset.eraseUnitSetStateP();
   chapter.eraseStateP();
   unit.eraseState();
 };

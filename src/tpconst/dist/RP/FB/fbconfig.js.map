@@ -1,1 +1,1 @@
-{"version":3,"file":"fbconfig.js","sourceRoot":"","sources":["../../../src/RP/FB/fbconfig.ts"],"names":[],"mappings":";;;AAAa,QAAA,CAAC,GAAG;IACf,sBAAsB,EAAE,sCAAsC;IAC9D,eAAe,EAAE,UAAU;IAC3B,kBAAkB,EAAE,UAAU;IAC9B,mBAAmB,EAAE,gBAAgB;CACtC,CAAC"}
+{"version":3,"file":"fbconfig.js","sourceRoot":"","sources":["../../../src/RP/FB/fbconfig.ts"],"names":[],"mappings":";;;AAAa,QAAA,CAAC,GAAG;IACf,sBAAsB,EAAE,sCAAsC;IAC9D,eAAe,EAAE,UAAU;IAC3B,gBAAgB,EAAE,UAAU;IAC5B,mBAAmB,EAAE,gBAAgB;CACtC,CAAC"}

@@ -9,12 +9,12 @@ import { E_CODES, throwErrorValue } from "@/tpconst/src/errorHandlers";
 
 export const getTasksRecap = <T>({
   recapTasksIds,
-  tasks,
+  units,
 }: {
   recapTasksIds: number[];
-  tasks: T[];
+  units: T[];
 }): T[] => {
-  const filteredTasks: T[] = tasks.filter((_: T, id: number) =>
+  const filteredTasks: T[] = units.filter((_: T, id: number) =>
     recapTasksIds.includes(id),
   );
   return filteredTasks;

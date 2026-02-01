@@ -1,5 +1,5 @@
 import { Champstatus, CourseType, NodeModes, Persstatus } from "./typesBasic";
-import { ChampStatePersisted, ChapterStatePersisted, CourseStatePersisted, NavigatorStatePersisted, TasksetStatePersisted, UserStatePersisted } from "./typesState";
+import { ChampStatePersisted, ChapterStatePersisted, CourseStatePersisted, NavigatorStatePersisted, UnitsetStatePersisted, UserStatePersisted } from "./typesState";
 import { RawGuideToUpload, RawTaskToUploadWithoutLevel } from "./typesUpload";
 import { CLT } from "../const/const";
 export type Subcollection = {};
@@ -19,7 +19,7 @@ export interface SubCollectionWrite<T> extends CollectionWrite<T> {
     subCollectionName: CollectonsTypes;
 }
 export type CollectonsTypes = (typeof CLT)[keyof typeof CLT];
-export type DBFormats = CoursesDBObj | UnitDBWraper | FlowDB | ChampDB | UserMetaDB | GroupDB | UsersMetaReportDB | CourseChapterObjDB | TaskDBWraper;
+export type DBFormats = CoursesDBObj | UnitDBWraper | FlowDB | ChampDB | UserMetaDB | GroupDB | UsersMetaReportDB | CourseChapterObjDB | TaskDBWraper | GuideDBWraper;
 export type FlowDB = {
     nodes: NodeDB[];
     edges: EdgeDB[];
@@ -52,10 +52,10 @@ export interface EdgeDB {
     source: string;
 }
 export interface UnitDBWraper {
-    tasks: UnitDB[];
+    units: UnitDB[];
 }
 export interface GuideDBWraper {
-    tasks: GuideDB[];
+    guides: GuideDB[];
 }
 export interface TaskDBWraper {
     tasks: TaskDB[];
@@ -127,7 +127,7 @@ export interface CSP {
     course: CourseStatePersisted;
     champ: ChampStatePersisted;
     chapter: ChapterStatePersisted;
-    taskset: TasksetStatePersisted;
+    unitset: UnitsetStatePersisted;
     user: UserStatePersisted;
 }
 export interface CoursesDBObj {

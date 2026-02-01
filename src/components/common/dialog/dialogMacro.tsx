@@ -1,6 +1,6 @@
 import alertdialog from "@/components/common/dialog/store";
 import { L } from "@/tpconst/src/lang";
-import { TasksetMode } from "@/tpconst/src/T";
+import { UnitsetMode } from "@/tpconst/src/T";
 import { TSM } from "@/tpconst/src/const";
 
 export const dialogs: { [dialogtype: string]: (...params: any) => void } = {
@@ -54,35 +54,35 @@ export const dialogs: { [dialogtype: string]: (...params: any) => void } = {
       text,
       2,
       () => action(),
-      () => {}
+      () => {},
     );
   },
 };
 
-export const getTaskSetInterruptedInfo = ({
+export const getUnitSetInterruptedInfo = ({
   completed,
-  tasksetmode,
+  unitsetmode,
 }: {
   completed: boolean;
-  tasksetmode: TasksetMode;
+  unitsetmode: UnitsetMode;
 }) => {
   let caption, text;
   if (
-    tasksetmode == TSM.exam ||
-    tasksetmode == TSM.addhoc ||
-    tasksetmode == TSM.newtopic
+    unitsetmode == TSM.exam ||
+    unitsetmode == TSM.addhoc ||
+    unitsetmode == TSM.newtopic
   ) {
     caption = L.ru.INTERRUPT.INTERRUPT_CAPTION;
   }
 
   if (
-    (tasksetmode == TSM.newtopic || tasksetmode == TSM.addhoc) &&
+    (unitsetmode == TSM.newtopic || unitsetmode == TSM.addhoc) &&
     !completed
   ) {
     text = L.ru.INTERRUPT.INTERRUPT_TEXT1;
   }
 
-  if (tasksetmode == TSM.exam && !completed) {
+  if (unitsetmode == TSM.exam && !completed) {
     text = L.ru.INTERRUPT.INTERRUPT_TEXT2;
   }
 
@@ -90,7 +90,7 @@ export const getTaskSetInterruptedInfo = ({
     text = L.ru.INTERRUPT.INTERRUPT_TEXT3;
   }
 
-  if (tasksetmode == TSM.champ) {
+  if (unitsetmode == TSM.champ) {
     caption = L.ru.INTERRUPT.INTERRUPT_CHAMP_CAPTION;
     text = L.ru.INTERRUPT.INTERRUPT_CHAMP_TEXT;
   }
@@ -99,25 +99,25 @@ export const getTaskSetInterruptedInfo = ({
 };
 
 export const getStarPageIntro = ({
-  tasksetmode,
+  unitsetmode,
   completed,
   overflow,
 }: {
-  tasksetmode: TasksetMode;
+  unitsetmode: UnitsetMode;
   completed: boolean;
   overflow: boolean;
 }) => {
-  if (tasksetmode == TSM.textbook) {
+  if (unitsetmode == TSM.textbook) {
     return L.ru.SPG.INTRO1;
   }
 
-  if (tasksetmode == TSM.champ) {
+  if (unitsetmode == TSM.champ) {
     return L.ru.SPG.INTRO2;
   }
 
-  if (tasksetmode == TSM.exam) return L.ru.SPG.INTRO3;
+  if (unitsetmode == TSM.exam) return L.ru.SPG.INTRO3;
 
-  if (tasksetmode == TSM.addhoc || tasksetmode == TSM.newtopic) {
+  if (unitsetmode == TSM.addhoc || unitsetmode == TSM.newtopic) {
     if (!completed) {
       return L.ru.SPG.INTRO4;
     }

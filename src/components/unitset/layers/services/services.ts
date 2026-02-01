@@ -10,7 +10,7 @@ import { getChampTasksDB } from "@/tpconst/src/RP/FB";
 //repository(local)
 import {
   getAllTasksFromChapter,
-  getTextBookTasks,
+  getTextBookGuides,
   getAllCourseTasks,
 } from "@/tpconst/src/RP/FB";
 
@@ -33,81 +33,81 @@ import {
   ChapterStatePersisted,
   CourseStatePersisted,
   Task,
-  TasksetStatePersisted,
+  UnitsetStatePersisted,
   Unit,
   UnitDB,
 } from "@/tpconst/src/T";
 import { CourseProgressDB, TaskDB, UserMetaDB } from "@/tpconst/src/T";
 import { ST, TS, TSM } from "@/tpconst/src/const";
-import { TasksetStage } from "@/tpconst/src/T";
+import { UnitsetStage } from "@/tpconst/src/T";
 import { throwInnerError } from "@/tpconst/src/errorHandlers";
 
 //types
 
-interface GetTasksResult {
-  tasks: Unit[];
+interface GetUnitsResult {
+  units: Unit[];
   tasksuuids: string[];
 }
 
-interface getTasksParams {
-  tasksetData: TasksetStatePersisted;
+interface getUnitsParams {
+  unitsetData: UnitsetStatePersisted;
   chapterData: ChapterStatePersisted;
   champData: ChampStatePersisted;
   courseData: CourseStatePersisted;
   userProgress: CourseProgressDB;
 }
 
-export const getTasks = async ({
+export const getUnits = async ({
   champData,
   userProgress,
   courseData,
   chapterData,
-  tasksetData,
-}: getTasksParams): Promise<GetTasksResult> => {
+  unitsetData,
+}: getUnitsParams): Promise<GetUnitsResult> => {
   try {
     const { courseid = "" } = courseData;
     const {
-      tasksetmode,
-      taskstage,
+      unitsetmode,
+      unitsetstage,
       recapTasksIds = [],
       randomsaved = [],
-    } = tasksetData;
+    } = unitsetData;
     const { level, chapterid } = chapterData;
     const { champid } = champData;
-    if (tasksetmode == TSM.champ)
+    if (unitsetmode == TSM.champ)
       return await getChampTasks({
         champid,
-        taskstage,
+        unitsetstage,
         recapTasksIds,
       });
 
-    if (tasksetmode == TSM.textbook) {
-      const tasks = await getTextBookTasks({
+    if (unitsetmode == TSM.textbook) {
+      const guides = await getTextBookGuides({
         completed: userProgress.completed,
         courseid,
       });
-      return { tasks: await supplyFilesAndTransform(tasks), tasksuuids: [] };
+      return { units: await supplyFilesAndTransform(guides), tasksuuids: [] };
     }
-    if (tasksetmode == TSM.exam) {
+    if (unitsetmode == TSM.exam) {
       const { tasksuuids, tasksFetched } = await getExamTasks({
         courseid,
         levelStart: level - 5,
         levelEnd: level,
         randomsaved,
       });
-      return { tasks: tasksFetched, tasksuuids };
+      return { units: tasksFetched, tasksuuids };
     }
-    if (tasksetmode == TSM.addhoc || tasksetmode == TSM.newtopic) {
-      const tasks = await getAllTasksFromChapter({ chapterid, courseid });
+    if (unitsetmode == TSM.addhoc || unitsetmode == TSM.newtopic) {
+      const units = await getAllTasksFromChapter({ chapterid, courseid });
 
-      if (taskstage == TS.recap || taskstage == TS.recapSuspended) {
+      if (unitsetstage == TS.recap || unitsetstage == TS.recapSuspended) {
         const recapTasks = await supplyFilesAndTransform(
-          getTasksRecap({ recapTasksIds, tasks }),
+          getTasksRecap({ recapTasksIds, units }),
         );
-        return { tasks: recapTasks, tasksuuids: [] };
+        return { units: recapTasks, tasksuuids: [] };
       } else
-        return { tasks: await supplyFilesAndTransform(tasks), tasksuuids: [] };
-    } else return { tasks: [], tasksuuids: [] };
+        return { units: await supplyFilesAndTransform(units), tasksuuids: [] };
+    } else return { units: [], tasksuuids: [] };
   } catch (error) {
     throw throwInnerError(error);
   }
@@ -222,31 +222,31 @@ export const saveProgress = async () => {
 
 interface getChampTasksParams {
   champid: string;
-  taskstage: TasksetStage;
+  unitsetstage: UnitsetStage;
   recapTasksIds: number[];
 }
 
 const getChampTasks = async ({
   champid,
-  taskstage,
+  unitsetstage,
   recapTasksIds,
-}: getChampTasksParams): Promise<GetTasksResult> => {
+}: getChampTasksParams): Promise<GetUnitsResult> => {
   const rawTasks = await getChampTasksDB({
     champid,
   });
-  if (taskstage == TS.recap || taskstage == TS.recapSuspended) {
+  if (unitsetstage == TS.recap || unitsetstage == TS.recapSuspended) {
     const rawRecapTasks = getTasksRecap<TaskDB>({
       recapTasksIds,
-      tasks: rawTasks,
+      units: rawTasks,
     });
     const tasks = (await supplyFilesAndTransform(rawRecapTasks)) as Task[];
     return {
-      tasks,
+      units: tasks,
       tasksuuids: [],
     };
   } else {
     const tasks = (await supplyFilesAndTransform(rawTasks)) as Task[];
 
-    return { tasks, tasksuuids: [] };
+    return { units: tasks, tasksuuids: [] };
   }
 };

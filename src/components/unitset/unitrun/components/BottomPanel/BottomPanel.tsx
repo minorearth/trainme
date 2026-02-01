@@ -4,8 +4,8 @@ import unit from "@/components/unitset/unitrun/layers/store/unit";
 
 import { observer } from "mobx-react-lite";
 import { TT } from "@/tpconst/src/const";
-import TaskPanel from "./task/TaskPanel";
-import GuideForm from "./guide/guide";
+import TaskPanel from "./taskText/TaskPanel";
+import GuideForm from "./guideCode/guideCode";
 import { Watcher } from "./editor/monaco/watcher/watcher";
 import TaskCode from "./taskCode/taskCode";
 
@@ -25,8 +25,8 @@ const BottomPanel = observer(() => {
       <Watcher />
 
       <Grid size={{ xs: 1, md: 2 }}>
-        {unit.currUnit.unittype == "task" && <TaskCode />}
-        {unit.currUnit.unittype != "task" && <GuideForm />}
+        {unit.currUnit.unittype == TT.task && <TaskCode />}
+        {unit.currUnit.unittype == TT.guide && <GuideForm />}
       </Grid>
     </Grid>
   );

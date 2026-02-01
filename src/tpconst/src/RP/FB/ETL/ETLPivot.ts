@@ -45,11 +45,11 @@ const getChaptersData = (chapters: CourseStatDB) => {
   );
 };
 
-export const allTasksArrToObj = (units: TaskDB[]) => {
-  const alltasksObj = units.reduce(
-    (acc, unit) => ({
+export const allTasksArrToObj = (tasks: TaskDB[]) => {
+  const alltasksObj = tasks.reduce(
+    (acc, task) => ({
       ...acc,
-      [unit.unituuid]: { task: unit.task, unitorder: unit.unitorder },
+      [task.unituuid]: { task: task.task, unitorder: task.unitorder },
     }),
     {} as RawTaskObj,
   );

@@ -3,7 +3,7 @@ import { toJS } from "mobx";
 import { L } from "@/tpconst/src/lang";
 import {
   dialogs,
-  getTaskSetInterruptedInfo,
+  getUnitSetInterruptedInfo,
 } from "@/components/common/dialog/dialogMacro";
 
 //repository(external)
@@ -19,7 +19,7 @@ import { saveChampUserTaskLog } from "@/tpconst/src/RP/FB";
 import { signOut } from "@/auth/services/servicesAuth";
 import { getFlow } from "@/components/course/layers/services/services";
 import { saveProgress } from "@/components/unitset/layers/services/services";
-import { getTasks } from "@/components/unitset/layers/services/services";
+import { getUnits } from "@/components/unitset/layers/services/services";
 
 //service helpers
 import {
@@ -32,7 +32,7 @@ import {
 import {
   CHAMP_DEFAULTS,
   COURSE_DEFAULTS,
-  TASKSET_DEFAULTS,
+  UNITSET_DEFAULTS,
 } from "@/tpconst/src/typesdefaults";
 
 //stores
@@ -55,7 +55,7 @@ import {
   ChampStatePersisted,
   ChapterStatePersisted,
   CourseStatePersisted,
-  TasksetStatePersisted,
+  UnitsetStatePersisted,
 } from "@/tpconst/src/T";
 import { CourseProgressDB } from "@/tpconst/src/T";
 import { PG, ST, TSM } from "@/tpconst/src/const";
@@ -104,41 +104,41 @@ export const openAndRefreshFlowPage = async ({
 
 export const openLessonStartPage = async ({
   chapterData = CHAPTER_DEFAULTS,
-  tasksetData = TASKSET_DEFAULTS,
+  unitsetData = UNITSET_DEFAULTS,
   champData = CHAMP_DEFAULTS,
   courseData = COURSE_DEFAULTS,
 }: {
-  tasksetData: TasksetStatePersisted;
+  unitsetData: UnitsetStatePersisted;
   chapterData: ChapterStatePersisted;
   champData: ChampStatePersisted;
   courseData: CourseStatePersisted;
 }) => {
   try {
-    const { tasksetmode, taskstage } = tasksetData;
+    const { unitsetmode, unitsetstage } = unitsetData;
 
     splash.showProgress();
 
-    const { tasks, tasksuuids } = await getTasks({
+    const { units: tasks, tasksuuids } = await getUnits({
       champData,
       courseData,
       chapterData,
-      tasksetData,
+      unitsetData,
       userProgress: user.progress,
     });
 
-    if (tasksetmode == TSM.textbook && !tasks.length)
+    if (unitsetmode == TSM.textbook && !tasks.length)
       throw new Error(E_CODES.TEXTBOOK_BLOCKED);
 
-    unitset.setTaskSetTasks({ tasks });
+    unitset.setUnitSetUnits({ units: tasks });
     unit.setCurrUnit(tasks[0]);
 
-    unitset.setTaskSetStateP({
-      ...TASKSET_DEFAULTS,
-      tasksetmode,
-      taskstage,
+    unitset.setUnitSetStateP({
+      ...UNITSET_DEFAULTS,
+      unitsetmode,
+      unitsetstage: unitsetstage,
       //not [] for "exam" only
       randomsaved: tasksuuids,
-      currTaskId: 0,
+      currUnitId: 0,
     });
 
     chapter.setChapterStateP(chapterData);
@@ -151,7 +151,7 @@ export const openLessonStartPage = async ({
   }
 };
 
-export const openTaskSetPage = async () => {
+export const openUnitSetPage = async () => {
   splash.showProgress(false, "progressdots", 2000);
   navigator.setStateP({ page: PG.testrun });
   splash.closeProgress();
@@ -164,17 +164,17 @@ export const openCongratPage = async ({
 }) => {
   countdownbutton.hideButton();
   navigator.setStateP({ page: PG.congrat });
-  unitset.setTaskSetStateP({ ...unitset.state, success });
+  unitset.setUnitSetStateP({ ...unitset.state, success });
 };
 
 export const closeCongratPage = async () => {
-  const { tasksetmode } = unitset.state;
+  const { unitsetmode } = unitset.state;
   splash.showProgress();
 
   if (
-    tasksetmode == TSM.addhoc ||
-    tasksetmode == TSM.newtopic ||
-    tasksetmode == TSM.exam
+    unitsetmode == TSM.addhoc ||
+    unitsetmode == TSM.newtopic ||
+    unitsetmode == TSM.exam
   )
     try {
       await saveProgress();
@@ -186,7 +186,7 @@ export const closeCongratPage = async () => {
       finalErrorHandler(error, dialogs, L.ru.msg);
     }
 
-  if (tasksetmode == TSM.champ) {
+  if (unitsetmode == TSM.champ) {
     saveChampUserTaskLog({
       tasklog: unitset.state.tasklog,
       champid: champ.champid,
@@ -197,12 +197,12 @@ export const closeCongratPage = async () => {
   splash.closeProgress();
 };
 
-export const interruptTaskSet = () => {
-  const { tasksetmode } = unitset.state;
-  if (tasksetmode != TSM.textbook) {
-    const { caption = "", text = "" } = getTaskSetInterruptedInfo({
+export const interruptUnitSet = () => {
+  const { unitsetmode } = unitset.state;
+  if (unitsetmode != TSM.textbook) {
+    const { caption = "", text = "" } = getUnitSetInterruptedInfo({
       completed: chapter.state.completed,
-      tasksetmode,
+      unitsetmode,
     });
 
     dialogs.okCancel({

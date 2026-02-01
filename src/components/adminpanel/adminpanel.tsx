@@ -52,11 +52,11 @@ const AdminPanel = () => {
         }}
       />
       <Button onClick={() => setMoneyCurrentUser(inValue)}>money</Button>
-      <Button onClick={() => unitset.gotoLastTask()}>lasttask</Button>
+      <Button onClick={() => unitset.gotoLastUnit()}>lasttask</Button>
       {S.mode.DEV_MODE && (
         <Button
           onClick={() => {
-            unitset.prevTaskNoPts_admin();
+            unitset.prevUnitNoPts_admin();
           }}
           variant="outlined"
         >
@@ -66,7 +66,7 @@ const AdminPanel = () => {
       {S.mode.DEV_MODE && (
         <Button
           onClick={() => {
-            unitset.nextTaskNoPts_admin();
+            unitset.nextUnitNoPts_admin();
           }}
           variant="outlined"
         >

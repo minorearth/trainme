@@ -1,6 +1,5 @@
 "use client";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import { observer } from "mobx-react-lite";
 
 //stores
@@ -12,6 +11,7 @@ import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButto
 import { Tooltip } from "@mui/material";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import PlaylistAddCheckCircleOutlinedIcon from "@mui/icons-material/PlaylistAddCheckCircleOutlined";
+import { TT } from "@/tpconst/src";
 //TODO: add task version(must)
 const CodeRunPanel = observer(({ monacoid }: { monacoid: number }) => {
   return (
@@ -34,7 +34,6 @@ const CodeRunPanel = observer(({ monacoid }: { monacoid: number }) => {
             <PlayCircleOutlineIcon
               sx={{
                 fontSize: "40px",
-                // marginLeft: "25px",
                 marginRight: "1px",
               }}
               onClick={() => unit.runCode(monacoid)}
@@ -42,10 +41,10 @@ const CodeRunPanel = observer(({ monacoid }: { monacoid: number }) => {
           </Tooltip>
         </IconButtonNoRipple>
       )}
-      {!countdownbutton.state.visible && (
+      {!countdownbutton.state.visible && unit.currUnit.unittype == TT.task && (
         //TODO:
         // <IconButtonNoRipple disabled={task.monacostore.executing}>
-        <IconButtonNoRipple disabled={false}>
+        <IconButtonNoRipple disabled={unit.editors[monacoid].code == ""}>
           <Tooltip title={L.ru.TT.CODE_RUN}>
             <PlaylistAddCheckCircleOutlinedIcon
               sx={{

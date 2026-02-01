@@ -9,7 +9,7 @@ import { checkCoursePaid } from "@/app/api/apicalls/dataFetch";
 
 //services(external)
 import { getFlow } from "@/components/course/layers/services/services";
-import { getTasks } from "@/components/unitset/layers/services/services";
+import { getUnits } from "@/components/unitset/layers/services/services";
 
 //services(local)
 import {
@@ -36,7 +36,7 @@ import { E_CODES } from "@/tpconst/src/errorHandlers";
 export const loadPyTrek = async () => {
   const CSP = getPersistedState(S.CURRENT_LS_VERSION);
   CSP.navigator && navigator.setNavigatorState(CSP.navigator);
-  CSP.taskset && unitset.setTaskSetState(CSP.taskset);
+  CSP.unitset && unitset.setUnitSetState(CSP.unitset);
   CSP.user.username && user.setUserName(CSP.user.username);
   CSP.user.progress && user.setProgress(CSP.user.progress);
   CSP.course && course.setCourseState(CSP.course);
@@ -59,10 +59,10 @@ export const loadPyTrek = async () => {
   }
 
   if (page == PG.testrun || page == PG.lessonStarted) {
-    const { tasksetmode, taskstage } = CSP.taskset;
+    const { unitsetmode, unitsetstage: taskstage } = CSP.unitset;
     if (
       taskstage == TS.accomplishedSuspended ||
-      (taskstage == TS.recapSuspended && tasksetmode == TSM.exam)
+      (taskstage == TS.recapSuspended && unitsetmode == TSM.exam)
     ) {
       openCongratPage({ success: ST.fail });
     } else {
@@ -83,22 +83,22 @@ export const loadPyTrek = async () => {
 };
 
 const recoverTasks = async ({ CSP }: { CSP: CSP }) => {
-  const { tasksetmode, taskstage } = CSP.taskset;
-  const { tasks } = await getTasks({
+  const { unitsetmode, unitsetstage: taskstage } = CSP.unitset;
+  const { units: units } = await getUnits({
     champData: CSP.champ || {},
     userProgress: CSP.user?.progress,
     courseData: CSP.course,
     chapterData: CSP.chapter,
-    tasksetData: CSP.taskset,
+    unitsetData: CSP.unitset,
   });
 
-  unitset.setTaskSetTasks({ tasks });
-  unit.setCurrUnit(tasks[CSP.taskset.currTaskId]);
+  unitset.setUnitSetUnits({ units: units });
+  unit.setCurrUnit(units[CSP.unitset.currUnitId]);
 
-  if (taskstage == TS.recapSuspended && tasksetmode != TSM.exam) {
+  if (taskstage == TS.recapSuspended && unitsetmode != TSM.exam) {
     dialogs.basic({
       ...L.ru.msg[E_CODES.RECAP].params,
     });
-    unitset.setTaskSetStateP({ ...unitset.state, taskstage: TS.recap });
+    unitset.setUnitSetStateP({ ...unitset.state, unitsetstage: TS.recap });
   }
 };
