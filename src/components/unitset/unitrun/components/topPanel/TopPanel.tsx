@@ -68,28 +68,9 @@ const TopPanel = observer(() => {
                 </span>
               </Tooltip>
             </IconButtonNoRipple>
-
-            // <Button
-            //   onClick={() => {
-            //     unitset.prevUnitNoPts_admin();
-            //   }}
-            //   variant="outlined"
-            //   disabled={unitset.prevdisabled}
-            // >
-            //   {L.ru.buttons.BACK_CHAMP}
-            // </Button>
           )}
           {!countdownbutton.state.visible &&
             unit.currUnit.unittype == TT.task && (
-              // <Button
-              //   onClick={(e) => {
-              //     task.actions.checkTaskAction();
-              //   }}
-              //   disabled={task.editors[0].executing}
-              //   variant="outlined"
-              // >
-              //   {L.ru.buttons.CHECK_TASK}
-              // </Button>
               <IconButtonNoRipple disabled={false}>
                 <Tooltip title={L.ru.TT.CODE_RUN}>
                   <span
@@ -110,7 +91,6 @@ const TopPanel = observer(() => {
               onClick={() => {
                 unitset.actions.errorCountDownPressed();
               }}
-              // variant="outlined"
             />
           )}
           {unit.currUnit.unittype == TT.guide && (
@@ -119,11 +99,6 @@ const TopPanel = observer(() => {
                 <span style={{ display: "inline-flex", alignItems: "center" }}>
                   <IoArrowForwardCircle
                     style={{ fontSize: "40px" }}
-                    // sx={{
-                    //   fontSize: "40px",
-                    //   // marginLeft: "25px",
-                    //   marginRight: "15px",
-                    // }}
                     onClick={() => {
                       unitset.nextUnit();
                     }}

@@ -18,7 +18,7 @@ import { InOutDB } from "./typesUpload";
 //Task
 export interface TaskDBWithFiles extends TaskDB {
   inout: InOutWithFilesDataState[];
-  filedata: string;
+  // filedata: string;
 }
 
 export interface GuideDBWithFiles extends GuideDB {

@@ -63,6 +63,7 @@ class unitset {
       if (units.length != 0) {
         this.units = units;
         this.unitsnum = units.length;
+        this.refreshNavButtons();
       }
     });
   }
@@ -84,24 +85,24 @@ class unitset {
     this.switchTaskP(this.units.length - 1);
   };
 
-  setNavButtonsDisabled = () => {
+  refreshNavButtons = () => {
     this.nextdisabled = this.state.currUnitId >= this.unitsnum - 1;
     this.prevdisabled = this.state.currUnitId <= 0;
   };
 
   nextUnit = () => {
     this.switchTaskP(this.state.currUnitId + 1);
-    this.setNavButtonsDisabled();
+    this.refreshNavButtons();
   };
 
   prevUnitNoPts_admin = () => {
     this.switchTaskP(this.state.currUnitId - 1);
-    this.setNavButtonsDisabled();
+    this.refreshNavButtons();
   };
 
   nextUnitNoPts_admin = () => {
     this.switchTaskP(this.state.currUnitId + 1);
-    this.setNavButtonsDisabled();
+    this.refreshNavButtons();
   };
 
   setCurrUnitCSPOnly = (id: number) => {

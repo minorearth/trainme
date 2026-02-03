@@ -117,7 +117,7 @@ const enrichUnitWithFileLoadCode = ({
         inv: inouttest.inv,
       };
     }),
-    filedata: getFilesData(unit.inout[0].inv, filesAndFileContent).join("\n"),
+    // filedata: getFilesData(unit.inout[0].inv, filesAndFileContent).join("\n"),
   }));
 
   return { unitsWithFiles: tasksWithFiles };

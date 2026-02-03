@@ -56,6 +56,7 @@ interface Editors {
   editordisabled: boolean;
   errorMessage: string;
   info: string;
+  filedata: string;
 
   //     monacoRef: React.RefObject<Monaco | null> = React.createRef();
   // editorRef: React.RefObject<editor.IStandaloneCodeEditor | null> =
@@ -74,18 +75,21 @@ class unitstore {
   setCurrUnit(unit: Unit) {
     this.currUnit = unit;
     if (unit.unittype == "guide") {
-      this.editors = (unit as Guide).parts.map((part) => ({
-        code: part.part,
-        defaultcode: part.part,
-        unittype: unit.unittype,
-        input: part.inout[0].inv.join("\n"),
-        output: "",
-        inv: part.inout[0].inv,
-        executing: false,
-        editordisabled: false,
-        errorMessage: "",
-        info: "",
-      })) as Editors[];
+      this.editors = (unit as Guide).parts.map((part, id) => {
+        return {
+          code: part.part,
+          defaultcode: part.part,
+          unittype: unit.unittype,
+          input: part.inout[0].inv.join("\n"),
+          output: "",
+          inv: part.inout[0].inv,
+          filedata: unit.inout[id].filesdata[0] ?? "",
+          executing: false,
+          editordisabled: false,
+          errorMessage: "",
+          info: "",
+        };
+      }) as Editors[];
     } else {
       this.editors = [
         {
@@ -94,6 +98,7 @@ class unitstore {
           unittype: unit.unittype,
           input: unit.inout[0].inv.join("\n"),
           output: "",
+          filedata: unit.inout[0].filesdata.join("\n"),
           inv: unit.inout[0].inv,
         },
       ] as Editors[];
@@ -134,7 +139,7 @@ class unitstore {
     if (this.editors[monacoid].executing) return;
     this.setExecuting(monacoid, true);
     const { outputTxt } = await runPythonCode({
-      code: this.currUnit.filedata + this.editors[monacoid].code,
+      code: this.editors[monacoid].filedata + this.editors[monacoid].code,
       stdIn: this.editors[monacoid].input,
     });
     this.setOutput(monacoid, outputTxt);
@@ -171,10 +176,10 @@ class unitstore {
     this.setDarkTheme(monaco, themeSwitchStore.darkmode);
 
     if (editor) {
-      editor.layout({
-        width: containerRef?.current?.clientWidth ?? 0,
-        height: 300,
-      });
+      // editor.layout({
+      //   width: containerRef?.current?.clientWidth ?? 0,
+      //   height: 300,
+      // });
       editor.onDidContentSizeChange((e) => {
         const newHeight = e.contentHeight;
         editor.layout({
