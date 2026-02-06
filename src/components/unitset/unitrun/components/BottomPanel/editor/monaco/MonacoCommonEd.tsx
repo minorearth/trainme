@@ -40,7 +40,6 @@ const MonacoCommonEd = observer(
     monacoid: number;
   }) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
-    const resizeObserverRef = useRef<ResizeObserver | null>(null);
 
     return (
       <Box
@@ -87,7 +86,7 @@ const MonacoCommonEd = observer(
         <Editor
           key={`monacoid${monacoid}${unit.currUnit.unituuid}`}
           width="100%"
-          theme={"dark"}
+          // theme={"dark"}
           options={{ ...EditorOptions }}
           language="python"
           onChange={(value) =>
@@ -99,7 +98,6 @@ const MonacoCommonEd = observer(
               monaco,
               monacoid,
               containerRef,
-              resizeObserverRef,
             })
           }
         />

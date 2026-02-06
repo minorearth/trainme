@@ -11,7 +11,10 @@ import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButto
 import { Tooltip } from "@mui/material";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import PlaylistAddCheckCircleOutlinedIcon from "@mui/icons-material/PlaylistAddCheckCircleOutlined";
+import { FaMagic } from "react-icons/fa";
+
 import { TT } from "@/tpconst/src";
+import { magicCode } from "@/components/unitset/unitrun/layers/services/taskCheckHelpers";
 //TODO: add task version(must)
 const CodeRunPanel = observer(({ monacoid }: { monacoid: number }) => {
   return (
@@ -29,12 +32,11 @@ const CodeRunPanel = observer(({ monacoid }: { monacoid: number }) => {
       {!countdownbutton.state.visible && (
         //TODO:
         // <IconButtonNoRipple disabled={task.monacostore.executing}>
-        <IconButtonNoRipple disabled={false}>
+        <IconButtonNoRipple disabled={unit.editors[monacoid].codepart == ""}>
           <Tooltip title={L.ru.TT.CODE_RUN}>
             <PlayCircleOutlineIcon
               sx={{
                 fontSize: "40px",
-                marginRight: "1px",
               }}
               onClick={() => unit.runCode(monacoid)}
             />
@@ -44,17 +46,31 @@ const CodeRunPanel = observer(({ monacoid }: { monacoid: number }) => {
       {!countdownbutton.state.visible && unit.currUnit.unittype == TT.task && (
         //TODO:
         // <IconButtonNoRipple disabled={task.monacostore.executing}>
-        <IconButtonNoRipple disabled={unit.editors[monacoid].code == ""}>
+        <IconButtonNoRipple disabled={unit.editors[monacoid].codepart == ""}>
           <Tooltip title={L.ru.TT.CODE_RUN}>
             <PlaylistAddCheckCircleOutlinedIcon
               sx={{
                 fontSize: "40px",
                 // marginLeft: "25px",
-                marginRight: "15px",
               }}
               onClick={(e) => {
                 unit.actions.preCheckTaskAction();
               }}
+            />
+          </Tooltip>
+        </IconButtonNoRipple>
+      )}
+      {!countdownbutton.state.visible && unit.currUnit.unittype == TT.task && (
+        <IconButtonNoRipple disabled={unit.editors[monacoid].codepart == ""}>
+          <Tooltip title={L.ru.TT.CODE_RUN}>
+            <FaMagic
+              style={{ fontSize: "30px" }}
+              // sx={{
+              //   fontSize: "40px",
+              //   // marginLeft: "25px",
+              //   marginRight: "15px",
+              // }}
+              onClick={() => magicCode()}
             />
           </Tooltip>
         </IconButtonNoRipple>

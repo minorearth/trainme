@@ -37,6 +37,14 @@ const AdminPanel = () => {
       <Button onClick={() => completeAllChaptersCurrentUser()}>
         CompleteAll
       </Button>
+      <Button
+        onClick={() =>
+          window.navigator.clipboard.writeText(unit.currUnit.unituuid)
+        }
+      >
+        ID
+      </Button>
+
       {/* <Button onClick={() => uploadEverything()}>load</Button> */}
       <Input
         id="standard-multiline-flexible"

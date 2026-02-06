@@ -11,7 +11,6 @@ interface HandleEditorDidMount {
   monaco: Monaco | null;
   monacoid: number;
   containerRef: any;
-  resizeObserverRef: any;
 }
 
 import React from "react";
@@ -42,7 +41,7 @@ import themeSwitchStore from "@/components/common/themeswitch/themeSwitchStore";
 
 interface Editors {
   defaultcode: string; //to refresh
-  code: string;
+  // code: string;
 
   inv: string[]; //to refresh
   input: string;
@@ -57,6 +56,8 @@ interface Editors {
   errorMessage: string;
   info: string;
   filedata: string;
+  codepart: string;
+  markdown: string;
 
   //     monacoRef: React.RefObject<Monaco | null> = React.createRef();
   // editorRef: React.RefObject<editor.IStandaloneCodeEditor | null> =
@@ -66,6 +67,7 @@ interface Editors {
 class unitstore {
   currUnit: Unit = UNIT_DEFAULTS;
   editors: Editors[] = [];
+  showanswer: boolean = false;
 
   actions: any = {
     checkTaskAction,
@@ -77,13 +79,16 @@ class unitstore {
     if (unit.unittype == "guide") {
       this.editors = (unit as Guide).parts.map((part, id) => {
         return {
-          code: part.part,
-          defaultcode: part.part,
+          // code: part.part,
+          defaultcode: part.codepart,
           unittype: unit.unittype,
           input: part.inout[0].inv.join("\n"),
           output: "",
           inv: part.inout[0].inv,
           filedata: unit.inout[id].filesdata[0] ?? "",
+          codepart: part.codepart,
+          markdown: part.markdown,
+
           executing: false,
           editordisabled: false,
           errorMessage: "",
@@ -93,7 +98,7 @@ class unitstore {
     } else {
       this.editors = [
         {
-          code: unit.defaultcode,
+          codepart: unit.defaultcode,
           defaultcode: unit.defaultcode,
           unittype: unit.unittype,
           input: unit.inout[0].inv.join("\n"),
@@ -124,7 +129,7 @@ class unitstore {
 
   setEditorCode = (monacoid: number) => {
     this.editors[monacoid].editorRef.current?.setValue(
-      this.editors[monacoid].code,
+      this.editors[monacoid].codepart,
     );
     this.editors[monacoid].unittype == TT.guide
       ? this.editors[monacoid].editorRef.current?.updateOptions({
@@ -139,7 +144,7 @@ class unitstore {
     if (this.editors[monacoid].executing) return;
     this.setExecuting(monacoid, true);
     const { outputTxt } = await runPythonCode({
-      code: this.editors[monacoid].filedata + this.editors[monacoid].code,
+      code: this.editors[monacoid].filedata + this.editors[monacoid].codepart,
       stdIn: this.editors[monacoid].input,
     });
     this.setOutput(monacoid, outputTxt);
@@ -148,7 +153,7 @@ class unitstore {
 
   refreshEditor = (monacoid: number) => {
     this.editors[monacoid].editorRef.current?.setValue(
-      (this.editors[monacoid].code = this.editors[monacoid].defaultcode),
+      (this.editors[monacoid].codepart = this.editors[monacoid].defaultcode),
     );
   };
 
@@ -158,7 +163,7 @@ class unitstore {
     errorHandler: () => void,
   ) => {
     errorHandler();
-    this.editors[monacoid].code = value;
+    this.editors[monacoid].codepart = value;
   };
 
   handleEditorDidMount({
@@ -242,26 +247,26 @@ class unitstore {
   };
 
   showInfo(value: string) {
-    // if (!this.monaco) {
-    //   return;
-    // }
-    this.editors[0].editorRef.current?.setValue(
-      `'''\n  ${L.ru.ME.RIGHT_CODE}\n'''\n\n${(this.currUnit as Task).rightcode} \n\n'''\n  ${L.ru.ME.YOUR_CODE}\n'''\n\n${this.editors[0].code}`,
-    );
-    this.editors[0].info = value;
-    this.editors[0].editordisabled = true;
-    this.editors[0].editorRef.current?.updateOptions({ lineNumbers: "off" });
-    this.editors[0].editorRef.current?.updateOptions({ readOnly: true });
+    // this.editors[0].editorRef.current?.setValue(
+    //   `'''\n  ${L.ru.ME.RIGHT_CODE}\n'''\n\n${(this.currUnit as Task).rightcode} \n\n'''\n  ${L.ru.ME.YOUR_CODE}\n'''\n\n${this.editors[0].codepart}`,
+    // );
+    this.showanswer = true;
+    // this.editors[0].info = value;
+    // this.editors[0].editordisabled = true;
+    // this.editors[0].editorRef.current?.updateOptions({ lineNumbers: "off" });
+    // this.editors[0].editorRef.current?.updateOptions({ readOnly: true });
   }
 
   hideInfo() {
     // if (!this.monaco) {
     //   return;
     // }
-    this.editors[0].info = "";
-    this.editors[0].editordisabled = false;
-    this.editors[0].editorRef.current?.updateOptions({ lineNumbers: "on" });
-    this.editors[0].editorRef.current?.updateOptions({ readOnly: false });
+    this.showanswer = false;
+
+    // this.editors[0].info = "";
+    // this.editors[0].editordisabled = false;
+    // this.editors[0].editorRef.current?.updateOptions({ lineNumbers: "on" });
+    // this.editors[0].editorRef.current?.updateOptions({ readOnly: false });
   }
 
   constructor() {

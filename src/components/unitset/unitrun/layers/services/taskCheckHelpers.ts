@@ -3,28 +3,32 @@ import { L } from "@/tpconst/src/lang";
 import { eqArrays } from "@/tpconst/src/utils";
 import { Task } from "@/tpconst/src/T";
 import { allregex } from "@/components/unitset/layers/services/allregex";
-import { ast } from "@/components/unitset/unitrun/layers/services/ast";
+import {
+  ast,
+  astClean,
+} from "@/components/unitset/unitrun/layers/services/ast";
 import { E_CODES, throwInnerError } from "@/tpconst/src/errorHandlers";
+import unit from "@/components/unitset/unitrun/layers/store/unit";
+import { runPythonCode } from "@/components/pyodide/pythonRunner";
 
-const cleanUpCode = (code: string) => {
-  const lines = code.match(/[^\r\n]+/g) ?? [];
-  const res = lines
-    .map((line) => line.replaceAll(/#.*/g, ""))
-    //sep='\n' trouble
-    .map((line) => line.replaceAll("\\n", "\\\\n"))
-    // .map((line) => line.replaceAll(/[\n\t]/g, ""))
-    .filter((line) => line != "");
-  return res;
-};
+// const cleanUpCode = (code: string) => {
+//   const lines = code.match(/[^\r\n]+/g) ?? [];
+//   const res = lines
+//     .map((line) => line.replaceAll(/#.*/g, ""))
+//     .map((line) => line.replaceAll("\\n", "\\\\n"))
+//     .filter((line) => line != "");
+//   return res;
+// };
 
 interface CheckLines {
   code: string;
   maxlines: number;
+  runPythonCode: runPythonCode;
 }
-// [[].*for.*in.*[]]
-const checkLines = ({ code, maxlines }: CheckLines) => {
-  const codeLines = cleanUpCode(code);
-  return maxlines >= codeLines.length;
+
+const checkLines = async ({ code, maxlines, runPythonCode }: CheckLines) => {
+  const outputArr = await getAstCleanCodeArr(code, runPythonCode);
+  return maxlines >= outputArr.length;
 };
 
 type runPythonCode = ({
@@ -41,23 +45,56 @@ interface checkEntities {
   runPythonCode: runPythonCode;
 }
 
+const getAstCleanCodeArr = async (
+  code: string,
+  runPythonCode: runPythonCode,
+) => {
+  const { outputArr } = await runPythonCode({
+    code: astClean({ code: JSON.stringify(code) }),
+    stdIn: "",
+  });
+  return outputArr;
+};
+
+const astMultilineCleanCode = async (
+  code: string,
+  runPythonCode: runPythonCode,
+) => {
+  const res = await getAstCleanCodeArr(code, runPythonCode);
+  return res.join("\n");
+};
+
+export const magicCode = async () => {
+  const codeCleaned = await astMultilineCleanCode(
+    unit.editors[0].codepart,
+    runPythonCode,
+  );
+  unit.editors[0].editorRef.current?.setValue(codeCleaned);
+};
+
+const astSinglelineCleanCode = async (
+  code: string,
+  runPythonCode: runPythonCode,
+) => {
+  const res = await getAstCleanCodeArr(code, runPythonCode);
+  return res.join("\\n").replaceAll('"', '\\"');
+};
+
 const checkEntities = async ({
   code,
   entities,
   runPythonCode,
 }: checkEntities) => {
-  //TODO: remade
-  const codeLines = cleanUpCode(code).join("\n");
-  const onelinecode = cleanUpCode(code).join("\\n");
-  // .replaceAll("\\\\", "\\\\\\");
+  const onelinecode = await astSinglelineCleanCode(code, runPythonCode);
+
   const checks = await Promise.all(
     entities.map(async (item) => {
       if (allregex[item].findmode == "regex") {
-        const regex = new RegExp(allregex[item].rgx[0], "gs");
-        return codeLines.match(regex) != null;
+        //not used but kept on hold
+        // const regex = new RegExp(allregex[item].rgx[0], "gs");
+        // return codeLines.match(regex) != null;
       } else {
         const { nm, param, type } = allregex[item];
-
         const { outputArr } = await runPythonCode({
           code: ast({ code: onelinecode, nm, param, type }),
           stdIn: "",
@@ -110,9 +147,10 @@ const checkCode = async ({ code, task, runPythonCode }: CheckCode) => {
 
 export const runCheckers = async ({ code, task, runPythonCode }: CheckCode) => {
   const codeChecked = await checkCode({ code, task, runPythonCode });
-  const linesChecked = checkLines({
+  const linesChecked = await checkLines({
     code,
     maxlines: task.restrictions.maxlines,
+    runPythonCode,
   });
   const mustHaveChecked = await checkMustHave({
     code,

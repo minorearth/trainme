@@ -69,6 +69,7 @@ const runCodeNoGLobals = async ({
   // https://github.com/pyodide/pyodide/issues/4139
   const dict = pyodide.globals.get("dict");
   const globals = dict();
+
   await pyodide.runPython(
     // code,
     code +
@@ -76,7 +77,7 @@ const runCodeNoGLobals = async ({
     {
       globals,
       locals: globals,
-    }
+    },
   );
   globals.destroy();
   dict.destroy();

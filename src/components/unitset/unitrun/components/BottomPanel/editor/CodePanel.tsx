@@ -5,6 +5,31 @@ import CodeRunPanel from "@/components/unitset/unitrun/components/BottomPanel/ed
 import { observer } from "mobx-react-lite";
 import Box from "@mui/material/Box";
 import InOutPanel from "./edditorInout/InoutPanel/InOutPanel";
+import { Typography } from "@mui/material";
+import unit from "@/components/unitset/unitrun/layers/store/unit";
+import { Guide, TT } from "@/tpconst/src";
+import MarkDown from "../guideCode/markDown";
+import AnswerPanel from "./AnswerPanel";
+
+const formatMarkdown = (markdown: string) => {
+  if (!markdown) {
+    return "";
+  }
+  const count = (text: string, search: string) =>
+    (text.match(new RegExp(search, "g")) || []).length;
+  const n = count(markdown, "'''");
+  let res = markdown;
+  for (let i = 0; i < n; i++) {
+    res =
+      i % 2 == 0
+        ? res.replace(
+            "'''",
+            "<p style='color: #444444; user-select: none; margin: 0; padding: 0; background-color:#CADCEE; display: block; width: 100%; margin-left: 20px; padding-left: 20px;  border-left: 10px; border-left-style: solid; border-color: #1977d3;' >",
+          )
+        : res.replace("'''", "\n</p>");
+  }
+  return res;
+};
 
 const CodePanel = observer((props: any) => {
   const { monacoid } = props;
@@ -27,7 +52,14 @@ const CodePanel = observer((props: any) => {
             width: "100%",
           }}
         >
-          <MonacoEd {...props} monacoid={monacoid} />
+          {unit.currUnit.unittype == TT.guide && (
+            <MarkDown text={unit.editors[monacoid].markdown} />
+          )}
+          {unit.showanswer ? (
+            <AnswerPanel monacoid={monacoid} />
+          ) : (
+            <MonacoEd {...props} monacoid={monacoid} />
+          )}
           <Box
             key={`InOutRunPanel${monacoid}`}
             sx={{

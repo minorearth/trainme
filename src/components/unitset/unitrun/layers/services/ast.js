@@ -1,3 +1,10 @@
+export const astClean = ({code}) => { return `import ast
+def transform_source(source):
+    tree = ast.parse(source)
+    ast.fix_missing_locations(tree)
+    code = ast.unparse(tree)
+    return code 
+print(transform_source(${code}))`;};
 export const ast = ({code, nm, param, type}) => { return `import ast
 
 

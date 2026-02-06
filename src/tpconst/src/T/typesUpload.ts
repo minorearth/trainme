@@ -36,6 +36,8 @@ export interface RawTaskToUploadWithoutLevel {
 export interface Guidepart {
   inout: { inv: string[] }[];
   part: string;
+  markdown: string;
+  codepart: string;
 }
 
 export interface RawGuideToUpload extends Omit<
