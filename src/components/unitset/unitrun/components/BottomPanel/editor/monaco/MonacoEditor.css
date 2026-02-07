@@ -1,4 +1,4 @@
-.monaco-editor
+/* .monaco-editor
   .view-line:has(.mtk5):not(:has(.mtk1)):not(:has(.mtk8)):not(:has(.mtk9)) {
   background-color: #242323;
   border-left: 10px;
@@ -31,7 +31,7 @@
   > :first-child
   * {
   color: black;
-}
+} */
 
 :global .monaco-editor .monaco-scrollable-element.editor-scrollable {
   overflow: hidden !important;

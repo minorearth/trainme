@@ -63,7 +63,7 @@ const MonacoCommonEd = observer(
         //   scale: { type: "spring", visualDuration: 0.9, bounce: 0.5 },
         // }}
       >
-        <Watcher />
+        {/* <Watcher /> */}
 
         <IconButton
           key={`refreshButton${monacoid}`}
