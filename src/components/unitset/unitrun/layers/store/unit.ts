@@ -13,6 +13,12 @@ interface HandleEditorDidMount {
   containerRef: any;
 }
 
+interface HandleViewerDidMount {
+  editor: editor.IStandaloneCodeEditor | null;
+  monaco: Monaco | null;
+  containerRef: any;
+}
+
 import React from "react";
 import { editor } from "monaco-editor";
 
@@ -187,10 +193,21 @@ class unitstore {
     this.setDarkTheme(monaco, themeSwitchStore.darkmode);
 
     if (editor) {
-      // editor.layout({
-      //   width: containerRef?.current?.clientWidth ?? 0,
-      //   height: 300,
-      // });
+      editor.onDidContentSizeChange((e) => {
+        const newHeight = e.contentHeight;
+        editor.layout({
+          width: containerRef?.current?.clientWidth ?? 0,
+          height: newHeight,
+        });
+      });
+    }
+  }
+
+  handleViewerDidMount({ editor, monaco, containerRef }: HandleViewerDidMount) {
+    this.defineTheme(monaco);
+    this.setDarkTheme(monaco, themeSwitchStore.darkmode);
+
+    if (editor) {
       editor.onDidContentSizeChange((e) => {
         const newHeight = e.contentHeight;
         editor.layout({

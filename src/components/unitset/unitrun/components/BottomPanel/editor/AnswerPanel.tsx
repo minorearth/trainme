@@ -33,15 +33,22 @@ const AnswerPanel = observer(({ monacoid }: { monacoid: number }) => {
         options={{ ...EditorOptions, lineNumbers: "off", readOnly: true }}
         language="python"
         value={(unit.currUnit as Task).rightcode}
-        onMount={(editor) => {
-          editor.onDidContentSizeChange((e) => {
-            const newHeight = e.contentHeight;
-            editor.layout({
-              width: containerRef?.current?.clientWidth ?? 0,
-              height: newHeight,
-            });
-          });
-        }}
+        // onMount={(editor) => {
+        //   editor.onDidContentSizeChange((e) => {
+        //     const newHeight = e.contentHeight;
+        //     editor.layout({
+        //       width: containerRef?.current?.clientWidth ?? 0,
+        //       height: newHeight,
+        //     });
+        //   });
+        // }}
+        onMount={(editor, monaco) =>
+          unit.handleViewerDidMount({
+            editor,
+            monaco,
+            containerRef,
+          })
+        }
       />
       <MarkDown text={`'''\n  ${L.ru.ME.YOUR_CODE}\n'''`} />
       {/*  */}
