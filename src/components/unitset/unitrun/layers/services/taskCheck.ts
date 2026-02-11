@@ -5,7 +5,6 @@ import {
   runCheckers,
   getErrorMessage,
 } from "@/components/unitset/unitrun/layers/services/taskCheckHelpers";
-import { runPythonCode } from "@/components/pyodide/pythonRunner";
 
 //Stores
 import unitset from "@/components/unitset/layers/store/unitset";
@@ -16,23 +15,19 @@ import { dialogs } from "@/components/common/dialog/dialogMacro";
 import { E_CODES } from "@/tpconst/src/errorHandlers";
 import { Task } from "@/tpconst/src";
 
-const performTests = async () => {
-  const monaco = unit.editors[0].monacoRef.current;
-
-  if (!monaco || unit.editors[0].executing || !unit.editors[0].codepart) {
-    throw new Error();
-  }
-  return await runCheckers({
+const performTests = async ({ skipcodecheck }: { skipcodecheck: boolean }) => {
+  const res = await runCheckers({
     code: unit.editors[0].codepart,
     task: unit.currUnit as Task,
-    runPythonCode,
+    skipcodecheck,
   });
+  return res;
 };
 
 export const checkTaskAction = async () => {
   try {
     const { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked } =
-      await performTests();
+      await performTests({ skipcodecheck: false });
     try {
       getErrorMessage({
         codeChecked,
@@ -60,7 +55,7 @@ export const checkTaskAction = async () => {
 export const preCheckTaskAction = async () => {
   try {
     const { linesChecked, mustHaveChecked, forbiddenChecked } =
-      await performTests();
+      await performTests({ skipcodecheck: true });
 
     const res = !linesChecked || !mustHaveChecked || !forbiddenChecked;
     if (res) {

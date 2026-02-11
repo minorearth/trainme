@@ -1,21 +1,22 @@
 import pyodide from "@/components/pyodide/pyodide";
 import { L } from "@/tpconst/src/lang";
+import { asyncRun, terminateWorker } from "./newWorkerAPI";
 
 // https://www.reddit.com/r/nextjs/comments/194r5jn/does_anyone_know_how_to_use_pyodide_with_nextjs/?rdt=49197
 
-class StdinHandler {
-  stdIn: string[];
-  idx: number;
-  constructor(stdIn: string[]) {
-    this.stdIn = stdIn;
-    this.idx = 0;
-    // Object.assign(this, options);
-  }
+// class StdinHandler {
+//   stdIn: string[];
+//   idx: number;
+//   constructor(stdIn: string[]) {
+//     this.stdIn = stdIn;
+//     this.idx = 0;
+//     // Object.assign(this, options);
+//   }
 
-  stdin() {
-    return this.stdIn[this.idx++];
-  }
-}
+//   stdin() {
+//     return this.stdIn[this.idx++];
+//   }
+// }
 
 export const runPythonCode = async ({
   code,
@@ -24,36 +25,67 @@ export const runPythonCode = async ({
   code: string;
   stdIn: string;
 }) => {
-  if (pyodide.pyodide) {
-    let output: string[] = [];
+  if (pyodide.worker) {
     try {
-      const stdInSplitted = stdIn.split("\n");
-      pyodide.pyodide.setStdin(new StdinHandler(stdInSplitted));
-      pyodide.pyodide.setStdout({
-        batched: (msg: string) => {
-          output.push(msg);
-        },
-      });
-
-      await runCodeNoGLobals({ pyodide: pyodide.pyodide, code });
+      const output = await asyncRun(code, stdIn, pyodide.worker);
       return {
         outputTxt: output.join("\n"),
         outputArr: output,
       };
     } catch (e) {
-      if (e instanceof Error) {
-        const error = e.message.split("\n").slice(-2)[0];
-        output.push(L.ru.CE.error5 + error);
-        return {
-          outputTxt: output.join("\n"),
-          outputArr: output,
-        };
-      } else {
-        return { outputTxt: "some error", outputArr: [] };
-      }
+      const error = e as Error;
+      return { outputTxt: L.ru.CE.error5 + error.message, outputArr: [] };
     }
   } else {
-    return { outputTxt: "pyodide not avvailable", outputArr: [] };
+    return { outputTxt: "pyodide not available", outputArr: [] };
+  }
+};
+
+export const runApprovedPythonCode = async ({ code }: { code: string }) => {
+  if (pyodide.worker) {
+    try {
+      return await asyncRun(code, "", pyodide.worker);
+    } catch (e) {
+      throw new Error();
+    }
+  } else {
+    throw new Error();
+  }
+};
+
+export const runPythonCodeRace = async ({
+  code,
+  stdIn,
+}: {
+  code: string;
+  stdIn: string;
+}) => {
+  let isTimeout = false;
+
+  const timeoutPromise = new Promise((resolve) => {
+    setTimeout(() => {
+      isTimeout = true;
+      resolve(null);
+    }, 2000);
+  });
+
+  const codePromise = runPythonCode({
+    code,
+    stdIn,
+  });
+
+  const res = await Promise.race([codePromise, timeoutPromise]);
+
+  if (!isTimeout) {
+    const { outputTxt, outputArr } = res as {
+      outputTxt: string;
+      outputArr: string[];
+    };
+    return { outputTxt, outputArr };
+  } else {
+    const worker = terminateWorker();
+    pyodide.setPyodideWorker(worker);
+    throw new Error();
   }
 };
 
@@ -82,3 +114,43 @@ const runCodeNoGLobals = async ({
   globals.destroy();
   dict.destroy();
 };
+
+// export const runPythonCode = async ({
+//   code,
+//   stdIn,
+// }: {
+//   code: string;
+//   stdIn: string;
+// }) => {
+//   if (pyodide.pyodide) {
+//     let output: string[] = [];
+//     try {
+//       const stdInSplitted = stdIn.split("\n");
+//       pyodide.pyodide.setStdin(new StdinHandler(stdInSplitted));
+//       pyodide.pyodide.setStdout({
+//         batched: (msg: string) => {
+//           output.push(msg);
+//         },
+//       });
+
+//       await runCodeNoGLobals({ pyodide: pyodide.pyodide, code });
+//       return {
+//         outputTxt: output.join("\n"),
+//         outputArr: output,
+//       };
+//     } catch (e) {
+//       if (e instanceof Error) {
+//         const error = e.message.split("\n").slice(-2)[0];
+//         output.push(L.ru.CE.error5 + error);
+//         return {
+//           outputTxt: output.join("\n"),
+//           outputArr: output,
+//         };
+//       } else {
+//         return { outputTxt: "some error", outputArr: [] };
+//       }
+//     }
+//   } else {
+//     return { outputTxt: "pyodide not avvailable", outputArr: [] };
+//   }
+// };

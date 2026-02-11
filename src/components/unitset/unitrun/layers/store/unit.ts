@@ -18,6 +18,7 @@ import { editor } from "monaco-editor";
 
 //stores
 import countdownbutton from "@/components/common/CountdownButton/store";
+import pyodide from "@/components/pyodide/pyodide";
 
 //services
 import { dialogs } from "@/components/common/dialog/dialogMacro";
@@ -36,8 +37,13 @@ import { L } from "@/tpconst/src/lang";
 
 import { Monaco } from "@monaco-editor/react";
 
-import { runPythonCode } from "@/components/pyodide/pythonRunner";
+import {
+  runPythonCode,
+  runPythonCodeRace,
+  // runPythonCode2,
+} from "@/components/pyodide/pythonRunner";
 import themeSwitchStore from "@/components/common/themeswitch/themeSwitchStore";
+import { terminateWorker } from "@/components/pyodide/newWorkerAPI";
 
 interface Editors {
   defaultcode: string; //to refresh
@@ -68,11 +74,6 @@ class unitstore {
   currUnit: Unit = UNIT_DEFAULTS;
   editors: Editors[] = [];
   showanswer: boolean = false;
-
-  actions: any = {
-    checkTaskAction,
-    preCheckTaskAction,
-  };
 
   setCurrUnit(unit: Unit) {
     this.currUnit = unit;
@@ -140,14 +141,19 @@ class unitstore {
         });
   };
 
-  runCode = async (monacoid: number) => {
-    if (this.editors[monacoid].executing) return;
+  playCode = async (monacoid: number) => {
     this.setExecuting(monacoid, true);
-    const { outputTxt } = await runPythonCode({
-      code: this.editors[monacoid].filedata + this.editors[monacoid].codepart,
-      stdIn: this.editors[monacoid].input,
-    });
-    this.setOutput(monacoid, outputTxt);
+    pyodide.setExecuting(true);
+    try {
+      const { outputTxt } = await runPythonCodeRace({
+        code: this.editors[monacoid].filedata + this.editors[monacoid].codepart,
+        stdIn: this.editors[monacoid].input,
+      });
+      this.setOutput(monacoid, outputTxt);
+    } catch (e) {
+      this.setOutput(monacoid, "Время выполнения превышено.");
+    }
+    pyodide.setExecuting(false);
     this.setExecuting(monacoid, false);
   };
 

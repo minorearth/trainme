@@ -8,7 +8,6 @@ import { EditorOptions } from "@/components/unitset/unitrun/components/BottomPan
 import "./MonacoEditor.css";
 import IconButton from "@mui/material/IconButton";
 import CachedIcon from "@mui/icons-material/Cached";
-import { Watcher } from "@/components/unitset/unitrun/components/BottomPanel/editor/monaco/watcher/watcher";
 import Box from "@mui/material/Box";
 
 import dynamic from "next/dynamic";

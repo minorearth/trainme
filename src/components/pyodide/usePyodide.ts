@@ -4,31 +4,39 @@ import { useEffect } from "react";
 import { useScript } from "@uidotdev/usehooks";
 import S from "@/globals/settings";
 import pyodide from "@/components/pyodide/pyodide";
+import { asyncRun, ensureWorker } from "../pyodide/newWorkerAPI"; // путь зависит от вашего проекта
+
 // type loadPyodide  = (options: { indexURL: string }) => Promise<any>;
 
 function usePyodide() {
-  const pyodideScriptStatus = useScript(
-    S.mode.pyodideCDN
-      ? `https://cdn.jsdelivr.net/pyodide/v${S.PYODIDE_VERSION}/full/pyodide.js`
-      : `${process.env.NEXT_PUBLIC_DOMAIN}/pyodide/pyodide.js`
-  );
+  // const pyodideScriptStatus = useScript(
+  //   S.mode.pyodideCDN
+  //     ? `https://cdn.jsdelivr.net/pyodide/v${S.PYODIDE_VERSION}/full/pyodide.js`
+  //     : `${process.env.NEXT_PUBLIC_DOMAIN}/pyodide/pyodide.js`,
+  // );
 
   useEffect(() => {
-    if (pyodideScriptStatus === "ready" && !pyodide.pyodide) {
-      (async () => {
-        //confirm as
-        const loadPyodide = (globalThis as any).loadPyodide as (options: {
-          indexURL: string;
-        }) => Promise<any>;
-        const loadedPyodide = await loadPyodide({
-          indexURL: S.mode.pyodideCDN
-            ? `https://cdn.jsdelivr.net/pyodide/v${S.PYODIDE_VERSION}/full/`
-            : `/pyodide/`,
-        });
-        pyodide.setPyodide(loadedPyodide);
-      })();
-    }
-  }, [pyodideScriptStatus]);
+    const loadWorker = async () => {
+      const worker = await ensureWorker();
+      pyodide.setPyodideWorker(worker);
+    };
+    loadWorker();
+    // if (pyodideScriptStatus === "ready" && !pyodide.pyodide) {
+    //   (async () => {
+    //     //confirm as
+    //     const loadPyodide = (globalThis as any).loadPyodide as (options: {
+    //       indexURL: string;
+    //     }) => Promise<any>;
+    //     const loadedPyodide = await loadPyodide({
+    //       indexURL: S.mode.pyodideCDN
+    //         ? `https://cdn.jsdelivr.net/pyodide/v${S.PYODIDE_VERSION}/full/`
+    //         : `/pyodide/`,
+    //     });
+    //     pyodide.setPyodide(loadedPyodide);
+    //   })();
+    // }
+    // }, [pyodideScriptStatus]);
+  }, []);
 
   return {};
 }

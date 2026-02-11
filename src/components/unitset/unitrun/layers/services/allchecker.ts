@@ -17,12 +17,16 @@ const checktasks = async ({ tasks }: { tasks: Task[] }) => {
   tasks.forEach(async (task) => {
     if (task.rightcode) {
       const { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked } =
-        await runCheckers({ code: task.rightcode, task, runPythonCode });
+        await runCheckers({ code: task.rightcode, task, skipcodecheck: false });
     }
 
     if (!task.forbiddencode.includes("pass")) {
       const { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked } =
-        await runCheckers({ code: task.forbiddencode, task, runPythonCode });
+        await runCheckers({
+          code: task.forbiddencode,
+          task,
+          skipcodecheck: false,
+        });
       if (
         codeChecked == false ||
         (forbiddenChecked == true && mustHaveChecked == true)

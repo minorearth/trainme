@@ -19,6 +19,7 @@ import { observer } from "mobx-react-lite";
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
 import unit from "@/components/unitset/unitrun/layers/store/unit";
+import pyodide from "@/components/pyodide/pyodide";
 
 import countdownbutton from "@/components/common/CountdownButton/store";
 
@@ -28,6 +29,7 @@ import { TSM, TT } from "@/tpconst/src";
 import CountdownButton from "@/components/common/CountdownButton/CountdownButton";
 import { IoArrowForwardCircle } from "react-icons/io5";
 import { IoArrowBackCircle } from "react-icons/io5";
+import { checkTaskAction } from "../../layers/services/taskCheck";
 
 const HEIGHT = "80px";
 const TopPanel = observer(() => {
@@ -69,9 +71,17 @@ const TopPanel = observer(() => {
               </Tooltip>
             </IconButtonNoRipple>
           )}
+
           {!countdownbutton.state.visible &&
             unit.currUnit.unittype == TT.task && (
-              <IconButtonNoRipple disabled={false}>
+              <IconButtonNoRipple
+                disabled={
+                  !unit.editors[0].monacoRef?.current ||
+                  unit.editors[0].executing ||
+                  !unit.editors[0].codepart ||
+                  pyodide.executing == true
+                }
+              >
                 <Tooltip title={L.ru.TT.CODE_RUN}>
                   <span
                     style={{ display: "inline-flex", alignItems: "center" }}
@@ -79,7 +89,7 @@ const TopPanel = observer(() => {
                     <FaCheckCircle
                       style={{ fontSize: "35px" }}
                       onClick={(e) => {
-                        unit.actions.checkTaskAction();
+                        checkTaskAction();
                       }}
                     />
                   </span>

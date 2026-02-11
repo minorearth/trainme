@@ -38,6 +38,7 @@ import { PG, ST } from "@/tpconst/src/const";
 const Navigator = observer(() => {
   useApp();
   usePyodide();
+
   return (
     <Box>
       <Splash />

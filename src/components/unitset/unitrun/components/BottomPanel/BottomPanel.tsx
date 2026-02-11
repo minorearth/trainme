@@ -6,7 +6,6 @@ import { observer } from "mobx-react-lite";
 import { TT } from "@/tpconst/src/const";
 import TaskPanel from "./taskText/TaskPanel";
 import GuideForm from "./guideCode/guideCode";
-import { Watcher } from "./editor/monaco/watcher/watcher";
 import TaskCode from "./taskCode/taskCode";
 
 const BottomPanel = observer(() => {
