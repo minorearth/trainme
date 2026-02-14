@@ -159,7 +159,7 @@ class unitstore {
       if (error.message == E_CODES_DIALOG.PYODIDE_SUSPENDED)
         this.setOutput(monacoid, "Время выполнения превышено.");
       if (error.message == E_CODES_DIALOG.PYODIDE_SINTAX_ERROR)
-        this.setOutput(monacoid, error.cause || "");
+        this.setOutput(monacoid, error.cause as string);
     }
     pyodide.setExecuting(false);
     this.setExecuting(monacoid, false);
