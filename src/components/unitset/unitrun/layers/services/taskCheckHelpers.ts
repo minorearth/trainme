@@ -7,7 +7,11 @@ import {
   ast,
   astClean,
 } from "@/components/unitset/unitrun/layers/services/ast";
-import { E_CODES, throwInnerError } from "@/tpconst/src/errorHandlers";
+import {
+  E_CODES,
+  E_CODES_DIALOG,
+  throwInnerError,
+} from "@/tpconst/src/errorHandlers";
 import unit from "@/components/unitset/unitrun/layers/store/unit";
 import pyodide from "@/components/pyodide/pyodide";
 
@@ -32,17 +36,21 @@ interface CheckLines {
 }
 
 const checkLines = async ({ code, maxlines }: CheckLines) => {
-  const outputArr = await getAstCleanCodeArr(code);
-  return maxlines >= outputArr.length;
+  try {
+    const outputArr = await getAstCleanCodeArr(code);
+    return maxlines >= outputArr.length;
+  } catch (e) {
+    return throwInnerError(e);
+  }
 };
 
-type runPythonCode = ({
-  code,
-  stdIn,
-}: {
-  code: string;
-  stdIn: string;
-}) => Promise<{ outputTxt: string; outputArr: string[] }>;
+// type runPythonCode = ({
+//   code,
+//   stdIn,
+// }: {
+//   code: string;
+//   stdIn: string;
+// }) => Promise<{ outputTxt: string; outputArr: string[] }>;
 
 interface checkEntities {
   code: string;
@@ -56,7 +64,7 @@ const getAstCleanCodeArr = async (code: string) => {
     });
     return outputArr;
   } catch (e) {
-    throw new Error();
+    return throwInnerError(e);
   }
 };
 
@@ -82,49 +90,36 @@ const checkEntities = async ({ code, entities }: checkEntities) => {
       // return codeLines.match(regex) != null;
     } else {
       const { nm, param, type } = allregex[item];
-      const { outputArr } = await runPythonCode({
-        code: ast({ code: onelinecode, nm, param, type }),
-        stdIn: "",
-      });
-
-      checks.push(outputArr[0] == "True");
+      try {
+        const { outputArr } = await runPythonCode({
+          code: ast({ code: onelinecode, nm, param, type }),
+          stdIn: "",
+        });
+        checks.push(outputArr[0] == "True");
+      } catch (e) {
+        throw new Error();
+      }
     }
   }
   return checks;
 };
 
-// const checkEntities = async ({ code, entities }: checkEntities) => {
-//   const onelinecode = await astSinglelineCleanCode(code);
-
-//   const checks = await Promise.all(
-//     entities.map(async (item) => {
-//       if (allregex[item].findmode == "regex") {
-//         //not used but kept on hold
-//         // const regex = new RegExp(allregex[item].rgx[0], "gs");
-//         // return codeLines.match(regex) != null;
-//       } else {
-//         const { nm, param, type } = allregex[item];
-//         const { outputArr } = await runPythonCode({
-//           code: ast({ code: onelinecode, nm, param, type }),
-//           stdIn: "",
-//         });
-
-//         return outputArr[0] == "True";
-//       }
-//     }),
-//   );
-//   return checks;
-// };
-
 const checkForbidden = async ({ code, entities }: checkEntities) => {
-  const checks = await checkEntities({ code, entities });
-
-  return !checks.some(Boolean);
+  try {
+    const checks = await checkEntities({ code, entities });
+    return !checks.some(Boolean);
+  } catch (e) {
+    return throwInnerError(e);
+  }
 };
 
 const checkMustHave = async ({ code, entities }: checkEntities) => {
-  const checks = await checkEntities({ code, entities });
-  return checks.every(Boolean);
+  try {
+    const checks = await checkEntities({ code, entities });
+    return checks.every(Boolean);
+  } catch (e) {
+    return throwInnerError(e);
+  }
 };
 
 const checkCode = async ({ code, task }: { code: string; task: Task }) => {
@@ -137,9 +132,10 @@ const checkCode = async ({ code, task }: { code: string; task: Task }) => {
       });
       results.push(eqArrays(outputArr, task.inout[i].outv));
     } catch (e) {
-      //TODO: three types of error handdlers should be here
-
-      return false;
+      //TODO: 2 types of error handdlers may be here:
+      //1)Syntax error
+      //2)pyodide suspended error
+      return throwInnerError(e);
     }
   }
   return results.every(Boolean);
@@ -154,24 +150,27 @@ export const runCheckers = async ({
   task: Task;
   skipcodecheck: boolean;
 }) => {
-  pyodide.setExecuting(true);
-  const codeChecked = !skipcodecheck ? await checkCode({ code, task }) : true;
-  const linesChecked = await checkLines({
-    code,
-    maxlines: task.restrictions.maxlines,
-  });
+  try {
+    const codeChecked = !skipcodecheck ? await checkCode({ code, task }) : true;
 
-  const mustHaveChecked = await checkMustHave({
-    code,
-    entities: task.restrictions.musthave,
-  });
+    const linesChecked = await checkLines({
+      code,
+      maxlines: task.restrictions.maxlines,
+    });
 
-  const forbiddenChecked = await checkForbidden({
-    code,
-    entities: task.restrictions.forbidden,
-  });
-  pyodide.setExecuting(false);
-  return { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked };
+    const mustHaveChecked = await checkMustHave({
+      code,
+      entities: task.restrictions.musthave,
+    });
+
+    const forbiddenChecked = await checkForbidden({
+      code,
+      entities: task.restrictions.forbidden,
+    });
+    return { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked };
+  } catch (e) {
+    return throwInnerError(e);
+  }
 };
 
 interface GetErrorMessage {
@@ -196,7 +195,7 @@ export const getErrorMessage = ({
     const errorMsg =
       L.ru.CE.CODE_ERROR_INTRO + errorList.join("") + L.ru.CE.CODE_ERROR_FOOTER;
 
-    throw new Error(E_CODES.INVALID_EMAIL_SIGNUP_ERROR, { cause: errorMsg });
+    throw new Error(E_CODES.TASK_CHECK_FAIL, { cause: errorMsg });
   }
   return "";
 };

@@ -46,15 +46,12 @@ import { Monaco } from "@monaco-editor/react";
 import {
   runPythonCode,
   runPythonCodeRace,
-  // runPythonCode2,
 } from "@/components/pyodide/pythonRunner";
 import themeSwitchStore from "@/components/common/themeswitch/themeSwitchStore";
-import { terminateWorker } from "@/components/pyodide/newWorkerAPI";
+import { E_CODES_DIALOG, finalErrorHandler } from "@/tpconst/src";
 
 interface Editors {
   defaultcode: string; //to refresh
-  // code: string;
-
   inv: string[]; //to refresh
   input: string;
 
@@ -157,7 +154,12 @@ class unitstore {
       });
       this.setOutput(monacoid, outputTxt);
     } catch (e) {
-      this.setOutput(monacoid, "Время выполнения превышено.");
+      const error = e as Error;
+      console.log("тута", error.message);
+      if (error.message == E_CODES_DIALOG.PYODIDE_SUSPENDED)
+        this.setOutput(monacoid, "Время выполнения превышено.");
+      if (error.message == E_CODES_DIALOG.PYODIDE_SINTAX_ERROR)
+        this.setOutput(monacoid, error.cause || "");
     }
     pyodide.setExecuting(false);
     this.setExecuting(monacoid, false);

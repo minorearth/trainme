@@ -14,7 +14,13 @@ class pyodide {
   }
 
   setExecuting(active: Boolean) {
-    this.executing = active;
+    if (active) {
+      this.executing = active;
+    } else {
+      setTimeout(() => {
+        this.executing = active;
+      }, 500);
+    }
   }
 
   setPyodideWorker(worker: any) {

@@ -1,3 +1,5 @@
+import { E_CODES_DIALOG, L, throwInnerErrorCause } from "@/tpconst/src";
+
 let pyodideWorker = null;
 
 export function ensureWorker() {
@@ -43,7 +45,12 @@ function requestResponse(worker, msg) {
     worker.removeEventListener("message", listener);
     const { id, ...rest } = event.data;
     if (rest.error) {
-      reject(new Error(rest.result));
+      console.log("sdas", L.ru.CE.error5 + rest.error);
+      reject(
+        new Error(E_CODES_DIALOG.PYODIDE_SINTAX_ERROR, {
+          cause: L.ru.CE.error5 + rest.result,
+        }),
+      );
     } else {
       resolve(rest.result);
     }

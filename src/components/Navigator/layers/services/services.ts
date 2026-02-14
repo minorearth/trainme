@@ -61,7 +61,7 @@ import { CourseProgressDB } from "@/tpconst/src/T";
 import { PG, ST, TSM } from "@/tpconst/src/const";
 import { Page, SuccessType } from "@/tpconst/src/T";
 import {
-  E_CODES,
+  E_CODES_DIALOG,
   finalErrorHandler,
   throwInnerError,
 } from "@/tpconst/src/errorHandlers";
@@ -74,10 +74,10 @@ export const openCourseFlowPageFromMain = async (courseid: string) => {
   try {
     splash.showProgress(false, "progressdots", 2000);
     const courseReady = checkCourseReady({ courseid });
-    if (!courseReady) throw Error(E_CODES.COURSE_IS_DISABLED);
+    if (!courseReady) throw Error(E_CODES_DIALOG.COURSE_IS_DISABLED);
 
     const coursePaid = await checkCoursePaid({ courseid, uid: user.userid });
-    if (!coursePaid) throw Error(E_CODES.COURSE_IS_NOT_PAID);
+    if (!coursePaid) throw Error(E_CODES_DIALOG.COURSE_IS_NOT_PAID);
 
     await openAndRefreshFlowPage({ courseid, refetchFlow: true });
   } catch (error) {
@@ -127,7 +127,7 @@ export const openLessonStartPage = async ({
     });
 
     if (unitsetmode == TSM.textbook && !tasks.length)
-      throw new Error(E_CODES.TEXTBOOK_BLOCKED);
+      throw new Error(E_CODES_DIALOG.TEXTBOOK_BLOCKED);
 
     unitset.setUnitSetUnits({ units: tasks });
     unit.setCurrUnit(tasks[0]);

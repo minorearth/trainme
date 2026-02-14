@@ -21,7 +21,7 @@ import {
 import { ST, TS, TSM } from "@/tpconst/src/const";
 import { dialogs } from "@/components/common/dialog/dialogMacro";
 import { L } from "@/tpconst/src/lang";
-import { E_CODES } from "@/tpconst/src/errorHandlers";
+import { E_CODES_DIALOG } from "@/tpconst/src/errorHandlers";
 
 export const nextUnitOrCompleteUnitsRun = async ({
   error,
@@ -138,7 +138,7 @@ export const errorCountDownPressed = async () => {
       });
     } else {
       dialogs.basic({
-        ...L.ru.msg[E_CODES.RECAP].params,
+        ...L.ru.msg[E_CODES_DIALOG.RECAP].params,
       });
       setRecapTasks({
         recapTasksIds: unitset.state.recapTasksIds,

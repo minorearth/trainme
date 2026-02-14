@@ -15,7 +15,11 @@ import {
   UserCredential,
 } from "firebase/auth";
 
-import { E_CODES, throwFBError, throwInnerError } from "../../../errorHandlers";
+import {
+  E_CODES_DIALOG,
+  throwFBError,
+  throwInnerError,
+} from "../../../errorHandlers";
 import { FirestoreError } from "firebase/firestore";
 import { initializeClient } from "./firebaseappClient";
 
@@ -66,7 +70,7 @@ export const launchAuthStateChangeMonitorDB = async (
     );
     return uid;
   } catch (e: unknown) {
-    throw new Error(E_CODES.EMAIL_NOT_VERIFIED);
+    throw new Error(E_CODES_DIALOG.EMAIL_NOT_VERIFIED);
   } finally {
     unsubscribe();
   }

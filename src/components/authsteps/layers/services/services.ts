@@ -16,11 +16,12 @@ import { CFT } from "@/components/common/customfield/types";
 // import { AppRouterInstance } from "";
 import { dialogs } from "@/components/common/dialog/dialogMacro";
 import { L } from "@/tpconst/src/lang";
-import { E_CODES, throwInnerError } from "@/tpconst/src/errorHandlers";
+import { E_CODES_DIALOG, throwInnerError } from "@/tpconst/src/errorHandlers";
+import { finalErrorHandler } from "@/tpconst/dist";
 
 export const signInSubmit = async (
   event: React.FormEvent<HTMLFormElement>,
-  router: AppRouterInstance
+  router: AppRouterInstance,
 ) => {
   event.preventDefault();
   if (txtField.validate([CFT.email, CFT.password])) {
@@ -35,12 +36,15 @@ export const signInSubmit = async (
   }
 };
 
-export const recoverPswSubmit = () => {
+export const recoverPswSubmit = async (
+  event: React.FormEvent<HTMLFormElement>,
+) => {
+  event.preventDefault();
   if (txtField.validate([CFT.email])) {
     try {
-      resetPsw(txtField.state.email.value);
+      await resetPsw(txtField.state.email.value);
       dialogs.action({
-        ...L.ru.msg[E_CODES.PSW_RECOVERY].params,
+        ...L.ru.msg[E_CODES_DIALOG.PSW_RECOVERY].params,
         action: () => authForm.showSignIn(),
       });
     } catch (e) {
@@ -50,18 +54,23 @@ export const recoverPswSubmit = () => {
 };
 
 export const signUpSubmit = async (
-  event: React.MouseEvent<HTMLButtonElement>
+  event: React.MouseEvent<HTMLButtonElement>,
 ) => {
   event.preventDefault();
   if (txtField.validate([CFT.email, CFT.password, CFT.name])) {
-    await signUp({
-      email: txtField.state.email.value,
-      password: txtField.state.password.value,
-      name: txtField.state.name.value,
-    });
-    dialogs.action({
-      ...L.ru.msg[E_CODES.ACCOUNT_CREATED].params,
-      action: () => authForm.showSignIn(),
-    });
+    try {
+      await signUp({
+        email: txtField.state.email.value,
+        password: txtField.state.password.value,
+        name: txtField.state.name.value,
+      });
+      dialogs.action({
+        ...L.ru.msg[E_CODES_DIALOG.ACCOUNT_CREATED].params,
+        action: () => authForm.showSignIn(),
+      });
+    } catch (e) {
+      const error = e as Error;
+      finalErrorHandler(error, dialogs, L.ru.msg);
+    }
   }
 };

@@ -13,7 +13,11 @@ import {
   DBFormats,
 } from "../../../T";
 
-import { throwFBError, throwInnerError, E_CODES } from "../../../errorHandlers";
+import {
+  throwFBError,
+  throwInnerError,
+  E_CODES_DIALOG,
+} from "../../../errorHandlers";
 
 import { CLT } from "../../../const";
 

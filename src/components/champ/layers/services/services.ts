@@ -32,7 +32,7 @@ import {
 import { ChampDB } from "@/tpconst/src/T";
 import { CS, PS, TSM } from "@/tpconst/src/const";
 import S from "@/globals/settings";
-import { E_CODES } from "@/tpconst/src/errorHandlers";
+import { E_CODES_DIALOG } from "@/tpconst/src/errorHandlers";
 import {
   finalErrorHandler,
   throwInnerError,
@@ -83,11 +83,13 @@ export const joinChamp = async () => {
           champid: champ.champid,
         });
       } catch (error) {
-        throw new Error(E_CODES.NO_CHAMP_FOUND_LIKELY);
+        throw new Error(E_CODES_DIALOG.NO_CHAMP_FOUND_LIKELY);
       }
     }
-    if (persstatus == PS.champwip) throw new Error(E_CODES.CHAMP_COMEBACK);
-    if (persstatus == PS.champisover) throw new Error(E_CODES.CHAMP_OVER);
+    if (persstatus == PS.champwip)
+      throw new Error(E_CODES_DIALOG.CHAMP_COMEBACK);
+    if (persstatus == PS.champisover)
+      throw new Error(E_CODES_DIALOG.CHAMP_OVER);
   } catch (error: unknown) {
     finalErrorHandler(error, dialogs, L.ru.msg);
   }

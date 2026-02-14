@@ -19,7 +19,7 @@ import {
 import { UNITSET_DEFAULTS } from "@/tpconst/src/typesdefaults";
 import { UnitsetMode } from "@/tpconst/src/T";
 import { L } from "@/tpconst/src/lang";
-import { E_CODES } from "@/tpconst/src/errorHandlers";
+import { E_CODES_DIALOG } from "@/tpconst/src/errorHandlers";
 
 const buyAction = ({
   unlocked,
@@ -34,17 +34,17 @@ const buyAction = ({
 }) => {
   if (!unlocked)
     dialogs.basic({
-      ...L.ru.msg[E_CODES.BLOCKED_AND_NOT_PAID].params,
+      ...L.ru.msg[E_CODES_DIALOG.BLOCKED_AND_NOT_PAID].params,
     });
 
   if (unlocked && rating < unlockpts)
     dialogs.basic({
-      ...L.ru.msg[E_CODES.NOT_PAID_NO_MONEY].params,
+      ...L.ru.msg[E_CODES_DIALOG.NOT_PAID_NO_MONEY].params,
     });
 
   if (unlocked && rating >= unlockpts && !progressCircle.shown)
     dialogs.action({
-      ...L.ru.msg[E_CODES.NOT_PAID_BUY].params,
+      ...L.ru.msg[E_CODES_DIALOG.NOT_PAID_BUY].params,
       action: () => buyChapter({ unlockpts, chapterid }),
     });
 };
@@ -68,7 +68,7 @@ const nodeAction = (data: NodeDataState) => {
   } else {
     if (!unlocked && !completed)
       dialogs.basic({
-        ...L.ru.msg[E_CODES.CHAPTER_BLOCKED].params,
+        ...L.ru.msg[E_CODES_DIALOG.CHAPTER_BLOCKED].params,
       });
 
     if (unlocked) {

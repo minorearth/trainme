@@ -30,7 +30,7 @@ import { CSP } from "@/tpconst/src/T";
 import { checkVersion } from "@/db/localstorageDB";
 import { PG, ST, TS, TSM } from "@/tpconst/src/const";
 import S from "@/globals/settings";
-import { E_CODES } from "@/tpconst/src/errorHandlers";
+import { E_CODES_DIALOG } from "@/tpconst/src/errorHandlers";
 
 //
 export const loadPyTrek = async () => {
@@ -97,7 +97,7 @@ const recoverTasks = async ({ CSP }: { CSP: CSP }) => {
 
   if (taskstage == TS.recapSuspended && unitsetmode != TSM.exam) {
     dialogs.basic({
-      ...L.ru.msg[E_CODES.RECAP].params,
+      ...L.ru.msg[E_CODES_DIALOG.RECAP].params,
     });
     unitset.setUnitSetStateP({ ...unitset.state, unitsetstage: TS.recap });
   }

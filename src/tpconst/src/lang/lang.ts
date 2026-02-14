@@ -1,5 +1,5 @@
-import { ECodeKey } from "../errorHandlers/errorCodes";
-const msg: { [K in ECodeKey]: { dialog: string; params: any } } = {
+import { EDialogCodeKey } from "../errorHandlers/errorCodes";
+const msg: { [K in EDialogCodeKey]: { dialog: string; params: any } } = {
   document_not_found: {
     dialog: "basic",
     params: { caption: "Ошибка", text: "Документ не найден" },
@@ -55,6 +55,14 @@ const msg: { [K in ECodeKey]: { dialog: string; params: any } } = {
     params: {
       caption: "Ваш аккаунт успешно создан!",
       text: "На ваш почтовый ящик выслано письмо, перейдите по ссылке в письме для активации аккаунта",
+    },
+  },
+
+  email_in_use_error: {
+    dialog: "basic",
+    params: {
+      caption: "Такой аккаунт уже существует",
+      text: "Используйте этот аккаунт для входа или сбросьте пароль, если забыли",
     },
   },
 
@@ -159,6 +167,22 @@ const msg: { [K in ECodeKey]: { dialog: string; params: any } } = {
     params: {
       caption: "Ограничения выполнены",
       text: "Ты молодец!",
+    },
+  },
+
+  pyodide_syntax_error: {
+    dialog: "basic",
+    params: {
+      caption: "Не можем проверить",
+      text: "Ошибка синтаксиса!",
+    },
+  },
+
+  pyodide_suspended: {
+    dialog: "basic",
+    params: {
+      caption: "Превышено время ожидания",
+      text: "Превышено время ожидания",
     },
   },
 

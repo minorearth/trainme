@@ -26,9 +26,9 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 //globals
 import S from "@/globals/settings";
 import {
-  E_CODES,
+  E_CODES_DIALOG,
   finalErrorHandler,
-  throwErrorValue,
+  throwInnerErrorCause,
   throwInnerError,
 } from "@/tpconst/src/errorHandlers";
 
@@ -58,14 +58,14 @@ export const signUp = async ({
     try {
       createNewUserMeta({ userId, data });
     } catch (e) {
-      throw throwErrorValue(
-        E_CODES.PROCEDURE_ERROR,
+      throw throwInnerErrorCause(
+        E_CODES_DIALOG.PROCEDURE_ERROR,
         `usermetaCreationError: ${JSON.stringify(data)}`,
       );
     }
     return userId;
-  } catch (e: unknown) {
-    finalErrorHandler(e, dialogs, L.ru.msg);
+  } catch (error) {
+    throw throwInnerError(error);
   }
 };
 
@@ -104,14 +104,15 @@ const actionOnAuthChanged = async (
   emailVerified: boolean,
   // login: (value: string) => Promise<void>
 ) => {
+  console.log("zubrovka");
   if (emailVerified && uid) {
     await login("teacher");
     resolved(uid);
   } else if (!uid) {
-    rejected(E_CODES.NO_USER);
+    rejected(E_CODES_DIALOG.NO_USER);
     logout();
   } else {
-    rejected(E_CODES.EMAIL_NOT_VERIFIED);
+    rejected(E_CODES_DIALOG.EMAIL_NOT_VERIFIED);
   }
 };
 

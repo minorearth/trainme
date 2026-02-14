@@ -8,7 +8,7 @@ import {
   throwFetchAPIError,
   throwInnerError,
 } from "@/tpconst/src/errorHandlers";
-import { E_CODES } from "@/tpconst/src/errorHandlers";
+import { E_CODES_DIALOG } from "@/tpconst/src/errorHandlers";
 
 export const wakeUp = () => {
   fetch("/api/wakeup", {
@@ -20,7 +20,7 @@ export const wakeUp = () => {
   })
     .then((res) => console.info("Pinged API to keep awake"))
     .catch((error) => {
-      throw throwInnerError(new Error(E_CODES.WAKEUP_API_FAILED));
+      throw throwInnerError(new Error(E_CODES_DIALOG.WAKEUP_API_FAILED));
     });
 };
 

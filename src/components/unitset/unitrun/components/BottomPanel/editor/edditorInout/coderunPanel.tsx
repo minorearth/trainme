@@ -41,7 +41,9 @@ const CodeRunPanel = observer(({ monacoid }: { monacoid: number }) => {
         // <IconButtonNoRipple disabled={task.monacostore.executing}>
         <IconButtonNoRipple
           disabled={
-            unit.editors[monacoid].codepart == "" || pyodide.executing == true
+            unit.editors[monacoid].codepart == "" ||
+            pyodide.executing == true ||
+            !pyodide.worker
           }
         >
           <Tooltip title={L.ru.TT.CODE_RUN}>
@@ -59,7 +61,9 @@ const CodeRunPanel = observer(({ monacoid }: { monacoid: number }) => {
         // <IconButtonNoRipple disabled={task.monacostore.executing}>
         <IconButtonNoRipple
           disabled={
-            unit.editors[monacoid].codepart == "" || pyodide.executing == true
+            unit.editors[monacoid].codepart == "" ||
+            pyodide.executing == true ||
+            !pyodide.worker
           }
         >
           <Tooltip title={L.ru.TT.CODE_RUN}>
@@ -75,29 +79,12 @@ const CodeRunPanel = observer(({ monacoid }: { monacoid: number }) => {
           </Tooltip>
         </IconButtonNoRipple>
       )}
-      {/* {!countdownbutton.state.visible && (
-        //TODO:
-        // <IconButtonNoRipple disabled={task.monacostore.executing}>
-        <IconButtonNoRipple disabled={!pyodide.executing}>
-          <Tooltip title={L.ru.TT.CODE_RUN}>
-            <StopCircleOutlinedIcon
-              sx={{
-                fontSize: "40px",
-                // marginLeft: "25px",
-              }}
-              onClick={async (e) => {
-                const worker = terminateWorker();
-                pyodide.setPyodideWorker(worker);
-                pyodide.setExecuting(false);
-              }}
-            />
-          </Tooltip>
-        </IconButtonNoRipple>
-      )} */}
       {!countdownbutton.state.visible && unit.currUnit.unittype == TT.task && (
         <IconButtonNoRipple
           disabled={
-            unit.editors[monacoid].codepart == "" || pyodide.executing == true
+            unit.editors[monacoid].codepart == "" ||
+            pyodide.executing == true ||
+            !pyodide.worker
           }
         >
           <Tooltip title={L.ru.TT.CODE_RUN}>

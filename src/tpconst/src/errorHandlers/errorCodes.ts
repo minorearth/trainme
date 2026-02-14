@@ -1,4 +1,10 @@
 export const E_CODES = {
+  TASK_CHECK_FAIL: "task_check_fail",
+} as const;
+
+export const E_CODES_DIALOG = {
+  PYODIDE_SUSPENDED: "pyodide_suspended",
+  PYODIDE_SINTAX_ERROR: "pyodide_syntax_error",
   RESTRICTIONS_PASSED: "restrictions_passed",
   RESTRICTIONS_NOT_PASSED: "restrictions_not_passed",
   NO_USER: "no_user",
@@ -9,6 +15,7 @@ export const E_CODES = {
   UNKNOWN_ERROR: "unknown_error",
   UNKNOWN_FETCH_ERROR: "unknown_fetch_error",
   INVALID_EMAIL_SIGNUP_ERROR: "invalid_email_signup_error",
+  EMAIL_IN_USE_ERROR: "email_in_use_error",
   UNKNOWN_SIGNUP_ERROR: "unknown_auth_signup_error",
   NOT_ENOUGHT_TASKS_ERROR: "not_enought_tasks",
   DOCUMENT_NOT_FOUND: "document_not_found",
@@ -30,10 +37,12 @@ export const E_CODES = {
   RECAP: "recap",
 } as const;
 
-export type ECodeKey = (typeof E_CODES)[keyof typeof E_CODES];
+export type EDialogCodeKey =
+  (typeof E_CODES_DIALOG)[keyof typeof E_CODES_DIALOG];
 
 export const E_FB_CODES = {
   INVALID_SIGNIN_CREDENTIALS: "auth/invalid-credential",
   INVALID_SIGNUP_EMAIL: "auth/invalid-email",
+  EMAIL_IN_USE: "auth/email-already-in-use",
   NOT_FOUND: 5,
 };

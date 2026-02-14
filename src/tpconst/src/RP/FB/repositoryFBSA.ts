@@ -10,7 +10,11 @@ import { v4 as uuidv4 } from "uuid";
 
 //utils
 import { decrypt2 } from "../../utils";
-import { E_CODES, throwErrorValue, throwInnerError } from "../../errorHandlers";
+import {
+  E_CODES_DIALOG,
+  throwInnerErrorCause,
+  throwInnerError,
+} from "../../errorHandlers";
 import { CourseProgressDB, UserMetaDB } from "../../T";
 import { CLT } from "../../const";
 import { ETLUserProgress, taskLogToDBFormat } from "./ETL";
@@ -20,7 +24,7 @@ const decryptData2 = (dataEncrypted: string) => {
     const decyptedData = decrypt2(dataEncrypted);
     return decyptedData;
   } catch (error) {
-    throw throwInnerError(new Error(E_CODES.DECRYPTION_FAILED));
+    throw throwInnerError(new Error(E_CODES_DIALOG.DECRYPTION_FAILED));
   }
 };
 
@@ -312,7 +316,7 @@ export const getPaymentIdDBSA = async (data: string) => {
 
   const response = await fetch(
     "https://api.yookassa.ru/v3/payments",
-    requestOptions
+    requestOptions,
   );
   const res = await response.json();
   return res.confirmation.confirmation_token;
@@ -328,7 +332,10 @@ export const getUserCourseMetaDBSA = async (id: string, courseid: string) => {
     try {
       userProgress = ETLUserProgress(data.courses[courseid]);
     } catch (error) {
-      throw throwErrorValue(E_CODES.PROCEDURE_ERROR, "ETLUserProgress");
+      throw throwInnerErrorCause(
+        E_CODES_DIALOG.PROCEDURE_ERROR,
+        "ETLUserProgress",
+      );
     }
     return userProgress;
   } catch (error) {
