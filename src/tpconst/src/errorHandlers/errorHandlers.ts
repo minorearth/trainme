@@ -73,7 +73,7 @@ export const finalErrorHandler = (
   }
   const params = {
     ...errorParams.params,
-    ...(error.cause as {}),
+    cause: error.cause,
   };
   dialogs[errorParams.dialog](params);
   return;
