@@ -40,7 +40,7 @@ const checkLines = async ({ code, maxlines }: CheckLines) => {
     const outputArr = await getAstCleanCodeArr(code);
     return maxlines >= outputArr.length;
   } catch (e) {
-    return throwInnerError(e);
+    throw throwInnerError(e);
   }
 };
 
@@ -64,7 +64,7 @@ const getAstCleanCodeArr = async (code: string) => {
     });
     return outputArr;
   } catch (e) {
-    return throwInnerError(e);
+    throw throwInnerError(e);
   }
 };
 
@@ -109,7 +109,7 @@ const checkForbidden = async ({ code, entities }: checkEntities) => {
     const checks = await checkEntities({ code, entities });
     return !checks.some(Boolean);
   } catch (e) {
-    return throwInnerError(e);
+    throw throwInnerError(e);
   }
 };
 
@@ -118,7 +118,7 @@ const checkMustHave = async ({ code, entities }: checkEntities) => {
     const checks = await checkEntities({ code, entities });
     return checks.every(Boolean);
   } catch (e) {
-    return throwInnerError(e);
+    throw throwInnerError(e);
   }
 };
 
@@ -135,7 +135,7 @@ const checkCode = async ({ code, task }: { code: string; task: Task }) => {
       //TODO: 2 types of error handdlers may be here:
       //1)Syntax error
       //2)pyodide suspended error
-      return throwInnerError(e);
+      throw throwInnerError(e);
     }
   }
   return results.every(Boolean);
@@ -169,7 +169,7 @@ export const runCheckers = async ({
     });
     return { codeChecked, linesChecked, mustHaveChecked, forbiddenChecked };
   } catch (e) {
-    return throwInnerError(e);
+    throw throwInnerError(e);
   }
 };
 

@@ -26,7 +26,7 @@ const performTests = async ({ skipcodecheck }: { skipcodecheck: boolean }) => {
     });
     return res;
   } catch (e) {
-    return throwInnerError(e);
+    throw throwInnerError(e);
   }
 };
 
