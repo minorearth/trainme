@@ -8,7 +8,9 @@ export async function POST() {
   try {
     const res = "wakeup";
     return NextResponse.json({ res });
+    console.log("wake up passed");
   } catch (error) {
+    console.log("wake up fail");
     return NextResponse.json(getNextErrorResponse(error), { status: 500 });
   }
 }
