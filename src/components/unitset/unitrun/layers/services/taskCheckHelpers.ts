@@ -2,7 +2,7 @@ import { L } from "@/tpconst/src/lang";
 
 import { eqArrays } from "@/tpconst/src/utils";
 import { Task } from "@/tpconst/src/T";
-import { allregex } from "@/components/unitset/layers/services/allregex";
+import { allregex } from "@/components/unitset/layers/services/pythonEntities";
 import {
   ast,
   astClean,
@@ -59,6 +59,7 @@ interface checkEntities {
 
 const getAstCleanCodeArr = async (code: string) => {
   try {
+    console.log(code);
     const outputArr = await runApprovedPythonCode({
       code: astClean({ code: JSON.stringify(code) }),
     });

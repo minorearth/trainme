@@ -1,6 +1,7 @@
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import HomeIcon from "@mui/icons-material/Home";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+import TerminalIcon from "@mui/icons-material/Terminal";
 
 const Icon2State = ({
   visible,
@@ -20,6 +21,12 @@ const Icon2State = ({
 
   if (icon == "home")
     return !visible ? <HomeIcon sx={{ ...sx }} /> : <HomeIcon sx={{ ...sx }} />;
+  if (icon == "pg")
+    return !visible ? (
+      <TerminalIcon sx={{ ...sx }} />
+    ) : (
+      <TerminalIcon sx={{ ...sx }} />
+    );
   if (icon == "close")
     return !visible ? (
       <ExitToAppIcon sx={{ ...sx }} />

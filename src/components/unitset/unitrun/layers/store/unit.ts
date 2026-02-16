@@ -11,6 +11,7 @@ interface HandleEditorDidMount {
   monaco: Monaco | null;
   monacoid: number;
   containerRef: any;
+  autolayout: boolean;
 }
 
 interface HandleViewerDidMount {
@@ -54,9 +55,7 @@ interface Editors {
   defaultcode: string; //to refresh
   inv: string[]; //to refresh
   input: string;
-
   output: string;
-
   unittype: string;
   monacoRef: React.RefObject<Monaco | null>;
   editorRef: React.RefObject<editor.IStandaloneCodeEditor | null>;
@@ -112,6 +111,20 @@ class unitstore {
         },
       ] as Editors[];
     }
+  }
+
+  setPGState() {
+    this.editors = [
+      {
+        codepart: "\n\n\n",
+        defaultcode: "",
+        unittype: "pg",
+        input: "",
+        output: "",
+        filedata: "",
+        inv: [""],
+      },
+    ] as Editors[];
   }
 
   eraseState() {
@@ -185,6 +198,7 @@ class unitstore {
     monaco,
     monacoid,
     containerRef,
+    autolayout,
   }: HandleEditorDidMount) {
     this.editors[monacoid].monacoRef = React.createRef();
     this.editors[monacoid].editorRef = React.createRef();
@@ -194,7 +208,7 @@ class unitstore {
     this.defineTheme(monaco);
     this.setDarkTheme(monaco, themeSwitchStore.darkmode);
 
-    if (editor) {
+    if (editor && autolayout) {
       editor.onDidContentSizeChange((e) => {
         const newHeight = e.contentHeight;
         editor.layout({

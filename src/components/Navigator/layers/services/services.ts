@@ -65,6 +65,7 @@ import {
   finalErrorHandler,
   throwInnerError,
 } from "@/tpconst/src/errorHandlers";
+import S from "@/globals/settings";
 
 export const openAllCoursePage = () => {
   setAllCoursePageState();
@@ -195,6 +196,11 @@ export const closeCongratPage = async () => {
     openChampPage();
   }
   splash.closeProgress();
+};
+
+export const gotoPG = async (router: AppRouterInstance) => {
+  splash.showProgress(false, "progressdots", 0);
+  router.push(`/${S.P.PG}/`);
 };
 
 export const interruptUnitSet = () => {

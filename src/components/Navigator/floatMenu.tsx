@@ -12,6 +12,7 @@ import { PG } from "@/tpconst/src/const";
 import { L } from "@/tpconst/src/lang";
 const RIGHT = 16;
 const TOP = 16;
+const BOTTOM = 16;
 
 const FloatMenu = () => {
   const router = useRouter();
@@ -43,6 +44,15 @@ const FloatMenu = () => {
           navigator.actions.openLoginPageSignOut(router);
         }}
         style={{ top: TOP, right: RIGHT }}
+      />
+
+      <FabAnimated
+        tooltip={L.ru.TT.PG}
+        icon="pg"
+        action={() => {
+          navigator.actions.gotoPG(router);
+        }}
+        style={{ top: BOTTOM, right: RIGHT + S.ui.FLOAT_BTN_PADDING }}
       />
 
       {navigator.state.page == PG.champ && (

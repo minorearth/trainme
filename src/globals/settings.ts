@@ -26,6 +26,7 @@ export const S = {
     LOGIN: "login",
     CHAPTERS: "chapters",
     GROUPS: "groups",
+    PG: "pg",
     DASHBOARD: "dashboard",
     SETMETA: `/api/setmeta`,
     GETMETA: "/api/getmeta",

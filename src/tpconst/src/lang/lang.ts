@@ -250,6 +250,7 @@ export const L = {
       INTERRUPT_CHAPTER: "Заверить прохождение",
 
       EXIT: "Выйти",
+      PG: "Редактор кода",
     },
     links: {
       AUTH_REMEMBER: "Вспомнил!",

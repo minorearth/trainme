@@ -56,29 +56,31 @@ const CodeRunPanel = observer(({ monacoid }: { monacoid: number }) => {
           </Tooltip>
         </IconButtonNoRipple>
       )}
-      {!countdownbutton.state.visible && unit.currUnit.unittype == TT.task && (
-        //TODO:
-        // <IconButtonNoRipple disabled={task.monacostore.executing}>
-        <IconButtonNoRipple
-          disabled={
-            unit.editors[monacoid].codepart == "" ||
-            pyodide.executing == true ||
-            !pyodide.worker
-          }
-        >
-          <Tooltip title={L.ru.TT.CODE_RUN}>
-            <PlaylistAddCheckCircleOutlinedIcon
-              sx={{
-                fontSize: "40px",
-                // marginLeft: "25px",
-              }}
-              onClick={(e) => {
-                preCheckTaskAction();
-              }}
-            />
-          </Tooltip>
-        </IconButtonNoRipple>
-      )}
+      {!countdownbutton.state.visible &&
+        unit.currUnit.unittype == TT.task &&
+        unit.editors[monacoid].unittype != "pg" && (
+          //TODO:
+          // <IconButtonNoRipple disabled={task.monacostore.executing}>
+          <IconButtonNoRipple
+            disabled={
+              unit.editors[monacoid].codepart == "" ||
+              pyodide.executing == true ||
+              !pyodide.worker
+            }
+          >
+            <Tooltip title={L.ru.TT.CODE_RUN}>
+              <PlaylistAddCheckCircleOutlinedIcon
+                sx={{
+                  fontSize: "40px",
+                  // marginLeft: "25px",
+                }}
+                onClick={(e) => {
+                  preCheckTaskAction();
+                }}
+              />
+            </Tooltip>
+          </IconButtonNoRipple>
+        )}
       {!countdownbutton.state.visible && unit.currUnit.unittype == TT.task && (
         <IconButtonNoRipple
           disabled={

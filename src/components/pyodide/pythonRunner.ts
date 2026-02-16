@@ -40,7 +40,7 @@ export const runPythonCode = async ({
 };
 
 export const runApprovedPythonCode = async ({ code }: { code: string }) => {
-  console.log("im here2");
+  console.log("im here2", code);
 
   try {
     return await asyncRun(code, "", pyodide.worker);

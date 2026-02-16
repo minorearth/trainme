@@ -3,7 +3,7 @@ import { fetchFile } from "@/app/api/apicalls/apicalls";
 import { Guide, GuideDBWithFiles, Task, TaskDB, UnitDB } from "@/tpconst/src/T";
 import { TaskDBWithFiles } from "@/tpconst/src/T";
 import { TT } from "@/tpconst/src/const";
-import { allregex } from "./allregex";
+import { allregex } from "./pythonEntities";
 
 export const supplyFilesAndTransform = async (units: UnitDB[]) => {
   const unitsWithFiles = await supplyWithFilesData(units);
@@ -150,8 +150,6 @@ const getUnitFilesData = async ({
   );
   return filesAndUrls;
 };
-
-// "https://hog6lcngzkudsdma.public.blob.vercel-storage.com/a3905595-437e-47f3-b749-28ea5362bd39/d06b8c0d-4837-484a-ad85-9257e0e6af01/" +
 
 const extractFileNames = ({ units }: { units: UnitDB[] }) => {
   const files: FileNamesAndUrls = {};

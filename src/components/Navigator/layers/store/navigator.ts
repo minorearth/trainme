@@ -12,6 +12,7 @@ import {
   openLoginPageSignOut,
   openChampPage,
   interruptUnitSet,
+  gotoPG,
 } from "@/components/Navigator/layers/services/services";
 import splash from "@/components/common/splash/store";
 import { NavigatorStatePersisted } from "@/tpconst/src/T";
@@ -30,6 +31,7 @@ class navigator {
     openLoginPageSignOut,
     openChampPage,
     interruptUnitSet,
+    gotoPG,
   };
   state: NavigatorStatePersisted = { page: PG.courses };
   dataloaded = false;

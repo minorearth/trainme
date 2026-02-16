@@ -11,7 +11,8 @@ export function middleware(request: NextRequest) {
     !session &&
     (request.nextUrl.pathname.startsWith(`/${S.P.CHAPTERS}`) ||
       request.nextUrl.pathname.startsWith(`/${S.P.GROUPS}`) ||
-      request.nextUrl.pathname.startsWith(`/${S.P.JOINGROUP}`))
+      request.nextUrl.pathname.startsWith(`/${S.P.JOINGROUP}`) ||
+      request.nextUrl.pathname.startsWith(`/${S.P.PG}`))
   ) {
     return Response.redirect(new URL("/", request.url));
   }

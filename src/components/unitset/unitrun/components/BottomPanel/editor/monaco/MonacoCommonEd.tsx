@@ -97,6 +97,7 @@ const MonacoCommonEd = observer(
               monaco,
               monacoid,
               containerRef,
+              autolayout: true,
             })
           }
         />
