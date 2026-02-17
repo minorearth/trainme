@@ -23,8 +23,8 @@ const PG = observer(({ monacoid }: { monacoid: number }) => {
   return (
     <Box
       sx={{
-        width: "100%",
-        height: "100%",
+        width: "99%",
+        height: "99%",
         display: "flex",
         flexDirection: "column",
         // backgroundColor: theme.palette.background.default,

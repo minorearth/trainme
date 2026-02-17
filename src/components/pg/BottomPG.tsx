@@ -20,7 +20,7 @@ const BottomPG = observer(({ monacoid }: { monacoid: number }) => {
       container
       spacing={2}
       columns={{ xs: 1, md: 2 }}
-      sx={{ width: "100%", height: "100vh" }}
+      sx={{ width: "100%", height: "100%" }}
     >
       <Grid size={{ xs: 1, md: 2 }}>
         <Box
@@ -59,6 +59,7 @@ const BottomPG = observer(({ monacoid }: { monacoid: number }) => {
               <Editor
                 key={`monacoid${monacoid}${unit.currUnit.unituuid}`}
                 width="100%"
+                height="100%"
                 // theme={"dark"}
                 options={{ ...EditorOptions, lineNumbers: "on" }}
                 language="python"
@@ -89,7 +90,7 @@ const BottomPG = observer(({ monacoid }: { monacoid: number }) => {
               justifyContent: "flex-end",
               justifyItems: "flex-end",
               alignItems: "center",
-              height: "25%",
+              height: "30%",
               width: "100%",
             }}
           >

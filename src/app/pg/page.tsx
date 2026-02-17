@@ -29,14 +29,12 @@ const Page = observer(({}) => {
   }, []);
 
   return (
-    <>
-      <ThemeProvider theme={customTheme}>
-        <CssBaseline />
-        {!!user.userid && unit.editors.length != 0 && (
-          <PG key={"Monaco_editor_task"} monacoid={0} />
-        )}
-      </ThemeProvider>
-    </>
+    <ThemeProvider theme={customTheme}>
+      <CssBaseline />
+      {!!user.userid && unit.editors.length != 0 && (
+        <PG key={"Monaco_editor_task"} monacoid={0} />
+      )}
+    </ThemeProvider>
   );
 });
 
