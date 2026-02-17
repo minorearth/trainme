@@ -14,9 +14,12 @@ import PG from "@/components/pg/PG";
 import unit from "@/components/unitset/unitrun/layers/store/unit";
 import { Panel } from "@/components/common/panel";
 import { L } from "@/tpconst/src";
+import usePyodide from "@/components/pyodide/usePyodide";
 
 const Page = observer(({}) => {
   const { customTheme } = useCustomTheme();
+  usePyodide();
+
   useEffect(() => {
     startUidMonitor(
       (id) => user.setUserid(id),
@@ -29,8 +32,8 @@ const Page = observer(({}) => {
     <>
       <ThemeProvider theme={customTheme}>
         <CssBaseline />
-        {!!user.userid && unit.editors[0] && (
-          <PG key={"Monaco_editor_task"} monacoid={0} errorHandler={() => {}} />
+        {!!user.userid && unit.editors.length != 0 && (
+          <PG key={"Monaco_editor_task"} monacoid={0} />
         )}
       </ThemeProvider>
     </>

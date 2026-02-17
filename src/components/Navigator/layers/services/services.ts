@@ -203,6 +203,11 @@ export const gotoPG = async (router: AppRouterInstance) => {
   router.push(`/${S.P.PG}/`);
 };
 
+export const gotoCoursespage = async (router: AppRouterInstance) => {
+  splash.showProgress(false, "progressdots", 0);
+  router.push(`/${S.P.CHAPTERS}/`);
+};
+
 export const interruptUnitSet = () => {
   const { unitsetmode } = unitset.state;
   if (unitsetmode != TSM.textbook) {

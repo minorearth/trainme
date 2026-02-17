@@ -13,6 +13,7 @@ import {
   openChampPage,
   interruptUnitSet,
   gotoPG,
+  gotoCoursespage,
 } from "@/components/Navigator/layers/services/services";
 import splash from "@/components/common/splash/store";
 import { NavigatorStatePersisted } from "@/tpconst/src/T";
@@ -32,6 +33,7 @@ class navigator {
     openChampPage,
     interruptUnitSet,
     gotoPG,
+    gotoCoursespage,
   };
   state: NavigatorStatePersisted = { page: PG.courses };
   dataloaded = false;

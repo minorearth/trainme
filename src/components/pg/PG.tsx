@@ -12,102 +12,28 @@ import { EditorOptions } from "../unitset/unitrun/components/BottomPanel/editor/
 import FloatMenu from "../Navigator/floatMenu";
 import DLSwitch from "../common/themeswitch/themeSwitch";
 import { Panel } from "../common/panel";
+import BottomPG from "./BottomPG";
+import { useTheme } from "styled-components";
+import TopPG from "./TopPG";
 
-const PG = observer((props: any) => {
-  usePyodide();
+const PG = observer(({ monacoid }: { monacoid: number }) => {
+  console.log("render");
 
-  const { monacoid } = props;
+  // const theme = useTheme();
   return (
-    <Grid
-      container
-      spacing={2}
-      columns={{ xs: 1, md: 2 }}
-      sx={{ width: "100%", height: "100vh" }}
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        // backgroundColor: theme.palette.background.default,
+        padding: "6px",
+      }}
     >
-      <Grid size={{ xs: 1, md: 2 }}>
-        <Box
-          key={`codepanel${monacoid}`}
-          sx={{
-            flexDirection: "column",
-            display: "flex",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            height: "100%",
-            width: "100%",
-            position: "relative",
-            margin: "10px",
-            // flex: 1,
-          }}
-        >
-          <FloatMenu />
-          <DLSwitch
-            sx={{
-              position: "absolute",
-              top: "80px",
-              right: "5px",
-              zIndex: 1000,
-            }}
-          />
-          <Box
-            sx={{
-              flexDirection: "column",
-              display: "flex",
-              // justifyContent: "flex-end",
-              // justifyItems: "flex-end",
-              // alignItems: "center",
-              height: "70%",
-              width: "100%",
-              overflowY: "scroll",
-              // maxHeight: "700px",
-              // padding: "20px",
-
-              // flex: 1,
-            }}
-          >
-            <Panel label={L.ru.TR.EDITOR} sx={{ height: "100%" }}>
-              <Editor
-                key={`monacoid${monacoid}${unit.currUnit.unituuid}`}
-                width="100%"
-                // theme={"dark"}
-                options={{ ...EditorOptions, lineNumbers: "on" }}
-                language="python"
-                onChange={(value) =>
-                  unit.handleChangeMonacoContent(
-                    value || "",
-                    monacoid,
-                    () => {},
-                  )
-                }
-                onMount={(editor, monaco) =>
-                  unit.handleEditorDidMount({
-                    autolayout: false,
-                    editor,
-                    monaco,
-                    monacoid,
-                    containerRef: null,
-                  })
-                }
-              />
-            </Panel>
-          </Box>
-          <Box
-            key={`InOutRunPanel${monacoid}`}
-            sx={{
-              flexDirection: "column",
-              display: "flex",
-              justifyContent: "flex-end",
-              justifyItems: "flex-end",
-              alignItems: "center",
-              height: "25%",
-              width: "100%",
-            }}
-          >
-            <CodeRunPanel monacoid={monacoid} key={`codePanel${monacoid}`} />
-            <InOutPanel monacoid={monacoid} key={`InOutRunPanel${monacoid}`} />
-          </Box>
-        </Box>
-      </Grid>
-    </Grid>
+      <TopPG />
+      <BottomPG monacoid={monacoid} />
+    </Box>
   );
 });
 
