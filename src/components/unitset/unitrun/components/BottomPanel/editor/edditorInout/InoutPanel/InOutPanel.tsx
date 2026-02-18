@@ -3,8 +3,11 @@ import Grid from "@mui/material/Grid2";
 import { observer } from "mobx-react-lite";
 import InPanel from "./InPanel";
 import OutPanel from "./OutPanel";
+import { useMediaQuery } from "@uidotdev/usehooks";
 
 const InOutPanel = observer(({ monacoid }: { monacoid: number }) => {
+  const isMobile = useMediaQuery("(max-width:600px)"); // например, для мобильных
+
   return (
     <Grid
       container
@@ -14,7 +17,7 @@ const InOutPanel = observer(({ monacoid }: { monacoid: number }) => {
         width: "100%",
         // display: "flex",
         // flex: "1",
-        height: "170px",
+        height: isMobile ? "340px" : "170px",
       }}
     >
       <Grid

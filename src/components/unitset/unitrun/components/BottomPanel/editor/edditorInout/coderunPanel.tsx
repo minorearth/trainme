@@ -25,7 +25,6 @@ import { preCheckTaskAction } from "@/components/unitset/unitrun/layers/services
 import { toJS } from "mobx";
 //TODO: add task version(must)
 const CodeRunPanel = observer(({ monacoid }: { monacoid: number }) => {
-  console.log("unit.editors", toJS(unit.editors), monacoid);
   return (
     <Box
       sx={{

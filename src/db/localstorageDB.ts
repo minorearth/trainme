@@ -13,6 +13,14 @@ export const setCSP = (state: CSP) => {
   }
 };
 
+export const setCodePersistance = (data: string) => {
+  localStorage.setItem(S.ls.CODE, data);
+};
+
+export const loadCodePersistance = () => {
+  return localStorage.getItem(S.ls.CODE);
+};
+
 export const cleanUpCSP = () => {
   localStorage.setItem(S.ls.STATE, JSON.stringify(CSP_DEFAULTS));
   return CSP_DEFAULTS;

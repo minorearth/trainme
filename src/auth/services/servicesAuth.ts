@@ -104,7 +104,6 @@ const actionOnAuthChanged = async (
   emailVerified: boolean,
   // login: (value: string) => Promise<void>
 ) => {
-  console.log("zubrovka");
   if (emailVerified && uid) {
     await login("teacher");
     resolved(uid);

@@ -16,9 +16,10 @@ import BottomPG from "./BottomPG";
 import { useTheme } from "styled-components";
 import TopPG from "./TopPG";
 import { useEffect } from "react";
+import { TextDiffLogger } from "./log";
+import DropZone from "./dropzone";
 
 const PG = observer(({ monacoid }: { monacoid: number }) => {
-  console.log("render");
   useEffect(() => {
     unit.setPGState();
   }, []);
@@ -32,13 +33,25 @@ const PG = observer(({ monacoid }: { monacoid: number }) => {
             width: "100%",
             height: "100%",
             display: "flex",
-            flexDirection: "column",
+            flexDirection: "row",
             // backgroundColor: theme.palette.background.default,
             padding: "6px",
           }}
         >
-          <TopPG />
-          <BottomPG monacoid={monacoid} />
+          <Box
+            sx={{
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              // backgroundColor: theme.palette.background.default,
+              padding: "6px",
+            }}
+          >
+            <TopPG />
+            <BottomPG monacoid={monacoid} />
+          </Box>
+          <TextDiffLogger />
         </Box>
       )}
     </>

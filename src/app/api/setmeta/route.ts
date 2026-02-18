@@ -31,7 +31,6 @@ export async function POST(request: Request) {
     }
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
-    console.log("hz");
     return NextResponse.json(getNextErrorResponse(error), { status: 500 });
   }
 }

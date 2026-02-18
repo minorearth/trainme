@@ -91,12 +91,7 @@ export const preCheckTaskAction = async () => {
     }
   } catch (e) {
     const error = e as Error;
-    console.log(
-      "asdaasd",
-      error.message,
-      error.message == E_CODES_DIALOG.PYODIDE_SINTAX_ERROR,
-      E_CODES_DIALOG.PYODIDE_SINTAX_ERROR,
-    );
+
     if (error.message == E_CODES_DIALOG.PYODIDE_SINTAX_ERROR) {
       dialogs.basic({
         ...L.ru.msg[E_CODES_DIALOG.PYODIDE_SINTAX_ERROR].params,

@@ -40,11 +40,11 @@ self.onmessage = async (event) => {
   const globals = dict();
 
   try {
-    console.log(
-      "zu",
-      code +
-        "\nimport os\nimport sys\nsys.stdout.flush()\nos.fsync(sys.stdout.fileno())",
-    );
+    // console.log(
+    //   "zu",
+    //   code +
+    //     "\nimport os\nimport sys\nsys.stdout.flush()\nos.fsync(sys.stdout.fileno())",
+    // );
     await pyodide.runPythonAsync(
       code +
         "\nimport os\nimport sys\nsys.stdout.flush()\nos.fsync(sys.stdout.fileno())",

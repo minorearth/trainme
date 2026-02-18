@@ -50,6 +50,7 @@ import {
 } from "@/components/pyodide/pythonRunner";
 import themeSwitchStore from "@/components/common/themeswitch/themeSwitchStore";
 import { E_CODES_DIALOG, finalErrorHandler } from "@/tpconst/src";
+import { loadCodePersistance, setCodePersistance } from "@/db/localstorageDB";
 
 interface Editors {
   defaultcode: string; //to refresh
@@ -98,7 +99,7 @@ class unitstore {
           info: "",
         };
       }) as Editors[];
-    } else {
+    } else if (unit.unittype == "task") {
       this.editors = [
         {
           codepart: unit.defaultcode,
@@ -110,13 +111,14 @@ class unitstore {
           inv: unit.inout[0].inv,
         },
       ] as Editors[];
+    } else {
     }
   }
 
   setPGState() {
     this.editors = [
       {
-        codepart: "\n\n\n",
+        codepart: loadCodePersistance(),
         defaultcode: "",
         unittype: "pg",
         input: "",
@@ -168,7 +170,6 @@ class unitstore {
       this.setOutput(monacoid, outputTxt);
     } catch (e) {
       const error = e as Error;
-      console.log("тута", error.message);
       if (error.message == E_CODES_DIALOG.PYODIDE_SUSPENDED)
         this.setOutput(monacoid, "Время выполнения превышено.");
       if (error.message == E_CODES_DIALOG.PYODIDE_SINTAX_ERROR)
@@ -191,6 +192,7 @@ class unitstore {
   ) => {
     errorHandler();
     this.editors[monacoid].codepart = value;
+    setCodePersistance(value);
   };
 
   handleEditorDidMount({
@@ -200,7 +202,6 @@ class unitstore {
     containerRef,
     autolayout,
   }: HandleEditorDidMount) {
-    console.log("autolayout={true}", autolayout);
     this.editors[monacoid].monacoRef = React.createRef();
     this.editors[monacoid].editorRef = React.createRef();
     this.editors[monacoid].monacoRef.current = monaco;

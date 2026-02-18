@@ -19,6 +19,7 @@ export const S = {
   ls: {
     STATE: "state",
     VERSION: "version",
+    CODE: "code",
   },
   // pages
   P: {

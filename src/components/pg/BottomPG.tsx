@@ -14,6 +14,7 @@ import FloatMenu from "../Navigator/floatMenu";
 import DLSwitch from "../common/themeswitch/themeSwitch";
 import { Panel } from "../common/panel";
 import { Background } from "@xyflow/react";
+import DropZone from "./dropzone";
 
 const BottomPG = observer(({ monacoid }: { monacoid: number }) => {
   return (
@@ -27,7 +28,8 @@ const BottomPG = observer(({ monacoid }: { monacoid: number }) => {
         // height: "100%",
         flex: "1",
         width: "100%",
-        position: "relative",
+        // position: "relative",
+
         // margin: "10px",
         // flex: 1,
       }}
@@ -82,7 +84,20 @@ const BottomPG = observer(({ monacoid }: { monacoid: number }) => {
         }}
       >
         <CodeRunPanel monacoid={monacoid} key={`codePanel${monacoid}`} />
-        <InOutPanel monacoid={monacoid} key={`InOutRunPanel${monacoid}`} />
+        <Box
+          key={`InOutRunPanel${monacoid}`}
+          sx={{
+            flexDirection: "row",
+            display: "flex",
+            height: "170px",
+            width: "100%",
+            padding: "5px",
+            alignItems: "flex-start",
+          }}
+        >
+          <DropZone />
+          <InOutPanel monacoid={monacoid} key={`InOutRunPanel${monacoid}`} />
+        </Box>
       </Box>
     </Box>
   );

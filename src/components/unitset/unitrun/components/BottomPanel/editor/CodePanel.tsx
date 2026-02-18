@@ -54,13 +54,23 @@ const CodePanel = observer((props: any) => {
           }}
         >
           {unit.currUnit.unittype == TT.task && (
-            <Panel label={L.ru.TR.EDITOR} sx={{ height: "100%" }}>
-              {unit.showanswer ? (
-                <AnswerPanel monacoid={monacoid} />
-              ) : (
-                <MonacoEd {...props} monacoid={monacoid} />
-              )}
-            </Panel>
+            <Box
+              key={`codepanel${monacoid}`}
+              sx={{
+                display: "flex",
+                height: "100%",
+                width: "100%",
+                minHeight: "200px",
+              }}
+            >
+              <Panel label={L.ru.TR.EDITOR} sx={{ height: "100%" }}>
+                {unit.showanswer ? (
+                  <AnswerPanel monacoid={monacoid} />
+                ) : (
+                  <MonacoEd {...props} monacoid={monacoid} />
+                )}
+              </Panel>
+            </Box>
           )}
 
           {unit.currUnit.unittype == TT.guide && (
@@ -75,9 +85,11 @@ const CodePanel = observer((props: any) => {
             sx={{
               flexDirection: "column",
               display: "flex",
-              justifyContent: "flex-end",
-              justifyItems: "flex-end",
-              alignItems: "center",
+              // justifyContent: "flex-end",
+              // justifyItems: "flex-end",
+              justifyItems: "flex-start",
+
+              // alignItems: "center",
               height: "225px",
               width: "100%",
             }}

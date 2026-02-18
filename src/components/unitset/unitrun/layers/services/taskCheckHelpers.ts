@@ -59,7 +59,6 @@ interface checkEntities {
 
 const getAstCleanCodeArr = async (code: string) => {
   try {
-    console.log(code);
     const outputArr = await runApprovedPythonCode({
       code: astClean({ code: JSON.stringify(code) }),
     });
