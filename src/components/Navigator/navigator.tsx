@@ -34,6 +34,9 @@ import navigator from "@/components/Navigator/layers/store/navigator";
 import course from "@/components/course/layers/store/course";
 import unitset from "@/components/unitset/layers/store/unitset";
 import { PG, ST } from "@/tpconst/src/const";
+import Playground from "@/components/pg/PG";
+
+import unit from "@/components/unitset/unitrun/layers/store/unit";
 
 const Navigator = observer(() => {
   useApp();
@@ -68,6 +71,10 @@ const Navigator = observer(() => {
               navigator.state.page == PG.flow) && <AdminPanel />}
           {navigator.state.page == PG.courses && <Courses />}
           {navigator.state.page == PG.champ && <Champ />}
+          {navigator.state.page == PG.pg && (
+            <Playground key={"pg"} monacoid={0} />
+          )}
+
           {navigator.state.page == PG.flow && !!course.flow && (
             <ReactFlowProvider>
               <Course />

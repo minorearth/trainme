@@ -7,14 +7,14 @@ import unit from "@/components/unitset/unitrun/layers/store/unit";
 import { observer } from "mobx-react-lite";
 import { L } from "@/tpconst/src/lang";
 
-const InOutPanel = observer(({ monacoid }: { monacoid: number }) => {
+const OutPanel = observer(({ monacoid }: { monacoid: number }) => {
   return (
-    <Panel label={L.ru.TR.OUTPUTT_DATA} sx={{ height: "150px" }}>
+    <Panel label={L.ru.TR.OUTPUTT_DATA} sx={{ height: "170px" }}>
       <Box
         sx={{
           height: "100%",
           width: "100%",
-          maxHeight: "150px",
+          maxHeight: "100%",
           overflowY: "auto",
           overflowX: "auto",
         }}
@@ -33,4 +33,4 @@ const InOutPanel = observer(({ monacoid }: { monacoid: number }) => {
   );
 });
 
-export default InOutPanel;
+export default OutPanel;

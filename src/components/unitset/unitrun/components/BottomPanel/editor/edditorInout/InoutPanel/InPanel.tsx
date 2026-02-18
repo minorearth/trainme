@@ -23,12 +23,13 @@ const InPanel = observer(({ monacoid }: { monacoid: number }) => {
   };
 
   return (
-    <Panel label={L.ru.TR.INPUT_DATA} sx={{ height: "150px" }}>
+    <Panel label={L.ru.TR.INPUT_DATA} sx={{ height: "100%" }}>
+      <></>
       <Box
         sx={{
           height: "100%",
           width: "100%",
-          maxHeight: "150px",
+          // maxHeight: "150px",
           overflowY: "auto",
           overflowX: "auto",
         }}
@@ -54,14 +55,16 @@ const InPanel = observer(({ monacoid }: { monacoid: number }) => {
           id="standard-multiline-flexible"
           multiline
           fullWidth
-          // height="100%"
           disableUnderline
-          rows={7}
+          rows={5}
           onChange={(e) => handleChange(e)}
           value={unit.editors[monacoid].input}
           sx={{
             display: "inline-block",
             whiteSpace: "pre-wrap",
+            resize: "none", // отключаем ручное изменение размера
+            // overflow: "auto",
+            // height: "100%",
           }}
         />
       </Box>

@@ -19,7 +19,12 @@ const GuideForm = observer(() => {
       }}
     >
       {unit.editors?.map((value, id) => (
-        <CodePanel key={id} errorHandler={() => {}} monacoid={id} />
+        <CodePanel
+          key={id}
+          errorHandler={() => {}}
+          monacoid={id}
+          autolayout={true}
+        />
       ))}
     </Box>
   );

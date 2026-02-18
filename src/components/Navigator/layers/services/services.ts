@@ -199,8 +199,13 @@ export const closeCongratPage = async () => {
 };
 
 export const gotoPG = async (router: AppRouterInstance) => {
-  splash.showProgress(false, "progressdots", 0);
-  router.push(`/${S.P.PG}/`);
+  // splash.showProgress(false, "progressdots", 0);
+  // router.push(`/${S.P.PG}/`);
+  course.eraseStateP();
+  unitset.eraseUnitSetStateP();
+  unit.eraseState();
+  chapter.eraseStateP();
+  navigator.setStateP({ page: PG.pg });
 };
 
 export const gotoCoursespage = async (router: AppRouterInstance) => {

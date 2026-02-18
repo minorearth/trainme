@@ -34,9 +34,11 @@ const MonacoCommonEd = observer(
   ({
     errorHandler,
     monacoid,
+    autolayout,
   }: {
     errorHandler: () => void;
     monacoid: number;
+    autolayout: boolean;
   }) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -47,6 +49,7 @@ const MonacoCommonEd = observer(
         sx={{
           // display: "flex",
           // flexDirection: "column",
+          height: "100%",
           width: "100%",
           position: "relative",
         }}
@@ -85,6 +88,7 @@ const MonacoCommonEd = observer(
         <Editor
           key={`monacoid${monacoid}${unit.currUnit.unituuid}`}
           width="100%"
+          // height="100%"
           // theme={"dark"}
           options={{ ...EditorOptions }}
           language="python"
@@ -97,7 +101,7 @@ const MonacoCommonEd = observer(
               monaco,
               monacoid,
               containerRef,
-              autolayout: true,
+              autolayout,
             })
           }
         />

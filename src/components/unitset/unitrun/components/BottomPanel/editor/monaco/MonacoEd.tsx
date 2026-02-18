@@ -7,7 +7,7 @@ import MonacoCommonEd from "./MonacoCommonEd";
 import unit from "@/components/unitset/unitrun/layers/store/unit";
 
 const MonacoEd = observer((props: any) => {
-  const { monacoid } = props;
+  const { monacoid, autolayout } = props;
   return (
     <Box
       key={`MonacoEd${monacoid}`}
@@ -16,6 +16,7 @@ const MonacoEd = observer((props: any) => {
         display: "flex",
         flexDirection: "column",
         width: "100%",
+        height: autolayout ? "auto" : "99%",
         padding: "10px",
       }}
     >

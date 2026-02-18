@@ -31,11 +31,11 @@ const CodeRunPanel = observer(({ monacoid }: { monacoid: number }) => {
       sx={{
         width: "100%",
         // marginTop: "15px",
-        marginBottom: "10px",
+        marginBottom: "5px",
         display: "flex",
         flexDirection: "row",
         justifyContent: "flex-start",
-        height: "30px",
+        height: "50px",
       }}
     >
       {!countdownbutton.state.visible && (

@@ -42,6 +42,7 @@ const TopPG = observer(() => {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "flex-end",
+        height: "50px",
       }}
     >
       <IconButtonNoRipple>
@@ -49,7 +50,8 @@ const TopPG = observer(() => {
           <HomeIcon
             sx={{ fontSize: "40px", marginRight: "15px" }}
             onClick={() => {
-              navigator.actions.gotoCoursespage(router);
+              // navigator.actions.gotoCoursespage(router);
+              navigator.actions.openAllCoursePage();
             }}
           />
         </Tooltip>

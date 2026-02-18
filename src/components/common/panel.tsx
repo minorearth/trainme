@@ -2,7 +2,7 @@ import * as React from "react";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import FormGroup from "@mui/material/FormGroup";
-import { useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 
 export const Panel = ({
   children,
@@ -26,7 +26,6 @@ export const Panel = ({
         paddingRight: "20px",
         border: `1px solid  ${theme.palette.divider}`,
         borderRadius: "3px",
-        minHeight: "150px",
         "& .MuiFormGroup-root": { height: "100%" },
       }}
     >

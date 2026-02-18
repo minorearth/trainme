@@ -200,6 +200,7 @@ class unitstore {
     containerRef,
     autolayout,
   }: HandleEditorDidMount) {
+    console.log("autolayout={true}", autolayout);
     this.editors[monacoid].monacoRef = React.createRef();
     this.editors[monacoid].editorRef = React.createRef();
     this.editors[monacoid].monacoRef.current = monaco;

@@ -7,9 +7,10 @@ import Box from "@mui/material/Box";
 import InOutPanel from "./edditorInout/InoutPanel/InOutPanel";
 import { Typography } from "@mui/material";
 import unit from "@/components/unitset/unitrun/layers/store/unit";
-import { Guide, TT } from "@/tpconst/src";
+import { Guide, L, TT } from "@/tpconst/src";
 import MarkDown from "../guideCode/markDown";
 import AnswerPanel from "./AnswerPanel";
+import { Panel } from "@/components/common/panel";
 
 const formatMarkdown = (markdown: string) => {
   if (!markdown) {
@@ -52,14 +53,23 @@ const CodePanel = observer((props: any) => {
             width: "100%",
           }}
         >
+          {unit.currUnit.unittype == TT.task && (
+            <Panel label={L.ru.TR.EDITOR} sx={{ height: "100%" }}>
+              {unit.showanswer ? (
+                <AnswerPanel monacoid={monacoid} />
+              ) : (
+                <MonacoEd {...props} monacoid={monacoid} />
+              )}
+            </Panel>
+          )}
+
           {unit.currUnit.unittype == TT.guide && (
             <MarkDown text={unit.editors[monacoid].markdown} />
           )}
-          {unit.showanswer ? (
-            <AnswerPanel monacoid={monacoid} />
-          ) : (
+          {unit.currUnit.unittype == TT.guide && (
             <MonacoEd {...props} monacoid={monacoid} />
           )}
+
           <Box
             key={`InOutRunPanel${monacoid}`}
             sx={{
@@ -68,7 +78,7 @@ const CodePanel = observer((props: any) => {
               justifyContent: "flex-end",
               justifyItems: "flex-end",
               alignItems: "center",
-              height: "100%",
+              height: "225px",
               width: "100%",
             }}
           >

@@ -8,13 +8,12 @@ import CodePanel from "../editor/CodePanel";
 
 const TaskCode = observer(() => {
   return (
-    <Panel label={L.ru.TR.EDITOR} sx={{ height: "100%" }}>
-      <CodePanel
-        key={"Monaco_editor_task"}
-        monacoid={0}
-        errorHandler={unit.errorHandler}
-      />
-    </Panel>
+    <CodePanel
+      key={"Monaco_editor_task"}
+      monacoid={0}
+      errorHandler={unit.errorHandler}
+      autolayout={false}
+    />
   );
 });
 

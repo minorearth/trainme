@@ -15,25 +15,33 @@ import { Panel } from "../common/panel";
 import BottomPG from "./BottomPG";
 import { useTheme } from "styled-components";
 import TopPG from "./TopPG";
+import { useEffect } from "react";
 
 const PG = observer(({ monacoid }: { monacoid: number }) => {
   console.log("render");
+  useEffect(() => {
+    unit.setPGState();
+  }, []);
 
   // const theme = useTheme();
   return (
-    <Box
-      sx={{
-        width: "99%",
-        height: "99%",
-        display: "flex",
-        flexDirection: "column",
-        // backgroundColor: theme.palette.background.default,
-        padding: "6px",
-      }}
-    >
-      <TopPG />
-      <BottomPG monacoid={monacoid} />
-    </Box>
+    <>
+      {unit.editors.length != 0 && (
+        <Box
+          sx={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            // backgroundColor: theme.palette.background.default,
+            padding: "6px",
+          }}
+        >
+          <TopPG />
+          <BottomPG monacoid={monacoid} />
+        </Box>
+      )}
+    </>
   );
 });
 

@@ -45,56 +45,42 @@ const Wrapper = styled.div`
 
 const TaskPanel = observer(() => {
   return (
-    <Panel label={L.ru.TR.TASK} sx={{ height: "100%" }}>
+    <Box
+      sx={{
+        flexDirection: "column",
+        display: "flex",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        height: "100%",
+      }}
+    >
       <Box
         sx={{
-          flexDirection: "column",
           display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          height: "100%",
+          flex: 1,
+          flexDirection: "column",
+          justifyContent: "flex-start",
         }}
       >
-        <Wrapper>
-          <Typography
-            variant="body1"
-            dangerouslySetInnerHTML={{
-              __html: `<p>${(unit.currUnit as Task).tasktext}</p>`,
-            }}
-            sx={{
-              display: "inline-block",
-              whiteSpace: "pre-wrap",
-              wordWrap: "break-word",
-            }}
-          ></Typography>
-        </Wrapper>
-
-        {!countdownbutton.state.visible &&
-          unit.currUnit.unittype == TT.task && (
-            <Box
-              sx={{
-                flexDirection: "row",
-                display: "flex",
-                // justifyContent: "center",
-                // alignItems: "center",
-                marginBottom: "10px",
-                marginTop: "15px",
+        <Panel label={L.ru.TR.TASK} sx={{ height: "100%" }}>
+          <Wrapper>
+            <Typography
+              variant="body1"
+              dangerouslySetInnerHTML={{
+                __html: `<p>${(unit.currUnit as Task).tasktext}</p>`,
               }}
-            >
-              {/* <Button
-                onClick={(e) => {
-                  task.actions.preCheckTaskAction();
-                }}
-                disabled={task.editors[0].executing}
-                variant="outlined"
-              >
-                {L.ru.buttons.PRE_CHECK_TASK}
-              </Button> */}
-            </Box>
-          )}
-        <ExpectedOutPanel />
+              sx={{
+                display: "inline-block",
+                whiteSpace: "pre-wrap",
+                wordWrap: "break-word",
+              }}
+            ></Typography>
+          </Wrapper>
+        </Panel>
       </Box>
-    </Panel>
+
+      <ExpectedOutPanel />
+    </Box>
   );
 });
 

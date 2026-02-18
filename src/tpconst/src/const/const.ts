@@ -16,6 +16,8 @@ export const PG = {
   testrun: "testrun",
   flow: "flow",
   courses: "courses",
+  pg: "pg",
+
   champ: "champ",
   lessonStarted: "lessonStarted",
   congrat: "congrat",
