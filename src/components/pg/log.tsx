@@ -90,12 +90,14 @@ export const TextDiffLogger = observer(() => {
       style={{
         fontSize: 14,
         width: "500px",
+        overflow: "auto",
+        minHeight: "100%",
       }}
     >
       <div
         aria-label="diff-log"
         style={{
-          maxHeight: "100%",
+          minHeight: "100%",
           overflow: "auto",
           border: "1px solid #ddd",
           padding: "8px",
