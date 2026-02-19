@@ -108,7 +108,7 @@ export const TextDiffLogger = observer(() => {
         {logs.map((log) => (
           <div key={log.id} style={{ marginBottom: 12 }}>
             <div style={{ fontSize: 12, color: "#555", marginBottom: 4 }}>
-              Changes at {new Date(log.timestamp).toLocaleTimeString()}
+              {new Date(log.timestamp).toLocaleTimeString()}
             </div>
             <div style={{ whiteSpace: "pre-wrap", fontFamily: "monospace" }}>
               {log.parts.map((p, idx) => {

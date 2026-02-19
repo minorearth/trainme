@@ -18,7 +18,7 @@ export const setCodePersistance = (data: string) => {
 };
 
 export const loadCodePersistance = () => {
-  return localStorage.getItem(S.ls.CODE);
+  return localStorage.getItem(S.ls.CODE) ?? "";
 };
 
 export const cleanUpCSP = () => {
