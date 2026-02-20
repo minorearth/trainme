@@ -18,6 +18,7 @@ import { encrypt2 } from "@/tpconst/src/utils";
 
 //eror handling
 import { throwInnerError } from "@/tpconst/src/errorHandlers";
+import { updateUserCourseDefaults } from "@/tpconst/src/RP/FB";
 
 //courses
 export const checkCoursePaid = async ({
@@ -65,6 +66,7 @@ export const getUserMetaCourseProgress = async ({
     });
     return userProgress;
   } catch (error) {
+    //TODO: check error ttype/ if fetchError sholdnot be refreshe
     throw throwInnerError(error);
   }
 };

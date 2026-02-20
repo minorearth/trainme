@@ -2,7 +2,6 @@ import { makeObservable, makeAutoObservable } from "mobx";
 import { updateKeySCP } from "@/db/localstorageDB";
 import { CourseProgressDB, UserName } from "@/tpconst/src/T";
 import { USERPROGRESS_DEFAULTS } from "@/tpconst/src/typesdefaults";
-// import { getUserMetaCourseProgress } from "@/userlayers/repository/repositoryUserMeta";
 
 class user {
   userid = "";
@@ -34,7 +33,7 @@ class user {
       {
         user: { username },
       },
-      "user"
+      "user",
     );
   };
 

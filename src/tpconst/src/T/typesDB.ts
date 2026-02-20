@@ -198,11 +198,9 @@ export interface CoursesDB extends CourseAttsDB {
 export interface CourseAttsDB {
   title: string;
   text: string;
-  firstchapter: string;
   completed: boolean;
   type: CourseType;
   order: number;
-  free: boolean;
   coursesAction: () => void;
 }
 

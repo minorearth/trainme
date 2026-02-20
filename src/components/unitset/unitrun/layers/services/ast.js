@@ -1,15 +1,13 @@
-export const astClean = ({ code }) => {
-  return `import ast,re
+export const astClean = ({code}) => { return `import ast,re
 def transform_source(source):
     tree = ast.parse(source)
     ast.fix_missing_locations(tree)
     code = ast.unparse(tree)
     code = re.sub(r'\\n+', '\\n', code)
+
     return code 
-print(transform_source(${code}))`;
-};
-export const ast = ({ code, nm, param, type }) => {
-  return `import ast
+print(transform_source(${code}))`;};
+export const ast = ({code, nm, param, type}) => { return `import ast
 
 
 def has_decorator(parsed_ast, nm):
@@ -347,5 +345,4 @@ def parse(code, nm, param, type):
         return has_variable_with_name(parsed, nm)
     return False
  
-print(parse("${code}", "${nm}", "${param}", "${type}"))`;
-};
+print(parse("${code}", "${nm}", "${param}", "${type}"))`;};

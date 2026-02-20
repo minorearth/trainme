@@ -1,5 +1,6 @@
 import { CourseProgressDB, CourseStatDB } from "../../../T";
 
+//TODO:  do not understand this  procedure
 export const ETLUserProgress = (data: CourseProgressDB) => {
   const stat: CourseStatDB = Object.keys(data.stat).reduce(
     (acc, chapterid) => ({
@@ -9,7 +10,7 @@ export const ETLUserProgress = (data: CourseProgressDB) => {
         sum: data.stat[chapterid].sum,
       },
     }),
-    {}
+    {},
   );
   return {
     ...data,

@@ -9,12 +9,8 @@ import {
   createUser,
   signOutUserRep,
 } from "@/tpconst/src/RP/FB";
-import { getFreeCoursesIds } from "@/db/localRepository/repositoryLocalFiles";
 import { getUserMeta } from "@/app/api/apicalls/dataFetch";
 import { createNewUserMeta } from "@/tpconst/src/RP/FB";
-
-//services
-import { getInitalDataForFreeCourses } from "@/components/courses/layers/services/services";
 
 //stores
 import user from "@/auth/store/user";
@@ -45,22 +41,13 @@ export const signUp = async ({
 }) => {
   try {
     const user = await createUser({ email, password });
-    const freecoursesIds = getFreeCoursesIds();
-    const coursesInitials = getInitalDataForFreeCourses();
     const userId = user.uid;
-    const data = {
-      name,
-      userId,
-      paidcourses: freecoursesIds,
-      courses: coursesInitials,
-      paidcourses2: {},
-    };
     try {
-      createNewUserMeta({ userId, data });
+      createNewUserMeta({ uid: userId, name });
     } catch (e) {
       throw throwInnerErrorCause(
         E_CODES_DIALOG.PROCEDURE_ERROR,
-        `usermetaCreationError: ${JSON.stringify(data)}`,
+        `usermetaCreationError: ${JSON.stringify("data")}`,
       );
     }
     return userId;

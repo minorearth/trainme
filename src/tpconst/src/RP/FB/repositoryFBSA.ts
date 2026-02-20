@@ -1,9 +1,11 @@
+"use server";
 //DB
 import {
   checkCoursePaidSA,
   checkCoursePaidSA2,
   getDocSA,
   updateDocSA,
+  setDocSA,
 } from "../../DB/FB/SA";
 
 import { v4 as uuidv4 } from "uuid";
@@ -15,9 +17,26 @@ import {
   throwInnerErrorCause,
   throwInnerError,
 } from "../../errorHandlers";
-import { CourseProgressDB, UserMetaDB } from "../../T";
+import { CourseProgressDB, UserCoursesDB, UserMetaDB } from "../../T";
 import { CLT } from "../../const";
 import { ETLUserProgress, taskLogToDBFormat } from "./ETL";
+
+const courses: {
+  [key: string]: { firstchapter: string; free: boolean };
+} = {
+  "6b78800f-5f35-4fe1-a85b-dbc5e3ab71b0": {
+    firstchapter: "4680f00b-b586-413c-890a-9669b4b7b1c3",
+    free: true,
+  },
+  "a3905595-437e-47f3-b749-28ea5362bd39": {
+    firstchapter: "1185fbd6-1e7f-450c-9311-6870e8e137bd",
+    free: true,
+  },
+  "08d00469-b5c5-4bdc-8c7c-4971e3dd502f": {
+    firstchapter: "89af18a6-dfbf-4dc4-b358-43bd31849fa4",
+    free: true,
+  },
+};
 
 const decryptData2 = (dataEncrypted: string) => {
   try {
@@ -38,13 +57,13 @@ export async function resetUser(dataEncrypted: string) {
   let datanotencrypted: InputDataNotEncypted<UserMetaDB>;
 
   try {
-    const { firstchapter, uid, courseid } = decryptData2(dataEncrypted);
+    const { uid, courseid } = decryptData2(dataEncrypted);
     datanotencrypted = {
       data: {
         [`courses.${courseid}`]: {
           completed: [],
-          unlocked: [firstchapter],
-          lastunlocked: [firstchapter],
+          unlocked: courses[courseid].firstchapter,
+          lastunlocked: courses[courseid].firstchapter,
           paid: [],
           stat: {},
           rating: 0,
@@ -68,14 +87,13 @@ export async function resetUser(dataEncrypted: string) {
 export const unlockAllChaptersDBSA = async (dataEncrypted: string) => {
   let datanotencrypted: InputDataNotEncypted<UserMetaDB>;
   try {
-    const { courseid, chaptersIds, userid, firstchapter } =
-      decryptData2(dataEncrypted);
+    const { courseid, chaptersIds, userid } = decryptData2(dataEncrypted);
 
     datanotencrypted = {
       data: {
         [`courses.${courseid}.completed`]: [],
         [`courses.${courseid}.unlocked`]: chaptersIds,
-        [`courses.${courseid}.lastunlocked`]: [firstchapter],
+        [`courses.${courseid}.lastunlocked`]: courses[courseid].firstchapter,
       },
       id: userid,
     };
@@ -96,14 +114,13 @@ export const unlockAllChaptersDBSA = async (dataEncrypted: string) => {
 export const completeAllChaptersDBSA = async (dataEncrypted: string) => {
   let datanotencrypted: InputDataNotEncypted<UserMetaDB>;
   try {
-    const { courseid, chaptersIds, userid, firstchapter } =
-      decryptData2(dataEncrypted);
+    const { courseid, chaptersIds, userid } = decryptData2(dataEncrypted);
 
     datanotencrypted = {
       data: {
         [`courses.${courseid}.completed`]: chaptersIds,
         [`courses.${courseid}.unlocked`]: chaptersIds,
-        [`courses.${courseid}.lastunlocked`]: [firstchapter],
+        [`courses.${courseid}.lastunlocked`]: courses[courseid].firstchapter,
         [`courses.${courseid}.paid`]: chaptersIds,
       },
       id: userid,
@@ -330,6 +347,20 @@ export const getUserCourseMetaDBSA = async (id: string, courseid: string) => {
     });
     let userProgress: CourseProgressDB;
     try {
+      if (!data.courses[courseid]) {
+        await updateUserCourseDefaults({
+          courseid,
+          userid: id,
+        });
+        return ETLUserProgress({
+          lastunlocked: [courses[courseid].firstchapter],
+          unlocked: [courses[courseid].firstchapter],
+          completed: [],
+          paid: [],
+          stat: {},
+          rating: 0,
+        });
+      }
       userProgress = ETLUserProgress(data.courses[courseid]);
     } catch (error) {
       throw throwInnerErrorCause(
@@ -344,6 +375,127 @@ export const getUserCourseMetaDBSA = async (id: string, courseid: string) => {
 };
 
 export const checkCoursePaidDBSA = async (courseid: string, uid: string) => {
+  const freeIds = getFreeCoursesIds();
+  console.log(freeIds, courseid);
+  if (freeIds.includes(courseid)) {
+    return true;
+  }
   const value = await checkCoursePaidSA(courseid, uid);
   return value;
 };
+
+// export const createNewUserMeta = async ({
+//   userId,
+//   data,
+// }: {
+//   userId: string;
+//   data: UserMetaDB;
+// }) => {
+//   try {
+//     await setDocInCollection<UserMetaDB>({
+//       collectionName: CLT.usermeta,
+//       data,
+//       id: userId,
+//     });
+//   } catch (error) {
+//     throw throwInnerError(error);
+//   }
+// };
+
+const getFreeCourses = () => {
+  const res = Object.keys(courses)
+    .filter((courseId) => courses[courseId].free)
+    .reduce((acc, courseId) => ({ ...acc, [courseId]: courses[courseId] }), {});
+  return res as {
+    [key: string]: { firstchapter: string; free: boolean };
+  };
+};
+
+//TODO: assign type to all reducers ex. {} as UserCoursesDB
+const getInitalDataForFreeCourses = (): UserCoursesDB => {
+  const freeCourses = getFreeCourses();
+
+  return Object.keys(freeCourses).reduce(
+    (acc, courseid) => ({
+      ...acc,
+      [courseid]: {
+        lastunlocked: [freeCourses[courseid].firstchapter],
+        unlocked: [freeCourses[courseid].firstchapter],
+        completed: [],
+        paid: [],
+        stat: {},
+        rating: 0,
+      },
+    }),
+    {} as UserCoursesDB,
+  );
+};
+
+const getFreeCoursesIds = (): string[] => {
+  return Object.keys(courses).filter((courseId) => courses[courseId].free);
+};
+
+export const createNewUserMeta = async ({
+  uid,
+  name,
+}: {
+  uid: string;
+  name: string;
+}) => {
+  const freecoursesIds = getFreeCoursesIds();
+  const coursesInitials = getInitalDataForFreeCourses();
+  const data = {
+    name,
+    userId: uid,
+    paidcourses: freecoursesIds,
+    courses: coursesInitials,
+    paidcourses2: {},
+  };
+
+  const datanotencrypted = {
+    data,
+    id: uid,
+  };
+
+  try {
+    await setDocSA<Partial<UserMetaDB>>({
+      collectionName: CLT.usermeta,
+      datanotencrypted,
+    });
+  } catch (error) {
+    throw throwInnerError(error);
+  }
+};
+
+export async function updateUserCourseDefaults({
+  courseid,
+  userid,
+}: {
+  courseid: string;
+  userid: string;
+}) {
+  const data = {
+    [`courses.${courseid}`]: {
+      lastunlocked: [courses[courseid].firstchapter],
+      unlocked: [courses[courseid].firstchapter],
+      completed: [],
+      paid: [],
+      stat: {},
+      rating: 0,
+    },
+  };
+
+  const datanotencrypted = {
+    data,
+    id: userid,
+  };
+
+  try {
+    await updateDocSA<Partial<UserMetaDB>>({
+      collectionName: CLT.usermeta,
+      datanotencrypted,
+    });
+  } catch (error) {
+    throw throwInnerError(error);
+  }
+}

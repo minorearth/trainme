@@ -95,10 +95,7 @@ const DropZone = observer(() => {
     Promise.all(acceptedFiles.map((f) => readText(f)))
       .then((results) => {
         const filesData = getFilesData(results);
-        console.log("results", filesData);
-
         unit.editors[0].filedata = filesData;
-        // setTexts((prev) => [...prev, ...results]);
       })
       .catch((err) => {
         console.error("Ошибка чтения файлов:", err);

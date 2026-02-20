@@ -23,7 +23,6 @@ export async function resetCurrentUser() {
     encrypt2({
       courseid,
       uid: user.userid,
-      firstchapter: courses[courseid].firstchapter,
     }),
   );
 
@@ -42,7 +41,6 @@ export const unlockAllChaptersCurrentUser = async () => {
       courseid,
       userid: user.userid,
       chaptersIds,
-      firstchapter: courses[courseid].firstchapter,
     }),
   );
 
@@ -64,7 +62,6 @@ export const completeAllChaptersCurrentUser = async () => {
       courseid,
       userid: user.userid,
       chaptersIds,
-      firstchapter: courses[courseid].firstchapter,
     }),
   );
 

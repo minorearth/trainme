@@ -32,15 +32,34 @@ export const updateDocSA = async <T>({
 }) => {
   try {
     const db = await initAdmin();
-
     const { data, id } = datanotencrypted;
-
     const res: CollectionWrite<T> = { data, collectionName, id };
-
     try {
       const userMetaRef = db.collection(res.collectionName).doc(res.id);
-      // const userMetaRef = db.collection("res.collectionName").doc(res.id);
       await userMetaRef.update(data as WithFieldValue<DocumentData>);
+    } catch (error) {
+      const e = error as FirestoreError;
+      throw throwFBError({ message: e.message, code: e.message });
+    }
+  } catch (error) {
+    throw throwInnerError(error);
+  }
+};
+
+export const setDocSA = async <T>({
+  collectionName,
+  datanotencrypted,
+}: {
+  collectionName: CollectonsTypes;
+  datanotencrypted: { id: string; data: T };
+}) => {
+  try {
+    const db = await initAdmin();
+    const { data, id } = datanotencrypted;
+    const res: CollectionWrite<T> = { data, collectionName, id };
+    try {
+      const userMetaRef = db.collection(res.collectionName).doc(res.id);
+      await userMetaRef.set(data as WithFieldValue<DocumentData>);
     } catch (error) {
       const e = error as FirestoreError;
       throw throwFBError({ message: e.message, code: e.message });

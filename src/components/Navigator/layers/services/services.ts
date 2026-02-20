@@ -76,8 +76,8 @@ export const openCourseFlowPageFromMain = async (courseid: string) => {
     splash.showProgress(false, "progressdots", 2000);
     const courseReady = checkCourseReady({ courseid });
     if (!courseReady) throw Error(E_CODES_DIALOG.COURSE_IS_DISABLED);
-
     const coursePaid = await checkCoursePaid({ courseid, uid: user.userid });
+
     if (!coursePaid) throw Error(E_CODES_DIALOG.COURSE_IS_NOT_PAID);
 
     await openAndRefreshFlowPage({ courseid, refetchFlow: true });

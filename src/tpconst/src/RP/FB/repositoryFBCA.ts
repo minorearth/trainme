@@ -568,21 +568,3 @@ export const getUserMetaDataCA = async (uid: string) => {
     throw throwInnerError(error);
   }
 };
-
-export const createNewUserMeta = async ({
-  userId,
-  data,
-}: {
-  userId: string;
-  data: UserMetaDB;
-}) => {
-  try {
-    await setDocInCollection<UserMetaDB>({
-      collectionName: CLT.usermeta,
-      data,
-      id: userId,
-    });
-  } catch (error) {
-    throw throwInnerError(error);
-  }
-};
