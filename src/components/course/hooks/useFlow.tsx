@@ -12,7 +12,7 @@ import {
   EdgeProps,
 } from "@xyflow/react";
 import "@xyflow/react/dist/base.css";
-import { reaction } from "mobx";
+import { reaction, toJS } from "mobx";
 
 //components
 import TurboNode from "../components/TurboNode";
@@ -42,7 +42,7 @@ const defaultEdgeOptions = {
 const useFlow = () => {
   const { fitView } = useReactFlow();
   const [nodes, setNodes, onNodesChange] = useNodesState<NodeDBState>(
-    course.flow.nodes
+    course.flow.nodes,
   );
   const [edges, setEdges, onEdgesChange] = useEdgesState(course.flow.edges);
 
@@ -54,7 +54,7 @@ const useFlow = () => {
       () => {
         setEdges(course.flow.edges);
         setNodes(course.flow.nodes);
-      }
+      },
     );
 
     // setEdges(course.flow.edges);
@@ -67,6 +67,10 @@ const useFlow = () => {
 
   const showUnlocked = () => {
     const unlockedNodesToShow = user.progress.lastunlocked;
+    console.log("unlockedNodesToShow", toJS(user.progress.lastunlocked));
+
+    console.log("unlockedNodesToShow", toJS(course.flow.nodes));
+
     if (unlockedNodesToShow.length > 0) {
       for (let i = 0; i < unlockedNodesToShow.length; i++) {
         setTimeout(() => {

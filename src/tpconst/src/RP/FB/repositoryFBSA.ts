@@ -66,8 +66,8 @@ export async function resetUser(dataEncrypted: string) {
       data: {
         [`courses.${courseid}`]: {
           completed: [],
-          unlocked: courses[courseid].firstchapter,
-          lastunlocked: courses[courseid].firstchapter,
+          unlocked: [courses[courseid].firstchapter],
+          lastunlocked: [courses[courseid].firstchapter],
           paid: [],
           stat: {},
           rating: 0,
@@ -97,7 +97,7 @@ export const unlockAllChaptersDBSA = async (dataEncrypted: string) => {
       data: {
         [`courses.${courseid}.completed`]: [],
         [`courses.${courseid}.unlocked`]: chaptersIds,
-        [`courses.${courseid}.lastunlocked`]: courses[courseid].firstchapter,
+        [`courses.${courseid}.lastunlocked`]: [courses[courseid].firstchapter],
       },
       id: userid,
     };
@@ -124,7 +124,7 @@ export const completeAllChaptersDBSA = async (dataEncrypted: string) => {
       data: {
         [`courses.${courseid}.completed`]: chaptersIds,
         [`courses.${courseid}.unlocked`]: chaptersIds,
-        [`courses.${courseid}.lastunlocked`]: courses[courseid].firstchapter,
+        [`courses.${courseid}.lastunlocked`]: [courses[courseid].firstchapter],
         [`courses.${courseid}.paid`]: chaptersIds,
       },
       id: userid,

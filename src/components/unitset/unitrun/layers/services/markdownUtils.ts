@@ -1,5 +1,4 @@
 import katex from "katex";
-import { calc } from "@/components/unitset/unitrun/components/BottomPanel/guideCode/html/htmlExport";
 
 // https://latexeditor.lagrida.com/
 // https://onlinehtmleditor.dev/
