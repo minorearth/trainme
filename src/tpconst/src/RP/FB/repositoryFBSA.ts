@@ -36,6 +36,10 @@ const courses: {
     firstchapter: "89af18a6-dfbf-4dc4-b358-43bd31849fa4",
     free: true,
   },
+  "fb722ffe-a838-4e70-8467-423f418af2c8": {
+    firstchapter: "05260422-da89-4350-8d4c-db19ab21baae",
+    free: true,
+  },
 };
 
 const decryptData2 = (dataEncrypted: string) => {

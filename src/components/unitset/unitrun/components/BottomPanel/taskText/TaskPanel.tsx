@@ -5,12 +5,12 @@ import styled from "styled-components";
 import unit from "@/components/unitset/unitrun/layers/store/unit";
 
 import { observer } from "mobx-react-lite";
-import { TT } from "@/tpconst/src/const";
 import { L } from "@/tpconst/src/lang";
-import countdownbutton from "@/components/common/CountdownButton/store";
 import Box from "@mui/material/Box";
 import ExpectedOutPanel from "./ExpectedOutPanel";
 import { Task } from "@/tpconst/src";
+import { renderFormulas } from "../../../layers/services/markdownUtils";
+import "katex/dist/katex.min.css";
 
 const Wrapper = styled.div`
   .tooltip {
@@ -67,7 +67,7 @@ const TaskPanel = observer(() => {
             <Typography
               variant="body1"
               dangerouslySetInnerHTML={{
-                __html: `<p>${(unit.currUnit as Task).tasktext}</p>`,
+                __html: `<p>${renderFormulas((unit.currUnit as Task).tasktext)}</p>`,
               }}
               sx={{
                 display: "inline-block",

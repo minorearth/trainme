@@ -14,12 +14,13 @@ const Courses = () => {
       <Grid
         container
         spacing={2}
-        columns={{ sm: 1, md: 2, lg: 4 }}
+        columns={{ sm: 1, md: 2, lg: 3 }}
         sx={{
           flexGrow: 1,
           justifyContent: "center",
           alignItems: "center",
           height: "100%",
+          padding: "90px",
         }}
       >
         {coursesData.map((crs, id) => (

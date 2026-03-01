@@ -1,0 +1,108 @@
+.markdown {
+  color: #444444;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  background-color: #cadcee;
+  display: block;
+  width: 100%;
+  margin-left: 20px;
+  padding-left: 20px;
+  border-left: 10px solid #1977d3;
+}
+
+.blurry {
+  filter: blur(5px);
+  cursor: pointer;
+  transition: filter 0.3s ease;
+}
+
+.unblurred {
+  filter: none;
+}
+
+.custom-table {
+  border-collapse: collapse;
+  width: auto;
+  margin: 0 auto;
+}
+
+.custom-table th,
+.custom-table td {
+  border: 1px solid #b2b2b2;
+  padding: 4px 8px;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.custom-table th {
+  font-weight: bold;
+  text-align: center;
+  vertical-align: middle;
+  /* background-color: #f0f0f0; */
+}
+
+.custom-table td:not(:first-child) {
+  text-align: center; /* по горизонтали по центру */
+  vertical-align: middle; /* по вертикали по центру */
+}
+
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.calc-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.calc-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calc-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+input[type="number"] {
+  width: 60px;
+}
+
+.calc-binary-display {
+  width: 100px;
+  font-family: monospace;
+  background: #f0f0f0;
+  padding: 2px 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.calc-color-square {
+  width: 80px;
+  height: 80px;
+  border: 1px solid #000;
+  background-color: rgb(0, 0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: monospace;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.calc-hex-code {
+  margin-top: 10px;
+  font-size: 16px;
+}

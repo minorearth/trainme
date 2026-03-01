@@ -37,6 +37,17 @@ export const courses: CoursesDBObj = {
         "08d00469-b5c5-4bdc-8c7c-4971e3dd502f",
       ),
   },
+  "fb722ffe-a838-4e70-8467-423f418af2c8": {
+    title: "Общая информатика",
+    text: "Курс общей информатики на Python",
+    completed: true,
+    type: CT.course,
+    order: 4,
+    coursesAction: () =>
+      navigator.actions.openCourseFlowPageFromMain(
+        "fb722ffe-a838-4e70-8467-423f418af2c8",
+      ),
+  },
   777: {
     title: "Чемпионат",
     text: "Хакатон  по программированию на скорость",

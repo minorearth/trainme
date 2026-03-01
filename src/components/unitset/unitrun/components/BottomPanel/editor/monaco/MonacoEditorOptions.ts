@@ -9,6 +9,7 @@ export const EditorOptions: editor.IStandaloneEditorConstructionOptions = {
   },
   detectIndentation: false,
   fixedOverflowWidgets: false,
+  tabCompletion: "on",
   fontFamily: "Monaco",
   fontSize: 16,
   formatOnPaste: true,

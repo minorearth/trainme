@@ -22,6 +22,7 @@ interface HandleViewerDidMount {
 
 import React from "react";
 import { editor } from "monaco-editor";
+import { loader } from "@monaco-editor/react";
 
 //stores
 import countdownbutton from "@/components/common/CountdownButton/store";
@@ -202,6 +203,40 @@ class unitstore {
     containerRef,
     autolayout,
   }: HandleEditorDidMount) {
+    // const registerPythonCompletionProvider = (monaco) => {
+    //   monaco.languages.registerCompletionItemProvider("python", {
+    //     provideCompletionItems: (model, position) => {
+    //       const suggestions = [
+    //         {
+    //           label: "def",
+    //           kind: monaco.languages.CompletionItemKind.Keyword,
+    //           insertText: "def ",
+    //           documentation: "Define a function",
+    //         },
+    //         {
+    //           label: "import",
+    //           kind: monaco.languages.CompletionItemKind.Keyword,
+    //           insertText: "import ",
+    //           documentation: "Import a module",
+    //         },
+    //         {
+    //           label: "print",
+    //           kind: monaco.languages.CompletionItemKind.Function,
+    //           insertText: "print(${1:object})",
+    //           insertTextRules:
+    //             monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+    //           documentation: "Print to console",
+    //         },
+    //       ];
+    //       return { suggestions };
+    //     },
+    //   });
+    // };
+
+    // loader.init().then((monacoInstance) => {
+    //   registerPythonCompletionProvider(monacoInstance);
+    // });
+
     this.editors[monacoid].monacoRef = React.createRef();
     this.editors[monacoid].editorRef = React.createRef();
     this.editors[monacoid].monacoRef.current = monaco;
