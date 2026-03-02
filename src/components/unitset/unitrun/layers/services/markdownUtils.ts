@@ -34,7 +34,10 @@ export const formatMarkdown = (markdown: string) => {
   const n = count(markdown2, "'''");
   let res = markdown2;
   for (let i = 0; i < n; i++) {
-    res = i % 2 == 0 ? res.replace("'''", "<p>") : res.replace("'''", "\n</p>");
+    res =
+      i % 2 == 0
+        ? res.replace("'''", "<div class='markdown'>")
+        : res.replace("'''", "\n</div>");
   }
-  return `<div class='markdown' >${res}</div>`;
+  return `<div>${res}</div>`;
 };

@@ -29,7 +29,7 @@ const courses: {
     free: true,
   },
   "a3905595-437e-47f3-b749-28ea5362bd39": {
-    firstchapter: "1185fbd6-1e7f-450c-9311-6870e8e137bd",
+    firstchapter: "95d66e5e-87b5-467a-836e-4a93aed61cb5",
     free: true,
   },
   "08d00469-b5c5-4bdc-8c7c-4971e3dd502f": {
