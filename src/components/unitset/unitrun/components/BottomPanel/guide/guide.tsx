@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import { toJS } from "mobx";
 import CodePanel from "../editor/CodePanel";
 
-const GuideForm = observer(() => {
+const Guide = observer(() => {
   return (
     <Box
       sx={{
@@ -30,4 +30,4 @@ const GuideForm = observer(() => {
   );
 });
 
-export default GuideForm;
+export default Guide;

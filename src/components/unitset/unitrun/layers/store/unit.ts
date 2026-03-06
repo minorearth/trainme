@@ -64,7 +64,6 @@ interface Editors {
   executing: boolean;
   editordisabled: boolean;
   errorMessage: string;
-  info: string;
   filedata: string;
   codepart: string;
   markdown: string;
@@ -97,7 +96,6 @@ class unitstore {
           executing: false,
           editordisabled: false,
           errorMessage: "",
-          info: "",
         };
       }) as Editors[];
     } else if (unit.unittype == "task") {

@@ -8,9 +8,10 @@ import InOutPanel from "./edditorInout/InoutPanel/InOutPanel";
 import { Typography } from "@mui/material";
 import unit from "@/components/unitset/unitrun/layers/store/unit";
 import { Guide, L, TT } from "@/tpconst/src";
-import MarkDown from "../guideCode/markDown";
+import MarkDown from "../guide/markDown";
 import AnswerPanel from "./AnswerPanel";
 import { Panel } from "@/components/common/panel";
+import CodeRunInOut from "./CodeRunInOut";
 
 const formatMarkdown = (markdown: string) => {
   if (!markdown) {
@@ -34,6 +35,7 @@ const formatMarkdown = (markdown: string) => {
 
 const CodePanel = observer((props: any) => {
   const { monacoid } = props;
+  console.log("sd", unit.editors[monacoid].codepart != "");
   return (
     <Grid
       container
@@ -54,49 +56,39 @@ const CodePanel = observer((props: any) => {
           }}
         >
           {unit.currUnit.unittype == TT.task && (
-            <Box
-              key={`codepanel${monacoid}`}
-              sx={{
-                display: "flex",
-                height: "100%",
-                width: "100%",
-                minHeight: "200px",
-              }}
-            >
-              <Panel label={L.ru.TR.EDITOR} sx={{ height: "100%" }}>
-                {unit.showanswer ? (
-                  <AnswerPanel monacoid={monacoid} />
-                ) : (
-                  <MonacoEd {...props} monacoid={monacoid} />
-                )}
-              </Panel>
-            </Box>
+            <>
+              <Box
+                key={`codepanel${monacoid}`}
+                sx={{
+                  display: "flex",
+                  height: "100%",
+                  width: "100%",
+                  minHeight: "200px",
+                }}
+              >
+                <Panel label={L.ru.TR.EDITOR} sx={{ height: "100%" }}>
+                  {unit.showanswer ? (
+                    <AnswerPanel monacoid={monacoid} />
+                  ) : (
+                    <MonacoEd {...props} monacoid={monacoid} />
+                  )}
+                </Panel>
+              </Box>
+              <CodeRunInOut {...props} />
+            </>
           )}
 
           {unit.currUnit.unittype == TT.guide && (
             <MarkDown text={unit.editors[monacoid].markdown} />
           )}
-          {unit.currUnit.unittype == TT.guide && (
-            <MonacoEd {...props} monacoid={monacoid} />
-          )}
 
-          <Box
-            key={`InOutRunPanel${monacoid}`}
-            sx={{
-              flexDirection: "column",
-              display: "flex",
-              // justifyContent: "flex-end",
-              // justifyItems: "flex-end",
-              justifyItems: "flex-start",
-
-              // alignItems: "center",
-              height: "225px",
-              width: "100%",
-            }}
-          >
-            <CodeRunPanel monacoid={monacoid} key={`codePanel${monacoid}`} />
-            <InOutPanel monacoid={monacoid} key={`InOutRunPanel${monacoid}`} />
-          </Box>
+          {unit.currUnit.unittype == TT.guide &&
+            unit.editors[monacoid].codepart != "" && (
+              <>
+                <MonacoEd {...props} monacoid={monacoid} />
+                <CodeRunInOut {...props} />
+              </>
+            )}
         </Box>
       </Grid>
     </Grid>

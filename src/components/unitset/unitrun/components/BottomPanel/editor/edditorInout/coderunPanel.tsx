@@ -9,7 +9,7 @@ import pyodide from "@/components/pyodide/pyodide";
 
 import { L } from "@/tpconst/src/lang";
 import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButtonNoRipple";
-import { Tooltip } from "@mui/material";
+import { Tooltip, Typography } from "@mui/material";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import PlaylistAddCheckCircleOutlinedIcon from "@mui/icons-material/PlaylistAddCheckCircleOutlined";
 import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
@@ -94,6 +94,19 @@ const CodeRunPanel = observer(({ monacoid }: { monacoid: number }) => {
             <FaMagic style={{ fontSize: "30px" }} onClick={() => magicCode()} />
           </Tooltip>
         </IconButtonNoRipple>
+      )}
+      {unit.editors[0].errorMessage && !unit.editors[0].editordisabled && (
+        <Typography
+          sx={{
+            textAlign: "end",
+            width: "100%",
+            alignContent: "center",
+            color: "#FF5549",
+            paddingRight: "20px",
+          }}
+        >
+          {unit.editors[0].errorMessage}
+        </Typography>
       )}
     </Box>
   );

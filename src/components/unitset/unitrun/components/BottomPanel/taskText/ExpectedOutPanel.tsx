@@ -21,6 +21,7 @@ const ExpectedOutPanel = observer(() => {
           sx={{
             display: "inline-block",
             whiteSpace: "pre-wrap",
+            overflow: "auto",
           }}
         >
           {unit.currUnit.defaultoutput.join("\n")}

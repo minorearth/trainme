@@ -19,7 +19,6 @@ export const Panel = ({
     <FormControl
       component="fieldset"
       sx={{
-        ...sx,
         width: "100%",
         padding: "10px",
         paddingLeft: "20px",
@@ -27,6 +26,7 @@ export const Panel = ({
         border: `1px solid  ${theme.palette.divider}`,
         borderRadius: "3px",
         "& .MuiFormGroup-root": { height: "100%" },
+        ...sx,
       }}
     >
       <FormLabel component="legend">{label}</FormLabel>

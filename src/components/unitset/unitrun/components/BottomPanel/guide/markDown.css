@@ -23,16 +23,24 @@
 
 .custom-table {
   border-collapse: collapse;
-  width: auto;
+  /* /* width: auto; */
   margin: 0 auto;
 }
 
 .custom-table th,
 .custom-table td {
-  border: 1px solid #b2b2b2;
+  /* border: 1px solid #b2b2b2;
   padding: 4px 8px;
+  width: 50px;
+  width: 100px; /* или любой другой размер, подходящий вам */
   vertical-align: top;
-  white-space: nowrap;
+  text-align: left;
+  height: 100px;
+  width: 100px;
+
+  /* white-space: nowrap; */
+
+  box-sizing: border-box;
 }
 
 .custom-table th {
@@ -45,6 +53,22 @@
 .custom-table td:not(:first-child) {
   text-align: center; /* по горизонтали по центру */
   vertical-align: middle; /* по вертикали по центру */
+}
+
+.bitmaptable {
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+.bitmaptable th,
+.bitmaptable td {
+  border: 1px solid #b2b2b2;
+  padding-left: 10px;
+  vertical-align: middle;
+  text-align: left;
+  height: 100px;
+  width: 100px;
+  box-sizing: border-box;
 }
 
 body {

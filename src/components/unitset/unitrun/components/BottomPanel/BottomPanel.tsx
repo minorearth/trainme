@@ -5,7 +5,7 @@ import unit from "@/components/unitset/unitrun/layers/store/unit";
 import { observer } from "mobx-react-lite";
 import { TT } from "@/tpconst/src/const";
 import TaskPanel from "./taskText/TaskPanel";
-import GuideForm from "./guideCode/guideCode";
+import Guide from "./guide/guide";
 import TaskCode from "./taskCode/taskCode";
 
 const BottomPanel = observer(() => {
@@ -25,7 +25,7 @@ const BottomPanel = observer(() => {
 
       <Grid size={{ xs: 1, md: 2 }}>
         {unit.currUnit.unittype == TT.task && <TaskCode />}
-        {unit.currUnit.unittype == TT.guide && <GuideForm />}
+        {unit.currUnit.unittype == TT.guide && <Guide />}
       </Grid>
     </Grid>
   );

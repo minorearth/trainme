@@ -47,8 +47,6 @@ const MonacoCommonEd = observer(
         ref={containerRef}
         key={`MonacoCommonEd${monacoid}${unit.currUnit.unituuid}`}
         sx={{
-          // display: "flex",
-          // flexDirection: "column",
           height: "100%",
           width: "100%",
           position: "relative",
@@ -65,8 +63,6 @@ const MonacoCommonEd = observer(
         //   scale: { type: "spring", visualDuration: 0.9, bounce: 0.5 },
         // }}
       >
-        {/* <Watcher /> */}
-
         <IconButton
           key={`refreshButton${monacoid}`}
           aria-label="refresh editor"

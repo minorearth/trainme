@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Panel } from "@/components/common/panel";
+import CustomizedSlider from "@/components/common/slider";
 
 function ColorCalculator() {
   const [r, setR] = useState(0);
@@ -45,7 +46,7 @@ function ColorCalculator() {
   const hexB = toHexString(b);
 
   return (
-    <Panel label={"Color Calculator"} sx={{ height: "100%" }}>
+    <Panel label={"Color Calculator"} sx={{ height: "100%", width: "600px" }}>
       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
           <div
@@ -70,7 +71,7 @@ function ColorCalculator() {
             }}
           >
             <label style={{ justifyContent: "center" }}>DEC</label>
-
+            {/* <CustomizedSlider /> */}
             <input
               type="number"
               min="0"

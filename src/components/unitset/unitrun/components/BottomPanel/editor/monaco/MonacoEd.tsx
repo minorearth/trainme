@@ -20,16 +20,6 @@ const MonacoEd = observer((props: any) => {
         padding: "10px",
       }}
     >
-      {unit.editors[0].info && (
-        <Typography sx={{ textAlign: "center", color: "#618B4E" }}>
-          {unit.editors[0].info}
-        </Typography>
-      )}
-      {unit.editors[0].errorMessage && !unit.editors[0].editordisabled && (
-        <Typography sx={{ textAlign: "center", color: "#FF5549" }}>
-          {unit.editors[0].errorMessage}
-        </Typography>
-      )}
       <MonacoCommonEd {...props} />
     </Box>
   );
