@@ -4,7 +4,7 @@
 //TODO: (later) Инерция
 "use client";
 import React from "react";
-import { ReactFlow } from "@xyflow/react";
+import { MiniMap, ReactFlow } from "@xyflow/react";
 import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import "@xyflow/react/dist/base.css";
@@ -41,6 +41,7 @@ const Course = observer(() => {
         {...flowOptions}
       >
         <FlowPanel />
+        <MiniMap pannable zoomable nodeColor={"#6865A5"} />
       </ReactFlow>
     </Box>
   );

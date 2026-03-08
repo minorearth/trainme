@@ -23,22 +23,21 @@
 
 .custom-table {
   border-collapse: collapse;
-  /* /* width: auto; */
+  width: 70%;
+
   margin: 0 auto;
 }
 
 .custom-table th,
 .custom-table td {
-  /* border: 1px solid #b2b2b2;
-  padding: 4px 8px;
+  border: 1px solid #b2b2b2;
+  /* padding: 4px 8px;
   width: 50px;
-  width: 100px; /* или любой другой размер, подходящий вам */
+  width: 100px; */
   vertical-align: top;
   text-align: left;
-  height: 100px;
-  width: 100px;
 
-  /* white-space: nowrap; */
+  white-space: nowrap;
 
   box-sizing: border-box;
 }

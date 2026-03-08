@@ -1,26 +1,33 @@
 import React, { useState } from "react";
 import { Panel } from "@/components/common/panel";
-import CustomizedSlider from "@/components/common/slider";
+import CustomizedSlider from "@/components/common/slider/slider";
+import slider from "@/components/common/slider/store";
+import { observer } from "mobx-react-lite";
 
-function ColorCalculator() {
-  const [r, setR] = useState(0);
-  const [g, setG] = useState(0);
-  const [b, setB] = useState(0);
+const ColorCalculator = observer(() => {
+  // const [r, setR] = useState(0);
+  // const [g, setG] = useState(0);
+  // const [b, setB] = useState(0);
 
-  const handleRChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.min(255, Math.max(0, Number(e.target.value)));
-    setR(value);
-  };
+  // const handleRChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = Math.min(255, Math.max(0, Number(e.target.value)));
+  //   console.log(value);
+  //   setR(value);
+  // };
 
-  const handleGChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.min(255, Math.max(0, Number(e.target.value)));
-    setG(value);
-  };
+  // const handleGChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = Math.min(255, Math.max(0, Number(e.target.value)));
+  //   setG(value);
+  // };
 
-  const handleBChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.min(255, Math.max(0, Number(e.target.value)));
-    setB(value);
-  };
+  // const handleBChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = Math.min(255, Math.max(0, Number(e.target.value)));
+  //   setB(value);
+  // };
+
+  const r = slider.state["r"] ?? 0;
+  const g = slider.state["g"] ?? 0;
+  const b = slider.state["b"] ?? 0;
 
   const colorStyle = {
     height: "100%",
@@ -46,15 +53,24 @@ function ColorCalculator() {
   const hexB = toHexString(b);
 
   return (
-    <Panel label={"Color Calculator"} sx={{ height: "100%", width: "600px" }}>
+    <Panel label={"Color Calculator"} sx={{ height: "100%", width: "800px" }}>
       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "20px",
+            alignItems: "center",
+            height: "200px",
+          }}
+        >
           <div
             style={{
               display: "flex",
               alignItems: "center",
               flexDirection: "column",
-              justifyContent: "end",
+              justifyContent: "space-around",
+              paddingTop: "45px",
+              gap: "25px",
               height: "100%",
             }}
           >
@@ -67,44 +83,28 @@ function ColorCalculator() {
               display: "flex",
               alignItems: "center",
               flexDirection: "column",
-              gap: "1px",
+              gap: "9px",
+              paddingTop: "10px",
+              height: "100%",
+              justifyContent: "space-around",
             }}
           >
-            <label style={{ justifyContent: "center" }}>DEC</label>
-            {/* <CustomizedSlider /> */}
-            <input
-              type="number"
-              min="0"
-              max="255"
-              value={r}
-              onChange={handleRChange}
-              style={{ width: "60px", marginRight: "8px" }}
-            />
-            <input
-              type="number"
-              min="0"
-              max="255"
-              value={g}
-              onChange={handleGChange}
-              style={{ width: "60px", marginRight: "8px" }}
-            />
-            <input
-              type="number"
-              min="0"
-              max="255"
-              value={b}
-              onChange={handleBChange}
-              style={{ width: "60px", marginRight: "8px" }}
-            />
+            <label style={{}}>DEC</label>
+            <CustomizedSlider name="r" />
+            <CustomizedSlider name="g" />
+            <CustomizedSlider name="b" />
           </div>
           <div
             style={{
               display: "flex",
               alignItems: "center",
+              justifyContent: "space-around",
               flexDirection: "column",
+              gap: "9px",
+              height: "100%",
             }}
           >
-            <label style={{ justifyContent: "center" }}>BIN</label>
+            <label style={{}}>BIN</label>
             <div>{binaryR}</div>
             <div>{binaryG}</div>
             <div>{binaryB}</div>
@@ -113,7 +113,10 @@ function ColorCalculator() {
             style={{
               display: "flex",
               alignItems: "center",
+              justifyContent: "space-around",
               flexDirection: "column",
+              gap: "9px",
+              height: "100%",
             }}
           >
             <label style={{ justifyContent: "center" }}>HEX</label>
@@ -123,11 +126,32 @@ function ColorCalculator() {
           </div>
           <div style={colorStyle}></div>
         </div>
-        <div>Hex: {hexCode}</div>
-        <div>{`RGB: (${r}, ${g}, ${b})`}</div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "end",
+            flexDirection: "column",
+            gap: "9px",
+            height: "100%",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "column",
+              gap: "9px",
+              height: "100%",
+              width: "200px",
+            }}
+          >
+            <div>Hex: {hexCode}</div>
+            <div>{`RGB: (${r}, ${g}, ${b})`}</div>
+          </div>
+        </div>
       </div>
     </Panel>
   );
-}
+});
 
 export default ColorCalculator;

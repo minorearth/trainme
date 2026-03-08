@@ -6,6 +6,8 @@ import Slider, {
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import slider from "@/components/common/slider/store";
+import { observer } from "mobx-react-lite";
 
 const iOSBoxShadow =
   "0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)";
@@ -61,14 +63,26 @@ const IOSSlider = styled(Slider)(({ theme }) => ({
   }),
 }));
 
-export default function CustomizedSlider() {
+const CustomizedSlider = observer(({ name }: { name: string }) => {
   return (
     <Box sx={{ width: 320 }}>
       <IOSSlider
+        min={0}
+        max={255}
         aria-label="ios slider"
-        defaultValue={60}
+        defaultValue={0}
+        // value={slider.state[name]}
         valueLabelDisplay="on"
+        onChange={(
+          event: Event,
+          newValue: number | number[],
+          activeThumb: number,
+        ) => {
+          slider.setState(name, newValue as number);
+        }}
       />
     </Box>
   );
-}
+});
+
+export default CustomizedSlider;
