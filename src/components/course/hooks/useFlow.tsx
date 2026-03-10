@@ -67,9 +67,6 @@ const useFlow = () => {
 
   const showUnlocked = () => {
     const unlockedNodesToShow = user.progress.lastunlocked;
-    console.log("unlockedNodesToShow", toJS(user.progress.lastunlocked));
-
-    console.log("unlockedNodesToShow", toJS(course.flow.nodes));
 
     if (unlockedNodesToShow.length > 0) {
       for (let i = 0; i < unlockedNodesToShow.length; i++) {

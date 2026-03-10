@@ -444,7 +444,7 @@ export const saveSnapshot = ({
   }
 };
 
-export const getSnapShot = async ({
+export const getSnapShotFromDB = async ({
   groupid,
   userid,
 }: {

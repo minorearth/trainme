@@ -5,7 +5,6 @@ import katex from "katex";
 export const renderFormulas = (markdown: string) => {
   let text = markdown;
   const regex = /<formula[^>]*text=(['"])(.*?)\1[^>]*>/gm;
-  console.log(markdown);
 
   for (const match of text.matchAll(regex)) {
     const formula = match[0];

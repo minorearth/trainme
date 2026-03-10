@@ -35,7 +35,6 @@ const formatMarkdown = (markdown: string) => {
 
 const CodePanel = observer((props: any) => {
   const { monacoid } = props;
-  console.log("sd", unit.editors[monacoid].codepart != "");
   return (
     <Grid
       container

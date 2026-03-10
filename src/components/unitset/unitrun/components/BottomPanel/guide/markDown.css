@@ -129,3 +129,16 @@ input[type="number"] {
   margin-top: 10px;
   font-size: 16px;
 }
+
+.svg-container {
+  display: flex; /* помогает центрировать внутри контейнера */
+  justify-content: center; /* горизонтально по центру */
+  align-items: center; /* вертикально по центру */
+  height: auto; /* например, высота контейнера */
+  width: 100%;
+}
+
+.styled-svg {
+  width: 50%;
+  height: auto; /* чтобы сохранялась пропорциональность */
+}

@@ -63,7 +63,8 @@ const IOSSlider = styled(Slider)(({ theme }) => ({
   }),
 }));
 
-const CustomizedSlider = observer(({ name }: { name: string }) => {
+const CustomizedSlider = observer((props: any) => {
+  const { name } = props;
   return (
     <Box sx={{ width: 320 }}>
       <IOSSlider
@@ -80,6 +81,7 @@ const CustomizedSlider = observer(({ name }: { name: string }) => {
         ) => {
           slider.setState(name, newValue as number);
         }}
+        {...props}
       />
     </Box>
   );

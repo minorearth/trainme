@@ -45,7 +45,7 @@ class stat {
   report: PivotReport = {};
   userstatvisible = false;
   reportvisible = false;
-  snapshot: UsersMetaReportDB = {};
+  snapshotReady: UsersMetaReportDB = {};
   groupSelectedId = "";
   allCoursesTasksObj = {};
   disposeReaction: () => void;
@@ -68,8 +68,9 @@ class stat {
     this.allCoursesTasksObj = data;
   }
 
-  setSnapshot(data: UsersMetaReportDB) {
-    this.snapshot = data;
+  //to make immediate snapshot
+  setSnapshotReady(data: UsersMetaReportDB) {
+    this.snapshotReady = data;
   }
 
   setGroupSelected(groupid: string) {
@@ -100,7 +101,7 @@ class stat {
           getGroups();
           getChaptersObj();
         }
-      }
+      },
     );
   }
 

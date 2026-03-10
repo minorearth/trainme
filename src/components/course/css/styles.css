@@ -5,8 +5,8 @@
 }
 
 .react-flow {
-  --node-box-shadow: 10px 0 15px rgba(42, 138, 246, 0.3),
-    -10px 0 15px rgba(233, 42, 103, 0.3);
+  --node-box-shadow:
+    10px 0 15px rgba(42, 138, 246, 0.3), -10px 0 15px rgba(233, 42, 103, 0.3);
 }
 
 .react-flow__handle {
@@ -38,4 +38,11 @@
   to {
     stroke-dashoffset: 0;
   }
+}
+
+.react-flow__minimap {
+  width: 150px; /* Установите желаемую ширину */
+  height: 800px;
+  /* top: 10;
+  bottom: 10; */
 }

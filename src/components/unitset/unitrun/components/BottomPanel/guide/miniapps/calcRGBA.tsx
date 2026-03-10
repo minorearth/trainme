@@ -5,56 +5,39 @@ import slider from "@/components/common/slider/store";
 import { observer } from "mobx-react-lite";
 
 const ColorCalculator = observer(() => {
-  // const [r, setR] = useState(0);
-  // const [g, setG] = useState(0);
-  // const [b, setB] = useState(0);
-
-  // const handleRChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = Math.min(255, Math.max(0, Number(e.target.value)));
-  //   console.log(value);
-  //   setR(value);
-  // };
-
-  // const handleGChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = Math.min(255, Math.max(0, Number(e.target.value)));
-  //   setG(value);
-  // };
-
-  // const handleBChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = Math.min(255, Math.max(0, Number(e.target.value)));
-  //   setB(value);
-  // };
-
   const r = slider.state["r"] ?? 0;
   const g = slider.state["g"] ?? 0;
   const b = slider.state["b"] ?? 0;
+  const a = slider.state["a"] ?? 0;
 
   const colorStyle = {
     height: "100%",
     aspectRatio: 1 / 1,
-    backgroundColor: `rgb(${r}, ${g}, ${b})`,
+    backgroundColor: `rgba(${r}, ${g}, ${b}, ${a})`,
     border: "1px solid #000",
-    marginLeft: "10px",
+    // marginLeft: "10px",
   };
+  const emojiSize = 200; // Размер эмоджи и прямоугольника в px
 
-  // Функции для отображения двоичного и шестнадцатеричного
   const toBinaryString = (value: number) => value.toString(2).padStart(8, "0");
   const toHexString = (value: number) =>
     value.toString(16).padStart(2, "0").toUpperCase();
   const getColorHex = (r: number, g: number, b: number) =>
     `#${toHexString(r)}${toHexString(g)}${toHexString(b)}`;
 
+  const aByte = Math.round(a * 255);
+  const binaryA = toBinaryString(aByte);
+  const hexA = toHexString(aByte);
+
   const hexCode = getColorHex(r, g, b);
   const binaryR = toBinaryString(r);
   const binaryG = toBinaryString(g);
   const binaryB = toBinaryString(b);
-  const hexR = toHexString(r);
-  const hexG = toHexString(g);
-  const hexB = toHexString(b);
 
   return (
     <Panel label={"Color Calculator"} sx={{ height: "100%", width: "800px" }}>
       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        {/* Основная строка с контролами */}
         <div
           style={{
             display: "flex",
@@ -77,7 +60,9 @@ const ColorCalculator = observer(() => {
             <label style={{ width: "40px" }}>R:</label>
             <label style={{ width: "40px" }}>G:</label>
             <label style={{ width: "40px" }}>B:</label>
+            <label style={{ width: "40px" }}>A:</label>
           </div>
+
           <div
             style={{
               display: "flex",
@@ -89,10 +74,11 @@ const ColorCalculator = observer(() => {
               justifyContent: "space-around",
             }}
           >
-            <label style={{}}>DEC</label>
-            <CustomizedSlider name="r" />
-            <CustomizedSlider name="g" />
-            <CustomizedSlider name="b" />
+            <label>DEC</label>
+            <CustomizedSlider name="r" max={255} />
+            <CustomizedSlider name="g" max={255} />
+            <CustomizedSlider name="b" max={255} />
+            <CustomizedSlider name="a" min={0} max={1} step={0.01} />
           </div>
           <div
             style={{
@@ -100,32 +86,50 @@ const ColorCalculator = observer(() => {
               alignItems: "center",
               justifyContent: "space-around",
               flexDirection: "column",
-              gap: "9px",
+              gap: "25px",
               height: "100%",
             }}
           >
-            <label style={{}}>BIN</label>
+            <label>BIN</label>
             <div>{binaryR}</div>
             <div>{binaryG}</div>
             <div>{binaryB}</div>
+            <div>{binaryA}</div>
           </div>
+
           <div
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-around",
-              flexDirection: "column",
-              gap: "9px",
+              position: "relative",
               height: "100%",
+              aspectRatio: 1 / 1,
             }}
           >
-            <label style={{ justifyContent: "center" }}>HEX</label>
-            <div>{hexR}</div>
-            <div>{hexG}</div>
-            <div>{hexB}</div>
+            <div
+              style={{
+                fontSize: `${emojiSize * 0.8}px`,
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                zIndex: 1,
+              }}
+            >
+              🌟
+            </div>
+            <div
+              style={{
+                ...colorStyle,
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                zIndex: 2, // выше
+              }}
+            ></div>
           </div>
-          <div style={colorStyle}></div>
         </div>
+
         <div
           style={{
             display: "flex",
@@ -142,11 +146,12 @@ const ColorCalculator = observer(() => {
               flexDirection: "column",
               gap: "9px",
               height: "100%",
-              width: "200px",
+              width: "300px",
+              paddingTop: "20px",
             }}
           >
-            <div>Hex: {hexCode}</div>
-            <div>{`RGB: (${r}, ${g}, ${b})`}</div>
+            <div>{`RGBA: (${r}, ${g}, ${b}, ${a.toFixed(2)})`}</div>
+            <div>Alpha: {(a * 100).toFixed(0)}%</div>
           </div>
         </div>
       </div>

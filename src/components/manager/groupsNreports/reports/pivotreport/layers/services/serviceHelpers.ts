@@ -12,6 +12,7 @@ import {
 } from "@/tpconst/src/T";
 
 import { L } from "@/tpconst/src/lang";
+import { toJS } from "mobx";
 
 export const makeReport = ({
   allCoursesChaptersObj,
@@ -35,8 +36,9 @@ export const makeReport = ({
         usersMetaObj,
         courseid,
         snapShot,
-      })
+      }),
     );
+    console.log("tt", toJS(rows));
 
     const cols = getColumns(allCoursesChaptersObj[courseid]);
 
@@ -48,7 +50,7 @@ export const makeReport = ({
 
 const getCellValue = (
   chapters: UserCoursesReportDBAttrs,
-  chapter: ChapterArrReport
+  chapter: ChapterArrReport,
 ) => {
   if (chapters.stat[chapter.id]) {
     return chapters.stat[chapter.id].sum;
@@ -93,7 +95,7 @@ const getRows = ({
   const rows = chaptersArr.reduce(
     (acc, chapter, id) => ({
       ...acc,
-      [`col${id + 1}`]: {
+      [`col${chapters[chapter.id].order}`]: {
         completed: getCompletedInfo({
           completed: usersMetaObj[user.uid][courseid].completed,
           snapShotCompleted: snapShot[user.uid]
@@ -107,7 +109,7 @@ const getRows = ({
       },
       // id: order,
     }),
-    {}
+    {},
   );
   return {
     ...rows,

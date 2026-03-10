@@ -380,7 +380,6 @@ export const getUserCourseMetaDBSA = async (id: string, courseid: string) => {
 
 export const checkCoursePaidDBSA = async (courseid: string, uid: string) => {
   const freeIds = getFreeCoursesIds();
-  console.log(freeIds, courseid);
   if (freeIds.includes(courseid)) {
     return true;
   }

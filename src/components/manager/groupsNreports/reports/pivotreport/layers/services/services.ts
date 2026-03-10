@@ -7,7 +7,7 @@ import user from "@/auth/store/user";
 //repository(local)
 import {
   saveSnapshot,
-  getSnapShot,
+  getSnapShotFromDB,
   getUsersMetaObj,
 } from "@/tpconst/src/RP/FB";
 
@@ -21,7 +21,7 @@ export const makeSnapshot = () => {
   saveSnapshot({
     userid: user.userid,
     groupid: stat.groupSelectedId,
-    userMetaObj: stat.snapshot,
+    userMetaObj: stat.snapshotReady,
   });
 };
 
@@ -30,9 +30,9 @@ export const showReport = async (groupId: string) => {
   const uids = Object.keys(groupUsersObj);
   if (uids) {
     const usersMetaObj = await getUsersMetaObj(uids);
-    stat.setSnapshot(usersMetaObj);
+    stat.setSnapshotReady(usersMetaObj);
 
-    const snapShot = await getSnapShot({
+    const snapShot = await getSnapShotFromDB({
       groupid: groupId,
       userid: user.userid,
     });
