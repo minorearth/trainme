@@ -52,7 +52,7 @@ const getCellValue = (
   chapters: UserCoursesReportDBAttrs,
   chapter: ChapterArrReport,
 ) => {
-  if (chapters.stat[chapter.id]) {
+  if (chapters?.stat[chapter.id]) {
     return chapters.stat[chapter.id].sum;
   } else {
     return "";
@@ -97,7 +97,7 @@ const getRows = ({
       ...acc,
       [`col${chapters[chapter.id].order}`]: {
         completed: getCompletedInfo({
-          completed: usersMetaObj[user.uid][courseid].completed,
+          completed: usersMetaObj[user.uid][courseid]?.completed ?? [],
           snapShotCompleted: snapShot[user.uid]
             ? snapShot[user.uid][courseid].completed
             : [],
