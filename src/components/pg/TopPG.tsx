@@ -1,6 +1,6 @@
 "use client";
 import Box from "@mui/material/Box";
-import LinearProgressWithLabel from "@/components/unitset/unitrun/components/topPanel/LinearProgress";
+import LinearProgressWithLabel from "@/components/unitrun/components/topPanel/LinearProgress";
 import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
 import Typography from "@mui/material/Typography";
@@ -18,7 +18,7 @@ import { observer } from "mobx-react-lite";
 
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
-import unit from "@/components/unitset/unitrun/layers/store/unit";
+import unit from "@/components/unitrun/layers/store/unit";
 import pyodide from "@/components/pyodide/pyodide";
 
 import countdownbutton from "@/components/common/CountdownButton/store";

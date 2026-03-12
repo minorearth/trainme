@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { diffChars } from "diff";
-import unit from "@/components/unitset/unitrun/layers/store/unit";
+import unit from "@/components/unitrun/layers/store/unit";
 
 type DiffPart = {
   value: string;

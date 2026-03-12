@@ -1,7 +1,7 @@
 import { toJS } from "mobx";
 
 //stores
-import unit from "@/components/unitset/unitrun/layers/store/unit";
+import unit from "@/components/unitrun/layers/store/unit";
 import unitset from "@/components/unitset/layers/store/unitset";
 import chapter from "@/components/unitset/layers/store/chapter";
 import splash from "@/components/common/splash/store";

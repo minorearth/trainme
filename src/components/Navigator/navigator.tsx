@@ -16,7 +16,7 @@ import usePyodide from "@/components/pyodide/usePyodide";
 
 //components
 import Start from "@/components/unitset/start";
-import Unitrun from "@/components/unitset/unitrun/Unitrun";
+import Unitrun from "@/components/unitrun/Unitrun";
 import Course from "@/components/course/course";
 import CongratPage from "@/components/unitset/congrat";
 import Splash from "@/components/common/splash/splash";
@@ -36,7 +36,7 @@ import unitset from "@/components/unitset/layers/store/unitset";
 import { PG, ST } from "@/tpconst/src/const";
 import Playground from "@/components/pg/PG";
 
-import unit from "@/components/unitset/unitrun/layers/store/unit";
+import unit from "@/components/unitrun/layers/store/unit";
 
 const Navigator = observer(() => {
   useApp();

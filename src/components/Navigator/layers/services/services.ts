@@ -45,7 +45,7 @@ import tutorial from "@/components/tutorial/store";
 import course from "@/components/course/layers/store/course";
 import champ from "@/components/champ/layers/store/champ";
 import chapter from "@/components/unitset/layers/store/chapter";
-import unit from "@/components/unitset/unitrun/layers/store/unit";
+import unit from "@/components/unitrun/layers/store/unit";
 //
 
 import { CHAPTER_DEFAULTS } from "@/tpconst/src/typesdefaults";
@@ -224,10 +224,12 @@ export const interruptUnitSet = () => {
     dialogs.okCancel({
       text,
       caption,
-      action: () =>
+      action: () => {
         openCongratPage({
           success: ST.fail,
-        }),
+        });
+        unit.hideInfo();
+      },
     });
   } else {
     openAndRefreshFlowPage({

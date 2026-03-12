@@ -15,7 +15,7 @@ import {
   setMoneyDBSA,
   unlockAllChaptersDBSA,
 } from "@/app/serverActons";
-import { checkAllCode } from "@/components/unitset/unitrun/layers/services/allchecker";
+import { checkAllCode } from "@/components/unitrun/layers/services/allchecker";
 
 export async function resetCurrentUser() {
   const courseid = course.state.courseid;

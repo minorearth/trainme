@@ -1,6 +1,6 @@
 //stores
 import navigator from "@/components/Navigator/layers/store/navigator";
-import unit from "@/components/unitset/unitrun/layers/store/unit";
+import unit from "@/components/unitrun/layers/store/unit";
 import unitset from "@/components/unitset/layers/store/unitset";
 import user from "@/auth/store/user";
 import course from "@/components/course/layers/store/course";

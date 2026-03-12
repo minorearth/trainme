@@ -2,7 +2,7 @@
 import { updateChampPoints } from "@/tpconst/src/RP/FB";
 
 //stores
-import unit from "@/components/unitset/unitrun/layers/store/unit";
+import unit from "@/components/unitrun/layers/store/unit";
 
 import unitset from "@/components/unitset/layers/store/unitset";
 import navigator from "@/components/Navigator/layers/store/navigator";
@@ -116,13 +116,9 @@ export const nextUnitOrCompleteUnitsRun = async ({
 };
 
 export const errorCountDownPressed = async () => {
-  // if (!task.monaco) {
-  //   throw new Error();
-  // }
   unit.editors[0].editorRef.current?.setValue("");
   countdownbutton.hideButton();
   unit.hideInfo();
-  // task.actions.setEditorDisabled(false);
   const { unitsetmode, unitsetstage } = unitset.state;
 
   if (unitsetstage == TS.accomplishedSuspended) {

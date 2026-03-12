@@ -1,6 +1,6 @@
 import { makeObservable, makeAutoObservable } from "mobx";
 import { runInAction } from "mobx";
-import unit from "@/components/unitset/unitrun/layers/store/unit";
+import unit from "@/components/unitrun/layers/store/unit";
 
 import { updateKeySCP, updateSCP } from "@/db/localstorageDB";
 import { getStarPageIntro } from "@/components/common/dialog/dialogMacro";
