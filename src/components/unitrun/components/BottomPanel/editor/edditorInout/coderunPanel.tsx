@@ -12,17 +12,13 @@ import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButto
 import { Tooltip, Typography } from "@mui/material";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import PlaylistAddCheckCircleOutlinedIcon from "@mui/icons-material/PlaylistAddCheckCircleOutlined";
-import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import { FaMagic } from "react-icons/fa";
 
 import { TT } from "@/tpconst/src";
 import { magicCode } from "@/components/unitrun/layers/services/taskCheckHelpers";
-import {
-  ensureWorker,
-  terminateWorker,
-} from "@/components/pyodide/newWorkerAPI";
 import { preCheckTaskAction } from "@/components/unitrun/layers/services/taskCheck";
 import { toJS } from "mobx";
+
 //TODO: add task version(must)
 const CodeRunPanel = observer(({ monacoid }: { monacoid: number }) => {
   return (
@@ -60,8 +56,6 @@ const CodeRunPanel = observer(({ monacoid }: { monacoid: number }) => {
       {!countdownbutton.state.visible &&
         unit.currUnit.unittype == TT.task &&
         unit.editors[monacoid].unittype != "pg" && (
-          //TODO:
-          // <IconButtonNoRipple disabled={task.monacostore.executing}>
           <IconButtonNoRipple
             disabled={
               unit.editors[monacoid].codepart == "" ||

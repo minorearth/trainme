@@ -21,8 +21,6 @@ const BottomPanel = observer(() => {
           <TaskPanel />
         </Grid>
       )}
-      {/* <Watcher /> */}
-
       <Grid size={{ xs: 1, md: 2 }}>
         {unit.currUnit.unittype == TT.task && <TaskCode />}
         {unit.currUnit.unittype == TT.guide && <Guide />}

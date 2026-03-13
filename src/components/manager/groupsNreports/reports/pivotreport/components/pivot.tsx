@@ -39,7 +39,6 @@ const PivotTable = observer(
         visibility: visible;
       }
     `;
-    console.log(toJS(data.rows), toJS(data.cols));
     const cellStyle: React.CSSProperties = {
       border: "1px solid gray",
       width: "30px",

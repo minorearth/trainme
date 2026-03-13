@@ -38,10 +38,7 @@ export const makeReport = ({
         snapShot,
       }),
     );
-    console.log("tt", toJS(rows));
-
     const cols = getColumns(allCoursesChaptersObj[courseid]);
-
     report[courseid] = { rows, cols };
   });
 
@@ -98,9 +95,7 @@ const getRows = ({
       [`col${chapters[chapter.id].order}`]: {
         completed: getCompletedInfo({
           completed: usersMetaObj[user.uid][courseid]?.completed ?? [],
-          snapShotCompleted: snapShot[user.uid]
-            ? snapShot[user.uid][courseid].completed
-            : [],
+          snapShotCompleted: snapShot[user.uid][courseid]?.completed ?? [],
           chapterId: chapter.id,
         }),
         sum: getCellValue(usersMetaObj[user.uid][courseid], chapter),
