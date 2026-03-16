@@ -59,8 +59,9 @@ class splash {
   showProgress(
     background: boolean = false,
     animation: LotieAnimationFileName = "progressdots",
-    delay: number = 500
+    delay: number = 500,
   ) {
+    if (this.shown) return;
     this.shown = true;
     this.delayed = true;
 
@@ -79,7 +80,7 @@ class splash {
   gotoplayLottie(
     background: boolean = false,
     animation: LotieAnimationFileName = "ok",
-    action = () => {}
+    action = () => {},
   ) {
     this.shown = true;
     this.delayed = false;

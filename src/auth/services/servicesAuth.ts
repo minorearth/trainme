@@ -27,6 +27,7 @@ import {
   throwInnerErrorCause,
   throwInnerError,
 } from "@/tpconst/src/errorHandlers";
+import { setAuthTimestamp } from "@/db/localstorageDB";
 
 //error handling
 
@@ -69,6 +70,7 @@ export const signIn = async ({
     const uid = await getUidAuth({ email, password });
     const userMeta = await getUserMeta(uid);
     user.setUserNameP(userMeta.name);
+    setAuthTimestamp();
     router.push(`/${S.P.CHAPTERS}`);
   } catch (e) {
     finalErrorHandler(e, dialogs, L.ru.msg);
@@ -80,7 +82,6 @@ export const signOut = async (router: AppRouterInstance) => {
   splash.showProgress(false, "progressdots", 0);
   await logout();
   await signOutUserRep();
-  // splash.closeProgress();
   router.push(`/${S.P.LOGIN}/`);
 };
 
@@ -89,7 +90,6 @@ const actionOnAuthChanged = async (
   rejected: (value: string) => void,
   uid: string,
   emailVerified: boolean,
-  // login: (value: string) => Promise<void>
 ) => {
   if (emailVerified && uid) {
     await login("teacher");

@@ -6,14 +6,17 @@ import { startListeners, stopListeners } from "@/globals/listeners/listeners";
 import { loadPyTrek } from "@/components/Navigator/layers/services/loadApp";
 
 //stores
-import user from "@/auth/store/user";
 import navigator from "@/components/Navigator/layers/store/navigator";
 import splash from "@/components/common/splash/store";
+import { useRouter } from "next/navigation";
+import useStopAuth from "@/auth/hooks/useStopAuth";
 //
 
 const useApp = () => {
+  const router = useRouter();
+  useStopAuth();
   useEffect(() => {
-    !splash.shown && splash.showProgress(false, "progressdots", 4000);
+    splash.showProgress(false, "progressdots", 4000);
 
     const startApp = async () => {
       startListeners();
@@ -26,7 +29,7 @@ const useApp = () => {
     return () => {
       stopListeners();
     };
-  }, [user]);
+  }, []);
 };
 
 export default useApp;

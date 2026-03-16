@@ -2,6 +2,7 @@ import S from "@/globals/settings";
 
 export const startListeners = () => {
   if (!S.mode.allowcopy) document.addEventListener("copy", handleCopy);
+
   window.addEventListener("beforeunload", handleBeforeUnload);
   if (!S.mode.allowpaste) document.addEventListener("paste", handlePaste, true);
 
@@ -29,7 +30,6 @@ export const stopListeners = () => {
 const handleBeforeUnload = (event: Event) => {
   const message = "";
   event.preventDefault();
-  // event.returnValue = message;
   return message;
 };
 

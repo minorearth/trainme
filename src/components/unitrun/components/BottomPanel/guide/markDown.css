@@ -21,35 +21,32 @@
   filter: none;
 }
 
-.custom-table {
+.logic-table {
   border-collapse: collapse;
-  width: 70%;
-
+  width: 30%;
   margin: 0 auto;
 }
 
-.custom-table th,
-.custom-table td {
+.logic-table th,
+.logic-table td {
   border: 1px solid #b2b2b2;
   /* padding: 4px 8px;
   width: 50px;
   width: 100px; */
   vertical-align: top;
   text-align: left;
-
   white-space: nowrap;
-
   box-sizing: border-box;
 }
 
-.custom-table th {
+.logic-table th {
   font-weight: bold;
   text-align: center;
   vertical-align: middle;
   /* background-color: #f0f0f0; */
 }
 
-.custom-table td:not(:first-child) {
+.logic-table td:not(:first-child) {
   text-align: center; /* по горизонтали по центру */
   vertical-align: middle; /* по вертикали по центру */
 }

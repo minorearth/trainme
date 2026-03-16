@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite";
 
 //react stuff
 import * as React from "react";
-import { useEffect } from "react";
 
 //components
 import SignIn from "@/components/authsteps/components/signin";
@@ -17,6 +16,7 @@ import authForm from "@/components/authsteps/layers/store/store";
 import splash from "@/components/common/splash/store";
 
 const Authsteps = observer(() => {
+  console.log(splash.shown);
   return (
     <React.Fragment>
       <Splash />

@@ -34,10 +34,6 @@ class authForm {
   }
 
   initialize() {
-    this.logout();
-  }
-
-  logout() {
     logout();
   }
 }

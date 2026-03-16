@@ -61,3 +61,13 @@ export const updateKeySCP = <T>(data: DeepPartial<CSP>, key: StateType) => {
   const CSP = getCSP();
   setCSP({ ...CSP, [key]: { ...CSP[key], ...data[key] } });
 };
+
+export const setAuthTimestamp = () => {
+  const loginTime = Date.now();
+  localStorage.setItem("auth_timestamp", loginTime.toString());
+};
+
+export const getAuthTimestamp = () => {
+  return parseInt(localStorage.getItem("auth_timestamp") || "", 10);
+  // return Number(localStorage.getItem("auth_timestamp"));
+};
