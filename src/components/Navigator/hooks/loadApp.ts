@@ -10,6 +10,8 @@ import navigator from "@/components/Navigator/layers/store/navigator";
 import splash from "@/components/common/splash/store";
 import { useRouter } from "next/navigation";
 import useStopAuth from "@/auth/hooks/useStopAuth";
+import unit from "@/components/unitrun/layers/store/unit";
+
 //
 
 const useApp = () => {
@@ -28,6 +30,8 @@ const useApp = () => {
 
     return () => {
       stopListeners();
+      console.log("reset");
+      unit.resetState();
     };
   }, []);
 };

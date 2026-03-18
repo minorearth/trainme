@@ -71,7 +71,7 @@ export const signIn = async ({
     const userMeta = await getUserMeta(uid);
     user.setUserNameP(userMeta.name);
     setAuthTimestamp();
-    router.push(`/${S.P.CHAPTERS}`);
+    router.replace(`/${S.P.CHAPTERS}`);
   } catch (e) {
     finalErrorHandler(e, dialogs, L.ru.msg);
     splash.closeProgress();
@@ -82,7 +82,7 @@ export const signOut = async (router: AppRouterInstance) => {
   splash.showProgress(false, "progressdots", 0);
   await logout();
   await signOutUserRep();
-  router.push(`/${S.P.LOGIN}/`);
+  router.replace(`/${S.P.LOGIN}/`);
 };
 
 const actionOnAuthChanged = async (

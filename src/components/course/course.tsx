@@ -41,7 +41,7 @@ const Course = observer(() => {
         {...flowOptions}
       >
         <FlowPanel />
-        <MiniMap pannable zoomable nodeColor={"#6865A5"} />
+        {/* <MiniMap pannable zoomable nodeColor={"#6865A5"} /> */}
       </ReactFlow>
     </Box>
   );

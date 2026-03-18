@@ -81,7 +81,9 @@ const Navigator = observer(() => {
             </ReactFlowProvider>
           )}
           {navigator.state.page == PG.lessonStarted && <Start />}
-          {navigator.state.page == PG.testrun && <Unitrun />}
+          {navigator.state.page == PG.testrun && unit.editors.length != 0 && (
+            <Unitrun />
+          )}
           {navigator.state.page == PG.congrat &&
             unitset.state.success != ST.undefined && <CongratPage />}
         </Box>

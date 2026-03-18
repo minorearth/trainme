@@ -8,20 +8,9 @@ import Box from "@mui/material/Box";
 
 import { observer } from "mobx-react-lite";
 import { L } from "@/tpconst/src/lang";
+import CustomInput from "@/components/common/customInput/customInput";
 
 const InPanel = observer(({ monacoid }: { monacoid: number }) => {
-  // const handleChange = (
-  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  // ) => {
-  //   monacostore.setInput(e.target.value);
-  // };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    unit.editors[monacoid].input = e.target.value;
-  };
-
   return (
     <Panel label={L.ru.TR.INPUT_DATA} sx={{ height: "100%" }}>
       <></>
@@ -51,22 +40,7 @@ const InPanel = observer(({ monacoid }: { monacoid: number }) => {
           <CachedIcon />
         </IconButton>
 
-        <Input
-          id="standard-multiline-flexible"
-          multiline
-          fullWidth
-          disableUnderline
-          rows={5}
-          onChange={(e) => handleChange(e)}
-          value={unit.editors[monacoid].input}
-          sx={{
-            display: "inline-block",
-            whiteSpace: "pre-wrap",
-            resize: "none", // отключаем ручное изменение размера
-            // overflow: "auto",
-            // height: "100%",
-          }}
-        />
+        <CustomInput monacoid={monacoid} />
       </Box>
     </Panel>
   );

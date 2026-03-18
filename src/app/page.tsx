@@ -7,7 +7,7 @@ export default function Home() {
   const router = useRouter();
   // splash.showAppLoader(true);
   useEffect(() => {
-    router.push(`/login`);
+    router.replace(`/login`);
   }, []);
   // return <Splash />;
 }

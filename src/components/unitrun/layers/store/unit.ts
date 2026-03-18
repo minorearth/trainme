@@ -53,7 +53,7 @@ import themeSwitchStore from "@/components/common/themeswitch/themeSwitchStore";
 import { E_CODES_DIALOG, finalErrorHandler } from "@/tpconst/src";
 import { loadCodePersistance, setCodePersistance } from "@/db/localstorageDB";
 
-interface Editors {
+interface EditorsData {
   defaultcode: string; //to refresh
   inv: string[]; //to refresh
   input: string;
@@ -67,15 +67,28 @@ interface Editors {
   filedata: string;
   codepart: string;
   markdown: string;
+}
 
-  //     monacoRef: React.RefObject<Monaco | null> = React.createRef();
-  // editorRef: React.RefObject<editor.IStandaloneCodeEditor | null> =
-  //   React.createRef();
+interface EditorsRefs {
+  defaultcode: string; //to refresh
+  inv: string[]; //to refresh
+  input: string;
+  output: string;
+  unittype: string;
+  monacoRef: React.RefObject<Monaco | null>;
+  editorRef: React.RefObject<editor.IStandaloneCodeEditor | null>;
+  executing: boolean;
+  editordisabled: boolean;
+  errorMessage: string;
+  filedata: string;
+  codepart: string;
+  markdown: string;
 }
 
 class unitstore {
   currUnit: Unit = UNIT_DEFAULTS;
-  editors: Editors[] = [];
+  editors: EditorsData[] = [];
+
   showanswer: boolean = false;
 
   setCurrUnit(unit: Unit) {
@@ -97,7 +110,7 @@ class unitstore {
           editordisabled: false,
           errorMessage: "",
         };
-      }) as Editors[];
+      }) as EditorsData[];
     } else if (unit.unittype == "task") {
       this.editors = [
         {
@@ -109,9 +122,15 @@ class unitstore {
           filedata: unit.inout[0].filesdata.join("\n"),
           inv: unit.inout[0].inv,
         },
-      ] as Editors[];
+      ] as EditorsData[];
     } else {
     }
+  }
+
+  resetState() {
+    this.editors = [];
+    this.currUnit = UNIT_DEFAULTS;
+    this.showanswer = false;
   }
 
   setPGState() {
@@ -125,7 +144,7 @@ class unitstore {
         filedata: "",
         inv: [""],
       },
-    ] as Editors[];
+    ] as EditorsData[];
   }
 
   eraseState() {

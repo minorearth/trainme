@@ -210,7 +210,7 @@ export const gotoPG = async (router: AppRouterInstance) => {
 
 export const gotoCoursespage = async (router: AppRouterInstance) => {
   splash.showProgress(false, "progressdots", 0);
-  router.push(`/${S.P.CHAPTERS}/`);
+  router.replace(`/${S.P.CHAPTERS}/`);
 };
 
 export const interruptUnitSet = () => {

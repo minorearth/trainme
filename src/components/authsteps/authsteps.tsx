@@ -16,7 +16,6 @@ import authForm from "@/components/authsteps/layers/store/store";
 import splash from "@/components/common/splash/store";
 
 const Authsteps = observer(() => {
-  console.log(splash.shown);
   return (
     <React.Fragment>
       <Splash />
