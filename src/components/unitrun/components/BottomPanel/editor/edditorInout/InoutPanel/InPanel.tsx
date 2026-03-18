@@ -13,7 +13,6 @@ import CustomInput from "@/components/common/customInput/customInput";
 const InPanel = observer(({ monacoid }: { monacoid: number }) => {
   return (
     <Panel label={L.ru.TR.INPUT_DATA} sx={{ height: "100%" }}>
-      <></>
       <Box
         sx={{
           height: "100%",
