@@ -50,7 +50,6 @@ export const TextDiffLogger = observer(() => {
   }, []);
 
   useEffect(() => {
-    // Чтобы не создавать множество interval при повторных монтированиях
     let mounted = true;
     let intervalId: number;
 
@@ -88,20 +87,25 @@ export const TextDiffLogger = observer(() => {
   return (
     <div
       style={{
+        display: "flex",
         fontSize: 14,
-        width: "500px",
-        overflow: "auto",
-        minHeight: "100%",
+        maxWidth: "500px",
+        flexGrow: 1,
+        flexDirection: "column",
+        minHeight: 0,
       }}
     >
       <div
         aria-label="diff-log"
         style={{
-          minHeight: "100%",
+          // maxHeight: "300px",
+          display: "flex",
           overflow: "auto",
           border: "1px solid #ddd",
           padding: "8px",
           borderRadius: 4,
+          flex: "1 1 0px",
+          flexDirection: "column",
         }}
       >
         {logs.length === 0 && (
@@ -112,7 +116,7 @@ export const TextDiffLogger = observer(() => {
             <div style={{ fontSize: 12, color: "#555", marginBottom: 4 }}>
               {new Date(log.timestamp).toLocaleTimeString()}
             </div>
-            <div style={{ whiteSpace: "pre-wrap", fontFamily: "monospace" }}>
+            <div style={{ whiteSpace: "pre", fontFamily: "monospace" }}>
               {log.parts.map((p, idx) => {
                 if (p.added) {
                   return (

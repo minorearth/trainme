@@ -20,17 +20,19 @@ const BottomPG = observer(({ monacoid }: { monacoid: number }) => {
         display: "flex",
         justifyContent: "flex-start",
         alignItems: "center",
-        flex: "1 1 0px",
+        flex: 1,
+        width: "100%",
       }}
     >
       <Box
         sx={{
           flexDirection: "column",
           display: "flex",
-          flex: "1 1 0px",
+          flex: "1",
+          width: "100%",
         }}
       >
-        <Panel label={L.ru.TR.EDITOR}>
+        <Panel label={L.ru.TR.EDITOR} sx={{ height: "100%" }}>
           <Editor
             key={`monacoid${monacoid}${unit.currUnit.unituuid}`}
             width="100%"

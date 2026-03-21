@@ -12,10 +12,9 @@ const Guide = observer(() => {
       sx={{
         flexDirection: "column",
         display: "flex",
-        justifyContent: "flex-start",
+        justifyContent: "flex",
         alignItems: "center",
         width: "100%",
-        // flexGrow: 1,
         height: "auto",
       }}
     >
