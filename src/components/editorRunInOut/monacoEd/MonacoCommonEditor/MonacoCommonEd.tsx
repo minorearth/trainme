@@ -4,7 +4,7 @@
 // import Editor from "@monaco-editor/react";
 import { motion } from "framer-motion";
 
-import { EditorOptions } from "@/components/unitrun/components/BottomPanel/editor/monaco/MonacoEditorOptions";
+import { EditorOptions } from "@/components/editorRunInOut/monacoEd/MonacoCommonEditor/MonacoEditorOptions";
 import "./MonacoEditor.css";
 import IconButton from "@mui/material/IconButton";
 import CachedIcon from "@mui/icons-material/Cached";
@@ -22,6 +22,7 @@ import unit from "@/components/unitrun/layers/store/unit";
 
 import { observer } from "mobx-react-lite";
 import { useRef } from "react";
+import { useMediaQuery } from "@uidotdev/usehooks";
 
 //stores
 
@@ -41,6 +42,7 @@ const MonacoCommonEd = observer(
     autolayout: boolean;
   }) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
+    const isMobile = useMediaQuery("(max-width:600px)");
 
     return (
       <Box
@@ -48,20 +50,19 @@ const MonacoCommonEd = observer(
         key={`MonacoCommonEd${monacoid}${unit.currUnit.unituuid}`}
         sx={{
           height: "100%",
+          display: "flex",
+          flex: "1 1 0px",
+
           width: "100%",
           position: "relative",
+          flexShrink: 1,
+          minHeight: autolayout ? "auto" : 200, //
         }}
         component={motion.div}
         variants={pageVariants}
         initial="initial"
         animate="animate"
         transition={{ duration: 1.5, ease: "easeOut" }}
-        // initial={{ opacity: 0, scale: 0 }}
-        // animate={{ opacity: 1, scale: 1 }}
-        // transition={{
-        //   duration: 0.9,
-        //   scale: { type: "spring", visualDuration: 0.9, bounce: 0.5 },
-        // }}
       >
         <IconButton
           key={`refreshButton${monacoid}`}

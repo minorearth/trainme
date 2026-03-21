@@ -43,17 +43,26 @@ const Navigator = observer(() => {
   usePyodide();
 
   return (
-    <Box>
+    <Box
+      id="human"
+      sx={{
+        width: "100%",
+        display: "flex",
+        flexGrow: 1,
+        flexDirection: "column",
+      }}
+    >
       <Splash />
       <AlertDialog />
       <Tutorial />
       {/* <TawkToChat /> */}
       {navigator.apploaded && (
         <Box
-          id="human"
           sx={{
             width: "100%",
-            height: "100vh",
+            display: "flex",
+            flexGrow: 1,
+            flexDirection: "column",
           }}
         >
           {(navigator.state.page == PG.courses ||

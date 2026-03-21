@@ -18,6 +18,7 @@ import { TT } from "@/tpconst/src";
 import { magicCode } from "@/components/unitrun/layers/services/taskCheckHelpers";
 import { preCheckTaskAction } from "@/components/unitrun/layers/services/taskCheck";
 import { toJS } from "mobx";
+import { CODERUN_PNL_HT } from "../../unitrun/uiconfig";
 
 //TODO: add task version(must)
 const CodeRunPanel = observer(({ monacoid }: { monacoid: number }) => {
@@ -30,7 +31,7 @@ const CodeRunPanel = observer(({ monacoid }: { monacoid: number }) => {
         display: "flex",
         flexDirection: "row",
         justifyContent: "flex-start",
-        height: "50px",
+        height: CODERUN_PNL_HT,
       }}
     >
       {!countdownbutton.state.visible && (

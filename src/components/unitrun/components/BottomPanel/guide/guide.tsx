@@ -1,10 +1,10 @@
 "use client";
 import unit from "@/components/unitrun/layers/store/unit";
 import { observer } from "mobx-react-lite";
-import { TT } from "@/tpconst/src/const";
 import Box from "@mui/material/Box";
 import { toJS } from "mobx";
-import CodePanel from "../editor/CodePanel";
+import MarkDown from "./markdown/markDown";
+import EditorRunInOut from "@/components/editorRunInOut/editorRunInOut";
 
 const Guide = observer(() => {
   return (
@@ -12,20 +12,29 @@ const Guide = observer(() => {
       sx={{
         flexDirection: "column",
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "flex-start",
         alignItems: "center",
         width: "100%",
+        // flexGrow: 1,
         height: "auto",
       }}
     >
-      {unit.editors?.map((value, id) => (
-        <CodePanel
-          key={id}
-          errorHandler={() => {}}
-          monacoid={id}
-          autolayout={true}
-        />
-      ))}
+      {unit.editors?.map((_, id) => {
+        return unit.editors[id].codepart != "" ? (
+          <>
+            <MarkDown text={unit.editors[id].markdown} key={`MarkDown${id}`} />
+            <EditorRunInOut
+              key={`EditorRunInOut${id}`}
+              errorHandler={() => {}}
+              monacoid={id}
+              autolayout={true}
+              showFrame={false}
+            />
+          </>
+        ) : (
+          <MarkDown text={unit.editors[id].markdown} key={`MarkDown${id}`} />
+        );
+      })}
     </Box>
   );
 });

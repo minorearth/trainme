@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 //react stuff
 import Input from "@mui/material/Input";
@@ -62,7 +62,14 @@ const AdminPanel = () => {
   };
 
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        height: 40,
+      }}
+    >
       <Button onClick={() => checkAlltasks()}>checkAll</Button>
       <Button onClick={() => resetCurrentUser()}>reset</Button>
       <Button onClick={() => unlockAllChaptersCurrentUser()}>unlockAll</Button>
@@ -134,7 +141,7 @@ const AdminPanel = () => {
           FC
         </Button>
       )}
-    </>
+    </Box>
   );
 };
 

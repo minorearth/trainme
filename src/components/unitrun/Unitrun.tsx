@@ -12,7 +12,7 @@ const Unitrun = observer(() => {
     <Box
       sx={{
         width: "100%",
-        height: "100%",
+        flexGrow: 1,
         display: "flex",
         flexDirection: "column",
         backgroundColor: theme.palette.background.default,

@@ -3,9 +3,9 @@ import { observer } from "mobx-react-lite";
 import Box from "@mui/material/Box";
 import unit from "@/components/unitrun/layers/store/unit";
 import { L, Task, TT } from "@/tpconst/src";
-import MarkDown from "../guide/markDown";
+import MarkDown from "../../unitrun/components/BottomPanel/guide/markdown/markDown";
 import { Editor } from "@monaco-editor/react";
-import { EditorOptions } from "./monaco/MonacoEditorOptions";
+import { EditorOptions } from "../monacoEd/MonacoCommonEditor/MonacoEditorOptions";
 import { useRef } from "react";
 
 const AnswerPanel = observer(({ monacoid }: { monacoid: number }) => {

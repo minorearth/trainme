@@ -20,12 +20,10 @@ const Page = observer(({}) => {
   }, []);
 
   return (
-    <>
-      <ThemeProvider theme={customTheme}>
-        <CssBaseline />
-        {!!user.userid && <Navigator />}
-      </ThemeProvider>
-    </>
+    <ThemeProvider theme={customTheme}>
+      <CssBaseline />
+      {!!user.userid && <Navigator />}
+    </ThemeProvider>
   );
 });
 

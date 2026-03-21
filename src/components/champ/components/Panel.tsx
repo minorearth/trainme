@@ -25,7 +25,7 @@ export const Panel = ({
         borderRadius: "3px",
         flex: 1,
         height: "100%",
-        minHeight: "200px",
+        // minHeight: "200px",
         "& .MuiFormGroup-root": { height: "100%" },
       }}
     >

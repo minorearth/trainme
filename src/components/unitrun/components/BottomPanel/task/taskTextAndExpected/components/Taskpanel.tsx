@@ -9,7 +9,7 @@ import { L } from "@/tpconst/src/lang";
 import Box from "@mui/material/Box";
 import ExpectedOutPanel from "./ExpectedOutPanel";
 import { Task } from "@/tpconst/src";
-import { renderFormulas } from "../../../layers/services/markdownUtils";
+import { renderFormulas } from "@/components/unitrun/layers/services/markdownUtils";
 import "katex/dist/katex.min.css";
 
 const Wrapper = styled.div`
@@ -47,39 +47,28 @@ const TaskPanel = observer(() => {
   return (
     <Box
       sx={{
-        flexDirection: "column",
         display: "flex",
+        flex: 1,
+        flexDirection: "column",
         justifyContent: "flex-start",
-        alignItems: "center",
-        height: "100%",
+        flexGrow: 1,
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          flex: 1,
-          flexDirection: "column",
-          justifyContent: "flex-start",
-        }}
-      >
-        <Panel label={L.ru.TR.TASK} sx={{ height: "100%" }}>
-          <Wrapper>
-            <Typography
-              variant="body1"
-              dangerouslySetInnerHTML={{
-                __html: `<p>${renderFormulas((unit.currUnit as Task).tasktext)}</p>`,
-              }}
-              sx={{
-                display: "inline-block",
-                whiteSpace: "pre-wrap",
-                wordWrap: "break-word",
-              }}
-            ></Typography>
-          </Wrapper>
-        </Panel>
-      </Box>
-
-      <ExpectedOutPanel />
+      <Panel label={L.ru.TR.TASK}>
+        <Wrapper>
+          <Typography
+            variant="body1"
+            dangerouslySetInnerHTML={{
+              __html: `<p>${renderFormulas((unit.currUnit as Task).tasktext)}</p>`,
+            }}
+            sx={{
+              display: "inline-block",
+              whiteSpace: "pre-wrap",
+              wordWrap: "break-word",
+            }}
+          ></Typography>
+        </Wrapper>
+      </Panel>
     </Box>
   );
 });

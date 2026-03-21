@@ -1,20 +1,15 @@
 "use client";
-import Grid from "@mui/material/Grid2";
-import CodeRunPanel from "@/components/unitrun/components/BottomPanel/editor/edditorInout/coderunPanel";
+import CodeRunPanel from "@/components/editorRunInOut/coderunPanel/coderunPanel";
 import { observer } from "mobx-react-lite";
 import Box from "@mui/material/Box";
-import InOutPanel from "../unitrun/components/BottomPanel/editor/edditorInout/InoutPanel/InOutPanel";
+import InOutPanel from "../../../editorRunInOut/InoutPanel/InOutPanel";
 import unit from "@/components/unitrun/layers/store/unit";
-import { Guide, L, TT } from "@/tpconst/src";
-import usePyodide from "@/components/pyodide/usePyodide";
+import { L } from "@/tpconst/src";
 
 import { Editor } from "@monaco-editor/react";
-import { EditorOptions } from "../unitrun/components/BottomPanel/editor/monaco/MonacoEditorOptions";
-import FloatMenu from "../Navigator/floatMenu";
-import DLSwitch from "../common/themeswitch/themeSwitch";
-import { Panel } from "../common/panel";
-import { Background } from "@xyflow/react";
-import DropZone from "./dropzone";
+import { EditorOptions } from "../../../editorRunInOut/monacoEd/MonacoCommonEditor/MonacoEditorOptions";
+import { Panel } from "../../../common/panel";
+import DropZone from "./components/dropzone";
 
 const BottomPG = observer(({ monacoid }: { monacoid: number }) => {
   return (
@@ -25,13 +20,8 @@ const BottomPG = observer(({ monacoid }: { monacoid: number }) => {
         display: "flex",
         justifyContent: "flex-start",
         alignItems: "center",
-        // height: "100%",
-        flex: "1",
+        flex: 1,
         width: "100%",
-        // position: "relative",
-
-        // margin: "10px",
-        // flex: 1,
       }}
     >
       <Box

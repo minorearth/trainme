@@ -4,7 +4,7 @@ import { makeAutoObservable, toJS, reaction, runInAction } from "mobx";
 import {
   monacoDarktheme,
   monacoLighttheme,
-} from "@/components/unitrun/components/BottomPanel/editor/monaco/themesetter";
+} from "@/components/editorRunInOut/monacoEd/MonacoCommonEditor/themesetter";
 
 interface HandleEditorDidMount {
   editor: editor.IStandaloneCodeEditor | null;

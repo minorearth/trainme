@@ -9,17 +9,16 @@ import Box from "@mui/material/Box";
 import { observer } from "mobx-react-lite";
 import { L } from "@/tpconst/src/lang";
 import CustomInput from "@/components/common/customInput/customInput";
+import { CODERUN_IN_OUT_HT } from "@/components/unitrun/uiconfig";
 
 const InPanel = observer(({ monacoid }: { monacoid: number }) => {
   return (
-    <Panel label={L.ru.TR.INPUT_DATA} sx={{ height: "100%" }}>
+    <Panel label={L.ru.TR.INPUT_DATA}>
       <Box
         sx={{
-          height: "100%",
-          width: "100%",
-          // maxHeight: "150px",
-          overflowY: "auto",
-          overflowX: "auto",
+          display: "flex",
+          flexGrow: 1,
+          minWidth: 0,
         }}
       >
         <IconButton
@@ -39,7 +38,10 @@ const InPanel = observer(({ monacoid }: { monacoid: number }) => {
           <CachedIcon />
         </IconButton>
 
-        <CustomInput monacoid={monacoid} />
+        <CustomInput
+          value={unit.editors[monacoid].input}
+          onchange={(e) => (unit.editors[monacoid].input = e.target.value)}
+        />
       </Box>
     </Panel>
   );

@@ -1,0 +1,9 @@
+html,
+body,
+#__next,
+[data-rk] {
+  /* [data-rk] если есть RainbowKit, иначе просто html, body */
+  height: 100%;
+  margin: 0;
+  background-color: bisque;
+}

@@ -5,14 +5,11 @@ import DLSwitch from "@/components/common/themeswitch/themeSwitch";
 import AnimationLottie from "@/components/common/animations/lottie/AnimationLottie";
 import Typography from "@mui/material/Typography";
 import IconButtonNoRipple from "@/components/common/IconButtonNoRipple/IconButtonNoRipple";
-import SendIcon from "@mui/icons-material/Send";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import { Tooltip } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import Grid from "@mui/material/Grid2";
-import { Button } from "@mui/material";
 import { FaCheckCircle } from "react-icons/fa";
-import { FaArrowCircleRight } from "react-icons/fa";
 
 import { observer } from "mobx-react-lite";
 
@@ -30,15 +27,18 @@ import CountdownButton from "@/components/common/CountdownButton/CountdownButton
 import { IoArrowForwardCircle } from "react-icons/io5";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { checkTaskAction } from "../../layers/services/taskCheck";
+import { TOP_PANEL_HEIGHT } from "../../uiconfig";
 
-const HEIGHT = "80px";
 const TopPanel = observer(() => {
   return (
     <Grid
       container
       spacing={0}
       columns={{ xs: 1, sm: 6, md: 10 }}
-      sx={{ marginTop: "10px", flexGrow: 1 }}
+      sx={{
+        marginTop: "10px",
+        height: "auto",
+      }}
     >
       <Grid size={{ xs: 1, sm: 3, md: 7 }} order={{ xs: 2, sm: 1, md: 1 }}>
         <Box
@@ -50,7 +50,7 @@ const TopPanel = observer(() => {
           }}
         >
           <AnimationLottie
-            style={{ height: HEIGHT, width: HEIGHT }}
+            style={{ height: TOP_PANEL_HEIGHT, width: TOP_PANEL_HEIGHT }}
             name={"sheep"}
           />
           <LinearProgressWithLabel
@@ -126,7 +126,7 @@ const TopPanel = observer(() => {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
-            height: HEIGHT,
+            height: TOP_PANEL_HEIGHT,
           }}
         >
           <AnimationLottie
