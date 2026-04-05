@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import { toJS } from "mobx";
 import MarkDown from "./markdown/markDown";
 import EditorRunInOut from "@/components/editorRunInOut/editorRunInOut";
+import TuringMachineEditor from "@/components/Turing/tm";
 
 const Guide = observer(() => {
   return (
@@ -22,6 +23,7 @@ const Guide = observer(() => {
         return unit.editors[id].codepart != "" ? (
           <>
             <MarkDown text={unit.editors[id].markdown} key={`MarkDown${id}`} />
+            {/* <TuringMachineEditor /> */}
             <EditorRunInOut
               key={`EditorRunInOut${id}`}
               errorHandler={() => {}}
