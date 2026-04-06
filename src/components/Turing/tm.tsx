@@ -1,261 +1,281 @@
-import React, { useState, useMemo, ChangeEvent, useEffect } from "react";
-import { runTM } from "./turing";
-import { Button, Typography } from "@mui/material";
-
-type CellValue = [string, string, number | string];
-type TableData = { [state: number]: { [char: string]: string } };
-type ReactunTimeState = {};
-
-// const program = {
-//   _: [
-//     ["_", "L", 1],
-//     ["0", "S", 1],
-//   ],
-//   0: [[], ["1", "L", 1]],
-//   1: [[], ["0", "S", 1]],
-// };
-
-const TAPE_DEFAULT = "_10001_";
+import React, { ChangeEvent } from "react";
+import {
+  Button,
+  Typography,
+  TextField,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Box,
+  Stack,
+  Divider,
+} from "@mui/material";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { IconButton } from "@mui/material";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import useTM from "./useTM";
+import { stat } from "fs";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 const TuringMachineEditor: React.FC = () => {
-  // const [alphabetInput, setAlphabetInput] = useState<string>(`\u03BB01`);
-  const [alphabetInput, setAlphabetInput] = useState<string>(`_01`);
-
-  const [numStates, setNumStates] = useState<number>(2);
-  const [tableData, setTableData] = useState<TableData>({
-    0: { _: "_R1" },
-    1: { 0: "1R1", 1: "0R1", _: "_S1" },
-  });
-  const [tape, setTape] = useState<string>(TAPE_DEFAULT);
-  const [pointer, setPointer] = useState<number>(0);
-  const [state, setState] = useState<number>(0);
-
-  const [runTimeState, setRunTimeState] = useState<ReactunTimeState>();
-
-  const [resTape, setResTape] = useState<string>(TAPE_DEFAULT);
-  const [tapeDisplay, setTapeDisplay] = useState<string>(TAPE_DEFAULT);
-
-  const [resState, setResState] = useState<number>(0);
-  const [resPointer, setResPointer] = useState<number>(0);
-  const [programIsFinished, setProgramIsFinished] = useState<boolean>(false);
-  const [resChar, setChar] = useState<string>("");
-
-  const alphabet = useMemo(
-    () => alphabetInput.split("").filter((s) => s !== " "),
-    [alphabetInput],
-  );
-
-  useEffect(() => {
-    // setResPointer(pointer);
-    // setResTape(tape);
-    // setResState(0);
-    setTapeDisplay(selectSym(tape, pointer));
-    // setProgramIsFinished(false);
-    setChar(tape[pointer]);
-    // setRunTimeState({
-    // })
-  }, []);
-
-  const handleCellChange = (state: number, char: string, value: string) => {
-    setTableData((prev) => ({
-      ...prev,
-      [state]: { ...prev[state], [char]: value },
-    }));
-  };
-
-  const selectSym = (line: string, pos: number) => {
-    const left = line.slice(0, pos);
-    const sym = line.slice(pos, pos + 1);
-    const right = line.slice(pos + 1);
-    return (
-      left +
-      '<span style="border: 1px solid black; padding: 0 2px;">' +
-      sym +
-      "</span>" +
-      right
-    );
-  };
-
-  const resetProgram = () => {
-    setResPointer(pointer);
-    setResTape(tape);
-    setResState(0);
-    setTapeDisplay(selectSym(tape, pointer));
-    setProgramIsFinished(false);
-    setChar(tape[pointer]);
-  };
-
-  const program = useMemo(() => {
-    const prog: { [char: string]: any[] } = {};
-
-    alphabet.forEach((char) => {
-      prog[char] = [];
-      for (let s = 0; s < numStates; s++) {
-        const val = tableData[s]?.[char] || "";
-        const parts = val.split("").map((p) => p.trim());
-
-        if (parts.length === 3) {
-          prog[char][s] = [
-            parts[0],
-            parts[1],
-            isNaN(Number(parts[2])) ? parts[2] : Number(parts[2]),
-          ];
-        } else {
-          prog[char][s] = [];
-        }
-      }
-    });
-    return prog;
-  }, [alphabet, numStates, tableData]);
+  const { actions, state } = useTM();
 
   return (
-    <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
-      <div style={{ marginBottom: "20px" }}>
-        <label>Лента: </label>
-        <br />
+    <Box sx={{ p: 4, maxWidth: "1200px", margin: "0 auto" }}>
+      <Typography variant="h5" gutterBottom sx={{ fontWeight: "bold", mb: 3 }}>
+        Эмулятор машины Тьюринга
+      </Typography>
 
-        <input
-          value={tape}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setTape(e.target.value);
-            setResTape(e.target.value);
-            setTapeDisplay(selectSym(e.target.value, pointer));
-          }}
-        />
-        <br />
-        <label>Алфавит: </label>
-        <br />
+      {/* Панель настроек */}
+      <Paper elevation={3} sx={{ p: 3, mb: 4, borderRadius: 2 }}>
+        {/* <Typography variant="h6" sx={{ mb: 2 }}>
+          Настройки
+        </Typography> */}
+        <Box
+          display="grid"
+          gridTemplateColumns="repeat(auto-fit, minmax(200px, 1fr))"
+          gap={3}
+        >
+          <TextField
+            label="Лента"
+            variant="outlined"
+            size="small"
+            value={state.setup.tape}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              actions.handleTapeChange(e)
+            }
+          />
+          <TextField
+            label="Алфавит"
+            variant="outlined"
+            size="small"
+            value={state.setup.alphabetInput}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              actions.setAlphabetInput(e.target.value)
+            }
+          />
+          {/* <TextField
+            label="Кол-во состояний"
+            type="number"
+            variant="outlined"
+            size="small"
+            value={state.setup.numStates}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              actions.handleNumStatesChange(e)
+            }
+          /> */}
+          {/* <TextField
+            label="Начало каретки"
+            type="number"
+            variant="outlined"
+            size="small"
+            value={state.setup.pointer}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              actions.handlePointerChange(e.target.value)
+            }
+          /> */}
+        </Box>
+      </Paper>
 
-        <input
-          value={alphabetInput}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setAlphabetInput(e.target.value)
-          }
-        />
-        <br />
-        <label>Кол-во состояний: </label>
-        <br />
-
-        <input
-          type="number"
-          value={numStates}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setNumStates(Math.max(1, parseInt(e.target.value) || 0))
-          }
-        />
-        <br />
-        <label>Начальное положение каретки</label>
-        <br />
-
-        <input
-          type="number"
-          value={pointer}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            const val = Math.min(
-              Math.max(0, parseInt(e.target.value) || 0),
-              tape.length - 1,
-            );
-            setPointer(val);
-            setResPointer(val);
-            setTapeDisplay(selectSym(tape, val));
-          }}
-        />
-      </div>
-
-      <table
-        border={1}
-        style={{ borderCollapse: "collapse", marginBottom: "20px" }}
+      {/* Таблица переходов */}
+      <TableContainer
+        component={Paper}
+        elevation={3}
+        sx={{ mb: 4, borderRadius: 2 }}
       >
-        <thead>
-          <tr>
-            <th></th>
-            {alphabet.map((char) => (
-              <th key={char} style={{ padding: "10px" }}>
-                {char}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {Array.from({ length: numStates }).map((_, s) => (
-            <tr key={s}>
-              <td style={{ fontWeight: "bold", padding: "10px" }}>q{s}</td>
-              {alphabet.map((char) => (
-                <td
-                  key={char}
-                  style={{
-                    backgroundColor:
-                      char == resChar && s == resState
-                        ? "#cce8cc"
-                        : "transparent",
-                    // color: "white",
-                  }}
+        <Table size="small">
+          <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
+            <TableRow>
+              <TableCell sx={{ fontWeight: "bold", width: "120px" }}>
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="space-between"
                 >
-                  <input
-                    style={{
-                      width: "100px",
-                      textAlign: "center",
-                      border: "none",
-                      outline: "none",
-                      backgroundColor:
-                        char == resChar && s == resState
-                          ? "#cce8cc"
-                          : "transparent",
-                    }}
-                    value={tableData[s]?.[char] || ""}
-                    onChange={(e) => handleCellChange(s, char, e.target.value)}
-                  />
-                </td>
+                  <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                    Сост.
+                  </Typography>
+                  <Stack direction="row" spacing={0.5}>
+                    <IconButton
+                      size="small"
+                      onClick={() => {
+                        const newVal = Math.max(1, state.setup.numStates - 1);
+                        actions.handleNumStatesChange({
+                          target: { value: newVal },
+                        } as any);
+                      }}
+                      sx={{ p: 0.5 }}
+                    >
+                      <RemoveIcon fontSize="inherit" />
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      onClick={() => {
+                        const newVal = state.setup.numStates + 1;
+                        actions.handleNumStatesChange({
+                          target: { value: newVal },
+                        } as any);
+                      }}
+                      sx={{ p: 0.5 }}
+                    >
+                      <AddIcon fontSize="inherit" />
+                    </IconButton>
+                  </Stack>
+                </Stack>
+              </TableCell>
+              {state.setup.alphabet.map((char) => (
+                <TableCell
+                  key={char}
+                  align="center"
+                  sx={{ fontWeight: "bold" }}
+                >
+                  {char === " " ? "␣" : char}
+                </TableCell>
               ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {Array.from({ length: state.setup.numStates }).map((_, s) => (
+              <TableRow key={s} hover>
+                <TableCell
+                  sx={{ fontWeight: "bold", backgroundColor: "#fafafa" }}
+                >
+                  q<sub>{s}</sub>
+                </TableCell>
+                {state.setup.alphabet.map((char) => {
+                  const isCurrent =
+                    char === state.runtime.resChar &&
+                    s === state.runtime.resState;
+                  return (
+                    <TableCell
+                      key={char}
+                      sx={{
+                        p: 0,
+                        backgroundColor: isCurrent ? "#e8f5e9" : "inherit",
+                        transition: "background-color 0.3s",
+                      }}
+                    >
+                      <input
+                        style={{
+                          width: "100%",
+                          padding: "12px 8px",
+                          textAlign: "center",
+                          border: "none",
+                          outline: "none",
+                          background: "transparent",
+                          fontFamily: "monospace",
+                          fontSize: "14px",
+                        }}
+                        placeholder="сим, напр, сост"
+                        value={state.setup.tableData[s]?.[char] || ""}
+                        onChange={(e) =>
+                          actions.handleCellChange(s, char, e.target.value)
+                        }
+                      />
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-      <Button
-        disabled={programIsFinished}
-        onClick={() => {
-          const { resPointer2, resTape2, resState2, resChar } = runTM({
-            tape: resTape.split(""),
-            program,
-            pointer: resPointer,
-            state: resState,
-          }) as any;
-          setResPointer(resPointer2);
-          setResTape(resTape2);
-          setResState(resState2);
-          setTapeDisplay(selectSym(resTape2, resPointer2));
-          setChar(resChar);
-          if (resState2 == -1) setProgramIsFinished(true);
-          // resetProgram();
-        }}
-      >
-        run
-      </Button>
-
-      <Button
-        onClick={() => {
-          resetProgram();
-        }}
-      >
-        reset
-      </Button>
-
-      <Typography
-        variant="body1"
-        dangerouslySetInnerHTML={{
-          __html: `${tapeDisplay}`,
-        }}
+      {/* Управление и Визуализация */}
+      <Paper
+        elevation={3}
         sx={{
-          display: "inline-block",
-          whiteSpace: "pre-wrap",
-          width: "100%",
+          p: 3,
+          borderRadius: 2,
+          textAlign: "center",
+          backgroundColor: "#1e1e1e",
+          color: "#fff",
         }}
-      ></Typography>
-    </div>
+      >
+        <Typography
+          variant="overline"
+          sx={{ color: "#aaa", mb: 1, display: "block" }}
+        >
+          Состояние ленты
+        </Typography>
+        <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 3 }}>
+          {/* Кнопка Влево */}
+          <IconButton
+            sx={{
+              color: "#fff",
+              "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" },
+            }}
+            onClick={() =>
+              actions.handlePointerChange((state.setup.pointer - 1).toString())
+            }
+          >
+            <ArrowBackIosNewIcon fontSize="small" />
+          </IconButton>
+
+          <Box sx={{ flexGrow: 1 }}>
+            <Typography
+              variant="h4"
+              dangerouslySetInnerHTML={{ __html: state.runtime.tapeDisplay }}
+              sx={{
+                fontFamily: "'Courier New', Courier, monospace",
+                letterSpacing: "4px",
+                wordBreak: "break-all",
+                "& span": {
+                  backgroundColor: "#2e7d32",
+                  padding: "2px 6px",
+                  borderRadius: "4px",
+                },
+              }}
+            />
+          </Box>
+
+          {/* Кнопка Вправо */}
+          <IconButton
+            sx={{
+              color: "#fff",
+              "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" },
+            }}
+            onClick={() =>
+              actions.handlePointerChange((state.setup.pointer + 1).toString())
+            }
+          >
+            <ArrowForwardIosIcon fontSize="small" />
+          </IconButton>
+        </Stack>
+
+        <Divider sx={{ my: 2, borderColor: "#444" }} />
+
+        <Stack direction="row" spacing={2} justifyContent="center">
+          <Button
+            variant="contained"
+            color="success"
+            startIcon={<PlayArrowIcon />}
+            disabled={state.runtime.programIsFinished}
+            onClick={() => actions.runProgram()}
+            sx={{ px: 4 }}
+          >
+            Запустить
+          </Button>
+
+          <Button
+            variant="outlined"
+            color="inherit"
+            startIcon={<RestartAltIcon />}
+            onClick={() => actions.resetProgram()}
+          >
+            Сбросить
+          </Button>
+        </Stack>
+      </Paper>
+    </Box>
   );
 };
 
 export default TuringMachineEditor;
-
-<p>Hello</p>;
